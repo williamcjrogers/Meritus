@@ -1,0 +1,32 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+
+# env
+.env
+.env.*
+
+# misc
+.DS_Store
+*.pem
+*.pdf
+*.docx
+
+# debug
+npm-debug.log*
+
+# build
+dist/
+
+# IDE
+.vscode/
+
+# extraction scripts / working docs
+extract.py
+pdf_extracts.txt
+Meritus_Business_Plan.md
+Meritus_Website_Plan.md
+Meritus_Website_Spec.md

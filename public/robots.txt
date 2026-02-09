@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /credentials
+Disallow: /api/
+
+Sitemap: https://meritus.co.uk/sitemap.xml
