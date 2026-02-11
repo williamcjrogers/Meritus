@@ -15,7 +15,7 @@ const lineVariants = {
 export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center bg-green grain overflow-hidden">
-      {/* Radial glow for depth */}
+      {/* Radial glow */}
       <div
         className="absolute inset-0 pointer-events-none z-0"
         aria-hidden="true"
@@ -25,14 +25,9 @@ export function HeroSection() {
         }}
       />
 
-      {/* Architectural brass line */}
-      <div className="absolute left-0 right-0 top-[42%] pointer-events-none z-0" aria-hidden="true">
-        <div className="h-px bg-gradient-to-r from-transparent via-brass/12 to-transparent" />
-      </div>
-
-      <div className="relative z-10 max-w-[1200px] mx-auto px-6 lg:px-[8%] w-full py-32 lg:py-0">
-        <div className="max-w-4xl">
-          {/* Eyebrow */}
+      {/* Main content */}
+      <div className="relative z-10 max-w-[1200px] mx-auto px-6 lg:px-[8%] w-full py-28 lg:py-0">
+        <div className="max-w-3xl">
           <motion.div
             className="font-mono text-[10px] tracking-[0.4em] uppercase text-brass/80 mb-10"
             initial={{ opacity: 0, x: -20 }}
@@ -42,7 +37,6 @@ export function HeroSection() {
             Construction Disputes Advisory
           </motion.div>
 
-          {/* Headline — two lines, staggered reveal */}
           <div className="overflow-hidden">
             <motion.div
               className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[84px] xl:text-[96px] text-cream leading-[1.0] tracking-tight italic"
@@ -66,7 +60,6 @@ export function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Brass rule */}
           <motion.span
             className="brass-rule-wide mt-10 block"
             initial={{ scaleX: 0, opacity: 0 }}
@@ -75,19 +68,17 @@ export function HeroSection() {
             style={{ transformOrigin: "left" }}
           />
 
-          {/* Body */}
           <motion.p
-            className="mt-8 text-lg lg:text-xl text-cream/70 max-w-xl leading-relaxed"
+            className="mt-8 font-serif text-xl lg:text-2xl text-cream/65 max-w-xl leading-[1.5]"
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.9 }}
           >
-            Senior-led advisory and forensic intelligence for high-value
-            construction disputes. Partner-led delivery. Proprietary analytical
-            tools. Zero conflicts.
+            Forensic intelligence for high-value construction
+            disputes — driven by proprietary analytical tools
+            and partner-led from first instruction through to testimony.
           </motion.p>
 
-          {/* CTA */}
           <motion.div
             className="mt-12 flex items-center gap-6"
             initial={{ opacity: 0, y: 24 }}
@@ -95,7 +86,7 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 1.1 }}
           >
             <Link href="/contact" className="btn-brass">
-              Request Conflict Check
+              Discuss Your Matter
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
                 <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
@@ -107,12 +98,27 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* ── Festina Lente — anchored bottom-right like a seal ── */}
       <motion.div
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 scroll-indicator"
+        className="absolute bottom-12 right-8 lg:right-[8%] z-10 text-right hidden md:block"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.8 }}
+        transition={{ duration: 1, delay: 1.6 }}
+      >
+        <div className="font-mono text-[12px] tracking-[0.4em] uppercase text-brass">
+          Festina Lente
+        </div>
+        <div className="mt-1 font-serif text-[14px] text-cream/40 italic">
+          Make haste slowly
+        </div>
+      </motion.div>
+
+      {/* Scroll indicator — bottom centre */}
+      <motion.div
+        className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 scroll-indicator hidden md:block"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2 }}
       >
         <svg width="20" height="30" viewBox="0 0 20 30" fill="none" aria-hidden="true">
           <rect x="1" y="1" width="18" height="28" rx="9" stroke="#B5975A" strokeWidth="1" opacity="0.4" />

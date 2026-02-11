@@ -38,11 +38,11 @@ export const FOOTER_NAV = {
 export const TRUST_METRICS = [
   { value: "\u00a3Xbn+", label: "Dispute Value Managed" },
   { value: "100%", label: "Partner-Led Delivery" },
-  { value: "0", label: "Conflicts of Interest" },
+  { value: "100%", label: "Independent Ownership" },
 ] as const;
 
 /** Single-line credibility copy for editorial bar (Option A) */
-export const CREDIBILITY_LINE = "Partner-led · Zero conflicts · High-value disputes" as const;
+export const CREDIBILITY_LINE = "Partner-led · Independent · High-value disputes" as const;
 
 export const SERVICE_PILLARS = [
   {
@@ -58,16 +58,16 @@ export const SERVICE_PILLARS = [
     href: "/services#quantum",
   },
   {
-    title: "Technical Advisory",
+    title: "Technical",
     output:
       "Engineering intelligence. Root cause analysis. Defect causation. Building Safety Act remediation.",
     href: "/services#technical",
   },
   {
-    title: "Adjudication",
+    title: "Advisory",
     output:
-      "The 28-day sprint. Strategy, merits assessment, and rapid evidence structuring.",
-    href: "/services#adjudication",
+      "Strategy, merits assessment, adjudication support, and rapid evidence structuring.",
+    href: "/services#advisory",
   },
 ] as const;
 

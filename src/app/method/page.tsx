@@ -31,7 +31,30 @@ export default function MethodPage() {
           <FadeIn>
             <div className="max-w-3xl">
               <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate mb-4">The principle</div>
-              <p className="text-xl lg:text-2xl text-green leading-relaxed font-serif italic">AI does not write our opinions. It organises the chaos so our partners can focus on the strategy.</p>
+              <h2 className="font-serif text-2xl lg:text-3xl text-green leading-[1.35] mb-6">
+                We automate the preparation. Never the judgment.
+              </h2>
+              <div className="space-y-4 text-[15px] lg:text-base text-slate leading-relaxed">
+                <p>
+                  The construction disputes market is racing to adopt AI as a shortcut.
+                  Firms are using it to draft opinions, generate reports, and produce
+                  deliverables at speed. The result is work that looks efficient but
+                  cannot withstand forensic scrutiny.
+                </p>
+                <p>
+                  We took a different view. Our proprietary tools process over 100GB of
+                  project data per matter — correspondence, site records, contract
+                  documents, programme files — classifying, cross-referencing, and
+                  structuring it chronologically in hours rather than weeks. The expert
+                  starts from an organised evidence base, not a folder of unsorted PDFs.
+                </p>
+                <p>
+                  But the tools stop where the judgment begins. Every opinion is formed
+                  by a partner. Every conclusion is traceable to source. Every method is
+                  disclosable. Technology clears the path so our experts can focus on the
+                  only thing that wins disputes: the quality of the analysis.
+                </p>
+              </div>
             </div>
           </FadeIn>
         </div>

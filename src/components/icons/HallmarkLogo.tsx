@@ -6,20 +6,14 @@ interface HallmarkLogoProps {
 }
 
 /**
- * The Meritus Hallmark Identity System.
+ * Meritus Hallmark — an architectural M monogram.
  *
- * A compact geometric stamp (abstracted building plan / balance scale
- * inside a rounded shield) sits left of the MERITUS wordmark.
- * "ADVISORY" descriptor sits below for the full lockup.
+ * The M is drawn as structure: heavy vertical strokes (columns),
+ * a sharp apex (keystone/pediment), weighted serif bases (foundations),
+ * and a datum line (ground line). Framed in a thin rectangle
+ * like a detail reference on a structural drawing.
  *
- * Sizes:
- *  - favicon: 24px  (stamp only, no text)
- *  - header:  40px  (stamp + wordmark, inline)
- *  - standalone: 120px (stamp + wordmark + descriptor, stacked)
- *
- * Variants:
- *  - light: brass stamp, cream text  (for green backgrounds)
- *  - dark:  brass stamp, green text  (for cream/parchment backgrounds)
+ * Every path is hand-drawn SVG — no font rendering, identical on every OS.
  */
 export function HallmarkLogo({
   size = "header",
@@ -29,80 +23,99 @@ export function HallmarkLogo({
 }: HallmarkLogoProps) {
   const brass = "#B5975A";
   const textColor = variant === "light" ? "#F5F0E8" : "#0B3B24";
-  const stampBg = variant === "light" ? "rgba(181,151,90,0.15)" : "rgba(11,59,36,0.08)";
+  const borderColor = variant === "light" ? "rgba(181,151,90,0.35)" : "rgba(11,59,36,0.2)";
+  const markColor = variant === "light" ? "#B5975A" : "#0B3B24";
+  const datumColor = variant === "light" ? "rgba(181,151,90,0.2)" : "rgba(11,59,36,0.12)";
 
-  // Favicon: stamp only
-  if (size === "favicon") {
+  /**
+   * The architectural M — drawn on a 100x100 viewBox.
+   *
+   * Structure:
+   *  - Two outer verticals (columns): x=25 and x=75, from y=28 to y=74
+   *  - Inner V meeting at apex: y=32 (keystone peak)
+   *  - Weighted serifs at top and base of each column
+   *  - Datum/ground line across the base
+   */
+  const ArchitecturalM = ({ s, strokeScale = 1 }: { s: number; strokeScale?: number }) => {
+    const sw = (v: number) => v * strokeScale;
+
     return (
       <svg
-        viewBox="0 0 40 40"
+        viewBox="0 0 100 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className={className}
-        aria-label="Meritus"
-        role="img"
+        width={s}
+        height={s}
+        className="shrink-0"
+        aria-hidden="true"
       >
-        <rect x="2" y="2" width="36" height="36" rx="4" fill={stampBg} stroke={brass} strokeWidth="1.5" />
-        {/* Abstracted building plan / keystone */}
-        <path d="M20 10 L28 16 L28 28 L12 28 L12 16 Z" stroke={brass} strokeWidth="1.2" fill="none" />
-        <line x1="20" y1="10" x2="20" y2="28" stroke={brass} strokeWidth="0.8" />
-        <line x1="12" y1="22" x2="28" y2="22" stroke={brass} strokeWidth="0.8" />
-        {/* Keystone accent */}
-        <path d="M17 16 L20 12 L23 16" stroke={brass} strokeWidth="1" fill="none" />
+        {/* ── Border: thin rectangle, slight radius ── */}
+        <rect
+          x="4" y="4" width="92" height="92" rx="3"
+          stroke={borderColor}
+          strokeWidth={sw(1)}
+        />
+
+        {/* ── Datum / ground line ── */}
+        <line x1="18" y1="76" x2="82" y2="76" stroke={datumColor} strokeWidth={sw(0.75)} />
+
+        {/* ── Left column ── */}
+        <line x1="28" y1="28" x2="28" y2="74" stroke={markColor} strokeWidth={sw(3)} strokeLinecap="square" />
+
+        {/* ── Right column ── */}
+        <line x1="72" y1="28" x2="72" y2="74" stroke={markColor} strokeWidth={sw(3)} strokeLinecap="square" />
+
+        {/* ── Left diagonal down to valley ── */}
+        <line x1="28" y1="28" x2="50" y2="52" stroke={markColor} strokeWidth={sw(2)} strokeLinecap="square" />
+
+        {/* ── Right diagonal down to valley ── */}
+        <line x1="72" y1="28" x2="50" y2="52" stroke={markColor} strokeWidth={sw(2)} strokeLinecap="square" />
+
+        {/* ── Apex / keystone accent ── */}
+        {/* Small chevron at the top centre where the diagonals originate */}
+        <path d="M28 28 L50 52 L72 28" stroke={markColor} strokeWidth={sw(2)} fill="none" strokeLinejoin="miter" />
+
+        {/* ── Top serifs (entablature) ── */}
+        {/* Left column top */}
+        <line x1="22" y1="28" x2="34" y2="28" stroke={markColor} strokeWidth={sw(1.5)} strokeLinecap="square" />
+        {/* Right column top */}
+        <line x1="66" y1="28" x2="78" y2="28" stroke={markColor} strokeWidth={sw(1.5)} strokeLinecap="square" />
+
+        {/* ── Base serifs (foundations) ── */}
+        {/* Left column base */}
+        <line x1="21" y1="74" x2="35" y2="74" stroke={markColor} strokeWidth={sw(2)} strokeLinecap="square" />
+        {/* Right column base */}
+        <line x1="65" y1="74" x2="79" y2="74" stroke={markColor} strokeWidth={sw(2)} strokeLinecap="square" />
       </svg>
     );
-  }
+  };
 
-  // Header: stamp + wordmark inline
-  if (size === "header") {
+  if (size === "favicon") {
     return (
-      <div className={`flex items-center gap-3 ${className}`} aria-label="Meritus Advisory">
-        <svg
-          viewBox="0 0 32 32"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-8 h-8 shrink-0"
-          aria-hidden="true"
-        >
-          <rect x="1" y="1" width="30" height="30" rx="3" fill={stampBg} stroke={brass} strokeWidth="1.2" />
-          <path d="M16 7 L23 12 L23 24 L9 24 L9 12 Z" stroke={brass} strokeWidth="1" fill="none" />
-          <line x1="16" y1="7" x2="16" y2="24" stroke={brass} strokeWidth="0.6" />
-          <line x1="9" y1="18" x2="23" y2="18" stroke={brass} strokeWidth="0.6" />
-          <path d="M13 12 L16 8.5 L19 12" stroke={brass} strokeWidth="0.8" fill="none" />
-        </svg>
-        <div className="flex flex-col leading-none">
-          <span
-            className="font-serif text-[17px] font-semibold tracking-[0.18em]"
-            style={{ color: textColor, fontVariantCaps: "all-small-caps" }}
-          >
-            Meritus
-          </span>
-        </div>
+      <div className={className} aria-label="Meritus" role="img">
+        <ArchitecturalM s={40} strokeScale={1.2} />
       </div>
     );
   }
 
-  // Standalone: stamp + wordmark + descriptor, stacked
+  if (size === "header") {
+    return (
+      <div className={`flex items-center gap-2.5 ${className}`} aria-label="Meritus Advisory">
+        <ArchitecturalM s={32} strokeScale={1.1} />
+        <span
+          className="font-serif text-[17px] font-semibold tracking-[0.2em] leading-none"
+          style={{ color: textColor, fontVariantCaps: "all-small-caps" }}
+        >
+          Meritus
+        </span>
+      </div>
+    );
+  }
+
+  // Standalone
   return (
-    <div className={`flex flex-col items-center gap-4 ${className}`} aria-label="Meritus Advisory">
-      <svg
-        viewBox="0 0 80 80"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-20 h-20"
-        aria-hidden="true"
-      >
-        <rect x="4" y="4" width="72" height="72" rx="6" fill={stampBg} stroke={brass} strokeWidth="2" />
-        <path d="M40 18 L56 28 L56 58 L24 58 L24 28 Z" stroke={brass} strokeWidth="1.5" fill="none" />
-        <line x1="40" y1="18" x2="40" y2="58" stroke={brass} strokeWidth="1" />
-        <line x1="24" y1="43" x2="56" y2="43" stroke={brass} strokeWidth="1" />
-        <path d="M32 28 L40 20 L48 28" stroke={brass} strokeWidth="1.2" fill="none" />
-        {/* Corner details */}
-        <circle cx="24" cy="28" r="1.5" fill={brass} opacity="0.4" />
-        <circle cx="56" cy="28" r="1.5" fill={brass} opacity="0.4" />
-        <circle cx="24" cy="58" r="1.5" fill={brass} opacity="0.4" />
-        <circle cx="56" cy="58" r="1.5" fill={brass} opacity="0.4" />
-      </svg>
+    <div className={`flex flex-col items-center gap-3 ${className}`} aria-label="Meritus Advisory">
+      <ArchitecturalM s={72} />
       <div className="flex flex-col items-center leading-none">
         <span
           className="font-serif text-2xl font-semibold tracking-[0.22em]"

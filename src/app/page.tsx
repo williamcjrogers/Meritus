@@ -1,9 +1,8 @@
 import { HeroSection } from "./sections/HeroSection";
-import { BrandStatement } from "./sections/BrandStatement";
 import { CredibilityBar } from "@/components/ui";
 import { SplitComparison } from "./sections/SplitComparison";
+import { ProcessStrip } from "./sections/ProcessStrip";
 import { PillarsSection } from "./sections/PillarsSection";
-import { PhilosophyBand } from "./sections/PhilosophyBand";
 import { InsightsSection } from "./sections/InsightsSection";
 import { CTABand } from "@/components/ui";
 import { JsonLd } from "@/components/seo/JsonLd";
@@ -28,10 +27,9 @@ export default function HomePage() {
       />
       <HeroSection />
       <CredibilityBar />
-      <BrandStatement />
       <SplitComparison />
+      <ProcessStrip />
       <PillarsSection />
-      <PhilosophyBand />
       <InsightsSection />
       <CTABand />
     </>

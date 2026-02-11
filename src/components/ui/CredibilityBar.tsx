@@ -3,8 +3,8 @@
 import { CountUp } from "./CountUp";
 
 const METRICS = [
+  { value: "25+", label: "Years Combined Experience" },
   { value: "100%", label: "Partner-Led Delivery" },
-  { value: "0", label: "Conflicts of Interest" },
   { value: "28", label: "Day Adjudication Sprint" },
 ];
 
@@ -16,8 +16,9 @@ export function CredibilityBar() {
           {METRICS.map((metric, i) => (
             <div
               key={metric.label}
-              className={`${i > 0 ? "border-l border-brass/15" : ""}`}
+              className={`flex flex-col items-center ${i > 0 ? "border-l border-brass/15" : ""}`}
             >
+              <span className="block w-10 h-[2px] bg-brass/40 mb-5" />
               <CountUp value={metric.value} label={metric.label} />
             </div>
           ))}
