@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { FadeIn } from "@/components/animations";
+import { FadeIn, ProjectPulse } from "@/components/animations";
 import { CTABand } from "@/components/ui";
 
 export const metadata: Metadata = {
@@ -37,8 +37,9 @@ const services = [
 export default function ServicesPage() {
   return (
     <>
-      <section className="bg-green pt-32 pb-20 lg:pt-40 lg:pb-28">
-        <div className="max-w-[1200px] mx-auto px-6 lg:px-[8%]">
+      <section className="bg-green pt-32 pb-20 lg:pt-40 lg:pb-28 relative overflow-hidden">
+        <ProjectPulse className="z-0 opacity-80" />
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-[8%] relative z-10">
           <FadeIn>
             <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-cream/50 mb-6">Services</div>
             <h1 className="font-serif text-4xl lg:text-[52px] text-cream leading-[1.1] max-w-3xl">Four disciplines. One team.<br />Outputs, not hours.</h1>
@@ -64,9 +65,10 @@ export default function ServicesPage() {
                   <p className="mt-6 text-[11px] text-slate/50">{service.tools}</p>
                 </div>
                 <div className="lg:col-span-7">
-                  <div className="bg-green p-8 lg:p-12 h-full">
-                    <div className="font-mono text-[10px] tracking-[0.15em] text-brass/60 mb-4">Illustrative analysis</div>
-                    <p className="font-mono text-[14px] text-cream/60 leading-[1.8]">{service.context}</p>
+                  <div className="bg-green p-8 lg:p-12 h-full relative overflow-hidden">
+                    <ProjectPulse className="z-0 opacity-70" />
+                    <div className="relative z-10 font-mono text-[10px] tracking-[0.15em] text-brass/60 mb-4">Illustrative analysis</div>
+                    <p className="relative z-10 font-mono text-[14px] text-cream/60 leading-[1.8]">{service.context}</p>
                   </div>
                 </div>
               </div>

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ProjectPulse } from "@/components/animations";
 
 interface CTABandProps {
   heading?: string;
@@ -15,6 +16,7 @@ export function CTABand({
 }: CTABandProps) {
   return (
     <section className="bg-green grain py-20 lg:py-28 relative overflow-hidden">
+      <ProjectPulse className="z-0 opacity-80" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brass/15 to-transparent" aria-hidden="true" />
 
       <div className="max-w-[1100px] mx-auto px-6 lg:px-[8%] relative z-10">

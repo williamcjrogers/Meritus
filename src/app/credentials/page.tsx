@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FadeIn } from "@/components/animations";
+import { FadeIn, ProjectPulse } from "@/components/animations";
 import { HallmarkLogo } from "@/components/icons/HallmarkLogo";
 import Link from "next/link";
 
@@ -18,8 +18,9 @@ export default function CredentialsPage() {
   if (!authenticated) {
     return (
       <>
-        <section className="bg-green pt-32 pb-20 lg:pt-40 lg:pb-28">
-          <div className="max-w-[1200px] mx-auto px-6 lg:px-[8%]">
+        <section className="bg-green pt-32 pb-20 lg:pt-40 lg:pb-28 relative overflow-hidden">
+          <ProjectPulse className="z-0 opacity-80" />
+          <div className="max-w-[1200px] mx-auto px-6 lg:px-[8%] relative z-10">
             <FadeIn>
               <div className="font-mono text-[11px] tracking-[0.3em] uppercase text-brass/70 mb-6">Credentials Portal</div>
               <h1 className="font-serif text-4xl lg:text-[56px] text-cream leading-[1.1] italic">Private credentials</h1>
@@ -52,8 +53,9 @@ export default function CredentialsPage() {
 
   return (
     <>
-      <section className="bg-green pt-32 pb-20 lg:pt-40 lg:pb-28">
-        <div className="max-w-[1200px] mx-auto px-6 lg:px-[8%]">
+      <section className="bg-green pt-32 pb-20 lg:pt-40 lg:pb-28 relative overflow-hidden">
+        <ProjectPulse className="z-0 opacity-80" />
+        <div className="max-w-[1200px] mx-auto px-6 lg:px-[8%] relative z-10">
           <FadeIn>
             <div className="font-mono text-[11px] tracking-[0.3em] uppercase text-brass/70 mb-6">Credentials Portal</div>
             <h1 className="font-serif text-4xl text-cream italic">Private credentials pack</h1>

@@ -1,5 +1,7 @@
 "use client";
 
+import { ProjectPulse } from "@/components/animations";
+
 export function SplitComparison() {
   return (
     <section className="bg-stone py-16 lg:py-20">
@@ -29,11 +31,12 @@ export function SplitComparison() {
             </div>
           </div>
 
-          <div className="p-8 lg:p-12 bg-green grain h-full">
-            <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-brass mb-8">
+          <div className="p-8 lg:p-12 bg-green grain h-full relative overflow-hidden">
+            <ProjectPulse className="z-0 opacity-60" />
+            <div className="relative z-10 font-mono text-[10px] tracking-[0.25em] uppercase text-brass mb-8">
               The Meritus method
             </div>
-            <ul className="space-y-5">
+            <ul className="relative z-10 space-y-5">
               {["10,000 documents classified before the first meeting.", "Partners lead the analysis. From instruction to testimony.", "Every conclusion traceable to source. Every method disclosable."].map((item, i) => (
                 <li key={i} className="flex items-start gap-3 text-[15px] text-cream/85 leading-relaxed">
                   <span className="font-mono text-[10px] text-brass/70 mt-1 shrink-0">0{i + 1}</span>

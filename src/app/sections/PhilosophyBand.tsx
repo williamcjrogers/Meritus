@@ -1,6 +1,9 @@
+import { ProjectPulse } from "@/components/animations";
+
 export function PhilosophyBand() {
   return (
     <section className="bg-green grain py-20 lg:py-28 relative overflow-hidden">
+      <ProjectPulse className="z-0 opacity-80" />
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brass/15 to-transparent" aria-hidden="true" />
       <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brass/15 to-transparent" aria-hidden="true" />
 

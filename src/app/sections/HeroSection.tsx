@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { ProjectPulse } from "@/components/animations";
 
 const lineVariants = {
   hidden: { opacity: 0, y: 30 },
@@ -15,6 +16,9 @@ const lineVariants = {
 export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center bg-green grain overflow-hidden">
+      {/* Live programme background */}
+      <ProjectPulse className="z-0 opacity-80" />
+
       {/* Radial glow */}
       <div
         className="absolute inset-0 pointer-events-none z-0"
