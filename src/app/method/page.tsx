@@ -8,9 +8,21 @@ export const metadata: Metadata = {
 };
 
 const capabilities = [
-  { num: "01", title: "Document ingestion and classification", desc: "Thousands of documents \u2014 correspondence, instructions, site records, meeting minutes \u2014 classified and structured in hours. Relevant evidence surfaced. Gaps identified. The expert starts from an organised evidence base, not a folder of unsorted PDFs.", label: "Pattern match \u2014 redacted" },
-  { num: "02", title: "Clause extraction and linkage", desc: "Cause-and-effect relationships across complex project histories, surfaced through pattern analysis and validated by expert review. Chronologies that would take weeks to compile manually, drafted in days and refined by practitioners who know what matters.", label: "Clause extraction \u2014 redacted" },
-  { num: "03", title: "Schedule interrogation", desc: "Schedule data interrogated at scale. Logic changes, float consumption, and critical path shifts identified systematically. Supporting the forensic programme analysis \u2014 not replacing it.", label: "Schedule analysis \u2014 redacted" },
+  { num: "01", title: "Document ingestion and classification", desc: "Thousands of documents \u2014 correspondence, instructions, site records, meeting minutes \u2014 classified and structured in hours. Relevant evidence surfaced. Gaps identified. The expert starts from an organised evidence base, not a folder of unsorted PDFs.", label: "Pattern match \u2014 redacted", refs: [
+    { text: "REF: DWG-L14-CW-003-Rev.C", top: "18%", left: "8%" },
+    { text: "FS/COMP/2024/L08", top: "72%", left: "65%" },
+    { text: "NEC4-CE-047", top: "40%", left: "78%" },
+  ]},
+  { num: "02", title: "Clause extraction and linkage", desc: "Cause-and-effect relationships across complex project histories, surfaced through pattern analysis and validated by expert review. Chronologies that would take weeks to compile manually, drafted in days and refined by practitioners who know what matters.", label: "Clause extraction \u2014 redacted", refs: [
+    { text: "Cl. 4.3.2 \u2014 Specification", top: "22%", left: "12%" },
+    { text: "EoT \u2014 Period 3", top: "68%", left: "70%" },
+    { text: "Hudson v Emden", top: "82%", left: "15%" },
+  ]},
+  { num: "03", title: "Schedule interrogation", desc: "Schedule data interrogated at scale. Logic changes, float consumption, and critical path shifts identified systematically. Supporting the forensic programme analysis \u2014 not replacing it.", label: "Schedule analysis \u2014 redacted", refs: [
+    { text: "TIA-003 \u2014 Float: -12d", top: "20%", left: "10%" },
+    { text: "CP Shift: Wk38\u2192Wk52", top: "75%", left: "62%" },
+    { text: "QS/FA/Var-231", top: "48%", left: "75%" },
+  ]},
 ];
 
 export default function MethodPage() {
@@ -76,6 +88,17 @@ export default function MethodPage() {
                     <div className="bg-green aspect-[4/3] relative overflow-hidden flex items-center justify-center">
                       <ProjectPulse className="z-0 opacity-50" />
                       <span className="relative z-10 font-mono text-[10px] text-cream/20 tracking-widest uppercase">{cap.label}</span>
+                      {/* Discipline reference codes — barely visible metadata */}
+                      {cap.refs.map((ref, ri) => (
+                        <span
+                          key={ri}
+                          className="absolute font-mono text-[8px] text-cream/[0.08] pointer-events-none"
+                          style={{ top: ref.top, left: ref.left }}
+                          aria-hidden="true"
+                        >
+                          {ref.text}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>

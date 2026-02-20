@@ -16,50 +16,59 @@ export function ProjectPulse({ className = "" }: { className?: string }) {
   const barH = 3;
   const startY = 20;
 
-  // Row definitions: x-start, width, and optional delay-extension width
+  // Row definitions: x-start, width, optional delay-extension width, and activity label
   // Modelled on a real P6 layout — staggered starts, varying durations
   const rows = [
     // ── Delay analysis activities ──
-    { x: 60,  w: 280, delay: 45 },
-    { x: 100, w: 180, delay: 30 },
-    { x: 140, w: 320, delay: 60 },
-    { x: 80,  w: 220, delay: 0 },
-    { x: 200, w: 160, delay: 25 },
-    { x: 160, w: 400, delay: 80 },
-    { x: 120, w: 140, delay: 0 },
-    { x: 260, w: 200, delay: 35 },
+    { x: 60,  w: 280, delay: 45, label: "Baseline Programme Review" },
+    { x: 100, w: 180, delay: 30, label: "As-Planned vs As-Built" },
+    { x: 140, w: 320, delay: 60, label: "TIA \u2014 CE-047" },
+    { x: 80,  w: 220, delay: 0,  label: "Critical Path Interrogation" },
+    { x: 200, w: 160, delay: 25, label: "Float Consumption Analysis" },
+    { x: 160, w: 400, delay: 80, label: "Concurrent Delay Assessment" },
+    { x: 120, w: 140, delay: 0,  label: "Delay Narrative \u2014 Draft" },
+    { x: 260, w: 200, delay: 35, label: "Programme Logic Audit" },
     // ── Quantum / cost activities ──
-    { x: 340, w: 180, delay: 0 },
-    { x: 300, w: 260, delay: 0 },
-    { x: 380, w: 120, delay: 0 },
-    { x: 320, w: 300, delay: 0 },
-    { x: 400, w: 160, delay: 0 },
-    { x: 360, w: 220, delay: 0 },
+    { x: 340, w: 180, delay: 0, label: "Measured Works Valuation" },
+    { x: 300, w: 260, delay: 0, label: "Head Office Overheads (Emden)" },
+    { x: 380, w: 120, delay: 0, label: "Prolongation Cost Model" },
+    { x: 320, w: 300, delay: 0, label: "Final Account Reconciliation" },
+    { x: 400, w: 160, delay: 0, label: "Variation Assessment \u2014 Batch 3" },
+    { x: 360, w: 220, delay: 0, label: "Loss of Productivity Analysis" },
     // ── Technical / investigation ──
-    { x: 500, w: 240, delay: 0 },
-    { x: 540, w: 160, delay: 0 },
-    { x: 480, w: 320, delay: 0 },
-    { x: 560, w: 200, delay: 0 },
-    { x: 520, w: 140, delay: 0 },
-    { x: 580, w: 260, delay: 0 },
+    { x: 500, w: 240, delay: 0, label: "Fire Strategy Compliance \u2014 L08" },
+    { x: 540, w: 160, delay: 0, label: "Curtain Wall Detail \u2014 Rev C" },
+    { x: 480, w: 320, delay: 0, label: "Cladding Remediation Scope" },
+    { x: 560, w: 200, delay: 0, label: "M&E Performance Testing" },
+    { x: 520, w: 140, delay: 0, label: "Specification Review \u2014 Cl. 4.3.2" },
+    { x: 580, w: 260, delay: 0, label: "Building Envelope Assessment" },
     // ── Advisory / short activities ──
-    { x: 700, w: 80,  delay: 0 },
-    { x: 740, w: 60,  delay: 0 },
-    { x: 680, w: 100, delay: 0 },
-    { x: 760, w: 70,  delay: 0 },
-    { x: 720, w: 90,  delay: 0 },
-    { x: 750, w: 50,  delay: 0 },
-    { x: 690, w: 110, delay: 0 },
-    { x: 780, w: 60,  delay: 0 },
+    { x: 700, w: 80,  delay: 0, label: "Merits Assessment \u2014 Draft" },
+    { x: 740, w: 60,  delay: 0, label: "Position Paper \u2014 Quantum" },
+    { x: 680, w: 100, delay: 0, label: "Evidence Architecture" },
+    { x: 760, w: 70,  delay: 0, label: "Mediation Preparation" },
+    { x: 720, w: 90,  delay: 0, label: "Jurisdictional Analysis" },
+    { x: 750, w: 50,  delay: 0, label: "Referral Strategy \u2014 Day 3" },
+    { x: 690, w: 110, delay: 0, label: "Adj. Response \u2014 Day 14" },
+    { x: 780, w: 60,  delay: 0, label: "Enforcement Proceedings" },
     // ── More delay/programme rows to fill density ──
-    { x: 180, w: 240, delay: 40 },
-    { x: 220, w: 300, delay: 55 },
-    { x: 100, w: 200, delay: 20 },
-    { x: 300, w: 180, delay: 0 },
-    { x: 140, w: 260, delay: 35 },
-    { x: 240, w: 340, delay: 70 },
-    { x: 160, w: 150, delay: 0 },
-    { x: 280, w: 200, delay: 25 },
+    { x: 180, w: 240, delay: 40, label: "EoT Claim \u2014 Period 3" },
+    { x: 220, w: 300, delay: 55, label: "As-Built Logic Review" },
+    { x: 100, w: 200, delay: 20, label: "Delay Recovery Analysis" },
+    { x: 300, w: 180, delay: 0,  label: "Resource Histogram Review" },
+    { x: 140, w: 260, delay: 35, label: "Planned vs Actual \u2014 Pkg 7" },
+    { x: 240, w: 340, delay: 70, label: "Programme Re-Baseline" },
+    { x: 160, w: 150, delay: 0,  label: "Fragnet Analysis" },
+    { x: 280, w: 200, delay: 25, label: "Data Date Progression" },
+  ];
+
+  // WBS section headers — positioned above each activity group
+  const wbsHeaders = [
+    { label: "1.0  PROGRAMME & DELAY", row: 0 },
+    { label: "2.0  QUANTUM & VALUATION", row: 8 },
+    { label: "3.0  TECHNICAL INVESTIGATION", row: 14 },
+    { label: "4.0  DISPUTE ADVISORY", row: 20 },
+    { label: "1.1  PROGRAMME & DELAY (CONT.)", row: 28 },
   ];
 
   // Milestone diamonds at key positions
@@ -168,6 +177,26 @@ export function ProjectPulse({ className = "" }: { className?: string }) {
                 key={i}
                 d={`M${fromX},${fromY} H${midX} V${toY} H${toX}`}
               />
+            );
+          })}
+        </g>
+
+        {/* WBS section headers — like P6 summary rows */}
+        <g fill="#B5975A" opacity="0.03" fontFamily="monospace" fontSize="3.5" fontWeight="bold">
+          {wbsHeaders.map((h, i) => {
+            const y = startY + h.row * rowH - 3;
+            return (
+              <text key={i} x={12} y={y}>{h.label}</text>
+            );
+          })}
+        </g>
+
+        {/* Activity labels — like P6 activity descriptions */}
+        <g fill="#B5975A" opacity="0.025" fontFamily="monospace" fontSize="3">
+          {rows.map((row, i) => {
+            const y = startY + i * rowH + rowH / 2 + 1;
+            return (
+              <text key={i} x={row.x - 2} y={y} textAnchor="end">{row.label}</text>
             );
           })}
         </g>

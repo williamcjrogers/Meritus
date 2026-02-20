@@ -20,6 +20,9 @@ export function PhilosophyBand() {
             <div className="mt-2 font-mono text-[10px] tracking-[0.2em] uppercase text-cream/30">
               Per matter. In hours.
             </div>
+            <div className="mt-3 font-mono text-[7px] tracking-[0.15em] uppercase text-cream/[0.12] leading-relaxed hidden lg:block" aria-hidden="true">
+              programmes &middot; correspondence &middot; drawings &middot; fire certificates &middot; cost reports &middot; specifications &middot; as-built records &middot; meeting minutes &middot; variation orders &middot; RFIs
+            </div>
           </div>
 
           {/* Right — copy */}

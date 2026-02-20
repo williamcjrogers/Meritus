@@ -217,9 +217,23 @@ h1, h2, h3, h4 {
   animation: dateDatePulse 6s ease-in-out infinite;
 }
 
+/* ──────────────────────────────────────────────
+   Footer discipline drift — barely visible keywords
+   ────────────────────────────────────────────── */
+
+@keyframes footerDrift {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.footer-drift {
+  animation: footerDrift 60s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .programme-drift,
-  .data-date-pulse {
+  .data-date-pulse,
+  .footer-drift {
     animation: none;
   }
 }

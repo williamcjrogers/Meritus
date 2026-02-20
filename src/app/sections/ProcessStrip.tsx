@@ -1,8 +1,8 @@
 const STEPS = [
-  { num: "01", label: "Conflict Check", desc: "Independence confirmed" },
-  { num: "02", label: "Scoping", desc: "Strategy and resourcing" },
-  { num: "03", label: "Analysis", desc: "Forensic investigation" },
-  { num: "04", label: "Delivery", desc: "Opinion and testimony" },
+  { num: "01", label: "Conflict Check", desc: "Independence confirmed", disciplines: "all disciplines" },
+  { num: "02", label: "Scoping", desc: "Strategy and resourcing", disciplines: "delay \u00b7 quantum \u00b7 technical \u00b7 advisory" },
+  { num: "03", label: "Analysis", desc: "Forensic investigation", disciplines: "programme \u00b7 cost \u00b7 engineering \u00b7 strategy" },
+  { num: "04", label: "Delivery", desc: "Opinion and testimony", disciplines: "report \u00b7 model \u00b7 opinion \u00b7 evidence" },
 ];
 
 export function ProcessStrip() {
@@ -30,6 +30,9 @@ export function ProcessStrip() {
               </div>
               <div className="font-mono text-[10px] text-slate/50">
                 {step.desc}
+              </div>
+              <div className="font-mono text-[8px] text-slate/20 mt-1" aria-hidden="true">
+                {step.disciplines}
               </div>
             </div>
           ))}

@@ -23,6 +23,9 @@ export function CredibilityBar() {
             </div>
           ))}
         </div>
+        <div className="mt-8 text-center font-mono text-[8px] tracking-[0.3em] uppercase text-cream/[0.10]" aria-hidden="true">
+          delay &middot; quantum &middot; technical &middot; advisory
+        </div>
       </div>
     </section>
   );

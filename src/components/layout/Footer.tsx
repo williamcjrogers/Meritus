@@ -63,7 +63,15 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 pt-6 border-t border-cream/10">
+        {/* Discipline drift — barely visible scrolling keywords */}
+        <div className="mt-16 overflow-hidden" aria-hidden="true">
+          <div className="footer-drift whitespace-nowrap font-mono text-[8px] tracking-[0.3em] uppercase text-cream/[0.04]">
+            <span>delay analysis &middot; quantum &middot; fire safety &middot; drawing review &middot; prolongation &middot; causation &middot; adjudication &middot; measured works &middot; cladding &middot; specification compliance &middot; mediation &middot; disruption &middot; building safety act &middot; final account &middot; expert testimony &middot; design liability &middot;&nbsp;</span>
+            <span>delay analysis &middot; quantum &middot; fire safety &middot; drawing review &middot; prolongation &middot; causation &middot; adjudication &middot; measured works &middot; cladding &middot; specification compliance &middot; mediation &middot; disruption &middot; building safety act &middot; final account &middot; expert testimony &middot; design liability &middot;&nbsp;</span>
+          </div>
+        </div>
+
+        <div className="mt-6 pt-6 border-t border-cream/10">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
             <p className="text-[11px] text-cream/30">{SITE_CONFIG.copyright}</p>
             <p className="text-[11px] text-cream/30">{SITE_CONFIG.legalFooter}</p>
