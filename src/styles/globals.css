@@ -194,138 +194,32 @@ h1, h2, h3, h4 {
 }
 
 /* ──────────────────────────────────────────────
-   ProjectPulse — live background animations
-   Programme bars, S-curves, cost analysis
+   ProjectPulse — P6 programme watermark
    ────────────────────────────────────────────── */
 
-/* Gantt bars grow from left */
-@keyframes barGrow {
-  0%   { transform: scaleX(0); opacity: 0; }
-  15%  { opacity: 1; }
-  70%  { transform: scaleX(1); opacity: 1; }
-  100% { transform: scaleX(1); opacity: 1; }
+/* Very slow horizontal drift — programme advancing */
+@keyframes programmeDrift {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-40px); }
 }
 
-.bar-grow {
-  transform-origin: left center;
-  animation: barGrow 12s ease-out infinite;
-}
-.bar-1 { animation-delay: 0s; }
-.bar-2 { animation-delay: 1.2s; }
-.bar-3 { animation-delay: 0.6s; }
-.bar-4 { animation-delay: 2.4s; }
-.bar-5 { animation-delay: 1.8s; }
-.bar-6 { animation-delay: 3.0s; }
-.bar-7 { animation-delay: 0.9s; }
-
-/* Delay extensions — appear after main bar, subtly */
-@keyframes delayGrow {
-  0%, 50%  { transform: scaleX(0); opacity: 0; }
-  65%      { opacity: 1; }
-  85%      { transform: scaleX(1); opacity: 1; }
-  100%     { transform: scaleX(1); opacity: 1; }
+.programme-drift {
+  animation: programmeDrift 120s linear infinite;
 }
 
-.delay-grow {
-  transform-origin: left center;
-  animation: delayGrow 12s ease-out infinite;
-}
-.delay-1 { animation-delay: 0s; }
-.delay-2 { animation-delay: 1.2s; }
-.delay-3 { animation-delay: 0.6s; }
-.delay-4 { animation-delay: 2.4s; }
-
-/* Data date line pulse */
+/* Data date line — barely perceptible pulse */
 @keyframes dateDatePulse {
-  0%, 100% { opacity: 0.03; }
-  50%      { opacity: 0.07; }
+  0%, 100% { opacity: 0.02; }
+  50%      { opacity: 0.04; }
 }
 
 .data-date-pulse {
-  animation: dateDatePulse 4s ease-in-out infinite;
+  animation: dateDatePulse 6s ease-in-out infinite;
 }
 
-/* S-curve draw — stroke-dashoffset reveal */
-@keyframes sCurveDraw {
-  0%   { stroke-dashoffset: 1200; opacity: 0; }
-  10%  { opacity: 1; }
-  80%  { stroke-dashoffset: 0; }
-  100% { stroke-dashoffset: 0; opacity: 1; }
-}
-
-.s-curve-draw {
-  stroke-dasharray: 1200;
-  stroke-dashoffset: 1200;
-  animation: sCurveDraw 16s ease-in-out infinite;
-}
-.s-curve-actual {
-  animation-delay: 2s;
-}
-
-/* Critical path node pulse */
-@keyframes nodePulse {
-  0%, 100% { opacity: 0.03; r: 2; }
-  50%      { opacity: 0.08; r: 3.5; }
-}
-
-.node-pulse {
-  animation: nodePulse 5s ease-in-out infinite;
-}
-.node-1 { animation-delay: 0s; }
-.node-2 { animation-delay: 0.8s; }
-.node-3 { animation-delay: 1.6s; }
-.node-4 { animation-delay: 2.4s; }
-.node-5 { animation-delay: 3.2s; }
-.node-6 { animation-delay: 4.0s; }
-
-/* Cost breakdown bars — fill from left, staggered */
-@keyframes costFill {
-  0%   { transform: scaleX(0); }
-  60%  { transform: scaleX(1); }
-  100% { transform: scaleX(1); }
-}
-
-.cost-fill {
-  transform-origin: left center;
-  animation: costFill 10s ease-out infinite;
-}
-.cost-1 { animation-delay: 6s; }
-.cost-2 { animation-delay: 6.5s; }
-.cost-3 { animation-delay: 7.0s; }
-.cost-4 { animation-delay: 7.5s; }
-.cost-5 { animation-delay: 8.0s; }
-
-/* Float consumption tick marks */
-@keyframes floatTick {
-  0%, 80%  { opacity: 0; transform: translateY(4px); }
-  90%      { opacity: 0.06; transform: translateY(0); }
-  100%     { opacity: 0.06; transform: translateY(0); }
-}
-
-.float-tick {
-  animation: floatTick 12s ease-out infinite;
-}
-.tick-1 { animation-delay: 3s; }
-.tick-2 { animation-delay: 5s; }
-.tick-3 { animation-delay: 7s; }
-
-/* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  .bar-grow,
-  .delay-grow,
-  .data-date-pulse,
-  .s-curve-draw,
-  .node-pulse,
-  .cost-fill,
-  .float-tick {
+  .programme-drift,
+  .data-date-pulse {
     animation: none;
-  }
-  .s-curve-draw {
-    stroke-dashoffset: 0;
-  }
-  .bar-grow,
-  .delay-grow,
-  .cost-fill {
-    transform: scaleX(1);
   }
 }

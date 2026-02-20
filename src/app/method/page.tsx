@@ -17,7 +17,7 @@ export default function MethodPage() {
   return (
     <>
       <section className="bg-green pt-32 pb-20 lg:pt-40 lg:pb-28 relative overflow-hidden">
-        <ProjectPulse className="z-0 opacity-80" />
+        <ProjectPulse className="z-0 opacity-30" />
         <div className="max-w-[1200px] mx-auto px-6 lg:px-[8%] relative z-10">
           <FadeIn>
             <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-cream/50 mb-6">Method</div>
@@ -74,7 +74,7 @@ export default function MethodPage() {
                   </div>
                   <div className={i % 2 === 1 ? "lg:order-1" : ""}>
                     <div className="bg-green aspect-[4/3] relative overflow-hidden flex items-center justify-center">
-                      <ProjectPulse className="z-0 opacity-100" />
+                      <ProjectPulse className="z-0 opacity-50" />
                       <span className="relative z-10 font-mono text-[10px] text-cream/20 tracking-widest uppercase">{cap.label}</span>
                     </div>
                   </div>

@@ -17,7 +17,7 @@ export function HeroSection() {
   return (
     <section className="relative min-h-screen flex items-center bg-green grain overflow-hidden">
       {/* Live programme background */}
-      <ProjectPulse className="z-0 opacity-80" />
+      <ProjectPulse className="z-0 opacity-30" />
 
       {/* Radial glow */}
       <div

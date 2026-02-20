@@ -32,7 +32,7 @@ export function SplitComparison() {
           </div>
 
           <div className="p-8 lg:p-12 bg-green grain h-full relative overflow-hidden">
-            <ProjectPulse className="z-0 opacity-60" />
+            <ProjectPulse className="z-0 opacity-25" />
             <div className="relative z-10 font-mono text-[10px] tracking-[0.25em] uppercase text-brass mb-8">
               The Meritus method
             </div>

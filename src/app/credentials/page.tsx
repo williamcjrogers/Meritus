@@ -19,7 +19,7 @@ export default function CredentialsPage() {
     return (
       <>
         <section className="bg-green pt-32 pb-20 lg:pt-40 lg:pb-28 relative overflow-hidden">
-          <ProjectPulse className="z-0 opacity-80" />
+          <ProjectPulse className="z-0 opacity-30" />
           <div className="max-w-[1200px] mx-auto px-6 lg:px-[8%] relative z-10">
             <FadeIn>
               <div className="font-mono text-[11px] tracking-[0.3em] uppercase text-brass/70 mb-6">Credentials Portal</div>
@@ -54,7 +54,7 @@ export default function CredentialsPage() {
   return (
     <>
       <section className="bg-green pt-32 pb-20 lg:pt-40 lg:pb-28 relative overflow-hidden">
-        <ProjectPulse className="z-0 opacity-80" />
+        <ProjectPulse className="z-0 opacity-30" />
         <div className="max-w-[1200px] mx-auto px-6 lg:px-[8%] relative z-10">
           <FadeIn>
             <div className="font-mono text-[11px] tracking-[0.3em] uppercase text-brass/70 mb-6">Credentials Portal</div>

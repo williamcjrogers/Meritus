@@ -1,107 +1,184 @@
 "use client";
 
 /**
- * ProjectPulse — decorative animated SVG background evoking construction
- * programme timelines, Gantt bars, S-curves, and cost analysis.
- * Sits behind content on green sections at very low opacity.
+ * ProjectPulse — decorative P6-style programme background.
+ * Dense rows of thin bars with vertical grid lines, milestone diamonds,
+ * and link lines. Barely visible watermark behind green sections.
  *
- * Pure CSS animations — no JS runtime cost.
+ * Four activity groups mirror the four service disciplines:
+ *   - Delay (programme bars with extensions)
+ *   - Quantum (cost-weighted bars)
+ *   - Technical (investigation bars)
+ *   - Advisory (short advisory/meeting bars)
  */
 export function ProjectPulse({ className = "" }: { className?: string }) {
+  const rowH = 14;
+  const barH = 3;
+  const startY = 20;
+
+  // Row definitions: x-start, width, and optional delay-extension width
+  // Modelled on a real P6 layout — staggered starts, varying durations
+  const rows = [
+    // ── Delay analysis activities ──
+    { x: 60,  w: 280, delay: 45 },
+    { x: 100, w: 180, delay: 30 },
+    { x: 140, w: 320, delay: 60 },
+    { x: 80,  w: 220, delay: 0 },
+    { x: 200, w: 160, delay: 25 },
+    { x: 160, w: 400, delay: 80 },
+    { x: 120, w: 140, delay: 0 },
+    { x: 260, w: 200, delay: 35 },
+    // ── Quantum / cost activities ──
+    { x: 340, w: 180, delay: 0 },
+    { x: 300, w: 260, delay: 0 },
+    { x: 380, w: 120, delay: 0 },
+    { x: 320, w: 300, delay: 0 },
+    { x: 400, w: 160, delay: 0 },
+    { x: 360, w: 220, delay: 0 },
+    // ── Technical / investigation ──
+    { x: 500, w: 240, delay: 0 },
+    { x: 540, w: 160, delay: 0 },
+    { x: 480, w: 320, delay: 0 },
+    { x: 560, w: 200, delay: 0 },
+    { x: 520, w: 140, delay: 0 },
+    { x: 580, w: 260, delay: 0 },
+    // ── Advisory / short activities ──
+    { x: 700, w: 80,  delay: 0 },
+    { x: 740, w: 60,  delay: 0 },
+    { x: 680, w: 100, delay: 0 },
+    { x: 760, w: 70,  delay: 0 },
+    { x: 720, w: 90,  delay: 0 },
+    { x: 750, w: 50,  delay: 0 },
+    { x: 690, w: 110, delay: 0 },
+    { x: 780, w: 60,  delay: 0 },
+    // ── More delay/programme rows to fill density ──
+    { x: 180, w: 240, delay: 40 },
+    { x: 220, w: 300, delay: 55 },
+    { x: 100, w: 200, delay: 20 },
+    { x: 300, w: 180, delay: 0 },
+    { x: 140, w: 260, delay: 35 },
+    { x: 240, w: 340, delay: 70 },
+    { x: 160, w: 150, delay: 0 },
+    { x: 280, w: 200, delay: 25 },
+  ];
+
+  // Milestone diamonds at key positions
+  const milestones = [
+    { x: 340, row: 3 },
+    { x: 560, row: 8 },
+    { x: 740, row: 13 },
+    { x: 460, row: 18 },
+    { x: 620, row: 23 },
+    { x: 300, row: 28 },
+    { x: 800, row: 33 },
+  ];
+
+  // Vertical grid lines (monthly columns)
+  const gridLines = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000, 1100];
+
+  const totalH = startY + rows.length * rowH + 20;
+
   return (
     <div
       className={`absolute inset-0 overflow-hidden pointer-events-none ${className}`}
       aria-hidden="true"
     >
       <svg
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full programme-drift"
         xmlns="http://www.w3.org/2000/svg"
-        preserveAspectRatio="none"
-        viewBox="0 0 1200 600"
+        preserveAspectRatio="xMidYMid slice"
+        viewBox={`0 0 1200 ${totalH}`}
       >
-        {/* ── Gantt-style programme bars ── */}
-        <g className="programme-bars">
-          {/* Baseline bars (planned) */}
-          <rect x="80" y="80" width="320" height="6" rx="1" fill="#B5975A" opacity="0.06" className="bar-grow bar-1" />
-          <rect x="180" y="120" width="260" height="6" rx="1" fill="#B5975A" opacity="0.05" className="bar-grow bar-2" />
-          <rect x="120" y="160" width="400" height="6" rx="1" fill="#B5975A" opacity="0.04" className="bar-grow bar-3" />
-          <rect x="300" y="200" width="280" height="6" rx="1" fill="#B5975A" opacity="0.05" className="bar-grow bar-4" />
-          <rect x="200" y="240" width="350" height="6" rx="1" fill="#B5975A" opacity="0.04" className="bar-grow bar-5" />
-          <rect x="400" y="280" width="220" height="6" rx="1" fill="#B5975A" opacity="0.06" className="bar-grow bar-6" />
-          <rect x="150" y="320" width="300" height="6" rx="1" fill="#B5975A" opacity="0.04" className="bar-grow bar-7" />
-
-          {/* Delay extension bars (overrun — slightly brighter to hint at slippage) */}
-          <rect x="400" y="80" width="80" height="6" rx="1" fill="#F5F0E8" opacity="0.03" className="delay-grow delay-1" />
-          <rect x="440" y="120" width="60" height="6" rx="1" fill="#F5F0E8" opacity="0.025" className="delay-grow delay-2" />
-          <rect x="520" y="160" width="100" height="6" rx="1" fill="#F5F0E8" opacity="0.03" className="delay-grow delay-3" />
-          <rect x="580" y="200" width="50" height="6" rx="1" fill="#F5F0E8" opacity="0.025" className="delay-grow delay-4" />
+        {/* Vertical grid — faint monthly columns */}
+        <g stroke="#B5975A" strokeWidth="0.5" opacity="0.025">
+          {gridLines.map((x) => (
+            <line key={x} x1={x} y1={0} x2={x} y2={totalH} />
+          ))}
         </g>
 
-        {/* ── Timeline grid lines ── */}
-        <g className="timeline-grid" stroke="#B5975A" strokeWidth="0.5" opacity="0.04">
-          <line x1="200" y1="50" x2="200" y2="380" strokeDasharray="4 8" />
-          <line x1="400" y1="50" x2="400" y2="380" strokeDasharray="4 8" />
-          <line x1="600" y1="50" x2="600" y2="380" strokeDasharray="4 8" />
-          <line x1="800" y1="50" x2="800" y2="380" strokeDasharray="4 8" />
+        {/* Horizontal row lines — like P6 row separators */}
+        <g stroke="#B5975A" strokeWidth="0.3" opacity="0.015">
+          {rows.map((_, i) => {
+            const y = startY + i * rowH;
+            return <line key={i} x1={0} y1={y} x2={1200} y2={y} />;
+          })}
         </g>
 
-        {/* ── Data date line (vertical, pulsing) ── */}
+        {/* Programme bars */}
+        <g>
+          {rows.map((row, i) => {
+            const y = startY + i * rowH + (rowH - barH) / 2;
+            return (
+              <g key={i}>
+                {/* Main activity bar */}
+                <rect
+                  x={row.x}
+                  y={y}
+                  width={row.w}
+                  height={barH}
+                  fill="#B5975A"
+                  opacity="0.035"
+                />
+                {/* Delay extension — slightly different tone */}
+                {row.delay > 0 && (
+                  <rect
+                    x={row.x + row.w}
+                    y={y}
+                    width={row.delay}
+                    height={barH}
+                    fill="#F5F0E8"
+                    opacity="0.02"
+                  />
+                )}
+              </g>
+            );
+          })}
+        </g>
+
+        {/* Milestone diamonds */}
+        <g fill="#B5975A" opacity="0.04">
+          {milestones.map((m, i) => {
+            const cy = startY + m.row * rowH + rowH / 2;
+            return (
+              <polygon
+                key={i}
+                points={`${m.x},${cy - 3.5} ${m.x + 3.5},${cy} ${m.x},${cy + 3.5} ${m.x - 3.5},${cy}`}
+              />
+            );
+          })}
+        </g>
+
+        {/* Link lines — finish-to-start connections */}
+        <g stroke="#B5975A" strokeWidth="0.5" opacity="0.02" fill="none">
+          {[
+            [0, 1], [1, 2], [2, 4], [4, 5], [5, 7],
+            [8, 9], [9, 11], [11, 13],
+            [14, 15], [15, 17], [17, 19],
+            [20, 21], [21, 23], [24, 25],
+            [28, 29], [30, 32], [33, 35],
+          ].map(([from, to], i) => {
+            if (!rows[from] || !rows[to]) return null;
+            const fromY = startY + from * rowH + rowH / 2;
+            const toY = startY + to * rowH + rowH / 2;
+            const fromX = rows[from].x + rows[from].w;
+            const toX = rows[to].x;
+            const midX = fromX + 6;
+            return (
+              <path
+                key={i}
+                d={`M${fromX},${fromY} H${midX} V${toY} H${toX}`}
+              />
+            );
+          })}
+        </g>
+
+        {/* Data date line — single vertical */}
         <line
-          x1="520" y1="40" x2="520" y2="390"
-          stroke="#B5975A" strokeWidth="1" opacity="0.06"
+          x1={620} y1={0} x2={620} y2={totalH}
+          stroke="#B5975A" strokeWidth="0.8" opacity="0.03"
+          strokeDasharray="3 6"
           className="data-date-pulse"
         />
-
-        {/* ── S-Curve — earned value / cost flow ── */}
-        <g className="s-curve-group">
-          {/* BCWS — Planned value (baseline S-curve) */}
-          <path
-            d="M 80 480 C 200 478, 320 460, 440 420 C 560 380, 680 320, 800 260 C 880 230, 960 210, 1080 200"
-            fill="none"
-            stroke="#B5975A"
-            strokeWidth="1.5"
-            opacity="0.05"
-            className="s-curve-draw s-curve-planned"
-          />
-
-          {/* ACWP — Actual cost (lagging, implying delay) */}
-          <path
-            d="M 80 480 C 220 476, 360 465, 480 440 C 600 415, 700 370, 780 320 C 840 290, 920 265, 1000 250"
-            fill="none"
-            stroke="#F5F0E8"
-            strokeWidth="1"
-            opacity="0.035"
-            className="s-curve-draw s-curve-actual"
-            strokeDasharray="6 4"
-          />
-        </g>
-
-        {/* ── Critical path nodes ── */}
-        <g className="critical-nodes">
-          <circle cx="80" cy="80" r="2.5" fill="#B5975A" opacity="0.07" className="node-pulse node-1" />
-          <circle cx="400" cy="80" r="2.5" fill="#B5975A" opacity="0.06" className="node-pulse node-2" />
-          <circle cx="520" cy="160" r="2.5" fill="#B5975A" opacity="0.07" className="node-pulse node-3" />
-          <circle cx="580" cy="200" r="2" fill="#B5975A" opacity="0.06" className="node-pulse node-4" />
-          <circle cx="620" cy="280" r="2.5" fill="#B5975A" opacity="0.07" className="node-pulse node-5" />
-          <circle cx="800" cy="260" r="2" fill="#B5975A" opacity="0.06" className="node-pulse node-6" />
-        </g>
-
-        {/* ── Right-side cost breakdown area ── */}
-        <g className="cost-bars">
-          {/* Stacked horizontal cost bars — far right */}
-          <rect x="850" y="400" width="160" height="4" rx="1" fill="#B5975A" opacity="0.05" className="cost-fill cost-1" />
-          <rect x="850" y="420" width="120" height="4" rx="1" fill="#B5975A" opacity="0.04" className="cost-fill cost-2" />
-          <rect x="850" y="440" width="200" height="4" rx="1" fill="#B5975A" opacity="0.05" className="cost-fill cost-3" />
-          <rect x="850" y="460" width="90" height="4" rx="1" fill="#B5975A" opacity="0.04" className="cost-fill cost-4" />
-          <rect x="850" y="480" width="140" height="4" rx="1" fill="#F5F0E8" opacity="0.025" className="cost-fill cost-5" />
-        </g>
-
-        {/* ── Float consumption indicator (small triangle markers) ── */}
-        <g fill="#B5975A" opacity="0.04" className="float-markers">
-          <polygon points="398,75 402,75 400,70" className="float-tick tick-1" />
-          <polygon points="598,75 602,75 600,70" className="float-tick tick-2" />
-          <polygon points="798,75 802,75 800,70" className="float-tick tick-3" />
-        </g>
       </svg>
     </div>
   );
