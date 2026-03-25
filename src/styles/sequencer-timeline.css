@@ -1,0 +1,181 @@
+/* SVG Timeline Styles */
+.track-faint {
+    stroke: rgba(193, 166, 121, 0.3);
+    stroke-width: 1;
+}
+
+/* Vertical ruler ticks */
+.tick-mark {
+    stroke: rgba(121, 152, 133, 0.3);
+    stroke-width: 1;
+}
+
+/* The line that draws itself */
+.track-gold {
+    stroke: #c1a679;
+    stroke-width: 1.5;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+}
+
+/* Node geometries */
+.crosshair {
+    stroke: #799885;
+    stroke-width: 0.75;
+    opacity: 0;
+}
+
+.node-ring {
+    fill: none;
+    stroke: #c1a679;
+    stroke-width: 1;
+    opacity: 0;
+}
+
+.node-dot {
+    fill: #f4f2ec;
+    stroke: #c1a679;
+    stroke-width: 2;
+    opacity: 0;
+}
+
+.node-fill {
+    fill: #c1a679;
+    opacity: 0;
+}
+
+/* Trigger class added via JS intersection observer */
+.animate-sequencer .track-gold {
+    animation: drawTrack 3s linear forwards 0.2s;
+}
+
+/* Animations */
+@keyframes drawTrack {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes pulseRing {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(3.5);
+        opacity: 0;
+    }
+}
+
+@keyframes lockCrosshair {
+    0% {
+        transform: rotate(-45deg) scale(0.5);
+        opacity: 0;
+    }
+
+    100% {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Sequence Timings (Perfectly mathematically synced to the 3-second drawing line) */
+
+/* Node 1: at 12.5% of distance = ~0.5s */
+.animate-sequencer .t-1 .node-dot,
+.animate-sequencer .t-1 .node-fill {
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 0.5s;
+}
+
+.animate-sequencer .t-1 .node-ring {
+    animation: pulseRing 1.5s ease-out forwards 0.5s;
+}
+
+.animate-sequencer .t-1 .crosshair {
+    animation: lockCrosshair 0.5s ease-out forwards 0.5s;
+}
+
+.animate-sequencer .step-1 {
+    animation: fadeUp 0.6s ease forwards 0.6s;
+}
+
+/* Node 2: at 37.5% of distance = ~1.3s */
+.animate-sequencer .t-2 .node-dot,
+.animate-sequencer .t-2 .node-fill {
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 1.3s;
+}
+
+.animate-sequencer .t-2 .node-ring {
+    animation: pulseRing 1.5s ease-out forwards 1.3s;
+}
+
+.animate-sequencer .t-2 .crosshair {
+    animation: lockCrosshair 0.5s ease-out forwards 1.3s;
+}
+
+.animate-sequencer .step-2 {
+    animation: fadeUp 0.6s ease forwards 1.4s;
+}
+
+/* Node 3: at 62.5% of distance = ~2.0s */
+.animate-sequencer .t-3 .node-dot,
+.animate-sequencer .t-3 .node-fill {
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.0s;
+}
+
+.animate-sequencer .t-3 .node-ring {
+    animation: pulseRing 1.5s ease-out forwards 2.0s;
+}
+
+.animate-sequencer .t-3 .crosshair {
+    animation: lockCrosshair 0.5s ease-out forwards 2.0s;
+}
+
+.animate-sequencer .step-3 {
+    animation: fadeUp 0.6s ease forwards 2.1s;
+}
+
+/* Node 4: at 87.5% of distance = ~2.8s */
+.animate-sequencer .t-4 .node-dot,
+.animate-sequencer .t-4 .node-fill {
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards 2.8s;
+}
+
+.animate-sequencer .t-4 .node-ring {
+    animation: pulseRing 2s ease-out infinite 2.8s;
+}
+
+/* Loops on the final step */
+.animate-sequencer .t-4 .crosshair {
+    animation: lockCrosshair 0.5s ease-out forwards 2.8s;
+}
+
+.animate-sequencer .step-4 {
+    animation: fadeUp 0.6s ease forwards 2.9s;
+}
+
+/* Initial states for text steps before animation */
+.step-block {
+    opacity: 0;
+    transform: translateY(20px);
+}

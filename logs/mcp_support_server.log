@@ -1,0 +1,513 @@
+2026-02-23 01:31:02.822 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 492104:499616 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 01:31:02.822 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 492104:499616 | {'diagnostics': True} - Debug mode: True
+2026-02-23 01:31:02.823 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 492104:499616 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 01:32:19.015 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 502080:486644 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 01:32:19.016 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 502080:486644 | {'diagnostics': True} - Debug mode: True
+2026-02-23 01:32:19.016 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 502080:486644 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 01:49:50.936 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 521592:502200 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 01:49:50.937 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 521592:502200 | {'diagnostics': True} - Debug mode: True
+2026-02-23 01:49:50.937 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 521592:502200 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 01:49:52.180 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 496048:495868 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 01:49:52.180 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 496048:495868 | {'diagnostics': True} - Debug mode: True
+2026-02-23 01:49:52.180 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 496048:495868 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 02:29:49.995 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 504112:169916 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 02:29:49.995 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 504112:169916 | {'diagnostics': True} - Debug mode: True
+2026-02-23 02:29:49.995 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 504112:169916 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 02:39:30.860 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 196612:501600 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 02:39:30.861 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 196612:501600 | {'diagnostics': True} - Debug mode: True
+2026-02-23 02:39:30.861 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 196612:501600 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 13:38:34.033 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 216308:291348 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 13:38:34.033 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 216308:291348 | {'diagnostics': True} - Debug mode: True
+2026-02-23 13:38:34.033 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 216308:291348 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 13:40:53.726 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 501404:530460 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 13:40:53.726 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 501404:530460 | {'diagnostics': True} - Debug mode: True
+2026-02-23 13:40:53.727 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 501404:530460 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 13:43:05.876 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 496476:523708 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 13:43:05.876 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 496476:523708 | {'diagnostics': True} - Debug mode: True
+2026-02-23 13:43:05.876 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 496476:523708 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 13:44:12.175 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 498548:272476 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 13:44:12.175 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 498548:272476 | {'diagnostics': True} - Debug mode: True
+2026-02-23 13:44:12.175 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 498548:272476 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 13:45:54.573 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 9140:488456 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 13:45:54.573 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 9140:488456 | {'diagnostics': True} - Debug mode: True
+2026-02-23 13:45:54.573 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 9140:488456 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 13:58:17.693 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 492412:437464 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 13:58:17.693 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 492412:437464 | {'diagnostics': True} - Debug mode: True
+2026-02-23 13:58:17.693 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 492412:437464 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 14:12:41.384 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 436560:503532 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 14:12:41.385 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 436560:503532 | {'diagnostics': True} - Debug mode: True
+2026-02-23 14:12:41.385 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 436560:503532 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 14:13:43.600 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 329188:117380 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 14:13:43.600 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 329188:117380 | {'diagnostics': True} - Debug mode: True
+2026-02-23 14:13:43.600 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 329188:117380 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 14:15:01.819 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 462040:256400 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 14:15:01.819 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 462040:256400 | {'diagnostics': True} - Debug mode: True
+2026-02-23 14:15:01.819 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 462040:256400 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 14:19:43.175 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 492116:163896 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 14:19:43.175 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 492116:163896 | {'diagnostics': True} - Debug mode: True
+2026-02-23 14:19:43.175 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 492116:163896 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 14:20:19.859 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 182516:491880 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 14:20:19.859 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 182516:491880 | {'diagnostics': True} - Debug mode: True
+2026-02-23 14:20:19.859 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 182516:491880 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 14:23:38.617 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 464040:523104 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 14:23:38.617 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 464040:523104 | {'diagnostics': True} - Debug mode: True
+2026-02-23 14:23:38.617 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 464040:523104 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 14:23:47.794 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 489296:520412 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 14:23:47.794 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 489296:520412 | {'diagnostics': True} - Debug mode: True
+2026-02-23 14:23:47.794 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 489296:520412 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 14:55:52.122 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 508648:381156 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 14:55:52.122 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 508648:381156 | {'diagnostics': True} - Debug mode: True
+2026-02-23 14:55:52.122 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 508648:381156 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 14:57:02.020 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 446632:471968 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 14:57:02.020 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 446632:471968 | {'diagnostics': True} - Debug mode: True
+2026-02-23 14:57:02.020 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 446632:471968 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 14:58:04.997 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 512864:17320 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 14:58:04.998 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 512864:17320 | {'diagnostics': True} - Debug mode: True
+2026-02-23 14:58:04.998 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 512864:17320 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 14:59:15.148 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 529152:286748 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 14:59:15.148 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 529152:286748 | {'diagnostics': True} - Debug mode: True
+2026-02-23 14:59:15.148 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 529152:286748 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 14:59:31.347 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 85204:288584 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 14:59:31.347 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 85204:288584 | {'diagnostics': True} - Debug mode: True
+2026-02-23 14:59:31.347 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 85204:288584 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 15:01:41.652 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 81524:132268 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 15:01:41.652 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 81524:132268 | {'diagnostics': True} - Debug mode: True
+2026-02-23 15:01:41.652 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 81524:132268 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 15:02:00.047 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 513308:528400 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 15:02:00.047 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 513308:528400 | {'diagnostics': True} - Debug mode: True
+2026-02-23 15:02:00.047 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 513308:528400 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 15:02:56.117 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 178636:528988 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 15:02:56.117 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 178636:528988 | {'diagnostics': True} - Debug mode: True
+2026-02-23 15:02:56.118 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 178636:528988 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 16:02:17.826 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 431668:472128 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 16:02:17.826 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 431668:472128 | {'diagnostics': True} - Debug mode: True
+2026-02-23 16:02:17.826 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 431668:472128 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 16:27:46.375 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 288748:245408 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 16:27:46.375 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 288748:245408 | {'diagnostics': True} - Debug mode: True
+2026-02-23 16:27:46.375 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 288748:245408 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 17:53:45.493 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 296928:476696 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 17:53:45.495 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 296928:476696 | {'diagnostics': True} - Debug mode: True
+2026-02-23 17:53:45.496 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 296928:476696 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 17:56:21.974 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 45400:511304 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 17:56:21.974 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 45400:511304 | {'diagnostics': True} - Debug mode: True
+2026-02-23 17:56:21.974 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 45400:511304 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 17:57:04.273 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 284300:505504 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 17:57:04.273 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 284300:505504 | {'diagnostics': True} - Debug mode: True
+2026-02-23 17:57:04.273 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 284300:505504 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 17:58:21.418 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 68332:25308 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 17:58:21.418 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 68332:25308 | {'diagnostics': True} - Debug mode: True
+2026-02-23 17:58:21.418 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 68332:25308 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 17:58:54.516 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 504436:15288 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 17:58:54.516 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 504436:15288 | {'diagnostics': True} - Debug mode: True
+2026-02-23 17:58:54.516 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 504436:15288 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 17:59:30.900 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 504688:78692 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 17:59:30.900 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 504688:78692 | {'diagnostics': True} - Debug mode: True
+2026-02-23 17:59:30.900 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 504688:78692 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 17:59:54.488 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 302208:234956 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 17:59:54.488 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 302208:234956 | {'diagnostics': True} - Debug mode: True
+2026-02-23 17:59:54.488 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 302208:234956 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:00:20.333 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 271504:307532 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:00:20.333 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 271504:307532 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:00:20.333 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 271504:307532 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:00:36.734 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 478852:529136 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:00:36.734 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 478852:529136 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:00:36.734 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 478852:529136 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:01:04.026 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 529624:45132 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:01:04.026 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 529624:45132 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:01:04.026 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 529624:45132 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:01:47.574 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 503804:486940 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:01:47.574 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 503804:486940 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:01:47.574 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 503804:486940 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:02:21.278 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 522596:511288 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:02:21.278 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 522596:511288 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:02:21.278 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 522596:511288 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:02:41.524 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 491436:248200 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:02:41.524 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 491436:248200 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:02:41.524 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 491436:248200 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:02:58.946 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 240792:470748 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:02:58.947 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 240792:470748 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:02:58.947 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 240792:470748 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:03:37.707 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 67764:33208 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:03:37.708 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 67764:33208 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:03:37.708 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 67764:33208 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:03:48.505 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 511504:404932 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:03:48.505 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 511504:404932 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:03:48.505 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 511504:404932 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:04:16.010 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 88888:527368 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:04:16.010 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 88888:527368 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:04:16.010 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 88888:527368 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:24:08.390 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 480336:529456 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:24:08.390 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 480336:529456 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:24:08.390 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 480336:529456 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:26:40.731 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 84388:526324 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:26:40.731 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 84388:526324 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:26:40.731 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 84388:526324 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:28:38.170 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 319000:321048 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:28:38.170 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 319000:321048 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:28:38.170 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 319000:321048 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:28:48.915 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 528760:175832 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:28:48.916 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 528760:175832 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:28:48.916 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 528760:175832 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:29:27.713 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 221032:461676 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:29:27.713 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 221032:461676 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:29:27.713 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 221032:461676 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:30:05.283 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 506396:98360 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:30:05.283 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 506396:98360 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:30:05.283 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 506396:98360 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:30:15.904 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 157640:467188 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:30:15.904 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 157640:467188 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:30:15.904 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 157640:467188 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:30:28.903 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 517688:45500 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:30:28.903 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 517688:45500 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:30:28.903 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 517688:45500 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:37:58.708 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 533364:533360 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:37:58.709 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 533364:533360 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:37:58.709 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 533364:533360 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:39:35.294 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 363744:488056 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:39:35.294 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 363744:488056 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:39:35.294 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 363744:488056 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 18:41:26.697 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 532520:463856 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 18:41:26.698 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 532520:463856 | {'diagnostics': True} - Debug mode: True
+2026-02-23 18:41:26.698 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 532520:463856 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 19:01:20.687 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 417168:487076 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 19:01:20.687 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 417168:487076 | {'diagnostics': True} - Debug mode: True
+2026-02-23 19:01:20.687 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 417168:487076 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 19:05:29.793 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 539848:540628 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 19:05:29.793 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 539848:540628 | {'diagnostics': True} - Debug mode: True
+2026-02-23 19:05:29.793 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 539848:540628 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 19:13:46.660 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 543512:543508 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 19:13:46.660 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 543512:543508 | {'diagnostics': True} - Debug mode: True
+2026-02-23 19:13:46.660 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 543512:543508 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 19:16:43.047 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 542300:541824 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 19:16:43.047 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 542300:541824 | {'diagnostics': True} - Debug mode: True
+2026-02-23 19:16:43.047 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 542300:541824 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 20:41:34.114 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 565108:563820 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 20:41:34.115 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 565108:563820 | {'diagnostics': True} - Debug mode: True
+2026-02-23 20:41:34.115 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 565108:563820 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 20:46:11.730 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 546844:566248 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 20:46:11.730 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 546844:566248 | {'diagnostics': True} - Debug mode: True
+2026-02-23 20:46:11.730 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 546844:566248 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 20:49:39.144 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 572700:557520 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 20:49:39.148 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 572700:557520 | {'diagnostics': True} - Debug mode: True
+2026-02-23 20:49:39.148 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 572700:557520 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 20:59:13.253 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 182160:573144 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 20:59:13.254 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 182160:573144 | {'diagnostics': True} - Debug mode: True
+2026-02-23 20:59:13.254 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 182160:573144 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 21:11:48.359 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 574288:530988 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 21:11:48.359 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 574288:530988 | {'diagnostics': True} - Debug mode: True
+2026-02-23 21:11:48.359 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 574288:530988 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-23 21:25:18.532 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 585528:585524 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-23 21:25:18.532 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 585528:585524 | {'diagnostics': True} - Debug mode: True
+2026-02-23 21:25:18.532 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 585528:585524 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-24 15:21:31.173 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 566696:205396 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-24 15:21:31.176 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 566696:205396 | {'diagnostics': True} - Debug mode: True
+2026-02-24 15:21:31.176 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 566696:205396 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-24 15:22:10.664 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 535052:152476 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-24 15:22:10.665 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 535052:152476 | {'diagnostics': True} - Debug mode: True
+2026-02-24 15:22:10.665 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 535052:152476 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-24 15:23:30.173 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 499836:105404 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-24 15:23:30.173 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 499836:105404 | {'diagnostics': True} - Debug mode: True
+2026-02-24 15:23:30.173 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 499836:105404 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 21:45:05.909 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 320476:28652 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 21:45:05.910 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 320476:28652 | {'diagnostics': True} - Debug mode: True
+2026-02-28 21:45:05.910 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 320476:28652 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 21:45:15.264 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 264540:279112 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 21:45:15.264 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 264540:279112 | {'diagnostics': True} - Debug mode: True
+2026-02-28 21:45:15.264 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 264540:279112 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 21:46:10.692 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 92648:356232 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 21:46:10.692 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 92648:356232 | {'diagnostics': True} - Debug mode: True
+2026-02-28 21:46:10.692 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 92648:356232 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 21:46:49.901 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 42052:419136 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 21:46:49.901 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 42052:419136 | {'diagnostics': True} - Debug mode: True
+2026-02-28 21:46:49.901 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 42052:419136 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 21:46:55.094 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 21796:207660 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 21:46:55.094 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 21796:207660 | {'diagnostics': True} - Debug mode: True
+2026-02-28 21:46:55.094 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 21796:207660 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 21:48:11.033 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 345080:323720 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 21:48:11.033 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 345080:323720 | {'diagnostics': True} - Debug mode: True
+2026-02-28 21:48:11.033 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 345080:323720 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 21:53:09.721 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 336316:86676 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 21:53:09.721 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 336316:86676 | {'diagnostics': True} - Debug mode: True
+2026-02-28 21:53:09.721 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 336316:86676 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 21:57:31.822 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 80628:296200 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 21:57:31.822 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 80628:296200 | {'diagnostics': True} - Debug mode: True
+2026-02-28 21:57:31.822 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 80628:296200 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 21:57:40.331 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 395336:131320 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 21:57:40.331 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 395336:131320 | {'diagnostics': True} - Debug mode: True
+2026-02-28 21:57:40.331 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 395336:131320 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 21:57:59.315 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 224248:126136 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 21:57:59.315 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 224248:126136 | {'diagnostics': True} - Debug mode: True
+2026-02-28 21:57:59.315 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 224248:126136 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 22:02:03.435 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 320544:160248 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 22:02:03.435 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 320544:160248 | {'diagnostics': True} - Debug mode: True
+2026-02-28 22:02:03.435 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 320544:160248 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 22:02:09.051 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 91312:50732 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 22:02:09.051 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 91312:50732 | {'diagnostics': True} - Debug mode: True
+2026-02-28 22:02:09.051 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 91312:50732 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 22:02:28.121 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 105296:318648 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 22:02:28.121 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 105296:318648 | {'diagnostics': True} - Debug mode: True
+2026-02-28 22:02:28.121 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 105296:318648 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 22:02:50.269 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 98744:119296 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 22:02:50.269 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 98744:119296 | {'diagnostics': True} - Debug mode: True
+2026-02-28 22:02:50.269 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 98744:119296 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 22:02:55.716 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 212768:64720 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 22:02:55.716 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 212768:64720 | {'diagnostics': True} - Debug mode: True
+2026-02-28 22:02:55.717 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 212768:64720 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 22:03:51.370 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 36816:384448 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 22:03:51.371 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 36816:384448 | {'diagnostics': True} - Debug mode: True
+2026-02-28 22:03:51.371 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 36816:384448 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 22:09:18.796 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 45504:256680 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 22:09:18.797 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 45504:256680 | {'diagnostics': True} - Debug mode: True
+2026-02-28 22:09:18.797 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 45504:256680 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 22:09:30.817 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 258380:42916 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 22:09:30.818 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 258380:42916 | {'diagnostics': True} - Debug mode: True
+2026-02-28 22:09:30.818 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 258380:42916 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-02-28 22:10:27.024 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 71984:174228 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-02-28 22:10:27.024 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 71984:174228 | {'diagnostics': True} - Debug mode: True
+2026-02-28 22:10:27.024 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 71984:174228 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 01:22:54.076 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 43916:313104 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 01:22:54.076 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 43916:313104 | {'diagnostics': True} - Debug mode: True
+2026-03-01 01:22:54.076 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 43916:313104 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 01:23:04.588 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 197820:291524 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 01:23:04.588 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 197820:291524 | {'diagnostics': True} - Debug mode: True
+2026-03-01 01:23:04.588 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 197820:291524 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 01:53:18.664 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 213868:163864 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 01:53:18.664 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 213868:163864 | {'diagnostics': True} - Debug mode: True
+2026-03-01 01:53:18.664 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 213868:163864 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 01:58:07.235 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 386580:21880 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 01:58:07.235 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 386580:21880 | {'diagnostics': True} - Debug mode: True
+2026-03-01 01:58:07.235 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 386580:21880 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 01:58:38.434 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 436480:47516 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 01:58:38.434 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 436480:47516 | {'diagnostics': True} - Debug mode: True
+2026-03-01 01:58:38.434 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 436480:47516 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 01:58:52.868 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 171892:417484 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 01:58:52.868 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 171892:417484 | {'diagnostics': True} - Debug mode: True
+2026-03-01 01:58:52.868 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 171892:417484 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 02:01:02.923 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 210024:351684 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 02:01:02.924 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 210024:351684 | {'diagnostics': True} - Debug mode: True
+2026-03-01 02:01:02.924 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 210024:351684 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 02:15:19.581 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 84032:158404 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 02:15:19.581 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 84032:158404 | {'diagnostics': True} - Debug mode: True
+2026-03-01 02:15:19.581 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 84032:158404 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 02:27:05.040 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 189060:284736 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 02:27:05.041 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 189060:284736 | {'diagnostics': True} - Debug mode: True
+2026-03-01 02:27:05.041 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 189060:284736 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 02:28:43.785 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 150224:442700 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 02:28:43.785 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 150224:442700 | {'diagnostics': True} - Debug mode: True
+2026-03-01 02:28:43.785 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 150224:442700 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 02:41:34.401 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 367952:241540 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 02:41:34.402 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 367952:241540 | {'diagnostics': True} - Debug mode: True
+2026-03-01 02:41:34.402 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 367952:241540 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 02:48:47.050 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 116544:80956 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 02:48:47.051 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 116544:80956 | {'diagnostics': True} - Debug mode: True
+2026-03-01 02:48:47.051 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 116544:80956 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 02:48:59.185 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 216500:324212 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 02:48:59.185 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 216500:324212 | {'diagnostics': True} - Debug mode: True
+2026-03-01 02:48:59.185 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 216500:324212 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 02:52:14.362 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 235132:216112 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 02:52:14.362 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 235132:216112 | {'diagnostics': True} - Debug mode: True
+2026-03-01 02:52:14.362 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 235132:216112 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:00:36.377 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 452000:123196 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:00:36.377 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 452000:123196 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:00:36.377 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 452000:123196 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:00:58.319 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 257784:398384 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:00:58.319 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 257784:398384 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:00:58.319 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 257784:398384 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:01:11.913 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 219400:393160 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:01:11.914 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 219400:393160 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:01:11.914 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 219400:393160 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:01:54.472 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 429880:218576 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:01:54.472 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 429880:218576 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:01:54.472 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 429880:218576 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:02:21.337 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 206492:234656 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:02:21.338 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 206492:234656 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:02:21.338 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 206492:234656 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:02:40.281 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 175716:206232 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:02:40.281 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 175716:206232 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:02:40.281 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 175716:206232 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:07:35.817 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 175040:146388 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:07:35.817 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 175040:146388 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:07:35.817 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 175040:146388 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:08:11.396 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 220068:214392 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:08:11.396 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 220068:214392 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:08:11.396 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 220068:214392 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:08:21.226 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 354428:411112 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:08:21.226 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 354428:411112 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:08:21.226 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 354428:411112 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:13:08.563 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 238784:279548 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:13:08.563 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 238784:279548 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:13:08.563 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 238784:279548 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:15:24.879 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 446764:452692 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:15:24.879 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 446764:452692 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:15:24.879 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 446764:452692 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:17:16.384 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 22908:165252 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:17:16.384 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 22908:165252 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:17:16.384 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 22908:165252 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:17:22.702 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 267424:189436 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:17:22.702 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 267424:189436 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:17:22.702 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 267424:189436 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:17:37.391 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 59700:406912 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:17:37.391 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 59700:406912 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:17:37.391 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 59700:406912 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:18:04.253 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 444624:72728 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:18:04.253 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 444624:72728 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:18:04.253 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 444624:72728 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:28:05.621 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 284280:360936 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:28:05.622 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 284280:360936 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:28:05.622 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 284280:360936 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:33:53.949 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 320548:241868 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:33:53.949 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 320548:241868 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:33:53.949 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 320548:241868 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:34:24.080 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 414716:284380 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:34:24.081 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 414716:284380 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:34:24.081 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 414716:284380 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 03:34:39.649 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 326800:28848 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 03:34:39.649 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 326800:28848 | {'diagnostics': True} - Debug mode: True
+2026-03-01 03:34:39.650 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 326800:28848 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 04:21:32.184 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 362044:321924 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 04:21:32.184 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 362044:321924 | {'diagnostics': True} - Debug mode: True
+2026-03-01 04:21:32.185 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 362044:321924 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-01 04:25:21.067 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 236272:58488 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-01 04:25:21.067 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 236272:58488 | {'diagnostics': True} - Debug mode: True
+2026-03-01 04:25:21.067 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 236272:58488 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:05:54.201 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 196268:219848 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:05:54.202 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 196268:219848 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:05:54.202 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 196268:219848 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:14:25.644 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 83708:260372 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:14:25.647 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 83708:260372 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:14:25.647 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 83708:260372 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:26:45.016 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 104240:29048 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:26:45.016 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 104240:29048 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:26:45.016 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 104240:29048 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:28:17.539 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 105260:223208 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:28:17.539 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 105260:223208 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:28:17.539 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 105260:223208 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:29:03.376 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 266340:227660 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:29:03.376 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 266340:227660 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:29:03.376 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 266340:227660 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:32:48.959 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 161712:124400 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:32:48.959 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 161712:124400 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:32:48.960 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 161712:124400 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:33:17.004 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 231368:265684 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:33:17.004 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 231368:265684 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:33:17.004 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 231368:265684 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:35:20.836 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 265032:257276 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:35:20.836 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 265032:257276 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:35:20.836 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 265032:257276 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:35:39.278 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 220464:232724 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:35:39.278 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 220464:232724 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:35:39.278 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 220464:232724 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:36:12.792 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 264112:100752 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:36:12.793 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 264112:100752 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:36:12.793 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 264112:100752 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:38:29.952 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 78420:163568 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:38:29.952 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 78420:163568 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:38:29.952 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 78420:163568 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:39:09.526 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 115936:79356 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:39:09.527 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 115936:79356 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:39:09.527 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 115936:79356 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:39:15.727 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 76796:89124 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:39:15.727 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 76796:89124 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:39:15.727 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 76796:89124 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:41:37.372 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 141996:167700 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:41:37.372 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 141996:167700 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:41:37.373 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 141996:167700 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:41:47.827 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 245208:52744 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:41:47.827 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 245208:52744 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:41:47.827 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 245208:52744 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:47:09.419 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 222912:56436 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:47:09.420 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 222912:56436 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:47:09.420 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 222912:56436 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:47:20.259 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 193716:38344 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:47:20.259 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 193716:38344 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:47:20.259 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 193716:38344 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 00:59:55.749 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 145240:219300 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 00:59:55.750 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 145240:219300 | {'diagnostics': True} - Debug mode: True
+2026-03-06 00:59:55.750 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 145240:219300 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:00:28.961 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 231176:242012 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:00:28.961 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 231176:242012 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:00:28.961 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 231176:242012 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:00:42.973 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 158704:76836 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:00:42.973 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 158704:76836 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:00:42.973 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 158704:76836 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:02:02.330 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 63440:107908 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:02:02.330 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 63440:107908 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:02:02.330 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 63440:107908 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:02:54.860 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 11900:227272 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:02:54.860 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 11900:227272 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:02:54.861 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 11900:227272 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:04:13.275 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 264240:47984 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:04:13.276 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 264240:47984 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:04:13.276 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 264240:47984 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:07:36.845 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 107096:70592 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:07:36.845 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 107096:70592 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:07:36.845 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 107096:70592 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:33:35.797 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 88052:134480 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:33:35.797 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 88052:134480 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:33:35.797 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 88052:134480 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:41:07.437 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 181884:255440 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:41:07.438 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 181884:255440 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:41:07.438 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 181884:255440 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:41:19.196 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 177716:262984 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:41:19.196 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 177716:262984 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:41:19.196 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 177716:262984 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:43:56.025 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 160276:154852 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:43:56.026 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 160276:154852 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:43:56.026 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 160276:154852 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:44:41.167 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 220380:161932 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:44:41.167 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 220380:161932 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:44:41.167 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 220380:161932 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:44:54.155 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 246972:261720 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:44:54.156 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 246972:261720 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:44:54.156 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 246972:261720 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:45:48.340 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 225612:90960 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:45:48.341 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 225612:90960 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:45:48.341 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 225612:90960 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:46:04.337 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 25404:246440 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:46:04.337 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 25404:246440 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:46:04.337 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 25404:246440 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:50:57.040 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 210084:128176 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:50:57.040 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 210084:128176 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:50:57.040 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 210084:128176 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:51:17.386 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 244792:88428 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:51:17.386 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 244792:88428 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:51:17.387 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 244792:88428 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:51:24.972 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 58524:224908 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:51:24.972 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 58524:224908 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:51:24.972 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 58524:224908 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:55:37.991 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 263444:148540 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:55:37.992 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 263444:148540 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:55:37.992 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 263444:148540 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:56:38.997 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 116224:255812 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:56:38.997 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 116224:255812 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:56:38.997 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 116224:255812 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:58:03.153 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 159140:215608 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:58:03.153 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 159140:215608 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:58:03.153 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 159140:215608 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 01:58:10.919 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 46280:249212 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 01:58:10.919 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 46280:249212 | {'diagnostics': True} - Debug mode: True
+2026-03-06 01:58:10.919 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 46280:249212 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 02:09:45.385 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 57144:180964 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 02:09:45.385 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 57144:180964 | {'diagnostics': True} - Debug mode: True
+2026-03-06 02:09:45.385 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 57144:180964 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 02:34:23.184 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 133428:111304 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 02:34:23.184 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 133428:111304 | {'diagnostics': True} - Debug mode: True
+2026-03-06 02:34:23.184 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 133428:111304 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 02:35:24.549 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 177160:193568 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 02:35:24.549 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 177160:193568 | {'diagnostics': True} - Debug mode: True
+2026-03-06 02:35:24.549 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 177160:193568 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 02:35:49.947 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 110076:37668 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 02:35:49.947 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 110076:37668 | {'diagnostics': True} - Debug mode: True
+2026-03-06 02:35:49.947 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 110076:37668 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 02:35:59.917 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 65340:33252 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 02:35:59.917 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 65340:33252 | {'diagnostics': True} - Debug mode: True
+2026-03-06 02:35:59.917 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 65340:33252 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 02:53:46.280 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 88780:237084 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 02:53:46.280 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 88780:237084 | {'diagnostics': True} - Debug mode: True
+2026-03-06 02:53:46.280 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 88780:237084 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 02:54:39.614 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 252072:69816 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 02:54:39.614 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 252072:69816 | {'diagnostics': True} - Debug mode: True
+2026-03-06 02:54:39.614 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 252072:69816 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring
+2026-03-06 18:45:34.530 | INFO     | awslabs.aws_support_mcp_server.server:main:780 | 67184:159720 | {'diagnostics': True} - AWS Support MCP Server starting up. Log file: c:\Users\William\Documents\Projects\Meritus\Meritus\logs\mcp_support_server.log
+2026-03-06 18:45:34.531 | INFO     | awslabs.aws_support_mcp_server.server:main:782 | 67184:159720 | {'diagnostics': True} - Debug mode: True
+2026-03-06 18:45:34.531 | DEBUG    | awslabs.aws_support_mcp_server.server:main:786 | 67184:159720 | {'diagnostics': True} - Enabling detailed performance tracking and error monitoring

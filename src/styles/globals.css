@@ -1,0 +1,244 @@
+@import "tailwindcss";
+
+@theme {
+  /* Large-screen breakpoint */
+  --breakpoint-3xl: 1920px;
+
+  /* Meritus — British Racing Green / Heritage Premium */
+  --color-green: #0B3B24;
+  --color-green-light: #154D35;
+  --color-green-dark: #072E1B;
+  --color-cream: #F5F0E8;
+  --color-parchment: #EDE7DB;
+  --color-brass: #B5975A;
+  --color-brass-light: #C8A96D;
+  --color-brass-dark: #9A7E45;
+  --color-oxblood: #4A0404;
+  --color-stone: #DDD5C5;
+  --color-stone-dark: #D0C6B3;
+  --color-ink: #1C1F26;
+  --color-slate: #6B6B73;
+
+  /* Font families */
+  --font-display: var(--font-cinzel), "Trajan Pro", "Georgia", serif;
+  --font-serif: var(--font-cormorant-garamond), "Georgia", serif;
+  --font-sans: var(--font-inter), "Helvetica Neue", sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "Courier New", monospace;
+
+}
+
+/* ──────────────────────────────────────────────
+   Base
+   ────────────────────────────────────────────── */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--color-ink);
+  background-color: var(--color-stone);
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='6' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' opacity='0.03'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 300px 300px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-serif);
+}
+
+::selection {
+  background-color: var(--color-brass);
+  color: white;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 2px;
+}
+
+/* ──────────────────────────────────────────────
+   Skip link
+   ────────────────────────────────────────────── */
+
+.skip-to-content {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 100;
+  padding: 8px 16px;
+  background-color: var(--color-green);
+  color: var(--color-cream);
+  font-size: 14px;
+  border-radius: 0 0 4px 4px;
+  transition: top 0.2s;
+}
+.skip-to-content:focus {
+  top: 0;
+}
+
+/* ──────────────────────────────────────────────
+   Grain / noise texture overlay
+   ────────────────────────────────────────────── */
+
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 180px 180px;
+}
+
+/* ──────────────────────────────────────────────
+   Brass rule accent
+   ────────────────────────────────────────────── */
+
+.brass-rule {
+  display: block;
+  width: 48px;
+  height: 1px;
+  background: var(--color-brass);
+  opacity: 0.6;
+}
+
+.brass-rule-wide {
+  display: block;
+  width: 80px;
+  height: 1px;
+  background: var(--color-brass);
+  opacity: 0.5;
+}
+
+/* ──────────────────────────────────────────────
+   Scroll indicator
+   ────────────────────────────────────────────── */
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: translateY(0); }
+  50% { opacity: 0.6; transform: translateY(6px); }
+}
+
+.scroll-indicator {
+  animation: scrollPulse 2.5s ease-in-out infinite;
+}
+
+/* ──────────────────────────────────────────────
+   Pillar card hover border slide
+   ────────────────────────────────────────────── */
+
+.pillar-card {
+  position: relative;
+  overflow: hidden;
+}
+.pillar-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--color-brass);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.pillar-card:hover::before {
+  transform: scaleY(1);
+}
+
+/* Section kicker — debossed letterpress effect */
+.section-stamp {
+  font-family: var(--font-mono);
+  font-size: clamp(0.72rem, 0.35vw + 0.62rem, 0.98rem);
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  line-height: 1.05;
+  text-transform: uppercase;
+  color: rgba(11, 59, 36, 0.45);
+  text-shadow:
+    0 1px 1px rgba(255, 255, 255, 0.8),
+    0 -1px 1px rgba(11, 59, 36, 0.12);
+}
+
+.section-stamp-on-dark {
+  color: rgba(181, 151, 90, 0.55);
+  text-shadow:
+    0 1px 1px rgba(245, 240, 232, 0.15),
+    0 -1px 1px rgba(0, 0, 0, 0.4);
+}
+
+/* ──────────────────────────────────────────────
+   Button styles
+   ────────────────────────────────────────────── */
+
+.btn-brass {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--color-green);
+  background: var(--color-brass);
+  transition: all 0.3s ease;
+}
+.btn-brass:hover {
+  background: var(--color-brass-light);
+  box-shadow: 0 4px 20px rgba(181, 151, 90, 0.25);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  color: var(--color-brass);
+  border: 1px solid rgba(181, 151, 90, 0.35);
+  transition: all 0.3s ease;
+}
+.btn-outline:hover {
+  border-color: var(--color-brass);
+  background: rgba(181, 151, 90, 0.08);
+}
+
+/* ──────────────────────────────────────────────
+   Footer discipline drift — barely visible keywords
+   ────────────────────────────────────────────── */
+
+@keyframes footerDrift {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.footer-drift {
+  animation: footerDrift 50s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-drift,
+  .scroll-indicator {
+    animation: none;
+  }
+}
