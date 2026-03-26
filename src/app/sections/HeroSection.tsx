@@ -130,29 +130,19 @@ export function HeroSection() {
               <Link href="/method" className="btn-outline">
                 Our Method
               </Link>
-              <Link
-                href="/claims-intelligence"
-                className="group/login relative flex items-center gap-3 px-6 py-2.5 bg-green-dark/40 backdrop-blur-sm border border-brass/20 hover:border-brass/40 transition-all duration-300 rounded-sm overflow-hidden hover:-translate-y-[1px] hover:shadow-[0_4px_14px_rgba(0,0,0,0.1)]"
-              >
-                <div className="absolute inset-0 bg-brass/5 translate-y-full group-hover/login:translate-y-0 transition-transform duration-300" />
-                <span className="relative text-[12px] font-medium tracking-wide text-brass-light group-hover/login:text-brass transition-colors">
-                  Claims Intelligence
+            </motion.div>
+
+            <motion.div
+              className="mt-8 flex items-center"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 1.3 }}
+            >
+              <Link href="/claims-intelligence" className="group flex items-center gap-2 text-[11px] font-mono tracking-[0.15em] uppercase text-brass/60 hover:text-brass transition-colors">
+                <span className="border-b border-transparent hover:border-brass/40 pb-0.5 transition-colors">
+                  Access Claims Intelligence Platform
                 </span>
-                <svg
-                  width="12"
-                  height="12"
-                  viewBox="0 0 12 12"
-                  fill="none"
-                  className="relative text-brass/60 group-hover/login:translate-x-0.5 transition-transform"
-                >
-                  <path
-                    d="M2.5 6H9.5M9.5 6L6.5 3M9.5 6L6.5 9"
-                    stroke="currentColor"
-                    strokeWidth="1.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
               </Link>
             </motion.div>
           </div>
@@ -216,51 +206,48 @@ export function HeroSection() {
 
                 {/* Floating Content Wrapper */}
                 <div
-                  className="transition-transform duration-500"
+                  className="transition-transform duration-500 w-full flex flex-col items-center"
                   style={{ transform: "translateZ(40px)" }}
                 >
                   <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    className="w-full flex justify-between items-center mb-10 px-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     transition={{ duration: 0.8, delay: 1.4 }}
                   >
-                    <div className="font-display text-[14px] 2xl:text-[16px] tracking-[0.45em] uppercase text-transparent bg-clip-text bg-gradient-to-b from-brass-light to-brass-dark">
-                      Meritus
-                    </div>
-                    <div className="mt-3 font-serif text-[14px] 2xl:text-[16px] text-cream/40 italic tracking-wide font-light">
-                      earned · deserved · due · proper
-                    </div>
+                    <span className="w-8 h-px bg-brass/30"></span>
+                    <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-brass/60">Vol. I</span>
+                    <span className="w-8 h-px bg-brass/30"></span>
                   </motion.div>
-
-                  <motion.span
-                    className="block w-12 h-px bg-gradient-to-r from-transparent via-brass/30 to-transparent my-8 mx-auto"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ duration: 0.8, delay: 1.6 }}
-                  />
 
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 1.5 }}
+                    className="text-center"
                   >
-                    <div className="font-display text-[14px] 2xl:text-[16px] tracking-[0.45em] uppercase text-transparent bg-clip-text bg-gradient-to-b from-brass-light to-brass-dark">
-                      Via
+                    <div className="font-display text-[22px] 2xl:text-[26px] tracking-[0.25em] uppercase text-transparent bg-clip-text bg-gradient-to-b from-brass-light to-brass-dark mb-4">
+                      Meritus Via
                     </div>
-                    <div className="mt-3 font-serif text-[14px] 2xl:text-[16px] text-cream/40 italic tracking-wide font-light">
-                      the pathway
+                    <div className="inline-block font-mono text-[9px] 2xl:text-[10px] text-cream/70 tracking-[0.3em] uppercase border-y border-brass/20 py-2.5 px-6">
+                      Construction Disputes
                     </div>
                   </motion.div>
 
                   <motion.div
-                    className="mt-12 pt-10 border-t border-brass/10 w-full"
+                    className="mt-14 pt-10 border-t border-brass/10 w-full relative"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 1.9 }}
+                    transition={{ duration: 1, delay: 1.8 }}
                   >
-                    <div className="font-serif text-[18px] 2xl:text-[20px] text-cream/60 italic leading-relaxed">
-                      Your Pathway,<br />
-                      <span className="text-cream/90 font-medium">Built on Merit.</span>
+                    {/* Small decorative diamond */}
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-brass/40 rotate-45" />
+                    
+                    <div className="font-serif text-[14px] 2xl:text-[15px] text-cream/50 italic tracking-wide font-light mb-1">
+                      Principles of
+                    </div>
+                    <div className="font-serif text-[17px] 2xl:text-[19px] text-cream/90 tracking-wide">
+                      Forensic Intelligence
                     </div>
                   </motion.div>
                 </div>
