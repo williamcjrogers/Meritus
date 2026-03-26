@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { FadeIn, ProjectPulse } from "@/components/animations";
-import { CTABand } from "@/components/ui";
+import { FadeIn, ProjectPulse, TerminalBox, RailTerminal, HighwaysTerminal, ResidentialTerminal, CommercialTerminal, EnergyTerminal, BSATerminal } from "@/components/animations";
+import { CTABand, BlueprintDivider } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Sectors",
@@ -27,6 +27,7 @@ const SECTORS = [
       { label: "Quantum", href: "/services#quantum" },
       { label: "Advisory", href: "/services#advisory" },
     ],
+    terminal: RailTerminal,
   },
   {
     num: "02",
@@ -45,6 +46,7 @@ const SECTORS = [
       { label: "Quantum", href: "/services#quantum" },
       { label: "Technical", href: "/services#technical" },
     ],
+    terminal: HighwaysTerminal,
   },
   {
     num: "03",
@@ -63,6 +65,7 @@ const SECTORS = [
       { label: "Technical", href: "/services#technical" },
       { label: "Advisory", href: "/services#advisory" },
     ],
+    terminal: ResidentialTerminal,
   },
   {
     num: "04",
@@ -81,6 +84,7 @@ const SECTORS = [
       { label: "Quantum", href: "/services#quantum" },
       { label: "Technical", href: "/services#technical" },
     ],
+    terminal: CommercialTerminal,
   },
   {
     num: "05",
@@ -99,6 +103,7 @@ const SECTORS = [
       { label: "Technical", href: "/services#technical" },
       { label: "Quantum", href: "/services#quantum" },
     ],
+    terminal: EnergyTerminal,
   },
   {
     num: "06",
@@ -117,6 +122,7 @@ const SECTORS = [
       { label: "Quantum", href: "/services#quantum" },
       { label: "Advisory", href: "/services#advisory" },
     ],
+    terminal: BSATerminal,
   },
 ];
 
@@ -143,82 +149,100 @@ export default function SectorsPage() {
       </section>
 
       {/* Sectors */}
-      <section className="bg-stone">
-        <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
-          {SECTORS.map((sector, i) => (
-            <FadeIn key={sector.num}>
-              <div
-                className={`py-14 lg:py-20 ${i > 0 ? "border-t border-green/8" : ""}`}
-              >
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
-                  {/* Left: Title & Description */}
-                  <div className="lg:col-span-5">
-                    <div className="font-mono text-[10px] tracking-[0.2em] text-brass/70 mb-3">
+      <section className="bg-stone border-t border-green/5">
+        {SECTORS.map((sector, i) => {
+          const Terminal = sector.terminal;
+          return (
+            <div key={sector.num}>
+              {i > 0 && <BlueprintDivider />}
+              
+              <div className="py-[clamp(3.5rem,7vw,7rem)]">
+                <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
+                  <FadeIn>
+                    <div className="font-mono text-[10px] tracking-[0.2em] text-brass/70 mb-5">
                       {sector.num}
                     </div>
-                    <h2 className="font-serif text-2xl lg:text-3xl text-green leading-tight mb-6">
-                      {sector.title}
-                    </h2>
-                    <p className="text-[14px] text-slate leading-relaxed">
-                      {sector.description}
-                    </p>
+                    
+                    <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(400px,500px)] 2xl:grid-cols-[1fr_550px] gap-12 lg:gap-20 items-start">
+                      {/* Left: Content */}
+                      <div>
+                        <h2 className="font-serif text-3xl lg:text-4xl text-green leading-tight mb-6">
+                          {sector.title}
+                        </h2>
+                        <p className="text-[15px] lg:text-base text-slate leading-relaxed mb-8">
+                          {sector.description}
+                        </p>
 
-                    {/* Contract forms */}
-                    <div className="mt-6 flex flex-wrap items-center gap-2">
-                      <span className="font-mono text-[9px] tracking-[0.15em] uppercase text-slate/40">
-                        Common forms:
-                      </span>
-                      {sector.contracts.map((c) => (
-                        <span
-                          key={c}
-                          className="font-mono text-[9px] tracking-[0.1em] text-green/50 bg-green/5 px-2.5 py-1 rounded-sm"
-                        >
-                          {c}
-                        </span>
-                      ))}
-                    </div>
+                        <div className="space-y-8">
+                          <div>
+                            <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate/50 mb-4">
+                              Typical disputes
+                            </div>
+                            <ul className="space-y-3.5">
+                              {sector.disputes.map((dispute, j) => (
+                                <li
+                                  key={j}
+                                  className="flex items-start gap-3 text-[14px] text-ink/75 leading-relaxed"
+                                >
+                                  <span className="text-brass/50 mt-[3px] shrink-0">
+                                    &mdash;
+                                  </span>
+                                  {dispute}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
 
-                    {/* Discipline links */}
-                    <div className="mt-5 flex flex-wrap items-center gap-3">
-                      <span className="font-mono text-[9px] tracking-[0.15em] uppercase text-slate/40">
-                        Disciplines:
-                      </span>
-                      {sector.disciplines.map((d) => (
-                        <Link
-                          key={d.label}
-                          href={d.href}
-                          className="font-mono text-[10px] tracking-[0.1em] text-brass hover:text-brass-dark transition-colors duration-200"
-                        >
-                          {d.label} &rarr;
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
+                          <div className="flex flex-wrap items-center gap-x-8 gap-y-6 pt-4 border-t border-green/5">
+                            <div>
+                              <div className="font-mono text-[9px] tracking-[0.15em] uppercase text-slate/40 mb-2.5">
+                                Forms:
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                {sector.contracts.map((c) => (
+                                  <span
+                                    key={c}
+                                    className="font-mono text-[9px] tracking-[0.1em] text-green/60 bg-green/5 px-2.5 py-1 rounded-sm"
+                                  >
+                                    {c}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
 
-                  {/* Right: Typical Disputes */}
-                  <div className="lg:col-span-7">
-                    <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate/50 mb-5">
-                      Typical disputes
+                            <div>
+                              <div className="font-mono text-[9px] tracking-[0.15em] uppercase text-slate/40 mb-2.5">
+                                Disciplines:
+                              </div>
+                              <div className="flex flex-wrap gap-3">
+                                {sector.disciplines.map((d) => (
+                                  <Link
+                                    key={d.label}
+                                    href={d.href}
+                                    className="font-mono text-[10px] tracking-[0.1em] text-brass hover:text-brass-dark transition-colors duration-200"
+                                  >
+                                    {d.label} &rarr;
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right: Terminal Graphic */}
+                      <div className="relative w-full h-[320px] lg:h-[400px] lg:sticky lg:top-32 rounded-sm overflow-hidden shadow-xl">
+                        <TerminalBox className="w-full h-full border border-green/20">
+                          <Terminal />
+                        </TerminalBox>
+                      </div>
                     </div>
-                    <ul className="space-y-4">
-                      {sector.disputes.map((dispute, j) => (
-                        <li
-                          key={j}
-                          className="flex items-start gap-3 text-[14px] text-ink/70 leading-relaxed"
-                        >
-                          <span className="text-brass/40 mt-[3px] shrink-0">
-                            &mdash;
-                          </span>
-                          {dispute}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  </FadeIn>
                 </div>
               </div>
-            </FadeIn>
-          ))}
-        </div>
+            </div>
+          );
+        })}
       </section>
 
       <CTABand
