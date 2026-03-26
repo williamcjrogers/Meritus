@@ -121,13 +121,20 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.1 }}
             >
-              <Link href="/contact" className="btn-brass">
+              <Link href="/contact" className="btn-brass group/btn">
                 Discuss Your Matter
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <svg 
+                  width="14" 
+                  height="14" 
+                  viewBox="0 0 14 14" 
+                  fill="none" 
+                  aria-hidden="true"
+                  className="transition-transform duration-300 group-hover/btn:translate-x-1"
+                >
                   <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </Link>
-              <Link href="/method" className="btn-outline">
+              <Link href="/method" className="btn-outline group/btn2">
                 Our Method
               </Link>
             </motion.div>
@@ -140,7 +147,7 @@ export function HeroSection() {
             >
               <Link href="/claims-intelligence" className="group flex items-center gap-2 text-[11px] font-mono tracking-[0.15em] uppercase text-brass/60 hover:text-brass transition-colors">
                 <span className="border-b border-transparent hover:border-brass/40 pb-0.5 transition-colors">
-                  Access Claims Intelligence Platform
+                  Claims Intelligence
                 </span>
                 <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
               </Link>
@@ -206,48 +213,51 @@ export function HeroSection() {
 
                 {/* Floating Content Wrapper */}
                 <div
-                  className="transition-transform duration-500 w-full flex flex-col items-center"
+                  className="transition-transform duration-500"
                   style={{ transform: "translateZ(40px)" }}
                 >
                   <motion.div
-                    className="w-full flex justify-between items-center mb-10 px-4"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 1.4 }}
                   >
-                    <span className="w-8 h-px bg-brass/30"></span>
-                    <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-brass/60">Vol. I</span>
-                    <span className="w-8 h-px bg-brass/30"></span>
+                    <div className="font-display text-[14px] 2xl:text-[16px] tracking-[0.45em] uppercase text-transparent bg-clip-text bg-gradient-to-b from-brass-light to-brass-dark">
+                      Meritus
+                    </div>
+                    <div className="mt-3 font-serif text-[14px] 2xl:text-[16px] text-cream/40 italic tracking-wide font-light">
+                      earned · deserved · due · proper
+                    </div>
                   </motion.div>
+
+                  <motion.span
+                    className="block w-12 h-px bg-gradient-to-r from-transparent via-brass/30 to-transparent my-8 mx-auto"
+                    initial={{ scaleX: 0 }}
+                    animate={{ scaleX: 1 }}
+                    transition={{ duration: 0.8, delay: 1.6 }}
+                  />
 
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 1.5 }}
-                    className="text-center"
                   >
-                    <div className="font-display text-[22px] 2xl:text-[26px] tracking-[0.25em] uppercase text-transparent bg-clip-text bg-gradient-to-b from-brass-light to-brass-dark mb-4">
-                      Meritus Via
+                    <div className="font-display text-[14px] 2xl:text-[16px] tracking-[0.45em] uppercase text-transparent bg-clip-text bg-gradient-to-b from-brass-light to-brass-dark">
+                      Via
                     </div>
-                    <div className="inline-block font-mono text-[9px] 2xl:text-[10px] text-cream/70 tracking-[0.3em] uppercase border-y border-brass/20 py-2.5 px-6">
-                      Construction Disputes
+                    <div className="mt-3 font-serif text-[14px] 2xl:text-[16px] text-cream/40 italic tracking-wide font-light">
+                      the pathway
                     </div>
                   </motion.div>
 
                   <motion.div
-                    className="mt-14 pt-10 border-t border-brass/10 w-full relative"
+                    className="mt-12 pt-10 border-t border-brass/10 w-full"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 1.8 }}
+                    transition={{ duration: 1, delay: 1.9 }}
                   >
-                    {/* Small decorative diamond */}
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-brass/40 rotate-45" />
-                    
-                    <div className="font-serif text-[14px] 2xl:text-[15px] text-cream/50 italic tracking-wide font-light mb-1">
-                      Principles of
-                    </div>
-                    <div className="font-serif text-[17px] 2xl:text-[19px] text-cream/90 tracking-wide">
-                      Forensic Intelligence
+                    <div className="font-serif text-[18px] 2xl:text-[20px] text-cream/60 italic leading-relaxed">
+                      Your Pathway,<br />
+                      <span className="text-cream/90 font-medium">Built on Merit.</span>
                     </div>
                   </motion.div>
                 </div>
