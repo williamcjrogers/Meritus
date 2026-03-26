@@ -15,9 +15,9 @@ export function Footer() {
       </div>
 
       <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] pt-12 pb-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-10">
-          {/* Brand & Accreditations (Left - 5 cols) */}
-          <div className="lg:col-span-5 flex flex-col justify-between">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-16">
+          {/* Brand (Left - 5 cols) */}
+          <div className="lg:col-span-5 flex flex-col">
             <div>
               <HallmarkLogo size="header" variant="light" className="mb-4" />
               <p className="text-[12px] text-cream/50 max-w-[280px] leading-relaxed">
@@ -33,20 +33,6 @@ export function Footer() {
                 >
                   <LinkedInIcon className="w-5 h-5" />
                 </a>
-              </div>
-            </div>
-
-            <div className="mt-10 lg:mt-0">
-              <div className="font-mono text-[9px] tracking-[0.2em] uppercase text-brass/60 mb-3">
-                Professional Standards
-              </div>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[10px] tracking-[0.15em] text-cream/40">
-                <span>RICS</span><span className="text-brass/20">·</span>
-                <span>ICE</span><span className="text-brass/20">·</span>
-                <span>CIArb</span><span className="text-brass/20">·</span>
-                <span>CIOB</span><span className="text-brass/20">·</span>
-                <span>EWI</span><span className="text-brass/20">·</span>
-                <span>ACADEMY OF EXPERTS</span>
               </div>
             </div>
           </div>
@@ -100,6 +86,21 @@ export function Footer() {
                 ))}
               </ul>
             </div>
+          </div>
+        </div>
+
+        {/* Professional Standards */}
+        <div className="mb-6 flex flex-col md:flex-row md:items-center gap-6">
+          <div className="font-mono text-[9px] tracking-[0.2em] uppercase text-brass/60 shrink-0">
+            Professional Standards
+          </div>
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[10px] tracking-[0.15em] text-cream/40">
+            <span>RICS</span><span className="text-brass/20">·</span>
+            <span>ICE</span><span className="text-brass/20">·</span>
+            <span>CIArb</span><span className="text-brass/20">·</span>
+            <span>CIOB</span><span className="text-brass/20">·</span>
+            <span>EWI</span><span className="text-brass/20">·</span>
+            <span>ACADEMY OF EXPERTS</span>
           </div>
         </div>
 
