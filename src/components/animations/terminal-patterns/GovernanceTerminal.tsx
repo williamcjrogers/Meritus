@@ -63,8 +63,8 @@ export function GovernanceTerminal({
                     <line x1="0" y1="350" x2="600" y2="350" stroke="rgba(109, 165, 126, 0.15)" strokeWidth="1" fill="none" />
 
                     <rect x="180" y="120" width="240" height="260" stroke="rgba(109, 165, 126, 0.25)" strokeWidth="1" strokeDasharray="2 6" fill="none" />
-                    <text x="190" y="110" fill="rgba(109, 165, 126, 0.4)" fontFamily="'Courier New', Courier, monospace" fontSize="10" letterSpacing="2">ISOLATED_ENVIRONMENT // SILO_404</text>
-                    <text x="190" y="400" fill="rgba(109, 165, 126, 0.4)" fontFamily="'Courier New', Courier, monospace" fontSize="10" letterSpacing="2">CROSS_MATTER_MODELS :: REDACTED</text>
+                    <text x="190" y="110" fill="rgba(109, 165, 126, 0.4)" fontFamily="'Courier New', Courier, monospace" fontSize="10" letterSpacing="2">ISO_27001_ISOLATION // AIRGAPPED</text>
+                    <text x="190" y="400" fill="rgba(109, 165, 126, 0.4)" fontFamily="'Courier New', Courier, monospace" fontSize="10" letterSpacing="2">PRIVILEGE_PROTECTED // NO_LLM_TRAINING</text>
                 </g>
 
                 <circle cx="80" cy="250" r="2" fill="rgba(109, 165, 126, 0.5)" className="gt-fade-in" style={{ animationDelay: '1s' }} />

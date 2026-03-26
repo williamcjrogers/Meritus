@@ -75,19 +75,19 @@ export function PartnerTerminal({
 
                 {/* Submitting Party / Authorisation Block */}
                 <g className="pt-fade-1">
-                    <text x="100" y="80" fill="#355a42" fontFamily="monospace" fontSize="10" letterSpacing="2">FINAL_DELIVERABLE //</text>
-                    <text x="100" y="115" fill="#6da57e" fontFamily="monospace" fontSize="11" letterSpacing="1">OPINION_AND_TESTIMONY</text>
+                    <text x="100" y="80" fill="#355a42" fontFamily="monospace" fontSize="10" letterSpacing="2">CPR_PART_35_COMPLIANT //</text>
+                    <text x="100" y="115" fill="#6da57e" fontFamily="monospace" fontSize="11" letterSpacing="1">EXPERT_REPORT_FINAL</text>
                 </g>
 
                 <g className="pt-fade-2">
                     <rect x="100" y="140" width="4" height="40" fill="#c1a679" />
-                    <text x="120" y="155" fill="#c1a679" fontFamily="monospace" fontSize="13" letterSpacing="2">LIABILITY_APPORTIONMENT</text>
-                    <text x="120" y="175" fill="#c1a679" fontFamily="monospace" fontSize="13" letterSpacing="2">QUANTUM_VALUATION_AGREED</text>
+                    <text x="120" y="155" fill="#c1a679" fontFamily="monospace" fontSize="13" letterSpacing="2">INDEPENDENT_AND_UNINFLUENCED</text>
+                    <text x="120" y="175" fill="#c1a679" fontFamily="monospace" fontSize="13" letterSpacing="2">DUTY_TO_THE_COURT_PARAMOUNT</text>
                 </g>
 
                 <g className="pt-fade-3">
-                    <text x="100" y="235" fill="#355a42" fontFamily="monospace" fontSize="9" letterSpacing="1">AUTHORISED_BY:</text>
-                    <text x="100" y="275" fill="#6da57e" fontFamily="monospace" fontSize="9" letterSpacing="1">CPR_PART_35_COMPLIANT</text>
+                    <text x="100" y="235" fill="#355a42" fontFamily="monospace" fontSize="9" letterSpacing="1">TESTIFYING_PARTNER:</text>
+                    <text x="100" y="275" fill="#6da57e" fontFamily="monospace" fontSize="9" letterSpacing="1">STATEMENT_OF_TRUTH_SIGNED</text>
                 </g>
 
                 {/* Abstract "Signature" path drawn sequentially */}

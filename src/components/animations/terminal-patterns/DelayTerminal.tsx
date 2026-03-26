@@ -84,28 +84,28 @@ export function DelayTerminal({ className = "" }: { className?: string }) {
           <line x1="200" y1="0" x2="200" y2="400" />
         </g>
 
-        {/* Concurrent delay zone */}
+        {/* Concurrent delay zone / Time Impact Window */}
         <rect
-          x="400"
-          y="80"
-          width="200"
-          height="240"
-          fill="rgba(30, 59, 43, 0.4)"
+          x="380"
+          y="60"
+          width="180"
+          height="280"
+          fill="rgba(30, 59, 43, 0.3)"
           stroke="#2d563a"
           strokeWidth="1"
           strokeDasharray="2 2"
           className="dt-fade"
         />
         <text
-          x="410"
-          y="70"
+          x="390"
+          y="50"
           fill="#355a42"
           fontFamily="monospace"
-          fontSize="10"
+          fontSize="9"
           letterSpacing="1"
           className="dt-fade"
         >
-          CONCURRENT: WK38 — WK52
+          TIA_WINDOW_03 [WK38-WK42]
         </text>
 
         {/* As-planned ghost line */}
@@ -122,15 +122,15 @@ export function DelayTerminal({ className = "" }: { className?: string }) {
           y="140"
           fill="#355a42"
           fontFamily="monospace"
-          fontSize="10"
+          fontSize="9"
           letterSpacing="1"
           className="dt-fade"
         >
-          [AS-PLANNED]
+          [BASELINE_P6]
         </text>
 
-        {/* Faint background programme bars */}
-        <g stroke="#2d563a" strokeWidth="1" opacity="0.5" className="dt-fade">
+        {/* Faint background programme bars (Float / non-critical) */}
+        <g stroke="#2d563a" strokeWidth="3" opacity="0.4" strokeLinecap="round" className="dt-fade">
           <line x1="120" y1="120" x2="350" y2="120" />
           <line x1="180" y1="180" x2="450" y2="180" />
           <line x1="250" y1="210" x2="500" y2="210" />
@@ -138,19 +138,27 @@ export function DelayTerminal({ className = "" }: { className?: string }) {
           <line x1="150" y1="280" x2="480" y2="280" />
           <line x1="350" y1="310" x2="680" y2="310" />
         </g>
+        
+        {/* Relationship logic links (FS/SS) */}
+        <g stroke="#355a42" strokeWidth="0.5" fill="none" className="dt-fade">
+            <path d="M 350 120 L 360 120 L 360 180 L 370 180" />
+            <path d="M 450 180 L 460 180 L 460 210 L 470 210" />
+            <path d="M 500 210 L 510 210 L 510 250 L 520 250" />
+        </g>
 
         {/* Critical path — gold line that draws itself */}
-        <path
-          d="M 100 150 L 400 150 L 480 280 L 750 280"
-          stroke="#c1a679"
-          strokeWidth="1.5"
-          fill="none"
-          className="dt-draw"
-        />
+        <g className="dt-draw" fill="none">
+            {/* Driven path */}
+            <path d="M 100 150 L 380 150" stroke="#c1a679" strokeWidth="2" strokeLinecap="round" />
+            {/* Impact delay link (FS relationship drop) */}
+            <path d="M 380 150 L 390 150 L 390 280 L 400 280" stroke="#c1a679" strokeWidth="1" strokeDasharray="2 2" />
+            {/* Continuing critical path */}
+            <path d="M 400 280 L 750 280" stroke="#c1a679" strokeWidth="2" strokeLinecap="round" />
+        </g>
 
         {/* Glow behind critical path divergence */}
         <path
-          d="M 380 150 L 500 280"
+          d="M 360 150 L 380 150 L 390 150 L 390 280 L 400 280 L 420 280"
           stroke="#c1a679"
           strokeWidth="6"
           fill="none"
@@ -159,16 +167,16 @@ export function DelayTerminal({ className = "" }: { className?: string }) {
 
         {/* Divergence node with pulsing ring */}
         <circle
-          cx="400"
+          cx="380"
           cy="150"
           r="4"
           stroke="#c1a679"
           strokeWidth="1.5"
-          fill="none"
+          fill="#112a1d"
           className="dt-pulse"
         />
         <circle
-          cx="400"
+          cx="380"
           cy="150"
           r="14"
           stroke="#c1a679"
@@ -180,18 +188,18 @@ export function DelayTerminal({ className = "" }: { className?: string }) {
 
         {/* Crosshair at divergence */}
         <line
-          x1="392"
+          x1="372"
           y1="150"
-          x2="408"
+          x2="388"
           y2="150"
           stroke="#c1a679"
           strokeWidth="0.5"
           className="dt-pulse"
         />
         <line
-          x1="400"
+          x1="380"
           y1="142"
-          x2="400"
+          x2="380"
           y2="158"
           stroke="#c1a679"
           strokeWidth="0.5"
@@ -200,16 +208,16 @@ export function DelayTerminal({ className = "" }: { className?: string }) {
 
         {/* Callout line and labels */}
         <line
-          x1="400"
+          x1="380"
           y1="136"
-          x2="400"
+          x2="380"
           y2="100"
           stroke="#2d563a"
           strokeWidth="1"
           className="dt-fade"
         />
         <text
-          x="410"
+          x="390"
           y="108"
           fill="#c1a679"
           fontFamily="monospace"
@@ -217,10 +225,10 @@ export function DelayTerminal({ className = "" }: { className?: string }) {
           letterSpacing="1"
           className="dt-fade"
         >
-          EVENT_47
+          COMPENSABLE_EVENT: CE-042
         </text>
         <text
-          x="410"
+          x="390"
           y="122"
           fill="#6da57e"
           fontFamily="monospace"
@@ -228,19 +236,19 @@ export function DelayTerminal({ className = "" }: { className?: string }) {
           letterSpacing="1"
           className="dt-fade"
         >
-          DIVERGENCE_DETECTED
+          LOGIC_LINK_BROKEN // FS_REL
         </text>
 
         {/* Adjusted path endpoint */}
         <circle
-          cx="480"
+          cx="400"
           cy="280"
           r="3"
           fill="#c1a679"
           className="dt-fade-2"
         />
         <text
-          x="490"
+          x="410"
           y="275"
           fill="#6da57e"
           fontFamily="monospace"
@@ -248,17 +256,30 @@ export function DelayTerminal({ className = "" }: { className?: string }) {
           letterSpacing="1"
           className="dt-fade-2"
         >
-          ADJUSTED_PATH
+          IMPACT_PATH: +42_DAYS
         </text>
 
         {/* Endpoint marker */}
         <circle
           cx="750"
           cy="280"
-          r="3"
-          fill="#6da57e"
+          r="4"
+          stroke="#6da57e"
+          strokeWidth="1"
+          fill="#112a1d"
           className="dt-fade-2"
         />
+        <text
+          x="650"
+          y="295"
+          fill="#c1a679"
+          fontFamily="monospace"
+          fontSize="9"
+          letterSpacing="1"
+          className="dt-fade-2"
+        >
+          PRACTICAL_COMPLETION_SLIP
+        </text>
 
         {/* Small data labels along bars */}
         <text
@@ -269,7 +290,7 @@ export function DelayTerminal({ className = "" }: { className?: string }) {
           fontSize="8"
           className="dt-fade"
         >
-          ACT_012
+          ACT_FW_1020
         </text>
         <text
           x="310"
@@ -279,7 +300,7 @@ export function DelayTerminal({ className = "" }: { className?: string }) {
           fontSize="8"
           className="dt-fade"
         >
-          ACT_038
+          ACT_MEP_3010
         </text>
         <text
           x="360"
@@ -289,7 +310,7 @@ export function DelayTerminal({ className = "" }: { className?: string }) {
           fontSize="8"
           className="dt-fade"
         >
-          ACT_052
+          ACT_COMM_5040
         </text>
       </svg>
     </div>
