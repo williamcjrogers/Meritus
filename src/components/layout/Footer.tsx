@@ -5,8 +5,8 @@ import { LinkedInIcon } from "@/components/icons";
 export function Footer() {
   return (
     <footer className="bg-green text-cream/50" role="contentinfo">
-      <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] py-20 lg:py-24">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 lg:gap-20">
+      <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] py-12 lg:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16">
           {/* Brand */}
           <div>
             <span className="flex items-baseline gap-1.5">
@@ -56,7 +56,7 @@ export function Footer() {
                 {SITE_CONFIG.email}
               </a>
             </div>
-            <div className="mt-8 space-y-2">
+            <div className="mt-6 space-y-2">
               {FOOTER_NAV.legal.map((item) => (
                 <p key={item.href}>
                   <Link href={item.href} className="text-[11px] text-cream/30 hover:text-cream/50 transition-colors duration-200">
@@ -69,8 +69,8 @@ export function Footer() {
         </div>
 
         {/* Professional accreditations */}
-        <div className="mt-16 pt-8 border-t border-cream/10">
-          <div className="flex flex-col items-center gap-4">
+        <div className="mt-12 pt-8 border-t border-cream/5">
+          <div className="flex flex-col items-center gap-3">
             <div className="font-mono text-[8px] tracking-[0.3em] uppercase text-cream/20">
               Professional Standards
             </div>
@@ -94,14 +94,14 @@ export function Footer() {
         </div>
 
         {/* Discipline drift — barely visible scrolling keywords */}
-        <div className="mt-8 overflow-hidden" aria-hidden="true">
+        <div className="mt-6 overflow-hidden" aria-hidden="true">
           <div className="footer-drift whitespace-nowrap font-mono text-[8px] tracking-[0.3em] uppercase text-cream/[0.06]">
             <span>delay analysis &middot; quantum &middot; fire safety &middot; drawing review &middot; prolongation &middot; causation &middot; advisory &middot; measured works &middot; cladding &middot; specification compliance &middot; mediation &middot; disruption &middot; building safety act &middot; final account &middot; expert testimony &middot; design liability &middot;&nbsp;</span>
             <span>delay analysis &middot; quantum &middot; fire safety &middot; drawing review &middot; prolongation &middot; causation &middot; advisory &middot; measured works &middot; cladding &middot; specification compliance &middot; mediation &middot; disruption &middot; building safety act &middot; final account &middot; expert testimony &middot; design liability &middot;&nbsp;</span>
           </div>
         </div>
 
-        <div className="mt-6 pt-6 border-t border-cream/10">
+        <div className="mt-6 pt-6 border-t border-cream/5">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
             <p className="text-[11px] text-cream/30">{SITE_CONFIG.copyright}</p>
             <p className="text-[11px] text-cream/30">{SITE_CONFIG.legalFooter}</p>
