@@ -16,6 +16,7 @@ export const SITE_CONFIG = {
 
 export const NAV_ITEMS = [
   { label: "Services", href: "/services" },
+  { label: "Sectors", href: "/sectors" },
   { label: "Method", href: "/method" },
   { label: "Insights", href: "/insights" },
   { label: "Contact", href: "/contact" },
@@ -24,6 +25,7 @@ export const NAV_ITEMS = [
 export const FOOTER_NAV = {
   main: [
     { label: "Services", href: "/services" },
+    { label: "Sectors", href: "/sectors" },
     { label: "Method", href: "/method" },
     { label: "Insights", href: "/insights" },
     { label: "Contact", href: "/contact" },
@@ -31,6 +33,7 @@ export const FOOTER_NAV = {
   ],
   legal: [
     { label: "Privacy", href: "/privacy-policy" },
+    { label: "Terms", href: "/terms" },
     { label: "Accessibility", href: "/privacy-policy#accessibility" },
   ],
 } as const;
