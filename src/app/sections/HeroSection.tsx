@@ -67,7 +67,7 @@ export function HeroSection() {
         <div className="grid items-start gap-14 lg:items-center lg:gap-12 xl:gap-16 lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_360px]">
           <div className="max-w-3xl 2xl:max-w-4xl">
             <motion.div
-              className="font-mono text-[10px] 2xl:text-[11px] tracking-[0.4em] uppercase text-brass/80 mb-10"
+              className="font-mono text-[10px] 2xl:text-[11px] tracking-[0.4em] uppercase text-brass/80 mb-12"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
@@ -107,7 +107,7 @@ export function HeroSection() {
             />
 
             <motion.p
-              className="mt-8 font-serif text-xl lg:text-2xl 2xl:text-[26px] text-cream/70 max-w-2xl leading-[1.5]"
+              className="mt-10 font-serif text-xl lg:text-2xl 2xl:text-[26px] text-cream/70 max-w-2xl leading-[1.6]"
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.9 }}
@@ -116,7 +116,7 @@ export function HeroSection() {
             </motion.p>
 
             <motion.div
-              className="mt-12 flex flex-wrap items-center gap-4 sm:gap-6"
+              className="mt-14 flex flex-wrap items-center gap-5 sm:gap-6"
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 1.1 }}
@@ -132,10 +132,10 @@ export function HeroSection() {
               </Link>
               <Link
                 href="/claims-intelligence"
-                className="group/login relative flex items-center gap-3 px-6 py-3.5 bg-green-dark/40 backdrop-blur-sm border border-brass/20 hover:border-brass/50 transition-all duration-300 rounded-sm overflow-hidden"
+                className="group/login relative flex items-center gap-3 px-6 py-2.5 bg-green-dark/40 backdrop-blur-sm border border-brass/20 hover:border-brass/40 transition-all duration-300 rounded-sm overflow-hidden hover:-translate-y-[1px] hover:shadow-[0_4px_14px_rgba(0,0,0,0.1)]"
               >
                 <div className="absolute inset-0 bg-brass/5 translate-y-full group-hover/login:translate-y-0 transition-transform duration-300" />
-                <span className="relative text-[13px] font-medium tracking-wide text-brass-light group-hover/login:text-brass transition-colors">
+                <span className="relative text-[12px] font-medium tracking-wide text-brass-light group-hover/login:text-brass transition-colors">
                   Claims Intelligence
                 </span>
                 <svg
