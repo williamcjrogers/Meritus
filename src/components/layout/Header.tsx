@@ -50,7 +50,7 @@ export function Header() {
             </Link>
 
             {/* Center Navigation Links */}
-            <div className="hidden lg:flex items-center justify-center absolute left-1/2 -translate-x-1/2 gap-8">
+            <div className="hidden lg:flex items-center justify-center absolute left-[45%] -translate-x-1/2 gap-8">
               {NAV_ITEMS.map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
                 return (
