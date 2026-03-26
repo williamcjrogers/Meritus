@@ -15,7 +15,7 @@ export function Footer() {
       </div>
 
       <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] pt-12 pb-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
           {/* Brand (Left - 5 cols) */}
           <div className="lg:col-span-5 flex flex-col">
             <div>
@@ -90,11 +90,11 @@ export function Footer() {
         </div>
 
         {/* Professional Standards */}
-        <div className="mb-6 flex flex-col md:flex-row md:items-center gap-6">
-          <div className="font-mono text-[9px] tracking-[0.2em] uppercase text-brass/60 shrink-0">
+        <div className="mb-6 flex flex-col items-center justify-center gap-3">
+          <div className="font-mono text-[9px] tracking-[0.2em] uppercase text-brass/60 text-center">
             Professional Standards
           </div>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-[10px] tracking-[0.15em] text-cream/40">
+          <div className="flex flex-wrap justify-center items-center gap-x-4 gap-y-2 font-mono text-[10px] tracking-[0.15em] text-cream/40">
             <span>RICS</span><span className="text-brass/20">·</span>
             <span>ICE</span><span className="text-brass/20">·</span>
             <span>CIArb</span><span className="text-brass/20">·</span>
