@@ -34,7 +34,7 @@ export const FOOTER_NAV = {
   legal: [
     { label: "Privacy", href: "/privacy-policy" },
     { label: "Terms", href: "/terms" },
-    { label: "Accessibility", href: "/privacy-policy#accessibility" },
+    { label: "Accessibility", href: "/accessibility" },
   ],
 } as const;
 
