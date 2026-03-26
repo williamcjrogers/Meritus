@@ -5,8 +5,8 @@ import { LinkedInIcon } from "@/components/icons";
 export function Footer() {
   return (
     <footer className="bg-green text-cream/50" role="contentinfo">
-      <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] py-12 lg:py-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-16">
+      <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] pt-10 pb-6 lg:pt-12 lg:pb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
           {/* Brand */}
           <div>
             <span className="flex items-baseline gap-1.5">
@@ -20,10 +20,10 @@ export function Footer() {
                 Via
               </span>
             </span>
-            <p className="mt-2 text-[13px] text-brass/70 italic font-serif">
+            <p className="mt-1.5 text-[12px] text-brass/70 italic font-serif">
               {SITE_CONFIG.legalTagline}
             </p>
-            <div className="mt-6">
+            <div className="mt-5">
               <a
                 href={SITE_CONFIG.linkedin}
                 target="_blank"
@@ -38,7 +38,7 @@ export function Footer() {
 
           {/* Navigation */}
           <div>
-            <ul className="space-y-3">
+            <ul className="space-y-2">
               {FOOTER_NAV.main.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className="text-[12px] text-cream/50 hover:text-brass transition-colors duration-200">
@@ -56,7 +56,7 @@ export function Footer() {
                 {SITE_CONFIG.email}
               </a>
             </div>
-            <div className="mt-6 space-y-2">
+            <div className="mt-4 space-y-1.5">
               {FOOTER_NAV.legal.map((item) => (
                 <p key={item.href}>
                   <Link href={item.href} className="text-[11px] text-cream/30 hover:text-cream/50 transition-colors duration-200">
@@ -69,12 +69,12 @@ export function Footer() {
         </div>
 
         {/* Professional accreditations */}
-        <div className="mt-12 pt-8 border-t border-cream/5">
-          <div className="flex flex-col items-center gap-3">
+        <div className="mt-8 pt-6 border-t border-cream/5">
+          <div className="flex flex-col items-center gap-2.5">
             <div className="font-mono text-[8px] tracking-[0.3em] uppercase text-cream/20">
               Professional Standards
             </div>
-            <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 font-mono text-[10px] tracking-[0.2em] uppercase text-cream/25">
+            <div className="flex flex-wrap justify-center items-center gap-x-5 gap-y-1.5 font-mono text-[10px] tracking-[0.2em] uppercase text-cream/25">
               <span>RICS</span>
               <span className="text-cream/10">·</span>
               <span>ICE</span>
@@ -87,24 +87,24 @@ export function Footer() {
               <span className="text-cream/10">·</span>
               <span>Academy of Experts</span>
             </div>
-            <p className="text-[10px] text-cream/15 text-center max-w-md">
+            <p className="text-[9px] text-cream/15 text-center max-w-md">
               Partners hold chartered and fellowship-level memberships across leading professional institutions.
             </p>
           </div>
         </div>
 
         {/* Discipline drift — barely visible scrolling keywords */}
-        <div className="mt-6 overflow-hidden" aria-hidden="true">
+        <div className="mt-5 overflow-hidden" aria-hidden="true">
           <div className="footer-drift whitespace-nowrap font-mono text-[8px] tracking-[0.3em] uppercase text-cream/[0.06]">
             <span>delay analysis &middot; quantum &middot; fire safety &middot; drawing review &middot; prolongation &middot; causation &middot; advisory &middot; measured works &middot; cladding &middot; specification compliance &middot; mediation &middot; disruption &middot; building safety act &middot; final account &middot; expert testimony &middot; design liability &middot;&nbsp;</span>
             <span>delay analysis &middot; quantum &middot; fire safety &middot; drawing review &middot; prolongation &middot; causation &middot; advisory &middot; measured works &middot; cladding &middot; specification compliance &middot; mediation &middot; disruption &middot; building safety act &middot; final account &middot; expert testimony &middot; design liability &middot;&nbsp;</span>
           </div>
         </div>
 
-        <div className="mt-6 pt-6 border-t border-cream/5">
+        <div className="mt-5 pt-4 border-t border-cream/5">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-            <p className="text-[11px] text-cream/30">{SITE_CONFIG.copyright}</p>
-            <p className="text-[11px] text-cream/30">{SITE_CONFIG.legalFooter}</p>
+            <p className="text-[10px] text-cream/30">{SITE_CONFIG.copyright}</p>
+            <p className="text-[10px] text-cream/30">{SITE_CONFIG.legalFooter}</p>
           </div>
         </div>
       </div>
