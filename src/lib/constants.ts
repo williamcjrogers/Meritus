@@ -19,7 +19,6 @@ export const NAV_ITEMS = [
   { label: "Sectors", href: "/sectors" },
   { label: "Method", href: "/method" },
   { label: "Insights", href: "/insights" },
-  { label: "Contact", href: "/contact" },
 ] as const;
 
 export const FOOTER_NAV = {

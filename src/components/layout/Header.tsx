@@ -34,8 +34,11 @@ export function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled ? "bg-stone shadow-[0_1px_2px_rgba(0,0,0,0.06)]" : "bg-transparent shadow-none"
-          }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
+          scrolled 
+            ? "bg-stone/95 backdrop-blur-md shadow-[0_1px_3px_rgba(0,0,0,0.05)] border-green/5" 
+            : "bg-transparent shadow-none border-transparent"
+        }`}
       >
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
           <nav className="flex items-center justify-between h-16 lg:h-20" aria-label="Main navigation">
@@ -53,25 +56,36 @@ export function Header() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`text-[13px] font-medium tracking-wide transition-colors duration-200 ${
-                      scrolled ? "text-green/60 hover:text-green" : "text-cream/70 hover:text-cream"
+                    className={`relative group text-[13px] font-medium tracking-wide transition-colors duration-300 py-1 ${
+                      scrolled ? "text-green/70 hover:text-green" : "text-cream/80 hover:text-cream"
                     } ${isActive ? "!text-brass" : ""}`}
                   >
                     {item.label}
+                    <span 
+                      className={`absolute bottom-0 left-0 w-0 h-[1px] transition-all duration-300 ease-out group-hover:w-full ${
+                        scrolled ? "bg-green/30" : "bg-cream/30"
+                      } ${isActive ? "!w-full !bg-brass/50" : ""}`} 
+                    />
                   </Link>
                 );
               })}
+              <div className={`w-[1px] h-4 mx-2 transition-colors duration-500 ${scrolled ? "bg-green/10" : "bg-cream/10"}`} />
               <Link
                 href="/contact"
-                className={`text-[13px] font-medium tracking-wide transition-all duration-200 border-b ${
-                  scrolled ? "text-green border-green/20 hover:border-brass hover:text-brass" : "text-cream border-cream/20 hover:border-brass hover:text-brass"
+                className={`relative group text-[13px] font-medium tracking-wide transition-colors duration-300 py-1 ${
+                  scrolled ? "text-green/90 hover:text-green" : "text-cream hover:text-cream"
                 }`}
               >
                 Request Conflict Check
+                <span 
+                  className={`absolute bottom-0 left-0 w-full h-[1px] transition-all duration-300 ease-out ${
+                    scrolled ? "bg-green/20 group-hover:bg-brass/60" : "bg-cream/20 group-hover:bg-brass/60"
+                  }`} 
+                />
               </Link>
               <Link
                 href="/claims-intelligence"
-                className="text-[13px] font-medium tracking-wide bg-brass text-green px-4 py-1.5 rounded-sm hover:bg-brass-light transition-colors duration-200"
+                className="text-[13px] font-medium tracking-wide bg-brass text-green px-5 py-2.5 rounded-sm hover:bg-[#d4ba8d] hover:-translate-y-[1px] transition-all duration-300 shadow-sm hover:shadow-md ml-2"
               >
                 Claims Intelligence
               </Link>
