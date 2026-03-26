@@ -41,7 +41,7 @@ export function Header() {
         }`}
       >
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
-          <nav className="flex items-center justify-between h-16 lg:h-20" aria-label="Main navigation">
+          <nav className="relative flex items-center justify-between h-16 lg:h-20" aria-label="Main navigation">
             <Link href="/">
               <HallmarkLogo
                 size="header"
@@ -49,7 +49,8 @@ export function Header() {
               />
             </Link>
 
-            <div className="hidden lg:flex items-center gap-10">
+            {/* Center Navigation Links */}
+            <div className="hidden lg:flex items-center justify-center absolute left-1/2 -translate-x-1/2 gap-8">
               {NAV_ITEMS.map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
                 return (
@@ -69,7 +70,10 @@ export function Header() {
                   </Link>
                 );
               })}
-              <div className={`w-[1px] h-4 mx-2 transition-colors duration-500 ${scrolled ? "bg-green/10" : "bg-cream/10"}`} />
+            </div>
+
+            {/* Right Action Links */}
+            <div className="hidden lg:flex items-center gap-6">
               <Link
                 href="/contact"
                 className={`relative group text-[13px] font-medium tracking-wide transition-colors duration-300 py-1 ${
@@ -85,7 +89,7 @@ export function Header() {
               </Link>
               <Link
                 href="/claims-intelligence"
-                className="text-[13px] font-medium tracking-wide bg-brass text-green px-5 py-2.5 rounded-sm hover:bg-[#d4ba8d] hover:-translate-y-[1px] transition-all duration-300 shadow-sm hover:shadow-md ml-2"
+                className="text-[12px] font-medium tracking-wide bg-brass text-green px-4 py-1.5 rounded-sm hover:bg-[#d4ba8d] hover:-translate-y-[1px] transition-all duration-300 shadow-sm hover:shadow-md border border-brass/50"
               >
                 Claims Intelligence
               </Link>
