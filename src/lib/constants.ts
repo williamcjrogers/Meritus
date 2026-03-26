@@ -7,7 +7,6 @@ export const SITE_CONFIG = {
     "Senior-led construction disputes advisory. Forensic delay analysis, quantum, technical expert, and advisory services for high-value disputes.",
   url: "https://meritusvia.com",
   email: "enquiries@meritusvia.com",
-  phone: "+44 (0) 20 XXXX XXXX",
   linkedin: "https://linkedin.com/company/meritus-via",
   legalName: "Meritus Via LLP",
   copyright: `\u00a9 ${new Date().getFullYear()} Meritus Via. All rights reserved.`,
@@ -28,7 +27,7 @@ export const FOOTER_NAV = {
     { label: "Method", href: "/method" },
     { label: "Insights", href: "/insights" },
     { label: "Contact", href: "/contact" },
-    { label: "Claims Intelligence", href: "https://intelligence.meritusvia.com/#dashboard" },
+    { label: "Claims Intelligence", href: "/claims-intelligence" },
   ],
   legal: [
     { label: "Privacy", href: "/privacy-policy" },
@@ -36,13 +35,6 @@ export const FOOTER_NAV = {
   ],
 } as const;
 
-export const TRUST_METRICS = [
-  { value: "\u00a3Xbn+", label: "Dispute Value Managed" },
-  { value: "100%", label: "Partner-Led Delivery" },
-  { value: "100%", label: "Independent Ownership" },
-] as const;
-
-/** Single-line credibility copy for editorial bar (Option A) */
 export const CREDIBILITY_LINE = "Partner-led · Independent · High-value disputes" as const;
 
 export const SERVICE_PILLARS = [

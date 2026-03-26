@@ -70,7 +70,7 @@ export function Header() {
                 Request Conflict Check
               </Link>
               <Link
-                href="https://intelligence.meritusvia.com/#dashboard"
+                href="/claims-intelligence"
                 className="text-[13px] font-medium tracking-wide bg-brass text-green px-4 py-1.5 rounded-sm hover:bg-brass-light transition-colors duration-200"
               >
                 Claims Intelligence

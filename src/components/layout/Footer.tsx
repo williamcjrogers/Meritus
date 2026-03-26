@@ -68,8 +68,33 @@ export function Footer() {
           </div>
         </div>
 
+        {/* Professional accreditations */}
+        <div className="mt-16 pt-8 border-t border-cream/10">
+          <div className="flex flex-col items-center gap-4">
+            <div className="font-mono text-[8px] tracking-[0.3em] uppercase text-cream/20">
+              Professional Standards
+            </div>
+            <div className="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 font-mono text-[10px] tracking-[0.2em] uppercase text-cream/25">
+              <span>RICS</span>
+              <span className="text-cream/10">·</span>
+              <span>ICE</span>
+              <span className="text-cream/10">·</span>
+              <span>CIArb</span>
+              <span className="text-cream/10">·</span>
+              <span>CIOB</span>
+              <span className="text-cream/10">·</span>
+              <span>EWI</span>
+              <span className="text-cream/10">·</span>
+              <span>Academy of Experts</span>
+            </div>
+            <p className="text-[10px] text-cream/15 text-center max-w-md">
+              Partners hold chartered and fellowship-level memberships across leading professional institutions.
+            </p>
+          </div>
+        </div>
+
         {/* Discipline drift — barely visible scrolling keywords */}
-        <div className="mt-16 overflow-hidden" aria-hidden="true">
+        <div className="mt-8 overflow-hidden" aria-hidden="true">
           <div className="footer-drift whitespace-nowrap font-mono text-[8px] tracking-[0.3em] uppercase text-cream/[0.06]">
             <span>delay analysis &middot; quantum &middot; fire safety &middot; drawing review &middot; prolongation &middot; causation &middot; advisory &middot; measured works &middot; cladding &middot; specification compliance &middot; mediation &middot; disruption &middot; building safety act &middot; final account &middot; expert testimony &middot; design liability &middot;&nbsp;</span>
             <span>delay analysis &middot; quantum &middot; fire safety &middot; drawing review &middot; prolongation &middot; causation &middot; advisory &middot; measured works &middot; cladding &middot; specification compliance &middot; mediation &middot; disruption &middot; building safety act &middot; final account &middot; expert testimony &middot; design liability &middot;&nbsp;</span>

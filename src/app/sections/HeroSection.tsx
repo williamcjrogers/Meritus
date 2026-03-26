@@ -131,12 +131,12 @@ export function HeroSection() {
                 Our Method
               </Link>
               <Link
-                href="https://intelligence.meritusvia.com/#dashboard"
+                href="/claims-intelligence"
                 className="group/login relative flex items-center gap-3 px-6 py-3.5 bg-green-dark/40 backdrop-blur-sm border border-brass/20 hover:border-brass/50 transition-all duration-300 rounded-sm overflow-hidden"
               >
                 <div className="absolute inset-0 bg-brass/5 translate-y-full group-hover/login:translate-y-0 transition-transform duration-300" />
                 <span className="relative text-[13px] font-medium tracking-wide text-brass-light group-hover/login:text-brass transition-colors">
-                  Claims Intelligence Login
+                  Claims Intelligence
                 </span>
                 <svg
                   width="12"

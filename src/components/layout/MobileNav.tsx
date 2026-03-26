@@ -56,11 +56,11 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
               transition={{ duration: 0.3, delay: (NAV_ITEMS.length + 1) * 0.06 }}
             >
               <Link
-                href="https://intelligence.meritusvia.com/#dashboard"
+                href="/claims-intelligence"
                 onClick={onClose}
                 className="mt-6 text-sm text-green bg-brass px-6 py-2 rounded-sm tracking-wide font-medium inline-block"
               >
-                Claims Intelligence Login
+                Claims Intelligence
               </Link>
             </motion.div>
           </nav>
