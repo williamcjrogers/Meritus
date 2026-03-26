@@ -10,20 +10,20 @@ export const metadata: Metadata = {
 const capabilities = [
   {
     num: "01",
-    title: "Algorithmic logic parsing & evidence structuring",
-    desc: "The days of billing hundreds of hours to manually index PDFs are over. We natively parse schedule files (Primavera P6 .xer, Asta Powerproject) and cross-reference them against thousands of unstructured site records. The expert begins their delay analysis (aligned with SCL Protocol 2nd Ed.) from a perfectly synchronised, searchable evidence base.",
+    title: "Algorithmic evidence structuring",
+    desc: "The days of billing hundreds of hours to read unindexed PDFs are over. Thousands of documents \u2014 correspondence, site records, meeting minutes \u2014 are classified and structured chronologically in hours. The expert begins their analysis from a perfectly organised evidence base.",
     terminal: "delay" as const,
   },
   {
     num: "02",
-    title: "Forensic quantum interrogation",
-    desc: "Our technology isolates mathematical anomalies and unproven causal links—unapproved contract deviations, double-counting, and unsupported preliminaries thickening. Senior practitioners then interrogate these pivot points, separating genuine compensable disruption (e.g., via Measured Mile) from global claim background noise.",
+    title: "Forensic interrogation pivot",
+    desc: "Technology isolates the anomalies \u2014 schedule logic shifts, unapproved clause deviations, and mathematical discrepancies. Our senior practitioners then interrogate these pivot points, applying decades of site and tribunal experience to separate genuine compensable events from background noise.",
     terminal: "quantum" as const,
   },
   {
     num: "03",
-    title: "Testifying partner execution",
-    desc: "Algorithms cannot testify. Every judgment, liability apportionment, and valuation is formed by a Testifying Partner. From CPR Part 35 Expert Reports to rapid Adjudication Referrals, our outputs are entirely traceable, privilege-protected, and built to withstand aggressive cross-examination or concurrent evidence (hot-tubbing).",
+    title: "Partner-led execution",
+    desc: "AI cannot testify. Every judgment, liability apportionment, and valuation is formed by a testifying partner. From CPR Part 35 Expert Reports to rapid Adjudication Referrals, our outputs are entirely traceable, disclosable, and built to withstand aggressive cross-examination.",
     terminal: "partner" as const,
   },
 ];
@@ -52,28 +52,29 @@ export default function MethodPage() {
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
           <FadeIn>
             <div className="max-w-3xl">
-              <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate mb-4">The Principle</div>
+              <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate mb-4">The principle</div>
               <h2 className="font-serif text-2xl lg:text-3xl text-green leading-[1.35] mb-6">
-                We automate the evidence handling. Never the expert judgment.
+                We automate the preparation. Never the judgment.
               </h2>
               <div className="space-y-4 text-[15px] lg:text-base text-slate leading-relaxed">
                 <p>
                   The construction disputes market is racing to adopt AI as a shortcut.
-                  Firms are using generic LLMs to draft opinions, generate reports, and produce
+                  Firms are using it to draft opinions, generate reports, and produce
                   deliverables at speed. The result is work that looks efficient but
-                  inevitably collapses under rigorous forensic scrutiny.
+                  cannot withstand forensic scrutiny.
                 </p>
                 <p>
-                  We took a radically different view. Our proprietary intelligence layer securely processes over 100GB of
-                  project data per matter—parsing native Primavera P6 files, cross-referencing commercial correspondence, 
-                  extracting contract clauses, and structuring it all chronologically in hours. The expert
-                  starts their investigation from an interconnected, privilege-protected database, not a chaotic folder of unsorted PDFs.
+                  We took a different view. Our proprietary tools process over 100GB of
+                  project data per matter — correspondence, site records, contract
+                  documents, programme files — classifying, cross-referencing, and
+                  structuring it chronologically in hours rather than weeks. The expert
+                  starts from an organised evidence base, not a folder of unsorted PDFs.
                 </p>
                 <p>
-                  But the automation definitively stops where the judgment begins. Every opinion is formed
-                  by a Testifying Partner. Every conclusion is immutably traceable to its source document. Every method is
-                  disclosable to the tribunal. Technology simply clears the noise so our experts can focus on the
-                  only thing that wins disputes: the impenetrable quality of the analysis.
+                  But the tools stop where the judgment begins. Every opinion is formed
+                  by a partner. Every conclusion is traceable to source. Every method is
+                  disclosable. Technology clears the path so our experts can focus on the
+                  only thing that wins disputes: the quality of the analysis.
                 </p>
               </div>
             </div>
@@ -119,7 +120,7 @@ export default function MethodPage() {
               <div className="max-w-xl">
                 <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate mb-4">Governance</div>
                 <ul className="space-y-4">
-                  {["Human review and CPR Part 35 sign-off before any output leaves the firm", "Method notes accompany every technology-assisted deliverable (SCL/RICS compliant)", "Every output traceable to source documents via immutable links. No black boxes.", "Data isolated per matter (ISO 27001). No cross-matter LLM model training.", "Tools built by Testifying Experts and construction lawyers, not software companies"].map((item, i) => (
+                  {["Human review and sign-off before any output leaves the firm", "Method notes accompany every technology-assisted deliverable", "Every output traceable to source documents. No black boxes.", "Client data isolated per matter. No cross-matter model training.", "Tools built by disputes practitioners, not software companies"].map((item, i) => (
                     <li key={i} className="text-[15px] text-slate leading-relaxed flex items-start gap-3">
                       <span className="text-brass/50 mt-0.5 shrink-0">&mdash;</span>{item}
                     </li>

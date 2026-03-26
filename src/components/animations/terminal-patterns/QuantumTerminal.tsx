@@ -220,7 +220,7 @@ export function QuantumTerminal({ className = "" }: { className?: string }) {
           letterSpacing="1"
           className="qt-fade"
         >
-          FILTER: UNPROVEN_NEXUS
+          APPLY: EMDEN_FORMULA
         </text>
 
         {/* Signal dots — clean, bright subset */}
@@ -272,7 +272,7 @@ export function QuantumTerminal({ className = "" }: { className?: string }) {
           letterSpacing="1"
           className="qt-fade-3"
         >
-          MEASURED_MILE: £7.8M
+          TRUE_EXPOSURE: £7.8M
         </text>
 
         {/* Reduction indicator */}
@@ -285,7 +285,7 @@ export function QuantumTerminal({ className = "" }: { className?: string }) {
           letterSpacing="1"
           className="qt-fade-3"
         >
-          GLOBAL_CLAIM_VARIANCE: -£4.6M
+          VARIANCE: -£4.6M [REJECTED]
         </text>
 
         {/* Subtle grid */}
