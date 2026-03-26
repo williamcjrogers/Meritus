@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SITE_CONFIG, FOOTER_NAV } from "@/lib/constants";
 import { LinkedInIcon } from "@/components/icons";
+import { HallmarkLogo } from "@/components/icons/HallmarkLogo";
 
 export function Footer() {
   return (
@@ -18,29 +19,19 @@ export function Footer() {
           {/* Brand & Accreditations (Left - 5 cols) */}
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
-              <span className="flex items-baseline gap-1.5">
-                <span
-                  className="font-serif text-2xl font-semibold tracking-[0.18em] text-cream"
-                  style={{ fontVariantCaps: "all-small-caps" }}
-                >
-                  Meritus
-                </span>
-                <span className="font-serif text-lg font-normal tracking-[0.15em] italic text-brass">
-                  Via
-                </span>
-              </span>
-              <p className="mt-3 text-[12px] text-cream/50 max-w-[280px] leading-relaxed">
+              <HallmarkLogo size="header" variant="light" className="mb-4" />
+              <p className="text-[12px] text-cream/50 max-w-[280px] leading-relaxed">
                 Forensic intelligence for high-value construction disputes. {SITE_CONFIG.legalTagline}
               </p>
-              <div className="mt-5">
+              <div className="mt-8">
                 <a
                   href={SITE_CONFIG.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-cream/30 hover:text-brass transition-colors duration-200"
+                  className="text-cream/30 hover:text-brass transition-colors duration-200 inline-block p-2 -ml-2"
                   aria-label="Meritus Via on LinkedIn"
                 >
-                  <LinkedInIcon className="w-4 h-4" />
+                  <LinkedInIcon className="w-5 h-5" />
                 </a>
               </div>
             </div>
