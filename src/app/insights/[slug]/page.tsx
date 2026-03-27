@@ -100,68 +100,122 @@ export default async function InsightArticlePage({ params }: { params: Promise<{
 
   return (
     <>
-      <section className="bg-green pt-[clamp(7rem,14vh,9rem)] pb-[clamp(3rem,8vh,5rem)] relative overflow-hidden">
-        <ProjectPulse className="z-0 opacity-30" />
-        <div className="max-w-[1000px] 2xl:max-w-[1100px] mx-auto px-6 lg:px-[8%] relative z-10">
-          <FadeIn>
-            <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-brass mb-6">
-              {article.category}
+      <section className="bg-green pt-[clamp(8rem,16vh,12rem)] pb-[clamp(4rem,10vh,6rem)] relative overflow-hidden border-b border-brass/10">
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
+        <ProjectPulse className="z-0 opacity-20" />
+        
+        {/* Abstract Technical Background Grid */}
+        <div className="absolute inset-0 pointer-events-none opacity-30">
+          <div className="absolute top-0 left-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
+          <div className="absolute top-0 right-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
+          <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brass/10 to-transparent" />
+        </div>
+
+        <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+            <div className="lg:col-span-8">
+              <FadeIn delay={0.1}>
+                <div className="flex items-center gap-4 mb-8">
+                  <div className="h-[1px] w-8 bg-brass/50" />
+                  <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-brass/80">
+                    {article.category}
+                  </div>
+                  <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-brass/50 to-transparent" />
+                </div>
+              </FadeIn>
+              
+              <FadeIn delay={0.2}>
+                <h1 className="font-serif text-3xl lg:text-[44px] text-cream leading-[1.15] italic mb-8">
+                  {article.title}
+                </h1>
+              </FadeIn>
+              
+              <FadeIn delay={0.3}>
+                <div className="flex gap-6 max-w-2xl">
+                  <div className="w-[1px] bg-brass/30 shrink-0 mt-2" />
+                  <div className="flex items-center gap-4 font-mono text-[10px] text-cream/60">
+                    <span>{article.date}</span>
+                    <span className="text-brass/30">|</span>
+                    <span>{article.readTime}</span>
+                  </div>
+                </div>
+              </FadeIn>
             </div>
-            <h1 className="font-serif text-3xl lg:text-[44px] text-cream leading-[1.15] italic">
-              {article.title}
-            </h1>
-            <div className="mt-6 flex items-center gap-4 font-mono text-[10px] text-cream/40">
-              <span>{article.date}</span>
-              <span className="text-cream/15">|</span>
-              <span>{article.readTime}</span>
+            
+            <div className="lg:col-span-4 hidden lg:flex flex-col items-end text-right pt-4">
+              <FadeIn delay={0.4}>
+                <div className="inline-flex flex-col gap-3 p-6 border border-brass/10 bg-black/10 backdrop-blur-md rounded-sm relative">
+                  {/* Decorative corner markers */}
+                  <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/40" />
+                  <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/40" />
+                  
+                  <div className="font-mono text-[9px] tracking-[0.2em] text-cream/40 uppercase mb-2">Metadata</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">AUTHOR: MERITUS_VIA</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">TYPE: FORENSIC_ANALYSIS</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">STATUS: PUBLISHED</div>
+                </div>
+              </FadeIn>
             </div>
-          </FadeIn>
+          </div>
         </div>
       </section>
 
-      <section className="bg-stone py-[clamp(3rem,6vw,5rem)]">
-        <div className="max-w-[900px] 2xl:max-w-[1000px] mx-auto px-6 lg:px-[8%]">
-          <FadeIn>
-            <div className="space-y-6">
-              {content.body.map((paragraph, i) => (
-                <p key={i} className="text-[16px] lg:text-[17px] text-ink/80 leading-[1.85] font-sans">
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-
-            {content.references.length > 0 && (
-              <div className="mt-14 pt-8 border-t border-green/10">
-                <h3 className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate/60 mb-5">References</h3>
-                <ol className="space-y-2.5">
-                  {content.references.map((ref) => (
-                    <li key={ref.id} className="text-[12px] lg:text-[13px] text-slate/70 leading-[1.7] font-sans flex items-start gap-2">
-                      <span className="font-mono text-[10px] text-brass/60 mt-[3px] shrink-0">{ref.id}.</span>
-                      <span>{ref.text}</span>
-                    </li>
-                  ))}
-                </ol>
+      <section className="bg-stone py-[clamp(4rem,8vw,8rem)] relative">
+        <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+            
+            {/* Article Content */}
+            <div className="lg:col-span-8 lg:col-start-3">
+              <div className="space-y-8">
+                {content.body.map((paragraph, i) => (
+                  <FadeIn key={i} delay={0.1 + (i * 0.05)}>
+                    <p className="text-[15px] lg:text-[16px] text-ink/80 leading-[1.85] font-sans font-light tracking-[0.01em]">
+                      {paragraph}
+                    </p>
+                  </FadeIn>
+                ))}
               </div>
-            )}
 
-            <div className="mt-10 pt-6 border-t border-green/8">
-              <p className="text-[11px] text-slate/40 leading-relaxed italic">
-                The views expressed in this article are those of the author and are intended for general information only. They do not constitute legal advice and should not be relied upon as such. Specific professional advice should be sought in relation to any particular matter.
-              </p>
-            </div>
+              {content.references.length > 0 && (
+                <FadeIn delay={0.4}>
+                  <div className="mt-16 pt-10 border-t border-green/10">
+                    <div className="flex items-center gap-4 mb-8">
+                      <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate/50">
+                        References
+                      </div>
+                      <div className="h-[1px] flex-1 bg-gradient-to-r from-brass/20 to-transparent" />
+                    </div>
+                    <ol className="space-y-4">
+                      {content.references.map((ref) => (
+                        <li key={ref.id} className="text-[12px] lg:text-[13px] text-slate/70 leading-[1.7] font-sans font-light flex items-start gap-3">
+                          <span className="font-mono text-[10px] text-brass/60 mt-[3px] shrink-0">[{ref.id}]</span>
+                          <span>{ref.text}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                </FadeIn>
+              )}
 
-            <div className="mt-10 pt-8 border-t border-green/10">
-              <Link
-                href="/insights"
-                className="inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.15em] uppercase text-brass hover:text-brass-dark transition-colors duration-200"
-              >
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-                  <path d="M11 6H1M5 2L1 6l4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Back to Insights
-              </Link>
+              <FadeIn delay={0.5}>
+                <div className="mt-12 pt-8 border-t border-green/5">
+                  <p className="text-[11px] text-slate/40 leading-relaxed italic">
+                    The views expressed in this article are those of the author and are intended for general information only. They do not constitute legal advice and should not be relied upon as such. Specific professional advice should be sought in relation to any particular matter.
+                  </p>
+                </div>
+
+                <div className="mt-10 pt-8 border-t border-green/10">
+                  <Link
+                    href="/insights"
+                    className="inline-flex items-center gap-3 font-mono text-[11px] tracking-[0.15em] uppercase text-brass hover:text-brass-dark transition-colors duration-200 group"
+                  >
+                    <span className="transform group-hover:-translate-x-1 transition-transform duration-200">←</span>
+                    Return to Insights
+                  </Link>
+                </div>
+              </FadeIn>
             </div>
-          </FadeIn>
+          </div>
         </div>
       </section>
 
