@@ -9,3 +9,4 @@ export { MethodologyFlow } from "./MethodologyFlow";
 export { CountUp } from "./CountUp";
 export { TerminalToggle } from "./TerminalToggle";
 export { BlueprintDivider } from "./BlueprintDivider";
+export { BatesStamp } from "./BatesStamp";

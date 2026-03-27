@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cinzel, Cormorant_Garamond, Inter, JetBrains_Mono } from "next/font/google";
 import { Header } from "@/components/layout";
 import { Footer } from "@/components/layout";
+import { BatesStamp } from "@/components/ui";
 import { SITE_CONFIG } from "@/lib/constants";
 import "@/styles/globals.css";
 
@@ -68,6 +69,7 @@ export default function RootLayout({
         </a>
         <Header />
         <main id="main-content">{children}</main>
+        <BatesStamp />
         <Footer />
       </body>
     </html>
