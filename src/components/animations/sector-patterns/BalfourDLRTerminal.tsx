@@ -99,7 +99,7 @@ export function BalfourDLRTerminal({ className = "" }: { className?: string }) {
         </g>
 
         {/* Contract & Certification Diagram */}
-        <g transform="translate(450, 80)">
+        <g transform="translate(450, 150)">
           <text x="0" y="0" fill="#6da57e" fontFamily="monospace" fontSize="10" letterSpacing="1" className="anim-fade">CERTIFICATION_MECHANISM: ICE_5TH</text>
           
           {/* The Setup */}
