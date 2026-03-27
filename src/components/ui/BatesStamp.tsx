@@ -40,13 +40,15 @@ export function BatesStamp() {
   const formattedNumber = pageNumber.toString().padStart(6, "0");
 
   return (
-    <div className="fixed bottom-4 right-6 z-50 pointer-events-none mix-blend-difference hidden md:block">
-      <div className="flex flex-col items-end opacity-40">
-        <span className="font-mono text-[8px] tracking-[0.3em] uppercase text-brass mb-1">
-          Evidence Ref
-        </span>
-        <div className="font-mono text-[12px] tracking-[0.1em] text-brass border border-brass/30 px-2 py-1 bg-green-dark/10 backdrop-blur-sm">
-          MV-{formattedNumber}
+    <div className="fixed bottom-8 right-8 z-50 pointer-events-none hidden md:block transition-all duration-300 opacity-90">
+      <div className="flex flex-col items-end transform rotate-[-2deg]">
+        <div className="bg-stone/95 backdrop-blur-md p-3 border border-ink/15 shadow-[3px_4px_10px_rgba(0,0,0,0.1),_inset_1px_1px_0px_rgba(255,255,255,0.8)] rounded-sm">
+          <span className="block font-mono text-[8px] tracking-[0.3em] uppercase text-ink/50 mb-1">
+            Evidence Ref
+          </span>
+          <div className="font-mono text-[14px] font-bold tracking-[0.2em] text-ink/80" style={{ textShadow: '0px 1px 0px rgba(255,255,255,0.5)' }}>
+            MV-{formattedNumber}
+          </div>
         </div>
       </div>
     </div>
