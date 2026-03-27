@@ -131,11 +131,11 @@ export function BalfourDLRTerminal({ className = "" }: { className?: string }) {
             
             <circle cx="150" cy="50" r="4" fill="none" stroke="#c1a679" strokeWidth="1" className="anim-pulse" />
 
-            <rect x="0" y="90" width="300" height="55" fill="rgba(11, 59, 36, 0.8)" stroke="#c1a679" strokeWidth="1" />
+            <rect x="0" y="90" width="300" height="65" fill="rgba(11, 59, 36, 0.8)" stroke="#c1a679" strokeWidth="1" />
             <text x="10" y="105" fill="#c1a679" fontFamily="monospace" fontSize="9">IMPLIED_TERM: DUTY_OF_FAIR_DEALING</text>
-            <text x="10" y="120" fill="rgba(245, 240, 232, 0.7)" fontFamily="monospace" fontSize="8">"Where employer acts as certifier, there is</text>
-            <text x="10" y="132" fill="rgba(245, 240, 232, 0.7)" fontFamily="monospace" fontSize="8">an implied duty to act honestly, fairly,</text>
-            <text x="10" y="144" fill="rgba(245, 240, 232, 0.7)" fontFamily="monospace" fontSize="8">and reasonably in exercising discretion."</text>
+            <text x="10" y="122" fill="rgba(245, 240, 232, 0.7)" fontFamily="monospace" fontSize="8">"Where employer acts as certifier, there is</text>
+            <text x="10" y="134" fill="rgba(245, 240, 232, 0.7)" fontFamily="monospace" fontSize="8">an implied duty to act honestly, fairly,</text>
+            <text x="10" y="146" fill="rgba(245, 240, 232, 0.7)" fontFamily="monospace" fontSize="8">and reasonably in exercising discretion."</text>
           </g>
         </g>
       </svg>
