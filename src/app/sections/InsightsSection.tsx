@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { INSIGHT_ARTICLES } from "@/lib/constants";
+import { FadeIn } from "@/components/animations";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -31,76 +32,64 @@ export function InsightsSection() {
   const [featured, ...rest] = INSIGHT_ARTICLES;
 
   return (
-    <section className="bg-green-dark grain py-12 lg:py-16">
-      <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
-        <div className="flex items-end justify-between mb-10">
-          <div>
-            <div className="section-stamp mb-4 text-brass/60 border-brass/20">
-              Insights
+    <section className="bg-green-dark py-[clamp(4rem,8vw,8rem)] relative overflow-hidden border-t border-brass/5">
+      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
+      
+      <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
+        <FadeIn delay={0.1}>
+          <div className="flex items-end justify-between mb-12 lg:mb-16">
+            <div>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80 uppercase">
+                  Insights
+                </div>
+                <div className="h-[1px] w-12 bg-brass/30"></div>
+              </div>
+              <h2 className="font-serif text-3xl lg:text-4xl text-cream leading-tight">
+                Current analysis
+              </h2>
             </div>
-            <h2 className="font-serif text-3xl lg:text-4xl text-cream leading-tight">
-              Current analysis
-            </h2>
+            <Link
+              href="/insights"
+              className="hidden md:inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] uppercase text-brass hover:text-brass/70 transition-colors duration-200 mb-2 group"
+            >
+              <span>View all</span>
+              <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-x-[-4px] group-hover:translate-x-0">→</span>
+            </Link>
           </div>
-          <Link
-            href="/insights"
-            className="hidden md:inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] uppercase text-brass hover:text-brass-dark transition-colors duration-200"
-          >
-            View all
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-              <path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </Link>
-        </div>
+        </FadeIn>
 
         <motion.div
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-10%" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-cream/10 border border-cream/10"
         >
-          {featured && (
-            <motion.div variants={itemVariants} className="h-full">
-              <Link href={featured.href} className="group block h-full">
-                <article className="h-full bg-green p-8 flex flex-col justify-end min-h-[320px] shadow-sm transition-transform duration-500 hover:-translate-y-1">
-                  <div className="relative z-10 mt-auto">
-                    <div className="font-mono text-[10px] tracking-[0.2em] uppercase text-brass mb-4">
-                      {featured.category}
-                    </div>
-                    <h3 className="font-serif text-xl lg:text-2xl text-cream leading-snug group-hover:text-brass transition-colors duration-400 mb-3">
-                      {featured.title}
-                    </h3>
-                    <p className="text-[14px] text-cream/60 leading-relaxed mb-6">
-                      {featured.excerpt}
-                    </p>
-                    <div className="mt-auto flex items-center gap-3 font-mono text-[10px] text-cream/40 pt-5 border-t border-cream/10">
-                      <span>{featured.date}</span>
-                      <span className="text-cream/15">|</span>
-                      <span>{featured.readTime}</span>
-                    </div>
-                  </div>
-                </article>
-              </Link>
-            </motion.div>
-          )}
-
-          {rest.map((article) => (
+          {INSIGHT_ARTICLES.map((article, index) => (
             <motion.div key={article.title} variants={itemVariants} className="h-full">
               <Link href={article.href} className="group block h-full">
-                <article className="p-8 bg-green border border-cream/5 shadow-sm transition-all duration-400 hover:border-brass/30 hover:shadow-md hover:-translate-y-1 h-full flex flex-col justify-between">
-                  <div>
-                    <div className="font-mono text-[10px] tracking-[0.2em] uppercase text-brass mb-4">
+                <article className="p-8 lg:p-10 bg-green h-full flex flex-col justify-between relative transition-colors duration-500 hover:bg-[#0B2516]">
+                  {/* Hover brackets */}
+                  <div className="absolute inset-3 border border-brass/0 group-hover:border-brass/20 transition-colors duration-500 pointer-events-none" />
+                  
+                  {/* Decorative corner markers */}
+                  <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/0 group-hover:border-brass/40 transition-colors duration-500" />
+                  <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/0 group-hover:border-brass/40 transition-colors duration-500" />
+
+                  <div className="relative z-10">
+                    <div className="font-mono text-[10px] tracking-[0.2em] uppercase text-brass/80 mb-5">
                       {article.category}
                     </div>
-                    <h3 className="font-serif text-xl lg:text-2xl text-cream leading-snug group-hover:text-brass transition-colors duration-400 mb-3">
+                    <h3 className="font-serif text-xl lg:text-2xl text-cream leading-snug group-hover:text-brass transition-colors duration-500 mb-4">
                       {article.title}
                     </h3>
-                    <p className="text-[14px] text-cream/50 leading-relaxed">
+                    <p className="text-[14px] lg:text-[15px] font-sans font-light tracking-[0.01em] text-cream/60 leading-[1.8]">
                       {article.excerpt}
                     </p>
                   </div>
-                  <div className="mt-6 pt-5 border-t border-cream/5 flex items-center gap-3 font-mono text-[10px] text-cream/40">
+                  
+                  <div className="mt-8 pt-6 border-t border-cream/10 flex items-center gap-3 font-mono text-[10px] text-cream/40 relative z-10">
                     <span>{article.date}</span>
                     <span className="text-cream/10">|</span>
                     <span>{article.readTime}</span>
@@ -110,6 +99,16 @@ export function InsightsSection() {
             </motion.div>
           ))}
         </motion.div>
+        
+        <div className="mt-10 flex justify-center md:hidden">
+          <Link
+            href="/insights"
+            className="inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] uppercase text-brass group"
+          >
+            <span>View all</span>
+            <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-x-[-4px] group-hover:translate-x-0">→</span>
+          </Link>
+        </div>
       </div>
     </section>
   );
