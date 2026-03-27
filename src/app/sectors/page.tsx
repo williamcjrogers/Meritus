@@ -137,9 +137,10 @@ export default function SectorsPage() {
     <>
       {/* Hero */}
       <section className="bg-green pt-[clamp(8rem,16vh,12rem)] pb-[clamp(4rem,10vh,6rem)] relative overflow-hidden border-b border-brass/10">
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
         <ProjectPulse className="z-0 opacity-20" />
         
-        {/* Abstract Technical Background */}
+        {/* Abstract Technical Background Grid */}
         <div className="absolute inset-0 pointer-events-none opacity-30">
           <div className="absolute top-0 left-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
           <div className="absolute top-0 right-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
@@ -174,7 +175,11 @@ export default function SectorsPage() {
               </div>
               
               <div className="lg:col-span-4 hidden lg:flex flex-col items-end text-right pt-4">
-                <div className="inline-flex flex-col gap-3 p-6 border border-brass/10 bg-black/10 backdrop-blur-md rounded-sm">
+                <div className="inline-flex flex-col gap-3 p-6 border border-brass/10 bg-black/10 backdrop-blur-md rounded-sm relative">
+                  {/* Decorative corner markers */}
+                  <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/40" />
+                  <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/40" />
+                  
                   <div className="font-mono text-[9px] tracking-[0.2em] text-cream/40 uppercase mb-2">Domain Expertise</div>
                   <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">06_KEY_SECTORS</div>
                   <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">MULTI_PARTY_CONTRACTS</div>
@@ -292,8 +297,8 @@ export default function SectorsPage() {
                       </div>
 
                       {/* Right: Terminal Graphic */}
-                      <div className="relative w-full aspect-[16/10] lg:h-full">
-                        <div className="lg:sticky lg:top-32 w-full h-auto aspect-[16/10]">
+                      <div className="relative w-full aspect-[16/10] lg:aspect-auto lg:h-full">
+                        <div className="lg:sticky lg:top-[20vh] w-full h-auto aspect-[16/10]">
                           <TerminalBox className="w-full h-full">
                             <Terminal />
                           </TerminalBox>
