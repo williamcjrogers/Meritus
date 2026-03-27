@@ -214,22 +214,17 @@ export default function SectorsPage() {
               
               <div className="py-[clamp(4.5rem,8vw,8rem)] relative z-10">
                 <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
-                  {/* FadeIn for header removed here to separate children */}
-                  <div className="flex items-center gap-4 mb-6">
-                    <FadeIn delay={0}>
-                      <div className="flex items-center gap-4">
-                        <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80">
-                          SEC.{sector.num}
-                        </div>
-                        <div className="h-[1px] w-12 bg-brass/30"></div>
-                      </div>
-                    </FadeIn>
-                  </div>
-                  
                     <div className={`grid grid-cols-1 gap-12 lg:gap-20 ${i % 2 === 0 ? "lg:grid-cols-[1fr_minmax(400px,500px)] 2xl:grid-cols-[1fr_550px]" : "lg:grid-cols-[minmax(400px,500px)_1fr] 2xl:grid-cols-[550px_1fr]"}`}>
                     {/* Left: Content */}
                     <div className={i % 2 !== 0 ? "order-1 lg:order-2" : "order-1 lg:order-1"}>
                       <FadeIn delay={0.1}>
+                        <div className="flex items-center gap-4 mb-6">
+                          <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80">
+                            SEC.{sector.num}
+                          </div>
+                          <div className="h-[1px] w-12 bg-brass/30"></div>
+                        </div>
+
                         <h2 className="font-serif text-3xl lg:text-4xl text-green leading-tight mb-6">
                           {sector.title}
                         </h2>
