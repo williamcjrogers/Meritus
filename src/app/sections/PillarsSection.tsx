@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { SERVICE_PILLARS } from "@/lib/constants";
 import { PillarPattern } from "@/components/animations/pillar-patterns/PillarPattern";
+import { FadeIn } from "@/components/animations";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -62,14 +63,20 @@ export function PillarsSection() {
   }, [isInView]);
 
   return (
-    <section className="bg-stone grain relative overflow-hidden py-16 lg:py-20 border-t border-green/15">
+    <section className="bg-stone grain relative overflow-hidden py-[clamp(4rem,8vw,8rem)] border-t border-green/5">
       <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
-        <div className="section-stamp mb-5">
-          Four disciplines. One team.
-        </div>
-        <h2 className="font-serif text-3xl lg:text-4xl text-green leading-tight mb-10">
-          What we do
-        </h2>
+        
+        <FadeIn delay={0.1}>
+          <div className="flex items-center gap-4 mb-6">
+            <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80 uppercase">
+              Four disciplines. One team.
+            </div>
+            <div className="h-[1px] w-12 bg-brass/30"></div>
+          </div>
+          <h2 className="font-serif text-3xl lg:text-4xl text-green leading-tight mb-12">
+            What we do
+          </h2>
+        </FadeIn>
 
         {/* CAD-style grid background for the entire section */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.05] z-0" aria-hidden="true">
@@ -114,7 +121,7 @@ export function PillarsSection() {
                       {pillar.title}
                     </h3>
 
-                    <p className={`relative z-10 text-[15px] leading-relaxed transition-colors duration-[600ms] ${isActive ? "text-cream/85" : "text-ink/70"}`}>
+                    <p className={`relative z-10 text-[14px] font-sans font-light tracking-[0.01em] leading-[1.8] transition-colors duration-[600ms] ${isActive ? "text-cream/85" : "text-ink/70"}`}>
                       {pillar.output}
                     </p>
 
