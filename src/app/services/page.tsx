@@ -137,12 +137,57 @@ function ServiceTerminal({ type }: { type: "delay" | "quantum" | "technical" | "
 export default function ServicesPage() {
   return (
     <>
-      <section className="bg-green pt-[clamp(7rem,14vh,9rem)] pb-[clamp(3rem,8vh,5rem)] relative overflow-hidden">
-        <ProjectPulse className="z-0 opacity-30" />
+      <section className="bg-green pt-[clamp(8rem,16vh,12rem)] pb-[clamp(4rem,10vh,6rem)] relative overflow-hidden border-b border-brass/10">
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
+        <ProjectPulse className="z-0 opacity-20" />
+        
+        {/* Abstract Technical Background Grid */}
+        <div className="absolute inset-0 pointer-events-none opacity-30">
+          <div className="absolute top-0 left-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
+          <div className="absolute top-0 right-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
+          <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brass/10 to-transparent" />
+        </div>
+
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
           <FadeIn>
-            <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-cream/50 mb-6">Services</div>
-            <h1 className="font-serif text-4xl lg:text-[52px] text-cream leading-[1.1] max-w-3xl">Four disciplines. One team.<br />Outputs, not hours.</h1>
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-[1px] w-8 bg-brass/50" />
+              <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-brass/80">
+                Services
+              </div>
+              <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-brass/50 to-transparent" />
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+              <div className="lg:col-span-8">
+                <h1 className="font-serif text-4xl lg:text-[56px] text-cream leading-[1.1] mb-8">
+                  Four disciplines. One team.<br />
+                  <span className="text-cream/70 italic">Outputs, not hours.</span>
+                </h1>
+                
+                <div className="flex gap-6 max-w-2xl">
+                  <div className="w-[1px] bg-brass/30 shrink-0 mt-2" />
+                  <p className="text-[15px] lg:text-lg text-cream/60 leading-relaxed">
+                    We deploy highly integrated teams across delay, quantum, technical, and advisory disciplines. 
+                    No siloed departments. Just coordinated forensic expertise engineered to resolve your dispute.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="lg:col-span-4 hidden lg:flex flex-col items-end text-right pt-4">
+                <div className="inline-flex flex-col gap-3 p-6 border border-brass/10 bg-black/10 backdrop-blur-md rounded-sm relative">
+                  {/* Decorative corner markers */}
+                  <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/40" />
+                  <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/40" />
+                  
+                  <div className="font-mono text-[9px] tracking-[0.2em] text-cream/40 uppercase mb-2">Practice Areas</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">01_DELAY_ANALYSIS</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">02_QUANTUM_VALUATION</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">03_TECHNICAL_CAUSATION</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">04_ADVISORY_STRATEGY</div>
+                </div>
+              </div>
+            </div>
           </FadeIn>
         </div>
       </section>

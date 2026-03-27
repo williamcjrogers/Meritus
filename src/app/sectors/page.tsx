@@ -136,20 +136,52 @@ export default function SectorsPage() {
   return (
     <>
       {/* Hero */}
-      <section className="bg-green pt-[clamp(7rem,14vh,9rem)] pb-[clamp(3rem,8vh,5rem)] relative overflow-hidden">
-        <ProjectPulse className="z-0 opacity-30" />
+      <section className="bg-green pt-[clamp(8rem,16vh,12rem)] pb-[clamp(4rem,10vh,6rem)] relative overflow-hidden border-b border-brass/10">
+        <ProjectPulse className="z-0 opacity-20" />
+        
+        {/* Abstract Technical Background */}
+        <div className="absolute inset-0 pointer-events-none opacity-30">
+          <div className="absolute top-0 left-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
+          <div className="absolute top-0 right-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
+          <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brass/10 to-transparent" />
+        </div>
+
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
           <FadeIn>
-            <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-cream/50 mb-6">
-              Sector Experience
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-[1px] w-8 bg-brass/50" />
+              <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-brass/80">
+                Sector Experience
+              </div>
+              <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-brass/50 to-transparent" />
             </div>
-            <h1 className="font-serif text-4xl lg:text-[52px] text-cream leading-[1.1] max-w-4xl">
-              The disputes change.<br />The discipline does not.
-            </h1>
-            <p className="mt-8 text-base lg:text-lg text-cream/55 max-w-2xl leading-relaxed">
-              Our forensic methodology is consistent. Its application is tailored to the
-              contractual framework, procurement route, and technical context of each sector.
-            </p>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+              <div className="lg:col-span-8">
+                <h1 className="font-serif text-4xl lg:text-[56px] text-cream leading-[1.1] mb-8">
+                  The disputes change.<br />
+                  <span className="text-cream/70 italic">The discipline does not.</span>
+                </h1>
+                
+                <div className="flex gap-6 max-w-2xl">
+                  <div className="w-[1px] bg-brass/30 shrink-0 mt-2" />
+                  <p className="text-[15px] lg:text-lg text-cream/60 leading-relaxed">
+                    Our forensic methodology is consistent. Its application is tailored to the 
+                    contractual framework, procurement route, and technical context of each sector. 
+                    We ingest complex project data and output clear, defensible narratives.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="lg:col-span-4 hidden lg:flex flex-col items-end text-right pt-4">
+                <div className="inline-flex flex-col gap-3 p-6 border border-brass/10 bg-black/10 backdrop-blur-md rounded-sm">
+                  <div className="font-mono text-[9px] tracking-[0.2em] text-cream/40 uppercase mb-2">Domain Expertise</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">06_KEY_SECTORS</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">MULTI_PARTY_CONTRACTS</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">FORENSIC_QUANTIFICATION</div>
+                </div>
+              </div>
+            </div>
           </FadeIn>
         </div>
       </section>
