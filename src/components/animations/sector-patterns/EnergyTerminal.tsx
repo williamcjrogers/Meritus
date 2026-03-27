@@ -35,7 +35,8 @@ export function EnergyTerminal({ className = "" }: { className?: string }) {
       `,
         }}
       />
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+        <g transform="translate(0, 50)">
         {/* Axes */}
         <line x1="50" y1="350" x2="750" y2="350" stroke="rgba(109, 165, 126, 0.5)" strokeWidth="1" className="nrg-fade" />
         <line x1="50" y1="50" x2="50" y2="350" stroke="rgba(109, 165, 126, 0.5)" strokeWidth="1" className="nrg-fade" />
@@ -68,6 +69,7 @@ export function EnergyTerminal({ className = "" }: { className?: string }) {
           <text x="95" y="130" fill="rgba(245, 240, 232, 0.4)" fontFamily="serif" fontSize="9" fontStyle="italic">
             Ref: MT Højgaard v E.ON Climate
           </text>
+        </g>
         </g>
       </svg>
     </div>

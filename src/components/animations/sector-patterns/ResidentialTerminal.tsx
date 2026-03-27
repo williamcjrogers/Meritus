@@ -31,7 +31,8 @@ export function ResidentialTerminal({ className = "" }: { className?: string }) 
       `,
         }}
       />
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+        <g transform="translate(0, 50)">
         {/* Base line */}
         <line x1="100" y1="350" x2="700" y2="350" stroke="rgba(109, 165, 126, 0.3)" strokeWidth="1" className="res-draw" />
 
@@ -69,6 +70,7 @@ export function ResidentialTerminal({ className = "" }: { className?: string }) 
           <text x="540" y="138" fill="#6da57e" fontFamily="monospace" fontSize="8" letterSpacing="1">
             LOSS_AND_EXPENSE_PROLONGATION
           </text>
+        </g>
         </g>
       </svg>
     </div>

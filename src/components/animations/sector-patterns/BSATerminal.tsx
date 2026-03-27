@@ -30,7 +30,8 @@ export function BSATerminal({ className = "" }: { className?: string }) {
       `,
         }}
       />
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+        <g transform="translate(0, 50)">
         {/* Structural Wall */}
         <rect x="150" y="50" width="80" height="300" fill="rgba(109, 165, 126, 0.15)" stroke="#6da57e" strokeWidth="1" className="bsa-fade-1" />
         <text x="160" y="40" fill="#6da57e" fontFamily="monospace" fontSize="8" className="bsa-fade-1">STRUCTURAL_SFS</text>
@@ -65,6 +66,7 @@ export function BSATerminal({ className = "" }: { className?: string }) {
           <text x="425" y="235" fill="rgba(245, 240, 232, 0.5)" fontFamily="serif" fontSize="10" fontStyle="italic">
             Defective Premises Act 1972 extended liability
           </text>
+        </g>
         </g>
       </svg>
     </div>

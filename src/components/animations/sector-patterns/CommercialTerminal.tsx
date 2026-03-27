@@ -35,7 +35,8 @@ export function CommercialTerminal({ className = "" }: { className?: string }) {
       `,
         }}
       />
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+        <g transform="translate(0, 50)">
         {/* Grid lines */}
         <g stroke="rgba(109, 165, 126, 0.1)" strokeWidth="1" className="com-fade-1">
           {Array.from({ length: 8 }).map((_, i) => (
@@ -70,6 +71,7 @@ export function CommercialTerminal({ className = "" }: { className?: string }) {
           <text x="570" y="171" fill="rgba(245, 240, 232, 0.6)" fontFamily="serif" fontSize="9" fontStyle="italic">
             Triple Point Technology v PTT [2021]
           </text>
+        </g>
         </g>
       </svg>
     </div>

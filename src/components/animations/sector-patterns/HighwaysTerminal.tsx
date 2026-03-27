@@ -37,7 +37,8 @@ export function HighwaysTerminal({ className = "" }: { className?: string }) {
       `,
         }}
       />
-      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid slice">
+      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice">
+        <g transform="translate(0, 50)">
         {/* Surface Line */}
         <line x1="0" y1="80" x2="800" y2="80" stroke="#6da57e" strokeWidth="2" className="hwy-draw" />
         <text x="30" y="70" fill="#6da57e" fontFamily="monospace" fontSize="10" letterSpacing="1" className="hwy-fade">DATUM: SURFACE_LEVEL</text>
@@ -75,6 +76,7 @@ export function HighwaysTerminal({ className = "" }: { className?: string }) {
           Obrascon Huarte Lain SA v HM Attorney General
         </text>
 
+        </g>
       </svg>
     </div>
   );
