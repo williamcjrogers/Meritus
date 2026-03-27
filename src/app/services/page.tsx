@@ -192,38 +192,93 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      <div className="bg-stone pb-[clamp(1rem,2vw,2.5rem)]">
-        {services.map((service, i) => (
-          <div key={service.id}>
-          {/* Elegant Geometric Divider (only between services) */}
-          {i > 0 && <BlueprintDivider />}
+      {/* Services List */}
+      <section className="flex flex-col">
+        {services.map((service, i) => {
+          const bgClass = i % 2 === 0 ? "bg-stone" : "bg-parchment";
+          
+          return (
+            <div key={service.id} id={service.id} className={`${bgClass} relative`}>
+              {/* Huge watermark number in the background */}
+              <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[40vw] font-serif leading-none text-green/[0.02] select-none">
+                  {service.number}
+                </div>
+              </div>
 
-          <section id={service.id} className="py-[clamp(2.5rem,5vw,5rem)]">
-            <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
-              <FadeIn>
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-[clamp(2rem,3.5vw,4rem)]">
-                  <div className="lg:col-span-5">
-                    <div className="font-mono text-[10px] tracking-[0.2em] text-brass mb-3">{service.number}</div>
-                    <h2 className="font-serif text-3xl text-green leading-tight mb-8">{service.title}</h2>
-                    <ul className="space-y-2">
-                      {service.outputs.map((output, j) => (
-                        <li key={j} className="text-[14px] text-slate leading-[1.6] flex items-start gap-3">
-                          <span className="text-brass/50 mt-[3px] shrink-0">&mdash;</span>{output}
-                        </li>
-                      ))}
-                    </ul>
-                    <p className="mt-5 text-[11px] text-slate/50">{service.tools}</p>
+              {i > 0 && (
+                <div className="absolute top-0 left-0 w-full z-10">
+                  <BlueprintDivider />
+                </div>
+              )}
+
+              <div className="py-[clamp(4.5rem,8vw,8rem)] relative z-10">
+                <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
+                  <div className="flex items-center gap-4 mb-6">
+                    <FadeIn delay={0}>
+                      <div className="flex items-center gap-4">
+                        <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80">
+                          SRV.{service.number}
+                        </div>
+                        <div className="h-[1px] w-12 bg-brass/30"></div>
+                      </div>
+                    </FadeIn>
                   </div>
-                  <div className="lg:col-span-7">
-                    <ServiceTerminal type={service.terminal} />
+
+                  <div className={`grid grid-cols-1 gap-12 lg:gap-20 ${i % 2 === 0 ? "lg:grid-cols-[1fr_minmax(450px,550px)] 2xl:grid-cols-[1fr_600px]" : "lg:grid-cols-[minmax(450px,550px)_1fr] 2xl:grid-cols-[600px_1fr]"}`}>
+                    {/* Content Side */}
+                    <div className={i % 2 !== 0 ? "order-1 lg:order-2" : "order-1 lg:order-1"}>
+                      <FadeIn delay={0.1}>
+                        <h2 className="font-serif text-3xl lg:text-4xl text-green leading-tight mb-6">
+                          {service.title}
+                        </h2>
+
+                        <div className="space-y-8">
+                          <div>
+                            <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate/50 mb-4">
+                              Core Outputs
+                            </div>
+                            <ul className="space-y-3.5">
+                              {service.outputs.map((output, j) => (
+                                <li key={j} className="text-[14px] text-slate leading-[1.6] flex items-start gap-3">
+                                  <span className="text-brass/50 mt-[3px] shrink-0">&mdash;</span>
+                                  {output}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                          
+                          <div className="pt-6 border-t border-green/5">
+                            <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate/50 mb-4">
+                              Context & Toolkit
+                            </div>
+                            <p className="text-[14px] text-slate/80 leading-[1.6] mb-4">
+                              <span className="italic">{service.context}</span>
+                            </p>
+                            <p className="text-[12px] text-slate/60 bg-green/5 p-3 rounded-sm border border-green/10">
+                              <span className="font-mono text-[9px] tracking-[0.1em] uppercase text-brass mr-2">Tools:</span>
+                              {service.tools}
+                            </p>
+                          </div>
+                        </div>
+                      </FadeIn>
+                    </div>
+
+                    {/* Terminal Graphic Side */}
+                    <div className={`relative w-full lg:h-full ${i % 2 !== 0 ? "order-2 lg:order-1" : "order-2 lg:order-2"}`}>
+                      <div className="lg:sticky lg:top-[20vh] w-full h-auto">
+                        <FadeIn delay={0.2} className="w-full">
+                          <ServiceTerminal type={service.terminal} />
+                        </FadeIn>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </FadeIn>
+              </div>
             </div>
-          </section>
-          </div>
-        ))}
-      </div>
+          );
+        })}
+      </section>
 
       <CTABand heading="Discuss your position" subtext="Direct access to a partner. No intermediaries." />
     </>
