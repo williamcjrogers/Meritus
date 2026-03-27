@@ -447,12 +447,7 @@ export function SectorsClient() {
 
       {/* Active Sector Content */}
       <div className="min-h-[80vh]">
-        <motion.div
-          key={activeTab}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        >
+        <div key={activeTab}>
           {/* Sector Header */}
             <section className="bg-green relative overflow-hidden border-b border-brass/5">
               <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
@@ -601,7 +596,7 @@ export function SectorsClient() {
                 </div>
               );
             })}
-          </motion.div>
+        </div>
       </div>
 
       <CTABand
