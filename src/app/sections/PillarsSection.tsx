@@ -41,7 +41,7 @@ export function PillarsSection() {
     if (!isInView) return;
 
     const sequence = [0, 1, 2, 3];
-    const duration = 1500; // ms per flash
+    const duration = 600; // ms per flash
     let timeoutId: NodeJS.Timeout;
 
     const runSequence = (index: number) => {
@@ -54,7 +54,7 @@ export function PillarsSection() {
     };
 
     // Give the container animation time to finish before starting flash
-    const initialDelay = setTimeout(() => runSequence(0), 1000);
+    const initialDelay = setTimeout(() => runSequence(0), 600);
 
     return () => {
       clearTimeout(timeoutId);
@@ -109,27 +109,27 @@ export function PillarsSection() {
                   onMouseEnter={() => setHoveredPillar(index)}
                   onMouseLeave={() => setHoveredPillar(null)}
                 >
-                  <div className={`pillar-card relative overflow-hidden h-full p-8 lg:p-10 border-t border-[#6da57e]/30 transition-all duration-[600ms] ease-out ${isActive ? "bg-[#112a1d]" : "bg-transparent"} ${index % 2 === 0 ? "md:border-r md:border-r-[#6da57e]/30" : ""} ${index < 2 ? "md:border-t-0" : ""}`}>
+                  <div className={`pillar-card relative overflow-hidden h-full p-8 lg:p-10 border-t border-[#6da57e]/30 transition-all duration-300 ease-out ${isActive ? "bg-[#112a1d]" : "bg-transparent"} ${index % 2 === 0 ? "md:border-r md:border-r-[#6da57e]/30" : ""} ${index < 2 ? "md:border-t-0" : ""}`}>
 
-                    <PillarPattern index={index} className={`transition-opacity duration-700 ${isActive ? "opacity-100" : "opacity-10"}`} />
+                    <PillarPattern index={index} className={`transition-opacity duration-300 ${isActive ? "opacity-100" : "opacity-10"}`} />
 
-                    <div className={`relative z-10 font-serif text-[48px] lg:text-[56px] leading-none mb-1 transition-colors duration-[600ms] ${isActive ? "text-cream/10" : "text-green/10"}`}>
+                    <div className={`relative z-10 font-serif text-[48px] lg:text-[56px] leading-none mb-1 transition-colors duration-300 ${isActive ? "text-cream/10" : "text-green/10"}`}>
                       0{index + 1}
                     </div>
 
-                    <h3 className={`relative z-10 font-serif text-2xl mb-3 leading-tight transition-colors duration-[600ms] ${isActive ? "text-cream" : "text-green"}`}>
+                    <h3 className={`relative z-10 font-serif text-2xl mb-3 leading-tight transition-colors duration-300 ${isActive ? "text-cream" : "text-green"}`}>
                       {pillar.title}
                     </h3>
 
-                    <p className={`relative z-10 text-[14px] font-sans font-light tracking-[0.01em] leading-[1.8] transition-colors duration-[600ms] ${isActive ? "text-cream/85" : "text-ink/70"}`}>
+                    <p className={`relative z-10 text-[14px] font-sans font-light tracking-[0.01em] leading-[1.8] transition-colors duration-300 ${isActive ? "text-cream/85" : "text-ink/70"}`}>
                       {pillar.output}
                     </p>
 
                     <div className="relative z-10 mt-4 flex items-center gap-2">
-                      <span className={`font-mono text-[10px] tracking-[0.15em] uppercase text-brass transition-all duration-[400ms] ${isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"}`}>
+                      <span className={`font-mono text-[10px] tracking-[0.15em] uppercase text-brass transition-all duration-300 ${isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"}`}>
                         View detail
                       </span>
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className={`text-brass transition-all duration-[400ms] ${isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"}`} aria-hidden="true">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className={`text-brass transition-all duration-300 ${isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2"}`} aria-hidden="true">
                         <path d="M1 6h10M7 2l4 4-4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>
