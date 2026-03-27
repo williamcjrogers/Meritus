@@ -182,7 +182,7 @@ export default function ServicesPage() {
                 
                 <div className="flex gap-6 max-w-2xl">
                   <div className="w-[1px] bg-brass/30 shrink-0 mt-2" />
-                  <p className="text-[15px] lg:text-lg text-cream/60 leading-relaxed">
+                  <p className="text-[14px] lg:text-[15px] text-cream/70 leading-[1.8] font-light tracking-[0.02em]">
                     We deploy highly integrated teams across delay, quantum, technical, and advisory disciplines. 
                     No siloed departments. Just coordinated forensic expertise engineered to resolve your dispute.
                   </p>
