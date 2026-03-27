@@ -100,17 +100,8 @@ export function BalfourDLRTerminal({ className = "" }: { className?: string }) {
 
         {/* Contract & Certification Diagram */}
         <g transform="translate(420, 150)">
-          <text x="0" y="0" fill="#6da57e" fontFamily="monospace" fontSize="10" letterSpacing="1" className="anim-fade">CERTIFICATION_MECHANISM: ICE_5TH</text>
+          <text x="0" y="-50" fill="#6da57e" fontFamily="monospace" fontSize="10" letterSpacing="1" className="anim-fade">CERTIFICATION_MECHANISM: ICE_5TH</text>
           
-          {/* The Setup */}
-          <rect x="0" y="20" width="100" height="40" fill="rgba(109, 165, 126, 0.1)" stroke="#6da57e" strokeWidth="1" className="anim-fade" />
-          <text x="50" y="40" fill="rgba(245, 240, 232, 0.9)" fontFamily="monospace" fontSize="9" textAnchor="middle" className="anim-fade">EMPLOYER</text>
-          <text x="50" y="52" fill="rgba(109, 165, 126, 0.6)" fontFamily="monospace" fontSize="7" textAnchor="middle" className="anim-fade">(DLR)</text>
-
-          <rect x="200" y="20" width="100" height="40" fill="rgba(109, 165, 126, 0.1)" stroke="#6da57e" strokeWidth="1" className="anim-fade" />
-          <text x="250" y="40" fill="rgba(245, 240, 232, 0.9)" fontFamily="monospace" fontSize="9" textAnchor="middle" className="anim-fade">CONTRACTOR</text>
-          <text x="250" y="52" fill="rgba(109, 165, 126, 0.6)" fontFamily="monospace" fontSize="7" textAnchor="middle" className="anim-fade">(Balfour Beatty)</text>
-
           {/* Missing Engineer */}
           <g className="anim-fade">
             <rect x="100" y="-30" width="100" height="30" fill="none" stroke="rgba(193, 166, 121, 0.4)" strokeWidth="1" strokeDasharray="2 2" />
@@ -120,22 +111,31 @@ export function BalfourDLRTerminal({ className = "" }: { className?: string }) {
             <text x="150" y="10" fill="#c1a679" fontFamily="monospace" fontSize="7" textAnchor="middle">ROLE_REMOVED</text>
           </g>
 
+          {/* The Setup */}
+          <rect x="0" y="30" width="100" height="40" fill="rgba(109, 165, 126, 0.1)" stroke="#6da57e" strokeWidth="1" className="anim-fade" />
+          <text x="50" y="50" fill="rgba(245, 240, 232, 0.9)" fontFamily="monospace" fontSize="9" textAnchor="middle" className="anim-fade">EMPLOYER</text>
+          <text x="50" y="62" fill="rgba(109, 165, 126, 0.6)" fontFamily="monospace" fontSize="7" textAnchor="middle" className="anim-fade">(DLR)</text>
+
+          <rect x="200" y="30" width="100" height="40" fill="rgba(109, 165, 126, 0.1)" stroke="#6da57e" strokeWidth="1" className="anim-fade" />
+          <text x="250" y="50" fill="rgba(245, 240, 232, 0.9)" fontFamily="monospace" fontSize="9" textAnchor="middle" className="anim-fade">CONTRACTOR</text>
+          <text x="250" y="62" fill="rgba(109, 165, 126, 0.6)" fontFamily="monospace" fontSize="7" textAnchor="middle" className="anim-fade">(Balfour Beatty)</text>
+
           {/* Direct Certification Flow */}
-          <path d="M 100 40 L 200 40" stroke="#6da57e" strokeWidth="2" className="anim-fade" />
-          <polygon points="190,36 200,40 190,44" fill="#6da57e" className="anim-fade" />
+          <path d="M 100 50 L 200 50" stroke="#6da57e" strokeWidth="2" className="anim-fade" />
+          <polygon points="190,46 200,50 190,54" fill="#6da57e" className="anim-fade" />
           
           <g className="anim-fade-late">
             {/* The Legal Constraint Overlay */}
-            <rect x="60" y="30" width="80" height="20" fill="#112a1d" stroke="#c1a679" strokeWidth="1" />
-            <text x="100" y="43" fill="#c1a679" fontFamily="monospace" fontSize="7" textAnchor="middle">CERTIFICATION</text>
+            <rect x="110" y="41" width="80" height="18" fill="#112a1d" stroke="#c1a679" strokeWidth="1" />
+            <text x="150" y="53" fill="#c1a679" fontFamily="monospace" fontSize="7" textAnchor="middle">CERTIFICATION</text>
             
-            <circle cx="100" cy="40" r="4" fill="none" stroke="#c1a679" strokeWidth="1" className="anim-pulse" />
+            <circle cx="150" cy="50" r="4" fill="none" stroke="#c1a679" strokeWidth="1" className="anim-pulse" />
 
-            <rect x="0" y="100" width="300" height="55" fill="rgba(11, 59, 36, 0.8)" stroke="#c1a679" strokeWidth="1" />
-            <text x="10" y="115" fill="#c1a679" fontFamily="monospace" fontSize="9">IMPLIED_TERM: DUTY_OF_FAIR_DEALING</text>
-            <text x="10" y="130" fill="rgba(245, 240, 232, 0.7)" fontFamily="monospace" fontSize="8">"Where employer acts as certifier, there is</text>
-            <text x="10" y="142" fill="rgba(245, 240, 232, 0.7)" fontFamily="monospace" fontSize="8">an implied duty to act honestly, fairly,</text>
-            <text x="10" y="154" fill="rgba(245, 240, 232, 0.7)" fontFamily="monospace" fontSize="8">and reasonably in exercising discretion."</text>
+            <rect x="0" y="90" width="300" height="55" fill="rgba(11, 59, 36, 0.8)" stroke="#c1a679" strokeWidth="1" />
+            <text x="10" y="105" fill="#c1a679" fontFamily="monospace" fontSize="9">IMPLIED_TERM: DUTY_OF_FAIR_DEALING</text>
+            <text x="10" y="120" fill="rgba(245, 240, 232, 0.7)" fontFamily="monospace" fontSize="8">"Where employer acts as certifier, there is</text>
+            <text x="10" y="132" fill="rgba(245, 240, 232, 0.7)" fontFamily="monospace" fontSize="8">an implied duty to act honestly, fairly,</text>
+            <text x="10" y="144" fill="rgba(245, 240, 232, 0.7)" fontFamily="monospace" fontSize="8">and reasonably in exercising discretion."</text>
           </g>
         </g>
       </svg>
