@@ -59,10 +59,10 @@ function ServiceTerminal({ type }: { type: "delay" | "quantum" | "technical" | "
         ]}
       >
         {[
-          <TerminalBox key="defect" className="border border-green/20">
+          <TerminalBox key="defect" className="">
             <TechnicalDefectTerminal />
           </TerminalBox>,
-          <TerminalBox key="bsa" className="border border-green/20">
+          <TerminalBox key="bsa" className="">
             <TechnicalBSATerminal />
           </TerminalBox>,
         ]}
@@ -85,7 +85,7 @@ function ServiceTerminal({ type }: { type: "delay" | "quantum" | "technical" | "
         </div>
 
         <div className="relative z-10 flex-1 w-full min-h-[300px]">
-          <TerminalBox className="border border-green/20">
+          <TerminalBox className="">
             <AdvisoryStrategyTerminal />
           </TerminalBox>
         </div>
@@ -103,10 +103,10 @@ function ServiceTerminal({ type }: { type: "delay" | "quantum" | "technical" | "
         ]}
       >
         {[
-          <TerminalBox key="tia" className="border border-green/20">
+          <TerminalBox key="tia" className="">
             <DelayTIATerminal />
           </TerminalBox>,
-          <TerminalBox key="windows" className="border border-green/20">
+          <TerminalBox key="windows" className="">
             <DelayWindowsTerminal />
           </TerminalBox>,
         ]}
@@ -123,10 +123,10 @@ function ServiceTerminal({ type }: { type: "delay" | "quantum" | "technical" | "
       ]}
     >
       {[
-        <TerminalBox key="mile" className="border border-green/20">
+        <TerminalBox key="mile" className="">
           <QuantumMeasuredMileTerminal />
         </TerminalBox>,
-        <TerminalBox key="overhead" className="border border-green/20">
+        <TerminalBox key="overhead" className="">
           <QuantumOverheadTerminal />
         </TerminalBox>,
       ]}

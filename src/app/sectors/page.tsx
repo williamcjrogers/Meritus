@@ -231,8 +231,8 @@ export default function SectorsPage() {
                       </div>
 
                       {/* Right: Terminal Graphic */}
-                      <div className="relative w-full aspect-[16/10] lg:sticky lg:top-32 rounded-sm overflow-hidden shadow-xl">
-                        <TerminalBox className="w-full h-full border border-green/20">
+                      <div className="relative w-full aspect-[16/10] lg:sticky lg:top-32">
+                        <TerminalBox className="w-full h-full">
                           <Terminal />
                         </TerminalBox>
                       </div>

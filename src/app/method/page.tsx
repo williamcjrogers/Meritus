@@ -128,7 +128,7 @@ export default function MethodPage() {
                 </ul>
               </div>
               <div className="relative h-full min-h-[400px]">
-                <TerminalBox className="absolute inset-0 w-full h-full border border-green/20">
+                <TerminalBox className="absolute inset-0 w-full h-full">
                   <GovernanceTerminal />
                 </TerminalBox>
               </div>
