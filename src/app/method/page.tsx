@@ -113,8 +113,8 @@ export default function MethodPage() {
                 </p>
                 <p>
                   We took a different view. Our proprietary tools process over 100GB of
-                  project data per matter — correspondence, site records, contract
-                  documents, programme files — classifying, cross-referencing, and
+                  project data per matter,correspondence, site records, contract
+                  documents, programme files,classifying, cross-referencing, and
                   structuring it chronologically in hours rather than weeks. The expert
                   starts from an organised evidence base, not a folder of unsorted PDFs.
                 </p>

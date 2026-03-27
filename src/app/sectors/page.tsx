@@ -14,7 +14,7 @@ const SECTORS = [
     num: "01",
     title: "Rail & Transport Infrastructure",
     description:
-      "Major rail programmes generate some of the most complex delay disputes in the UK — multi-year delivery programmes with hundreds of interface points, concurrent workstreams, and NEC-based contractual frameworks that demand precise compensation event assessment.",
+      "Major rail programmes generate some of the most complex delay disputes in the UK,multi-year delivery programmes with hundreds of interface points, concurrent workstreams, and NEC-based contractual frameworks that demand precise compensation event assessment.",
     disputes: [
       "Programme-level delay analysis across multi-phase rail programmes",
       "NEC3/NEC4 compensation event assessment and time impact analysis",
@@ -54,7 +54,7 @@ const SECTORS = [
     num: "03",
     title: "Major Residential & Prime Development",
     description:
-      "High-value residential programmes — from UHNW prime developments to large-scale housing delivery — present disputes that span façade defects, fit-out variations, and complex final account negotiations where the quantum can be substantial.",
+      "High-value residential programmes,from UHNW prime developments to large-scale housing delivery,present disputes that span façade defects, fit-out variations, and complex final account negotiations where the quantum can be substantial.",
     disputes: [
       "Final account disputes on complex residential fit-out and façade works",
       "Variation valuation and loss and expense claims",

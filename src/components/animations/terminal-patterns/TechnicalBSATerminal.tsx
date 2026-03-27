@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * TechnicalBSATerminal — Visualizes an ultra-thin architectural wireframe 
+ * TechnicalBSATerminal,Visualizes an ultra-thin architectural wireframe 
  * of a high-rise building. A horizontal scanner moves up the elevation. 
  * As it hits Floor 06, panels illuminate in "warning gold" generating a 
  * non-compliant material substitution tag.

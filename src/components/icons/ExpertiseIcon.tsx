@@ -7,7 +7,7 @@ export function ExpertiseIcon({ className = "" }: { className?: string }) {
       className={className}
       aria-hidden="true"
     >
-      {/* Intersecting angular lines — expertise/structure */}
+      {/* Intersecting angular lines,expertise/structure */}
       <line x1="6" y1="42" x2="42" y2="6" stroke="currentColor" strokeWidth="2" />
       <line x1="6" y1="6" x2="42" y2="42" stroke="currentColor" strokeWidth="2" />
       <line x1="24" y1="4" x2="24" y2="44" stroke="currentColor" strokeWidth="2" />

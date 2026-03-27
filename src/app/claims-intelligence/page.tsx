@@ -21,7 +21,7 @@ const MODULES = [
     num: "01",
     title: "Case Law Database",
     description:
-      "60 UK construction law cases with full analysis — from foundational authorities to the latest TCC and Court of Appeal decisions. Each case includes the ratio, practical implications, and cross-references to related authorities.",
+      "60 UK construction law cases with full analysis,from foundational authorities to the latest TCC and Court of Appeal decisions. Each case includes the ratio, practical implications, and cross-references to related authorities.",
     tags: ["Walter Lilly v Mackay", "Triple Point v PTT", "Bresco v Lonsdale", "Grove v S&T"],
   },
   {
@@ -35,14 +35,14 @@ const MODULES = [
     num: "03",
     title: "Standard Form Contracts",
     description:
-      "Key clauses and cross-comparison across JCT, ICE, NEC, and FIDIC contract suites. Extension of time mechanisms, loss and expense provisions, termination, and dispute resolution clauses — mapped side by side.",
+      "Key clauses and cross-comparison across JCT, ICE, NEC, and FIDIC contract suites. Extension of time mechanisms, loss and expense provisions, termination, and dispute resolution clauses,mapped side by side.",
     tags: ["JCT", "ICE", "NEC3/NEC4", "FIDIC"],
   },
   {
     num: "04",
     title: "Legislation & Statutory Framework",
     description:
-      "HGCRA 1996, Building Safety Act 2022, Defective Premises Act 1972, and the Limitation Act 1980 — with annotations on recent amendments, practical impact, and connections to leading case law.",
+      "HGCRA 1996, Building Safety Act 2022, Defective Premises Act 1972, and the Limitation Act 1980,with annotations on recent amendments, practical impact, and connections to leading case law.",
     tags: ["HGCRA 1996", "BSA 2022", "DPA 1972", "Limitation Act 1980"],
   },
   {
@@ -80,7 +80,7 @@ const FEATURED_AUTHORITIES = [
   {
     name: "Adriatic Land 5 v Long Leaseholders",
     cite: "[2025] EWCA Civ",
-    note: "Landlords cannot recover BSA remediation costs from leaseholders — driving claims up the supply chain.",
+    note: "Landlords cannot recover BSA remediation costs from leaseholders,driving claims up the supply chain.",
   },
 ];
 
@@ -137,7 +137,7 @@ export default function ClaimsIntelligencePage() {
             ))}
           </div>
           <div className="mt-6 text-center font-mono text-[8px] tracking-[0.3em] uppercase text-cream/[0.12]">
-            Year range: 1854 — 2025
+            Year range: 1854,2025
           </div>
         </div>
       </section>
@@ -194,7 +194,7 @@ export default function ClaimsIntelligencePage() {
               </h2>
               <div className="space-y-4 text-[15px] lg:text-[16px] font-sans font-light tracking-[0.01em] text-slate/80 leading-[1.8]">
                 <p>
-                  Claims Intelligence is Meritus Via&apos;s internal research layer — the
+                  Claims Intelligence is Meritus Via&apos;s internal research layer,the
                   structured legal and professional knowledge base that underpins every expert
                   opinion, merits assessment, and adjudication strategy we produce.
                 </p>
@@ -203,7 +203,7 @@ export default function ClaimsIntelligencePage() {
                   note, and contract clause has been selected and annotated by our senior
                   practitioners for its practical relevance to construction disputes. The
                   cross-referencing is designed for the questions that arise in live
-                  instructions — not academic research.
+                  instructions,not academic research.
                 </p>
                 <p>
                   Clients and instructing solicitors with active matters are granted dashboard
@@ -299,7 +299,7 @@ export default function ClaimsIntelligencePage() {
 
       <CTABand
         heading="Your next matter starts here."
-        subtext="Speak directly with a partner. No intermediaries, no sales teams — just a confidential conversation about your case."
+        subtext="Speak directly with a partner. No intermediaries, no sales teams,just a confidential conversation about your case."
         leftGraphic="monogram"
       />
     </>

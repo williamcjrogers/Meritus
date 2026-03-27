@@ -65,7 +65,7 @@ export default function PrivacyPolicyPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">Contact information</strong>{" "}
-                      — name, email address, telephone number, and firm or
+                     ,name, email address, telephone number, and firm or
                       organisation name, submitted through our contact form or
                       direct correspondence.
                     </span>
@@ -74,7 +74,7 @@ export default function PrivacyPolicyPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">Dispute information</strong>{" "}
-                      — the nature, approximate value, forum, and brief summary of
+                     ,the nature, approximate value, forum, and brief summary of
                       your matter, as you choose to provide it.
                     </span>
                   </li>
@@ -82,7 +82,7 @@ export default function PrivacyPolicyPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">Claims Intelligence access</strong>{" "}
-                      — login credentials and usage data for clients with active
+                     ,login credentials and usage data for clients with active
                       dashboard access.
                     </span>
                   </li>
@@ -90,7 +90,7 @@ export default function PrivacyPolicyPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">Technical data</strong>{" "}
-                      — IP address, browser type, device information, and pages
+                     ,IP address, browser type, device information, and pages
                       visited. This data is collected automatically when you use
                       the website.
                     </span>
@@ -112,7 +112,7 @@ export default function PrivacyPolicyPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">To respond to enquiries</strong>{" "}
-                      — processing is necessary for our legitimate interests in
+                     ,processing is necessary for our legitimate interests in
                       responding to potential clients and conducting conflict
                       checks.
                     </span>
@@ -121,7 +121,7 @@ export default function PrivacyPolicyPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">To perform our services</strong>{" "}
-                      — processing is necessary for the performance of a contract
+                     ,processing is necessary for the performance of a contract
                       or to take steps at your request prior to entering into a
                       contract.
                     </span>
@@ -130,7 +130,7 @@ export default function PrivacyPolicyPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">To improve our website</strong>{" "}
-                      — processing of technical data is based on our legitimate
+                     ,processing of technical data is based on our legitimate
                       interest in maintaining and improving the website experience.
                     </span>
                   </li>
@@ -138,7 +138,7 @@ export default function PrivacyPolicyPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">To comply with legal obligations</strong>{" "}
-                      — including anti-money laundering checks and professional
+                     ,including anti-money laundering checks and professional
                       regulatory requirements.
                     </span>
                   </li>
@@ -243,7 +243,7 @@ export default function PrivacyPolicyPage() {
                   <li className={LIST_STYLE}>
                     {DASH}
                     <span>
-                      <strong className="text-green/80">Access</strong> — the
+                      <strong className="text-green/80">Access</strong>,the
                       right to request a copy of the personal data we hold about
                       you.
                     </span>
@@ -259,7 +259,7 @@ export default function PrivacyPolicyPage() {
                   <li className={LIST_STYLE}>
                     {DASH}
                     <span>
-                      <strong className="text-green/80">Erasure</strong> — the
+                      <strong className="text-green/80">Erasure</strong>,the
                       right to request deletion of your data where there is no
                       legitimate reason for us to continue processing it.
                     </span>
@@ -283,7 +283,7 @@ export default function PrivacyPolicyPage() {
                   <li className={LIST_STYLE}>
                     {DASH}
                     <span>
-                      <strong className="text-green/80">Objection</strong> — the
+                      <strong className="text-green/80">Objection</strong>,the
                       right to object to processing based on legitimate interests.
                     </span>
                   </li>

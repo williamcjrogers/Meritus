@@ -63,8 +63,8 @@ export default function TermsPage() {
                   Intellectual Property
                 </h2>
                 <p>
-                  All content on this website — including text, graphics, logos,
-                  data visualisations, and software — is the property of{" "}
+                  All content on this website,including text, graphics, logos,
+                  data visualisations, and software,is the property of{" "}
                   {SITE_CONFIG.legalName} or its licensors and is protected by
                   copyright, trademark, and other intellectual property laws. You
                   may not reproduce, distribute, or create derivative works from

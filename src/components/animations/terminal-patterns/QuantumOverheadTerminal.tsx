@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * QuantumOverheadTerminal — Overhead Audit visualization.
+ * QuantumOverheadTerminal,Overhead Audit visualization.
  * Fast-scrolling timesheet IDs with red strike-throughs tagging diverted
  * resources. Counter ticks down from £85,000 to £55,200.
  */
@@ -125,10 +125,10 @@ export function QuantumOverheadTerminal({ className = "" }: { className?: string
       >
         {/* Header */}
         <text x="40" y="40" fill="#6da57e" fontFamily="monospace" fontSize="10" letterSpacing="1" className="oa-header">
-          AUDIT: SITE_OVERHEADS — PROLONGATION_PERIOD
+          AUDIT: SITE_OVERHEADS,PROLONGATION_PERIOD
         </text>
         <text x="40" y="56" fill="#355a42" fontFamily="monospace" fontSize="8" letterSpacing="0.5" className="oa-header">
-          CLAIMED_WEEKLY: £85,000 — INTERROGATING_TIMESHEETS...
+          CLAIMED_WEEKLY: £85,000,INTERROGATING_TIMESHEETS...
         </text>
 
         {/* Column headers */}
@@ -212,7 +212,7 @@ export function QuantumOverheadTerminal({ className = "" }: { className?: string
           RESOURCES_DIVERTED: 5/12 (35%)
         </text>
 
-        {/* Counter — final values */}
+        {/* Counter,final values */}
         <g className="oa-counter">
           <text
             x="40"

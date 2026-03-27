@@ -1,15 +1,15 @@
 "use client";
 
 /**
- * QuantumMeasuredMileTerminal — Measured Mile productivity analysis.
+ * QuantumMeasuredMileTerminal,Measured Mile productivity analysis.
  * A line graph with flat baseline (0.85 hrs/unit), a disruptive event,
  * and an erratic productivity spike. £4.2m claimed reduced to £1.1m.
  */
 export function QuantumMeasuredMileTerminal({ className = "" }: { className?: string }) {
-  /* Baseline path — flat stable productivity */
+  /* Baseline path,flat stable productivity */
   const baselinePath = "M 80 220 L 350 220";
 
-  /* Disrupted productivity — erratic spike after event */
+  /* Disrupted productivity,erratic spike after event */
   const disruptedPath =
     "M 370 220 L 395 185 L 420 200 L 440 140 L 460 170 L 480 110 L 500 155 L 520 95 L 540 130 L 560 105 L 580 145 L 600 120 L 620 150 L 650 160 L 680 180 L 710 195";
 
@@ -146,7 +146,7 @@ export function QuantumMeasuredMileTerminal({ className = "" }: { className?: st
           <text x="380" y="345" fill="#355a42" fontFamily="monospace" fontSize="7" letterSpacing="1">PROGRAMME_WEEKS →</text>
         </g>
 
-        {/* Baseline — flat stable measured mile */}
+        {/* Baseline,flat stable measured mile */}
         <path
           d={baselinePath}
           stroke="#c1a679"
@@ -190,7 +190,7 @@ export function QuantumMeasuredMileTerminal({ className = "" }: { className?: st
           DISRUPTION_EVENT
         </text>
 
-        {/* Disrupted productivity line — erratic spikes */}
+        {/* Disrupted productivity line,erratic spikes */}
         <path
           d={disruptedPath}
           stroke="#6da57e"
@@ -199,7 +199,7 @@ export function QuantumMeasuredMileTerminal({ className = "" }: { className?: st
           className="mm-disrupted"
         />
 
-        {/* Highlighted area under disrupted curve — wasted man-hours */}
+        {/* Highlighted area under disrupted curve,wasted man-hours */}
         <path
           d={disruptedArea}
           fill="#6b2020"
@@ -218,7 +218,7 @@ export function QuantumMeasuredMileTerminal({ className = "" }: { className?: st
           ))}
         </g>
 
-        {/* Status readout — bottom */}
+        {/* Status readout,bottom */}
         <text x="80" y="360" fill="#355a42" fontFamily="monospace" fontSize="9" letterSpacing="1" className="mm-fade">
           SOURCE: TURNSTILE_DATA + DAILY_ALLOCATION_SHEETS
         </text>

@@ -1,12 +1,12 @@
 "use client";
 
 /**
- * QuantumTerminal — Signal vs noise data filtering visualization.
+ * QuantumTerminal,Signal vs noise data filtering visualization.
  * Dense cluster of noisy data filtered down to a clean gold subset.
  * Shows £12.4m claimed being reduced to £7.8m true exposure.
  */
 export function QuantumTerminal({ className = "" }: { className?: string }) {
-  /* Noise dots — dense cluster representing inflated claim */
+  /* Noise dots,dense cluster representing inflated claim */
   const noiseDots: [number, number][] = [];
   // Deterministic pseudo-random positions for the noise cloud
   const seed = [
@@ -20,7 +20,7 @@ export function QuantumTerminal({ className = "" }: { className?: string }) {
     [540, 120], [575, 145], [495, 155], [535, 135], [565, 165],
   ];
 
-  /* Signal dots — clean subset representing true exposure */
+  /* Signal dots,clean subset representing true exposure */
   const signalDots: [number, number][] = [
     [500, 260], [520, 255], [540, 265], [560, 258], [580, 262],
     [510, 270], [530, 268], [550, 275], [570, 270], [590, 265],
@@ -128,7 +128,7 @@ export function QuantumTerminal({ className = "" }: { className?: string }) {
 
         {/* Claimed bracket and noise lines */}
         <g className="qt-noise">
-          {/* Dense faint data lines — representing inflated claim */}
+          {/* Dense faint data lines,representing inflated claim */}
           <g stroke="#2d563a" strokeWidth="1" opacity="0.6">
             <line x1="450" y1="100" x2="700" y2="100" strokeDasharray="2 4" />
             <line x1="420" y1="118" x2="750" y2="118" strokeDasharray="1 3" />
@@ -223,7 +223,7 @@ export function QuantumTerminal({ className = "" }: { className?: string }) {
           APPLY: EMDEN_FORMULA
         </text>
 
-        {/* Signal dots — clean, bright subset */}
+        {/* Signal dots,clean, bright subset */}
         <g className="qt-signal">
           {signalDots.map(([cx, cy], i) => (
             <circle key={i} cx={cx} cy={cy} r={2} fill="#6da57e" />

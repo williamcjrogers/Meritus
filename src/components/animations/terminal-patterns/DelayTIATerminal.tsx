@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * DelayTIATerminal — Time Impact Analysis visualization.
+ * DelayTIATerminal,Time Impact Analysis visualization.
  * A network of schedule nodes with a red disruption fragnet inserted;
  * the gold critical path routes cleanly above it, unbreached.
  */
@@ -114,7 +114,7 @@ export function DelayTIATerminal({ className = "" }: { className?: string }) {
           <line x1="600" y1="0" x2="600" y2="400" />
         </g>
 
-        {/* Schedule network — faint background activity nodes and links */}
+        {/* Schedule network,faint background activity nodes and links */}
         <g className="tia-grid">
           {/* Activity nodes (small rects) */}
           <rect x="60" y="120" width="60" height="20" rx="2" fill="none" stroke="#2d563a" strokeWidth="1" />
@@ -130,7 +130,7 @@ export function DelayTIATerminal({ className = "" }: { className?: string }) {
           <rect x="460" y="260" width="60" height="20" rx="2" fill="none" stroke="#2d563a" strokeWidth="0.8" opacity="0.5" />
           <rect x="560" y="220" width="60" height="20" rx="2" fill="none" stroke="#2d563a" strokeWidth="0.8" opacity="0.5" />
 
-          {/* Network links — faint connecting lines */}
+          {/* Network links,faint connecting lines */}
           <line x1="120" y1="130" x2="160" y2="130" stroke="#2d563a" strokeWidth="0.8" />
           <line x1="220" y1="130" x2="260" y2="130" stroke="#2d563a" strokeWidth="0.8" />
           <line x1="520" y1="130" x2="560" y2="130" stroke="#2d563a" strokeWidth="0.8" />
@@ -150,7 +150,7 @@ export function DelayTIATerminal({ className = "" }: { className?: string }) {
           <text x="670" y="135" fill="#355a42" fontFamily="monospace" fontSize="7" letterSpacing="0.5">ACT_19</text>
         </g>
 
-        {/* Disruption fragnet — red-tinted block inserted between ACT_16 and ACT_17 */}
+        {/* Disruption fragnet,red-tinted block inserted between ACT_16 and ACT_17 */}
         <g className="tia-fragnet">
           <rect
             x="335"
@@ -178,7 +178,7 @@ export function DelayTIATerminal({ className = "" }: { className?: string }) {
           <text x="350" y="280" fill="#6b2020" fontFamily="monospace" fontSize="7" letterSpacing="0.5" className="tia-pulse">22D_FLOAT_CONSUMED</text>
         </g>
 
-        {/* Critical path — gold line routing ABOVE the fragnet, unaffected */}
+        {/* Critical path,gold line routing ABOVE the fragnet, unaffected */}
         <path
           d="M 60 130 L 320 130 L 340 110 L 450 110 L 460 130 L 720 130"
           stroke="#c1a679"
@@ -200,21 +200,21 @@ export function DelayTIATerminal({ className = "" }: { className?: string }) {
         <circle cx="60" cy="130" r="3" fill="#c1a679" className="tia-fade" />
         <circle cx="720" cy="130" r="3" fill="#c1a679" className="tia-fade" />
 
-        {/* Callout — Critical path unbreached */}
+        {/* Callout,Critical path unbreached */}
         <line x1="400" y1="110" x2="400" y2="70" stroke="#2d563a" strokeWidth="0.8" className="tia-fade" />
         <text x="410" y="75" fill="#c1a679" fontFamily="monospace" fontSize="10" letterSpacing="1" className="tia-fade-2">
           CRITICAL_PATH: UNBREACHED
         </text>
         <text x="410" y="90" fill="#6da57e" fontFamily="monospace" fontSize="8" letterSpacing="1" className="tia-fade-2">
-          FLOAT_ABSORBED — NO_EXTENSION
+          FLOAT_ABSORBED,NO_EXTENSION
         </text>
 
-        {/* Status readout — bottom */}
+        {/* Status readout,bottom */}
         <text x="60" y="340" fill="#355a42" fontFamily="monospace" fontSize="9" letterSpacing="1" className="tia-fade-2">
-          PROTOCOL: TIA — FRAGNETS_INSERTED
+          PROTOCOL: TIA,FRAGNETS_INSERTED
         </text>
         <text x="60" y="356" fill="#355a42" fontFamily="monospace" fontSize="8" letterSpacing="1" className="tia-fade-2">
-          EMPLOYER_RISK_EVENTS: 14-19 — PROJECT_FLOAT: 22D
+          EMPLOYER_RISK_EVENTS: 14-19,PROJECT_FLOAT: 22D
         </text>
 
         {/* EOT Claim rejected label */}

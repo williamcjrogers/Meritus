@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * TechnicalDefectTerminal — Visualizes a CAD-style geometric cross-section
+ * TechnicalDefectTerminal,Visualizes a CAD-style geometric cross-section
  * of a facade mullion/transom. A zooming bounding box targets a joint, 
  * revealing a flashing dashed line for an omitted seal and a liability tag.
  */

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * DelayWindowsTerminal — Windows analysis & As-Planned vs As-Built.
+ * DelayWindowsTerminal,Windows analysis & As-Planned vs As-Built.
  * Isolates Window 4 (Weeks 12-16): a 42-day claim is reduced to 24 days
  * after concurrent steel fabrication mitigation is identified.
  */
@@ -147,7 +147,7 @@ export function DelayWindowsTerminal({ className = "" }: { className?: string })
 
         {/* Window header label */}
         <text x="110" y="52" fill="#6da57e" fontFamily="monospace" fontSize="10" letterSpacing="1" className="dw-grid">
-          WINDOW_4: WK12 — WK16
+          WINDOW_4: WK12,WK16
         </text>
 
         {/* Week markers along top */}
@@ -165,7 +165,7 @@ export function DelayWindowsTerminal({ className = "" }: { className?: string })
           <line x1="680" y1="82" x2="680" y2="88" stroke="#355a42" strokeWidth="0.5" />
         </g>
 
-        {/* 42-day claimed bar — long, faint */}
+        {/* 42-day claimed bar,long, faint */}
         <g className="dw-claim dw-shrink">
           <rect x="120" y="110" width="560" height="22" rx="1" fill="rgba(45, 86, 58, 0.3)" stroke="#2d563a" strokeWidth="0.8" />
           <text x="130" y="125" fill="#355a42" fontFamily="monospace" fontSize="9" letterSpacing="0.5">
@@ -190,7 +190,7 @@ export function DelayWindowsTerminal({ className = "" }: { className?: string })
           className="dw-strike"
         />
 
-        {/* Concurrent work bar — secondary, highlighted by scanner */}
+        {/* Concurrent work bar,secondary, highlighted by scanner */}
         <g className="dw-concurrent">
           {/* Highlight glow behind concurrent bar */}
           <rect x="118" y="148" width="240" height="28" rx="1" fill="rgba(109, 165, 126, 0.08)" />
@@ -203,7 +203,7 @@ export function DelayWindowsTerminal({ className = "" }: { className?: string })
           </text>
         </g>
 
-        {/* Net compensable delay — gold bar, shorter */}
+        {/* Net compensable delay,gold bar, shorter */}
         <rect
           x="120"
           y="200"
@@ -238,7 +238,7 @@ export function DelayWindowsTerminal({ className = "" }: { className?: string })
 
         {/* Status readout */}
         <text x="110" y="340" fill="#355a42" fontFamily="monospace" fontSize="9" letterSpacing="1" className="dw-fade-2">
-          PROTOCOL: WINDOWS — AS-PLANNED_v_AS-BUILT
+          PROTOCOL: WINDOWS,AS-PLANNED_v_AS-BUILT
         </text>
         <text x="110" y="358" fill="#c1a679" fontFamily="monospace" fontSize="9" letterSpacing="1" className="dw-fade-2 dw-pulse">
           NET_COMPENSABLE_DELAY: 24_DAYS

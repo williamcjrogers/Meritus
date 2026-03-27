@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * ProjectPulse — decorative P6-style programme background.
+ * ProjectPulse,decorative P6-style programme background.
  * Dense rows of thin bars with vertical grid lines, milestone diamonds,
  * and link lines. Barely visible watermark behind green sections.
  *
@@ -17,7 +17,7 @@ export function ProjectPulse({ className = "" }: { className?: string }) {
   const startY = 20;
 
   // Row definitions: x-start, width, optional delay-extension width, and activity label
-  // Modelled on a real P6 layout — staggered starts, varying durations
+  // Modelled on a real P6 layout,staggered starts, varying durations
   const rows = [
     // ── Delay analysis activities ──
     { x: 60,  w: 280, delay: 45, label: "Baseline Programme Review" },
@@ -62,7 +62,7 @@ export function ProjectPulse({ className = "" }: { className?: string }) {
     { x: 280, w: 200, delay: 25, label: "Data Date Progression" },
   ];
 
-  // WBS section headers — positioned above each activity group
+  // WBS section headers,positioned above each activity group
   const wbsHeaders = [
     { label: "1.0  PROGRAMME & DELAY", row: 0 },
     { label: "2.0  QUANTUM & VALUATION", row: 8 },
@@ -131,7 +131,7 @@ export function ProjectPulse({ className = "" }: { className?: string }) {
         preserveAspectRatio="xMidYMid slice"
         viewBox={`0 0 1200 ${totalH}`}
       >
-        {/* Vertical grid — faint monthly columns */}
+        {/* Vertical grid,faint monthly columns */}
         <g stroke="#B5975A" strokeWidth="0.5" opacity="0.04">
           {gridLines.map((x) => (
             <line key={x} x1={x} y1={0} x2={x} y2={totalH} />
@@ -234,7 +234,7 @@ export function ProjectPulse({ className = "" }: { className?: string }) {
           })}
         </g>
 
-        {/* Data date line — single vertical */}
+        {/* Data date line,single vertical */}
         <line
           x1={620} y1={0} x2={620} y2={totalH}
           stroke="#B5975A" strokeWidth="1" opacity="0.09"

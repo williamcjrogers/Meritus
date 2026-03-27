@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * DelayTerminal — Abstract minimalist Gantt chart showing critical path
+ * DelayTerminal,Abstract minimalist Gantt chart showing critical path
  * divergence at EVENT_47. Lines draw themselves in on scroll.
  */
 export function DelayTerminal({ className = "" }: { className?: string }) {
@@ -105,7 +105,7 @@ export function DelayTerminal({ className = "" }: { className?: string }) {
           letterSpacing="1"
           className="dt-fade"
         >
-          CONCURRENT: WK38 — WK52
+          CONCURRENT: WK38,WK52
         </text>
 
         {/* As-planned ghost line */}
@@ -139,7 +139,7 @@ export function DelayTerminal({ className = "" }: { className?: string }) {
           <line x1="350" y1="310" x2="680" y2="310" />
         </g>
 
-        {/* Critical path — gold line that draws itself */}
+        {/* Critical path,gold line that draws itself */}
         <path
           d="M 100 150 L 400 150 L 480 280 L 750 280"
           stroke="#c1a679"

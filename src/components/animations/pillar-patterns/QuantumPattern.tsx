@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * QuantumPattern — animated ledger / spreadsheet background for the Quantum pillar card.
+ * QuantumPattern,animated ledger / spreadsheet background for the Quantum pillar card.
  * Grid lines, currency values, and bar-chart fragments that shimmer gently.
  */
 export function QuantumPattern({ className = "" }: { className?: string }) {
@@ -93,24 +93,24 @@ export function QuantumPattern({ className = "" }: { className?: string }) {
           <text x="14" y="222">Final Account</text>
         </g>
 
-        {/* Grid lines — horizontal */}
+        {/* Grid lines,horizontal */}
         <g stroke="#B5975A" strokeWidth="0.3" opacity="0.06">
           <line x1={10} y1={55} x2={470} y2={55} strokeWidth="0.6" />
           {[85, 115, 145, 175, 205, 235].map(y => (
             <line key={y} x1={10} y1={y} x2={355} y2={y} />
           ))}
-          {/* Totals row — thicker */}
+          {/* Totals row,thicker */}
           <line x1={10} y1={245} x2={355} y2={245} strokeWidth="0.6" />
         </g>
 
-        {/* Grid lines — vertical */}
+        {/* Grid lines,vertical */}
         <g stroke="#B5975A" strokeWidth="0.3" opacity="0.05">
           {[80, 180, 280, 355].map(x => (
             <line key={x} x1={x} y1={40} x2={x} y2={250} />
           ))}
         </g>
 
-        {/* Currency values — each shimmers independently */}
+        {/* Currency values,each shimmers independently */}
         {cells.map((cell, i) => (
           <text
             key={i}
@@ -153,7 +153,7 @@ export function QuantumPattern({ className = "" }: { className?: string }) {
         {/* Bar chart baseline */}
         <line x1={365} y1={250} x2={460} y2={250} stroke="#B5975A" strokeWidth="0.4" opacity="0.06" />
 
-        {/* Sweep highlight — faint column scanner */}
+        {/* Sweep highlight,faint column scanner */}
         <rect
           className="quantum-sweep"
           x={0} y={40}

@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * DelayPattern — animated Gantt-chart background for the Delay Analysis pillar card.
+ * DelayPattern,animated Gantt-chart background for the Delay Analysis pillar card.
  * Horizontal programme bars with finish-to-start links and a pulsing data-date line.
  */
 export function DelayPattern({ className = "" }: { className?: string }) {
@@ -40,7 +40,7 @@ export function DelayPattern({ className = "" }: { className?: string }) {
         preserveAspectRatio="xMidYMid slice"
         viewBox="0 0 480 320"
       >
-        {/* Vertical grid lines — monthly columns */}
+        {/* Vertical grid lines,monthly columns */}
         <g stroke="#B5975A" strokeWidth="0.4" opacity="0.06">
           {[60, 120, 180, 240, 300, 360, 420].map(x => (
             <line key={x} x1={x} y1={0} x2={x} y2={320} />
@@ -59,7 +59,7 @@ export function DelayPattern({ className = "" }: { className?: string }) {
           1.0  PROGRAMME &amp; DELAY
         </text>
 
-        {/* Programme bars — staggered Gantt activities */}
+        {/* Programme bars,staggered Gantt activities */}
         <g fill="#B5975A" opacity="0.09">
           <rect x="50"  y="44"  width="140" height="4" rx="0.5" />
           <rect x="90"  y="69"  width="100" height="4" rx="0.5" />
@@ -107,17 +107,17 @@ export function DelayPattern({ className = "" }: { className?: string }) {
         <g fill="#B5975A" opacity="0.06" fontFamily="monospace" fontSize="3.2">
           <text x="48"  y="47" textAnchor="end">Baseline Review</text>
           <text x="88"  y="72" textAnchor="end">As-Planned v As-Built</text>
-          <text x="118" y="97" textAnchor="end">TIA — CE-047</text>
+          <text x="118" y="97" textAnchor="end">TIA,CE-047</text>
           <text x="68"  y="122" textAnchor="end">Critical Path</text>
           <text x="158" y="147" textAnchor="end">Float Analysis</text>
           <text x="128" y="172" textAnchor="end">Concurrent Delay</text>
           <text x="98"  y="197" textAnchor="end">Delay Narrative</text>
           <text x="198" y="222" textAnchor="end">Logic Audit</text>
-          <text x="148" y="247" textAnchor="end">EoT Claim — P3</text>
+          <text x="148" y="247" textAnchor="end">EoT Claim,P3</text>
           <text x="78"  y="272" textAnchor="end">Recovery Analysis</text>
         </g>
 
-        {/* Data date line — pulsing vertical */}
+        {/* Data date line,pulsing vertical */}
         <line
           x1={280} y1={0} x2={280} y2={320}
           stroke="#B5975A" strokeWidth="0.8"

@@ -154,7 +154,7 @@ export function HeroSection() {
             </motion.div>
           </div>
 
-          {/* ── Meritus Via — Premium Etymology Glass Plate (Book Styling with 3D effect) ── */}
+          {/* ── Meritus Via,Premium Etymology Glass Plate (Book Styling with 3D effect) ── */}
           <motion.aside
             className="relative w-full max-w-[420px] lg:max-w-none group ml-auto lg:translate-x-4 xl:translate-x-12 2xl:translate-x-16 perspective-[1000px]"
             initial={{ opacity: 0, x: 24 }}
@@ -267,7 +267,7 @@ export function HeroSection() {
         </div>
       </div>
 
-      {/* Scroll indicator — bottom centre */}
+      {/* Scroll indicator,bottom centre */}
       <motion.div
         className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10 scroll-indicator hidden md:block"
         initial={{ opacity: 0 }}

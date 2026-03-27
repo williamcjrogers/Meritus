@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * GovernanceTerminal — Visualizes absolute security, traceability, and human control.
+ * GovernanceTerminal,Visualizes absolute security, traceability, and human control.
  * Pure abstraction: No paragraph text, just faint geometric paths representing
  * data isolation and a 1:1 trace line culminating in an expert gate.
  */

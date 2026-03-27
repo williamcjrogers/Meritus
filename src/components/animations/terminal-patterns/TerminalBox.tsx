@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * TerminalBox — shared wrapper that provides the dark-green viewport,
+ * TerminalBox,shared wrapper that provides the dark-green viewport,
  * scroll-triggered activation, and a slow radar/scanner sweep.
  */
 export function TerminalBox({
@@ -82,7 +82,7 @@ export function TerminalBox({
           className={`absolute inset-y-0 w-24 z-[5] pointer-events-none bg-gradient-to-r from-transparent via-[#6da57e]/[0.07] to-transparent ${active ? "terminal-scan" : "opacity-0"}`}
         />
 
-        {/* Content — activated on scroll */}
+        {/* Content,activated on scroll */}
         <div className={active ? "terminal-active" : "terminal-inactive"}>
           {children}
         </div>

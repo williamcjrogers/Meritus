@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * AdvisoryStrategyTerminal — "Chaos-to-order" data-filtering schematic.
+ * AdvisoryStrategyTerminal,"Chaos-to-order" data-filtering schematic.
  * Demonstrates ingesting thousands of unstructured records, sweeping them
  * to strike out procedurally barred claims, and extracting a clean,
  * single targeted claim geometry (Strategy: Offensive Adjudication).
@@ -229,7 +229,7 @@ export function AdvisoryStrategyTerminal({
 
                 {/* Global info texts */}
                 <text x="60" y="340" fill="#355a42" fontFamily="monospace" fontSize="9" letterSpacing="1" className="adv-grid">
-                    INPUT: 12,000_RECORDS — CLAIM_VAL: £14.2M
+                    INPUT: 12,000_RECORDS,CLAIM_VAL: £14.2M
                 </text>
                 <text x="60" y="358" fill="#c1a679" fontFamily="monospace" fontSize="9" letterSpacing="1" className="adv-final-fade">
                     PIVOT: REJECT_SETTLEMENT &mdash; INITIATE_STRIKE_OUT

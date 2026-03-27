@@ -56,7 +56,7 @@ export default function AccessibilityPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">Keyboard navigation</strong>{" "}
-                      — all interactive elements are reachable and operable via
+                     ,all interactive elements are reachable and operable via
                       keyboard. A skip-to-content link is provided to bypass
                       repeated navigation.
                     </span>
@@ -65,7 +65,7 @@ export default function AccessibilityPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">Focus indicators</strong>{" "}
-                      — visible focus styles are applied to all interactive
+                     ,visible focus styles are applied to all interactive
                       elements for users navigating by keyboard or assistive
                       technology.
                     </span>
@@ -74,7 +74,7 @@ export default function AccessibilityPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">Colour contrast</strong>{" "}
-                      — text and interactive elements meet or exceed WCAG 2.1
+                     ,text and interactive elements meet or exceed WCAG 2.1
                       Level AA contrast ratios against their backgrounds.
                     </span>
                   </li>
@@ -82,7 +82,7 @@ export default function AccessibilityPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">Semantic HTML</strong>{" "}
-                      — proper heading hierarchy, landmark regions, and ARIA
+                     ,proper heading hierarchy, landmark regions, and ARIA
                       labels are used throughout to support screen reader
                       navigation.
                     </span>
@@ -91,7 +91,7 @@ export default function AccessibilityPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">Reduced motion</strong>{" "}
-                      — animations are suppressed for users who have enabled the{" "}
+                     ,animations are suppressed for users who have enabled the{" "}
                       <code className="text-[12px] bg-green/5 px-1.5 py-0.5 rounded">
                         prefers-reduced-motion
                       </code>{" "}
@@ -102,7 +102,7 @@ export default function AccessibilityPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">Decorative content</strong>{" "}
-                      — SVG visualisations, animated terminal patterns, and
+                     ,SVG visualisations, animated terminal patterns, and
                       background graphics are marked with{" "}
                       <code className="text-[12px] bg-green/5 px-1.5 py-0.5 rounded">
                         aria-hidden=&quot;true&quot;
@@ -114,7 +114,7 @@ export default function AccessibilityPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">Form labels</strong>{" "}
-                      — all form inputs on the contact page have associated labels
+                     ,all form inputs on the contact page have associated labels
                       and provide clear error messaging for validation failures.
                     </span>
                   </li>
@@ -122,7 +122,7 @@ export default function AccessibilityPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">Responsive design</strong>{" "}
-                      — the website adapts to a range of screen sizes and zoom
+                     ,the website adapts to a range of screen sizes and zoom
                       levels up to 200% without loss of content or functionality.
                     </span>
                   </li>
@@ -198,7 +198,7 @@ export default function AccessibilityPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">WCAG 2.1 Level AA</strong>{" "}
-                      — Web Content Accessibility Guidelines, published by the
+                     ,Web Content Accessibility Guidelines, published by the
                       World Wide Web Consortium (W3C).
                     </span>
                   </li>
@@ -206,7 +206,7 @@ export default function AccessibilityPage() {
                     {DASH}
                     <span>
                       <strong className="text-green/80">Equality Act 2010</strong>{" "}
-                      — the UK legislation requiring reasonable adjustments for
+                     ,the UK legislation requiring reasonable adjustments for
                       disabled users of services, including websites.
                     </span>
                   </li>

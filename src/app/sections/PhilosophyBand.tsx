@@ -17,7 +17,7 @@ export function PhilosophyBand() {
             PER MATTER. IN HOURS.
           </div>
           <div className="mt-5 font-mono text-[8px] tracking-[1.5px] uppercase text-[#2d563a] leading-[1.8] max-w-[280px] mx-auto lg:mx-0 text-center lg:text-left">
-            PROGRAMMES — CORRESPONDENCE — DRAWINGS — FIRE CERTIFICATES — COST REPORTS — SPECIFICATIONS — AS-BUILT RECORDS — MEETING MINUTES — VARIATION ORDERS — RFIS
+            PROGRAMMES,CORRESPONDENCE,DRAWINGS,FIRE CERTIFICATES,COST REPORTS,SPECIFICATIONS,AS-BUILT RECORDS,MEETING MINUTES,VARIATION ORDERS,RFIS
           </div>
         </div>
 
@@ -31,8 +31,8 @@ export function PhilosophyBand() {
             Never the judgment.
           </h3>
           <p className="text-[15px] lg:text-[16px] text-[#6da57e] leading-[1.6] max-w-[520px] font-sans font-light m-0">
-            100GB of project data — correspondence, site records, contract documents,
-            programme files — classified, cross-referenced, and chronologically
+            100GB of project data,correspondence, site records, contract documents,
+            programme files,classified, cross-referenced, and chronologically
             structured in hours. So our partners spend their time in the analysis,
             not the archive.
           </p>

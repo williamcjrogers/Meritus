@@ -1,11 +1,11 @@
 "use client";
 
 /**
- * AdvisoryPattern — animated legal document background for the Advisory pillar card.
+ * AdvisoryPattern,animated legal document background for the Advisory pillar card.
  * Document outline with clause numbers, paragraph lines, seal/stamp, and a scanning highlight.
  */
 export function AdvisoryPattern({ className = "" }: { className?: string }) {
-  // Paragraph lines — varying lengths for natural document feel
+  // Paragraph lines,varying lengths for natural document feel
   const paragraphs = [
     // Clause 4.1
     { y: 68, lines: [280, 280, 280, 210] },
@@ -72,7 +72,7 @@ export function AdvisoryPattern({ className = "" }: { className?: string }) {
         preserveAspectRatio="xMidYMid slice"
         viewBox="0 0 480 320"
       >
-        {/* Document outline — main page */}
+        {/* Document outline,main page */}
         <rect x={70} y={20} width={320} height={280} rx="1"
           stroke="#B5975A" strokeWidth="0.6" fill="none" opacity="0.06" />
 
@@ -87,7 +87,7 @@ export function AdvisoryPattern({ className = "" }: { className?: string }) {
         </g>
         <line x1={130} y1={48} x2={330} y2={48} stroke="#B5975A" strokeWidth="0.4" opacity="0.06" />
 
-        {/* Clause numbers — stagger-fade */}
+        {/* Clause numbers,stagger-fade */}
         {clauses.map((clause, i) => (
           <text
             key={i}
@@ -128,7 +128,7 @@ export function AdvisoryPattern({ className = "" }: { className?: string }) {
           Authorised Signatory
         </text>
 
-        {/* Seal / stamp mark — pulses and rotates */}
+        {/* Seal / stamp mark,pulses and rotates */}
         <g className="seal-mark">
           <circle cx={370} cy={250} r="22" stroke="#B5975A" strokeWidth="0.6" fill="none" />
           <circle cx={370} cy={250} r="18" stroke="#B5975A" strokeWidth="0.3" fill="none" />
@@ -158,7 +158,7 @@ export function AdvisoryPattern({ className = "" }: { className?: string }) {
           fill="#B5975A" rx="1"
         />
 
-        {/* Second document peeking behind — depth effect */}
+        {/* Second document peeking behind,depth effect */}
         <rect x={78} y={25} width={320} height={280} rx="1"
           stroke="#B5975A" strokeWidth="0.3" fill="none" opacity="0.03" />
       </svg>

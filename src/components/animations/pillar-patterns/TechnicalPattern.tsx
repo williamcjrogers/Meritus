@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * TechnicalPattern — animated construction section drawing for the Technical pillar card.
+ * TechnicalPattern,animated construction section drawing for the Technical pillar card.
  * Wall section with cross-hatching, dimension lines, annotation callouts, and ground line.
  */
 export function TechnicalPattern({ className = "" }: { className?: string }) {
@@ -77,22 +77,22 @@ export function TechnicalPattern({ className = "" }: { className?: string }) {
           })}
         </g>
 
-        {/* Wall face — left */}
+        {/* Wall face,left */}
         <line x1={140} y1={25} x2={140} y2={275} stroke="#B5975A" strokeWidth="1.2" opacity="0.09" />
-        {/* Wall face — right */}
+        {/* Wall face,right */}
         <line x1={200} y1={25} x2={200} y2={275} stroke="#B5975A" strokeWidth="1.2" opacity="0.09" />
 
         {/* Wall top cap */}
         <line x1={135} y1={25} x2={205} y2={25} stroke="#B5975A" strokeWidth="0.6" opacity="0.07" />
 
-        {/* Cross-hatching between walls — drifts */}
+        {/* Cross-hatching between walls,drifts */}
         <g className="hatch-group" stroke="#B5975A" strokeWidth="0.35" opacity="0.06">
           {hatchLines.map((l, i) => (
             <line key={i} x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} />
           ))}
         </g>
 
-        {/* Internal detail — rebar dots */}
+        {/* Internal detail,rebar dots */}
         <g fill="#B5975A" opacity="0.06">
           <circle cx={155} cy={60} r="2" />
           <circle cx={185} cy={60} r="2" />
@@ -102,7 +102,7 @@ export function TechnicalPattern({ className = "" }: { className?: string }) {
           <circle cx={185} cy={240} r="2" />
         </g>
 
-        {/* Dimension line — right side, pulsing */}
+        {/* Dimension line,right side, pulsing */}
         <g className="dim-line" stroke="#B5975A" strokeWidth="0.4" fill="#B5975A">
           {/* Vertical dimension line */}
           <line x1={230} y1={50} x2={230} y2={250} />
@@ -114,7 +114,7 @@ export function TechnicalPattern({ className = "" }: { className?: string }) {
           <text x={238} y={152} fontFamily="monospace" fontSize="4" opacity="0.10">450mm</text>
         </g>
 
-        {/* Horizontal dimension — wall thickness */}
+        {/* Horizontal dimension,wall thickness */}
         <g className="dim-line" stroke="#B5975A" strokeWidth="0.3" fill="#B5975A">
           <line x1={140} y1={15} x2={200} y2={15} />
           <line x1={140} y1={12} x2={140} y2={18} />
@@ -124,19 +124,19 @@ export function TechnicalPattern({ className = "" }: { className?: string }) {
 
         {/* Annotation callouts */}
         <g fill="none" stroke="#B5975A" strokeWidth="0.5">
-          {/* Callout 1 — wall construction */}
+          {/* Callout 1,wall construction */}
           <g className="anno-0">
             <circle cx={290} cy={80} r="6" />
             <line x1={284} y1={80} x2={205} y2={80} strokeDasharray="2 3" />
             <text x={290} y={82} textAnchor="middle" fill="#B5975A" fontFamily="monospace" fontSize="4">A</text>
           </g>
-          {/* Callout 2 — foundation detail */}
+          {/* Callout 2,foundation detail */}
           <g className="anno-1">
             <circle cx={310} cy={180} r="6" />
             <line x1={304} y1={180} x2={205} y2={180} strokeDasharray="2 3" />
             <text x={310} y={182} textAnchor="middle" fill="#B5975A" fontFamily="monospace" fontSize="4">B</text>
           </g>
-          {/* Callout 3 — damp-proof course */}
+          {/* Callout 3,damp-proof course */}
           <g className="anno-2">
             <circle cx={80} cy={260} r="6" />
             <line x1={86} y1={260} x2={135} y2={260} strokeDasharray="2 3" />
@@ -147,7 +147,7 @@ export function TechnicalPattern({ className = "" }: { className?: string }) {
         {/* DPC layer line */}
         <line x1={135} y1={260} x2={205} y2={260} stroke="#B5975A" strokeWidth="0.6" opacity="0.06" strokeDasharray="4 2" />
 
-        {/* Second wall section — right side, smaller */}
+        {/* Second wall section,right side, smaller */}
         <line x1={340} y1={80} x2={340} y2={275} stroke="#B5975A" strokeWidth="0.8" opacity="0.06" />
         <line x1={380} y1={80} x2={380} y2={275} stroke="#B5975A" strokeWidth="0.8" opacity="0.06" />
         <line x1={335} y1={80} x2={385} y2={80} stroke="#B5975A" strokeWidth="0.4" opacity="0.05" />

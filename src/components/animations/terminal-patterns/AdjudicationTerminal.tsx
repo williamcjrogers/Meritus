@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * AdjudicationTerminal — Minimalist horizontal timeline showing the
+ * AdjudicationTerminal,Minimalist horizontal timeline showing the
  * 28-day adjudication sprint. Nodes appear sequentially on scroll.
  */
 export function AdjudicationTerminal({

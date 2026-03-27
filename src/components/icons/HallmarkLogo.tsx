@@ -6,14 +6,14 @@ interface HallmarkLogoProps {
 }
 
 /**
- * Meritus Hallmark — an architectural M monogram.
+ * Meritus Hallmark,an architectural M monogram.
  *
  * The M is drawn as structure: heavy vertical strokes (columns),
  * a sharp apex (keystone/pediment), weighted serif bases (foundations),
  * and a datum line (ground line). Framed in a thin rectangle
  * like a detail reference on a structural drawing.
  *
- * Every path is hand-drawn SVG — no font rendering, identical on every OS.
+ * Every path is hand-drawn SVG,no font rendering, identical on every OS.
  */
 export function HallmarkLogo({
   size = "header",
@@ -28,7 +28,7 @@ export function HallmarkLogo({
   const datumColor = variant === "light" ? "rgba(181,151,90,0.2)" : "rgba(11,59,36,0.12)";
 
   /**
-   * The architectural M — drawn on a 100x100 viewBox.
+   * The architectural M,drawn on a 100x100 viewBox.
    *
    * Structure:
    *  - Two outer verticals (columns): x=25 and x=75, from y=28 to y=74

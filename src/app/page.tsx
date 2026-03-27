@@ -37,11 +37,11 @@ export default function HomePage() {
       <InsightsSection />
       <CTABand
         heading="Your next matter starts here."
-        subtext="Speak directly with a partner. No intermediaries, no sales teams — just a confidential conversation about your case."
+        subtext="Speak directly with a partner. No intermediaries, no sales teams,just a confidential conversation about your case."
         leftGraphic="monogram"
       />
 
-      {/* Private Vault — Credentials micro-CTA */}
+      {/* Private Vault,Credentials micro-CTA */}
       <section className="bg-green-dark py-10 lg:py-12 border-t border-brass/10">
         <div className="max-w-[1100px] 2xl:max-w-[1300px] 3xl:max-w-[1500px] mx-auto px-6 lg:px-[8%] text-center">
           <p className="text-[13px] text-cream/40 leading-relaxed max-w-2xl mx-auto">

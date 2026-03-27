@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * PartnerTerminal — A personable, partner-led visual.
+ * PartnerTerminal,A personable, partner-led visual.
  * Represents human judgment, CPR Part 35 sign-off, and expert testimony.
  */
 export function PartnerTerminal({

@@ -6,7 +6,7 @@ import { HallmarkLogo } from "@/components/icons/HallmarkLogo";
 export function Footer() {
   return (
     <footer className="bg-[#052314] text-cream/50 border-t border-brass/10" role="contentinfo">
-      {/* Discipline drift — ticker tape at the top of the footer */}
+      {/* Discipline drift,ticker tape at the top of the footer */}
       <div className="border-b border-brass/10 overflow-hidden py-3 bg-[#041a0f]" aria-hidden="true">
         <div className="footer-drift whitespace-nowrap font-mono text-[9px] tracking-[0.3em] uppercase text-brass/30">
           <span>delay analysis &middot; quantum &middot; fire safety &middot; drawing review &middot; prolongation &middot; causation &middot; advisory &middot; measured works &middot; cladding &middot; specification compliance &middot; mediation &middot; disruption &middot; building safety act &middot; final account &middot; expert testimony &middot; design liability &middot;&nbsp;</span>

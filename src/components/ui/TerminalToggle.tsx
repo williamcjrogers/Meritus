@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 /**
- * TerminalToggle — small tab toggle for switching between two terminal
+ * TerminalToggle,small tab toggle for switching between two terminal
  * visualizations (A/B examples) within a service section.
  */
 export function TerminalToggle({
