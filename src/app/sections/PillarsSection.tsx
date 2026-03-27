@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useRef } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, useInView } from "framer-motion";
 import { SERVICE_PILLARS } from "@/lib/constants";
 import { PillarPattern } from "@/components/animations/pillar-patterns/PillarPattern";
 import { FadeIn } from "@/components/animations";
@@ -31,7 +31,36 @@ const itemVariants = {
 
 export function PillarsSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, margin: "-10%" });
+
+  const [activePillar, setActivePillar] = useState<number | null>(null);
   const [hoveredPillar, setHoveredPillar] = useState<number | null>(null);
+
+  // Auto-sequencer effect
+  useEffect(() => {
+    if (!isInView) return;
+
+    const sequence = [0, 1, 2, 3];
+    const duration = 1500; // ms per flash
+    let timeoutId: NodeJS.Timeout;
+
+    const runSequence = (index: number) => {
+      if (index >= sequence.length) {
+        setActivePillar(null); // Turn off after finishing sequence
+        return;
+      }
+      setActivePillar(sequence[index]);
+      timeoutId = setTimeout(() => runSequence(index + 1), duration);
+    };
+
+    // Give the container animation time to finish before starting flash
+    const initialDelay = setTimeout(() => runSequence(0), 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+      clearTimeout(initialDelay);
+    };
+  }, [isInView]);
 
   return (
     <section className="bg-stone grain relative overflow-hidden py-[clamp(4rem,8vw,8rem)] border-t border-green/5">
@@ -70,7 +99,7 @@ export function PillarsSection() {
           className="grid grid-cols-1 md:grid-cols-2 relative z-10 border border-[#6da57e]/30 bg-transparent"
         >
           {SERVICE_PILLARS.map((pillar, index) => {
-            const isActive = hoveredPillar === index;
+            const isActive = activePillar === index || hoveredPillar === index;
 
             return (
               <motion.div key={pillar.title} variants={itemVariants}>
