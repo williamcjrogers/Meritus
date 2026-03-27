@@ -49,7 +49,7 @@ export default function MethodPage() {
         </div>
 
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
-          <FadeIn>
+          <FadeIn delay={0.1}>
             <div className="flex items-center gap-4 mb-8">
               <div className="h-[1px] w-8 bg-brass/50" />
               <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-brass/80">
@@ -57,13 +57,17 @@ export default function MethodPage() {
               </div>
               <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-brass/50 to-transparent" />
             </div>
+          </FadeIn>
             
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-              <div className="lg:col-span-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+            <div className="lg:col-span-8">
+              <FadeIn delay={0.2}>
                 <h1 className="font-serif text-4xl lg:text-[56px] text-cream leading-[1.1] mb-8">
                   Intelligence, <span className="text-cream/70 italic">accelerated.</span>
                 </h1>
-                
+              </FadeIn>
+              
+              <FadeIn delay={0.3}>
                 <div className="flex gap-6 max-w-2xl">
                   <div className="w-[1px] bg-brass/30 shrink-0 mt-2" />
                   <p className="text-[14px] lg:text-[15px] text-cream/70 leading-[1.8] font-light tracking-[0.02em]">
@@ -71,9 +75,11 @@ export default function MethodPage() {
                     100,000 documents in the time it takes others to review 100.
                   </p>
                 </div>
-              </div>
-              
-              <div className="lg:col-span-4 hidden lg:flex flex-col items-end text-right pt-4">
+              </FadeIn>
+            </div>
+            
+            <div className="lg:col-span-4 hidden lg:flex flex-col items-end text-right pt-4">
+              <FadeIn delay={0.4}>
                 <div className="inline-flex flex-col gap-3 p-6 border border-brass/10 bg-black/10 backdrop-blur-md rounded-sm relative">
                   {/* Decorative corner markers */}
                   <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/40" />
@@ -84,9 +90,9 @@ export default function MethodPage() {
                   <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">FORENSIC_INTERROGATION</div>
                   <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">HUMAN_TESTIMONY</div>
                 </div>
-              </div>
+              </FadeIn>
             </div>
-          </FadeIn>
+          </div>
         </div>
       </section>
 
