@@ -423,22 +423,22 @@ export function SectorsClient() {
 
       {/* Sticky Tabs */}
       <div className="bg-[#0b1f13] border-y border-brass/10 sticky top-[64px] lg:top-[80px] z-50 shadow-xl shadow-black/20">
-        <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
-          <div className="flex overflow-x-auto hide-scrollbar">
+        <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-2 lg:px-6 xl:px-[8%]">
+          <div className="grid grid-cols-3 lg:flex lg:overflow-x-auto lg:hide-scrollbar">
             {SECTORS.map((sector, idx) => (
               <button
                 key={sector.num}
                 onClick={() => setActiveTab(idx)}
-                className={`flex items-center gap-3 py-5 px-6 lg:px-8 whitespace-nowrap border-b-2 transition-all duration-300 ${
+                className={`flex flex-col lg:flex-row items-center justify-center gap-1 lg:gap-3 py-3 lg:py-5 px-1 lg:px-8 whitespace-nowrap border-b-2 transition-all duration-300 ${
                   activeTab === idx 
                     ? "border-brass text-cream bg-white/5" 
                     : "border-transparent text-cream/40 hover:text-cream/80 hover:bg-white/[0.02]"
                 }`}
               >
-                <span className={`font-mono text-[10px] tracking-[0.2em] transition-colors ${activeTab === idx ? "text-brass" : "text-brass/40"}`}>
+                <span className={`font-mono text-[9px] lg:text-[10px] tracking-[0.2em] transition-colors ${activeTab === idx ? "text-brass" : "text-brass/40"}`}>
                   SEC.{sector.num}
                 </span>
-                <span className="font-serif text-lg tracking-wide">{sector.title}</span>
+                <span className="font-serif text-[14px] lg:text-lg tracking-wide">{sector.title}</span>
               </button>
             ))}
           </div>
