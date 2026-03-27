@@ -292,10 +292,12 @@ export default function SectorsPage() {
                       </div>
 
                       {/* Right: Terminal Graphic */}
-                      <div className="relative w-full aspect-[16/10] lg:sticky lg:top-32">
-                        <TerminalBox className="w-full h-full">
-                          <Terminal />
-                        </TerminalBox>
+                      <div className="relative w-full aspect-[16/10] lg:h-full">
+                        <div className="lg:sticky lg:top-32 w-full h-auto aspect-[16/10]">
+                          <TerminalBox className="w-full h-full">
+                            <Terminal />
+                          </TerminalBox>
+                        </div>
                       </div>
                     </div>
                   </FadeIn>
