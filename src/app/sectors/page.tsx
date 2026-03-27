@@ -149,18 +149,32 @@ export default function SectorsPage() {
       </section>
 
       {/* Sectors */}
-      <section className="bg-stone border-t border-green/5">
+      <section className="flex flex-col">
         {SECTORS.map((sector, i) => {
           const Terminal = sector.terminal;
+          const bgClass = i % 2 === 0 ? "bg-stone" : "bg-parchment";
+          
           return (
-            <div key={sector.num}>
-              {i > 0 && <BlueprintDivider />}
+            <div key={sector.num} className={`${bgClass} relative overflow-hidden`}>
+              {/* Huge watermark number in the background */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[40vw] font-serif leading-none text-green/[0.02] pointer-events-none select-none z-0">
+                {sector.num}
+              </div>
+
+              {i > 0 && (
+                <div className="absolute top-0 left-0 w-full z-10">
+                  <BlueprintDivider />
+                </div>
+              )}
               
-              <div className="py-[clamp(3.5rem,7vw,7rem)]">
+              <div className="py-[clamp(4.5rem,8vw,8rem)] relative z-10">
                 <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
                   <FadeIn>
-                    <div className="font-mono text-[10px] tracking-[0.2em] text-brass/70 mb-5">
-                      {sector.num}
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80">
+                        SEC.{sector.num}
+                      </div>
+                      <div className="h-[1px] w-12 bg-brass/30"></div>
                     </div>
                     
                     <div className="grid grid-cols-1 lg:grid-cols-[1fr_minmax(400px,500px)] 2xl:grid-cols-[1fr_550px] gap-12 lg:gap-20 items-start">
@@ -227,6 +241,15 @@ export default function SectorsPage() {
                               </div>
                             </div>
                           </div>
+
+                          {/* Lawyer Referencing */}
+                          {sector.reference && (
+                            <div className="pt-6 mt-6 border-t border-green/5">
+                              <p className="font-serif text-[12px] lg:text-[13px] text-slate/80 italic leading-relaxed">
+                                {sector.reference}
+                              </p>
+                            </div>
+                          )}
                         </div>
                       </div>
 
