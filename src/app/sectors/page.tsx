@@ -28,6 +28,7 @@ const SECTORS = [
       { label: "Advisory", href: "/services#advisory" },
     ],
     terminal: RailTerminal,
+    reference: "¹ Core Clause 60.1, NEC4 Engineering and Construction Contract (ECC)."
   },
   {
     num: "02",
@@ -47,6 +48,7 @@ const SECTORS = [
       { label: "Technical", href: "/services#technical" },
     ],
     terminal: HighwaysTerminal,
+    reference: "² e.g., Obrascon Huarte Lain SA v HM Attorney General [2015] EWCA Civ 227 on unforeseeable ground conditions."
   },
   {
     num: "03",
@@ -66,6 +68,7 @@ const SECTORS = [
       { label: "Advisory", href: "/services#advisory" },
     ],
     terminal: ResidentialTerminal,
+    reference: "³ See Walter Lilly & Co Ltd v Mackay [2012] EWHC 1773 (TCC) regarding global claims and concurrent delay."
   },
   {
     num: "04",
@@ -85,6 +88,7 @@ const SECTORS = [
       { label: "Technical", href: "/services#technical" },
     ],
     terminal: CommercialTerminal,
+    reference: "⁴ Triple Point Technology, Inc v PTT Public Company Ltd [2021] UKSC 29 regarding liquidated damages."
   },
   {
     num: "05",
@@ -104,6 +108,7 @@ const SECTORS = [
       { label: "Quantum", href: "/services#quantum" },
     ],
     terminal: EnergyTerminal,
+    reference: "⁵ MT Højgaard A/S v E.ON Climate & Renewables UK Robin Rigg East Limited [2017] UKSC 59 on fitness for purpose obligations."
   },
   {
     num: "06",
@@ -123,6 +128,7 @@ const SECTORS = [
       { label: "Advisory", href: "/services#advisory" },
     ],
     terminal: BSATerminal,
+    reference: "⁶ Building Safety Act 2022, ss. 116–125 (Remediation Orders and Remediation Contribution Orders) and Defective Premises Act 1972 s.1."
   },
 ];
 
