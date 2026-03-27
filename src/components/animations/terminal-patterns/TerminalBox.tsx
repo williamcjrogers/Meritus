@@ -67,6 +67,22 @@ export function TerminalBox({
       <div className={active ? "terminal-active" : "terminal-inactive"}>
         {children}
       </div>
+
+      {/* HUD Borders */}
+      <div className="absolute inset-0 pointer-events-none z-20">
+        {/* Subtle inner grid lines forming a border */}
+        <div className="absolute inset-4 border border-[#6da57e]/20" />
+        
+        {/* Corner Brackets */}
+        <div className="absolute top-4 left-4 w-6 h-6 border-t border-l border-[#c1a679]/60" />
+        <div className="absolute top-4 right-4 w-6 h-6 border-t border-r border-[#c1a679]/60" />
+        <div className="absolute bottom-4 left-4 w-6 h-6 border-b border-l border-[#c1a679]/60" />
+        <div className="absolute bottom-4 right-4 w-6 h-6 border-b border-r border-[#c1a679]/60" />
+        
+        {/* Corner Markers */}
+        <div className="absolute top-[14px] left-6 text-[#6da57e]/50 font-mono text-[8px] tracking-widest">SYS.OP.01</div>
+        <div className="absolute bottom-[14px] right-6 text-[#6da57e]/50 font-mono text-[8px] tracking-widest">AXIS_LOCK</div>
+      </div>
     </div>
   );
 }
