@@ -98,7 +98,7 @@ export default function ClaimsIntelligencePage() {
             <h1 className="font-serif text-4xl lg:text-[52px] text-cream leading-[1.1] max-w-4xl">
               The legal research engine behind every opinion.
             </h1>
-            <p className="mt-8 text-base lg:text-lg text-cream/55 max-w-2xl leading-relaxed">
+            <p className="mt-8 text-[15px] lg:text-[16px] font-sans font-light tracking-[0.01em] text-cream/70 max-w-2xl leading-[1.8]">
               A proprietary knowledge platform built by construction disputes practitioners.
               Case law, statutory frameworks, contract analysis, and RICS guidance —
               structured for the speed that adjudication and arbitration demand.
@@ -106,16 +106,13 @@ export default function ClaimsIntelligencePage() {
             <div className="mt-10 flex flex-wrap items-center gap-5">
               <a
                 href="https://intelligence.meritusvia.com/#dashboard"
-                className="btn-brass"
+                className="btn-brass group"
               >
                 Access Dashboard
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
                   <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </a>
-              <Link href="/contact" className="btn-outline">
-                Request Access
-              </Link>
             </div>
           </FadeIn>
         </div>
@@ -128,7 +125,7 @@ export default function ClaimsIntelligencePage() {
             {PLATFORM_STATS.map((stat, i) => (
               <div
                 key={stat.label}
-                className={`flex flex-col items-center ${i > 0 ? "border-l border-brass/15" : ""}`}
+                className={`flex flex-col items-center ${i > 0 ? "lg:border-l lg:border-brass/15" : ""} ${i % 2 !== 0 ? "max-lg:border-l max-lg:border-brass/15" : ""}`}
               >
                 <span className="font-serif text-3xl lg:text-4xl text-cream/80 leading-none">
                   {stat.value}
@@ -145,8 +142,47 @@ export default function ClaimsIntelligencePage() {
         </div>
       </section>
 
+      {/* Access */}
+      <section className="bg-parchment py-16 lg:py-20">
+        <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
+          <FadeIn>
+            <div className="max-w-2xl mx-auto text-center">
+              <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate/70 mb-4">
+                Access
+              </div>
+              <h2 className="font-serif text-2xl lg:text-3xl text-green leading-[1.35] mb-6">
+                Who can use it.
+              </h2>
+              <div className="space-y-4 text-[15px] lg:text-[16px] font-sans font-light tracking-[0.01em] text-slate/80 leading-[1.8]">
+                <p>
+                  Claims Intelligence is available to clients and instructing solicitors
+                  with active matters. Dashboard credentials are issued at the point of
+                  instruction and provide read-only access to the research layers relevant
+                  to the engagement.
+                </p>
+                <p>
+                  For prospective clients, we can demonstrate the platform on sample data
+                  as part of an initial scoping discussion.
+                </p>
+              </div>
+              <div className="mt-10 flex flex-wrap justify-center items-center gap-5">
+                <a
+                  href="https://intelligence.meritusvia.com/#dashboard"
+                  className="btn-brass group"
+                >
+                  Access Dashboard
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
+                    <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </FadeIn>
+        </div>
+      </section>
+
       {/* What it is */}
-      <section className="bg-stone py-16 lg:py-20">
+      <section className="bg-stone py-16 lg:py-20 border-t border-green/5">
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
           <FadeIn>
             <div className="max-w-3xl">
@@ -156,7 +192,7 @@ export default function ClaimsIntelligencePage() {
               <h2 className="font-serif text-2xl lg:text-3xl text-green leading-[1.35] mb-6">
                 Built by practitioners, not software companies.
               </h2>
-              <div className="space-y-4 text-[15px] lg:text-base text-slate leading-relaxed">
+              <div className="space-y-4 text-[15px] lg:text-[16px] font-sans font-light tracking-[0.01em] text-slate/80 leading-[1.8]">
                 <p>
                   Claims Intelligence is Meritus Via&apos;s internal research layer — the
                   structured legal and professional knowledge base that underpins every expert
@@ -192,24 +228,25 @@ export default function ClaimsIntelligencePage() {
             </h2>
           </FadeIn>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-green/8">
-            {MODULES.map((mod) => (
-              <FadeIn key={mod.num}>
-                <div className="bg-parchment p-8 lg:p-10 h-full flex flex-col">
-                  <div className="font-mono text-[10px] tracking-[0.2em] text-brass/70 mb-3">
-                    {mod.num}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-green/10">
+            {MODULES.map((mod, i) => (
+              <FadeIn key={mod.num} delay={0.1 + (i * 0.05)}>
+                <div className="bg-parchment p-8 lg:p-10 h-full flex flex-col group transition-colors duration-500 hover:bg-stone">
+                  <div className="font-mono text-[10px] tracking-[0.2em] text-brass/70 mb-4 flex items-center justify-between">
+                    <span>{mod.num}</span>
+                    <span className="opacity-0 group-hover:opacity-100 transition-opacity text-brass">→</span>
                   </div>
-                  <h3 className="font-serif text-lg text-green leading-tight mb-4">
+                  <h3 className="font-serif text-lg text-green leading-tight mb-4 group-hover:text-brass transition-colors duration-500">
                     {mod.title}
                   </h3>
-                  <p className="text-[14px] text-slate leading-relaxed flex-1">
+                  <p className="text-[14px] font-sans font-light text-slate/80 leading-[1.8] flex-1">
                     {mod.description}
                   </p>
-                  <div className="mt-5 flex flex-wrap gap-2">
+                  <div className="mt-6 flex flex-wrap gap-2 pt-6 border-t border-green/5">
                     {mod.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="font-mono text-[9px] tracking-[0.1em] text-green/50 bg-green/5 px-2.5 py-1 rounded-sm"
+                        className="font-mono text-[9px] tracking-[0.1em] text-green/60 bg-green/5 px-2.5 py-1.5 rounded-sm"
                       >
                         {tag}
                       </span>
@@ -235,16 +272,16 @@ export default function ClaimsIntelligencePage() {
           </FadeIn>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {FEATURED_AUTHORITIES.map((auth) => (
-              <FadeIn key={auth.cite}>
-                <div className="border border-cream/8 p-8 lg:p-10 bg-green-dark/30 backdrop-blur-sm">
-                  <h3 className="font-serif text-lg text-cream italic leading-tight">
+            {FEATURED_AUTHORITIES.map((auth, i) => (
+              <FadeIn key={auth.cite} delay={0.1 + (i * 0.05)}>
+                <div className="border border-cream/10 p-8 lg:p-10 bg-green-dark/30 backdrop-blur-sm group hover:border-brass/30 transition-colors duration-500">
+                  <h3 className="font-serif text-lg text-cream italic leading-tight group-hover:text-brass transition-colors duration-500">
                     {auth.name}
                   </h3>
                   <div className="mt-2 font-mono text-[10px] tracking-[0.15em] text-brass/60">
                     {auth.cite}
                   </div>
-                  <p className="mt-4 text-[14px] text-cream/50 leading-relaxed">
+                  <p className="mt-4 text-[14px] font-sans font-light text-cream/60 leading-[1.8]">
                     {auth.note}
                   </p>
                 </div>
@@ -253,51 +290,9 @@ export default function ClaimsIntelligencePage() {
           </div>
 
           <FadeIn>
-            <p className="mt-10 text-center text-[12px] text-cream/25 font-mono tracking-wide">
+            <p className="mt-12 text-center text-[12px] text-cream/30 font-mono tracking-[0.15em] uppercase">
               + 56 additional authorities indexed and analysed
             </p>
-          </FadeIn>
-        </div>
-      </section>
-
-      {/* Access */}
-      <section className="bg-stone py-16 lg:py-20 border-t border-green/5">
-        <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
-          <FadeIn>
-            <div className="max-w-2xl mx-auto text-center">
-              <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate mb-4">
-                Access
-              </div>
-              <h2 className="font-serif text-2xl lg:text-3xl text-green leading-[1.35] mb-6">
-                Who can use it.
-              </h2>
-              <div className="space-y-4 text-[15px] text-slate leading-relaxed">
-                <p>
-                  Claims Intelligence is available to clients and instructing solicitors
-                  with active matters. Dashboard credentials are issued at the point of
-                  instruction and provide read-only access to the research layers relevant
-                  to the engagement.
-                </p>
-                <p>
-                  For prospective clients, we can demonstrate the platform on sample data
-                  as part of an initial scoping discussion.
-                </p>
-              </div>
-              <div className="mt-10 flex flex-wrap justify-center items-center gap-5">
-                <a
-                  href="https://intelligence.meritusvia.com/#dashboard"
-                  className="btn-brass"
-                >
-                  Log In
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                    <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </a>
-                <Link href="/contact" className="btn-outline">
-                  Request a Demonstration
-                </Link>
-              </div>
-            </div>
           </FadeIn>
         </div>
       </section>
