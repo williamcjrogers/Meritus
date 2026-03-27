@@ -79,9 +79,9 @@ export default function InsightsPage() {
         </div>
 
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
-          <StaggerChildren className="grid grid-cols-1 gap-8" staggerDelay={0.15}>
+          <StaggerChildren className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12" staggerDelay={0.15}>
             {INSIGHT_ARTICLES.map((article) => (
-              <StaggerItem key={article.title}>
+              <StaggerItem key={article.title} className="h-full">
                 <InsightCard {...article} />
               </StaggerItem>
             ))}

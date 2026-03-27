@@ -82,7 +82,7 @@ export const INSIGHT_ARTICLES = [
     slug: "building-safety-act-remediation",
     title:
       "The Building Safety Act: The New Frontier of Remediation Claims",
-    date: "February 2026",
+    date: "March 2026",
     readTime: "8 min",
     excerpt:
       "Multi-party liability, complex causation, and extended limitation periods are creating a distinct class of construction dispute.",
@@ -93,7 +93,7 @@ export const INSIGHT_ARTICLES = [
     slug: "ai-in-construction-disputes",
     title:
       "Beyond the Hype: What AI Actually Looks Like in a Dispute",
-    date: "February 2026",
+    date: "April 2026",
     readTime: "5 min",
     excerpt:
       "The gap between what technology companies promise and what practitioners need is substantial. Here is what actually works.",
