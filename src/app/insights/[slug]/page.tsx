@@ -151,12 +151,21 @@ export default async function InsightArticlePage({ params }: { params: Promise<{
             
             {/* Article Content */}
             <div className="lg:col-span-8 lg:col-start-3">
-              <div className="space-y-8">
+              <div className="space-y-8 relative">
+                {/* Vertical subtle line for legal numbering */}
+                <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-green/5 hidden md:block" />
+                
                 {content.body.map((paragraph, i) => (
                   <FadeIn key={i} delay={0.1 + (i * 0.05)}>
-                    <p className="text-[15px] lg:text-[16px] text-ink/80 leading-[1.85] font-sans font-light tracking-[0.01em]">
-                      {paragraph}
-                    </p>
+                    <div className="relative md:pl-10">
+                      {/* Legal paragraph numbering */}
+                      <div className="hidden md:block absolute left-0 top-1.5 font-mono text-[9px] text-slate/30 tracking-widest select-none" aria-hidden="true">
+                        {String((i + 1) * 10).padStart(3, '0')}
+                      </div>
+                      <p className="text-[15px] lg:text-[16px] text-ink/80 leading-[1.85] font-sans font-light tracking-[0.01em]">
+                        {paragraph}
+                      </p>
+                    </div>
                   </FadeIn>
                 ))}
               </div>
