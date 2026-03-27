@@ -16,38 +16,54 @@ export function ProcessStrip() {
   const isInView = useInView(containerRef, { once: true, margin: "-10%" });
 
   return (
-    <section className="bg-green-dark py-16 lg:py-20">
-      <div className="max-w-[1100px] mx-auto px-6 text-center">
+    <section className="bg-green-dark py-[clamp(4rem,8vw,8rem)] relative overflow-hidden">
+      {/* Background elements for premium feel */}
+      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
+      <div className="absolute inset-0 pointer-events-none z-0">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-serif leading-none text-cream/[0.015] select-none whitespace-nowrap tracking-wider">
+          PROCESS.
+        </div>
+      </div>
 
-        <div className="font-mono text-brass/80 text-[12px] md:text-[14px] tracking-[6px] font-bold mb-16 uppercase">
-          How we engage
+      <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10 text-center">
+
+        <div className="flex items-center justify-center gap-4 mb-16 lg:mb-20">
+          <div className="h-[1px] w-8 bg-brass/30"></div>
+          <div className="font-mono text-brass/80 text-[11px] tracking-[0.25em] uppercase">
+            How we engage
+          </div>
+          <div className="h-[1px] w-8 bg-brass/30"></div>
         </div>
 
         <div ref={containerRef} className={`relative w-full ${isInView ? "animate-sequencer" : ""}`}>
 
           <SequencerTimeline />
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-10 mt-6 lg:mt-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 lg:gap-10 mt-10 lg:mt-12 relative z-10">
             {STEPS.map((step, index) => (
-              <div key={step.num} className={`step-block step-${index + 1} flex flex-col items-center text-center`}>
-                <div className="font-mono text-brass text-[12px] md:text-[13px] tracking-[2px] mb-[10px] md:mb-[15px]">
+              <div key={step.num} className={`step-block step-${index + 1} flex flex-col items-center text-center group`}>
+                <div className="font-mono text-brass/70 text-[10px] md:text-[11px] tracking-[0.2em] mb-3 group-hover:text-brass transition-colors duration-500">
                   {step.num}
                 </div>
-                <div className="font-serif text-cream text-xl md:text-[26px] font-normal mb-[8px] md:mb-[12px]">
+                <div className="font-serif text-cream text-xl md:text-2xl mb-3">
                   {step.label}
                 </div>
-                <div className="font-mono text-cream/70 text-[10px] md:text-[11px] tracking-[1px] mb-[6px] md:mb-[8px] lowercase">
+                <div className="font-sans font-light text-[13px] md:text-[14px] text-cream/60 tracking-[0.02em] mb-2 lowercase">
                   {step.desc}
                 </div>
-                <div className="font-mono text-cream/40 text-[8px] md:text-[9px] tracking-[1.5px] lowercase">
+                <div className="font-mono text-[9px] tracking-[0.15em] text-brass/40 lowercase group-hover:text-brass/60 transition-colors duration-500">
                   {step.disciplines}
                 </div>
               </div>
             ))}
           </div>
 
-          <div className="mt-12 text-[10px] md:text-[11px] text-cream/30 italic tracking-wide">
-            *Conflict check is only where required
+          <div className="mt-20 flex items-center justify-center gap-4 opacity-0 animate-[fadeUp_0.6s_ease_forwards_3.5s]">
+            <div className="h-[1px] w-4 bg-cream/10"></div>
+            <div className="text-[10px] md:text-[11px] text-cream/30 italic tracking-[0.05em] font-light">
+              *Conflict check is only where required
+            </div>
+            <div className="h-[1px] w-4 bg-cream/10"></div>
           </div>
 
         </div>
