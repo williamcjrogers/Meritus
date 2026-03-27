@@ -59,10 +59,10 @@ function ServiceTerminal({ type }: { type: "delay" | "quantum" | "technical" | "
         ]}
       >
         {[
-          <TerminalBox key="defect" className="">
+          <TerminalBox key="defect" className="" hideBorders>
             <TechnicalDefectTerminal />
           </TerminalBox>,
-          <TerminalBox key="bsa" className="">
+          <TerminalBox key="bsa" className="" hideBorders>
             <TechnicalBSATerminal />
           </TerminalBox>,
         ]}
@@ -72,22 +72,37 @@ function ServiceTerminal({ type }: { type: "delay" | "quantum" | "technical" | "
 
   if (type === "advisory") {
     return (
-      <div className="flex flex-col h-full bg-green p-6 lg:p-8 relative overflow-hidden">
-        <div className="absolute inset-x-0 bottom-0 h-[200px] bg-gradient-to-t from-stone/10 to-transparent pointer-events-none z-0" />
-
-        <div className="relative z-10 mb-8 min-h-[100px] animate-in fade-in duration-500">
-          <div className="font-mono text-[10px] tracking-[0.15em] text-brass/60 mb-2 mt-2">
-            Illustrative analysis: Claim Strategy & Merits
-          </div>
-          <p className="font-mono text-[13px] text-cream/70 leading-[1.8]">
-            Opponent’s £14.2m claim and 12,000 unstructured project records ingested. Rapid evidence structuring isolates a systemic failure by the contractor to serve condition precedent notices under Clause 61.3. Merits assessment confirms 82% of the claim is procedurally barred. Strategy pivot: Reject commercial settlement. Offensive adjudication triggered to strike out the defective heads of claim.
-          </p>
+      <div className="relative h-full">
+        {/* Outer HUD Borders for Advisory */}
+        <div className="absolute -inset-2 sm:-inset-4 pointer-events-none z-20">
+          {/* Corner Brackets */}
+          <div className="absolute top-0 left-0 w-3 h-3 sm:w-5 sm:h-5 border-t border-l border-[#c1a679]/60" />
+          <div className="absolute top-0 right-0 w-3 h-3 sm:w-5 sm:h-5 border-t border-r border-[#c1a679]/60" />
+          <div className="absolute bottom-0 left-0 w-3 h-3 sm:w-5 sm:h-5 border-b border-l border-[#c1a679]/60" />
+          <div className="absolute bottom-0 right-0 w-3 h-3 sm:w-5 sm:h-5 border-b border-r border-[#c1a679]/60" />
+          
+          {/* Corner Markers */}
+          <div className="absolute -top-4 left-0 text-[#c1a679]/50 font-mono text-[7px] sm:text-[8px] tracking-widest hidden sm:block">SYS.OP.01</div>
+          <div className="absolute -bottom-4 right-0 text-[#c1a679]/50 font-mono text-[7px] sm:text-[8px] tracking-widest hidden sm:block">AXIS_LOCK</div>
         </div>
 
-        <div className="relative z-10 flex-1 w-full min-h-[300px]">
-          <TerminalBox className="">
-            <AdvisoryStrategyTerminal />
-          </TerminalBox>
+        <div className="flex flex-col h-full bg-green p-6 lg:p-8 relative overflow-hidden">
+          <div className="absolute inset-x-0 bottom-0 h-[200px] bg-gradient-to-t from-stone/10 to-transparent pointer-events-none z-0" />
+
+          <div className="relative z-10 mb-8 min-h-[100px] animate-in fade-in duration-500">
+            <div className="font-mono text-[10px] tracking-[0.15em] text-brass/60 mb-2 mt-2">
+              Illustrative analysis: Claim Strategy & Merits
+            </div>
+            <p className="font-mono text-[13px] text-cream/70 leading-[1.8]">
+              Opponent’s £14.2m claim and 12,000 unstructured project records ingested. Rapid evidence structuring isolates a systemic failure by the contractor to serve condition precedent notices under Clause 61.3. Merits assessment confirms 82% of the claim is procedurally barred. Strategy pivot: Reject commercial settlement. Offensive adjudication triggered to strike out the defective heads of claim.
+            </p>
+          </div>
+
+          <div className="relative z-10 flex-1 w-full min-h-[300px]">
+            <TerminalBox className="" hideBorders>
+              <AdvisoryStrategyTerminal />
+            </TerminalBox>
+          </div>
         </div>
       </div>
     );
@@ -103,10 +118,10 @@ function ServiceTerminal({ type }: { type: "delay" | "quantum" | "technical" | "
         ]}
       >
         {[
-          <TerminalBox key="tia" className="">
+          <TerminalBox key="tia" className="" hideBorders>
             <DelayTIATerminal />
           </TerminalBox>,
-          <TerminalBox key="windows" className="">
+          <TerminalBox key="windows" className="" hideBorders>
             <DelayWindowsTerminal />
           </TerminalBox>,
         ]}
@@ -123,10 +138,10 @@ function ServiceTerminal({ type }: { type: "delay" | "quantum" | "technical" | "
       ]}
     >
       {[
-        <TerminalBox key="mile" className="">
+        <TerminalBox key="mile" className="" hideBorders>
           <QuantumMeasuredMileTerminal />
         </TerminalBox>,
-        <TerminalBox key="overhead" className="">
+        <TerminalBox key="overhead" className="" hideBorders>
           <QuantumOverheadTerminal />
         </TerminalBox>,
       ]}

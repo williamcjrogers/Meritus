@@ -9,9 +9,11 @@ import { useEffect, useRef, useState } from "react";
 export function TerminalBox({
   children,
   className = "",
+  hideBorders = false,
 }: {
   children: React.ReactNode;
   className?: string;
+  hideBorders?: boolean;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [active, setActive] = useState(false);
@@ -39,17 +41,19 @@ export function TerminalBox({
       className={`relative aspect-[16/10] ${className}`}
     >
       {/* Outer HUD Borders (Floating outside the green section) */}
-      <div className="absolute -inset-2 sm:-inset-4 pointer-events-none z-20">
-        {/* Corner Brackets */}
-        <div className="absolute top-0 left-0 w-3 h-3 sm:w-5 sm:h-5 border-t border-l border-[#c1a679]/60" />
-        <div className="absolute top-0 right-0 w-3 h-3 sm:w-5 sm:h-5 border-t border-r border-[#c1a679]/60" />
-        <div className="absolute bottom-0 left-0 w-3 h-3 sm:w-5 sm:h-5 border-b border-l border-[#c1a679]/60" />
-        <div className="absolute bottom-0 right-0 w-3 h-3 sm:w-5 sm:h-5 border-b border-r border-[#c1a679]/60" />
-        
-        {/* Corner Markers */}
-        <div className="absolute -top-4 left-0 text-[#c1a679]/50 font-mono text-[7px] sm:text-[8px] tracking-widest hidden sm:block">SYS.OP.01</div>
-        <div className="absolute -bottom-4 right-0 text-[#c1a679]/50 font-mono text-[7px] sm:text-[8px] tracking-widest hidden sm:block">AXIS_LOCK</div>
-      </div>
+      {!hideBorders && (
+        <div className="absolute -inset-2 sm:-inset-4 pointer-events-none z-20">
+          {/* Corner Brackets */}
+          <div className="absolute top-0 left-0 w-3 h-3 sm:w-5 sm:h-5 border-t border-l border-[#c1a679]/60" />
+          <div className="absolute top-0 right-0 w-3 h-3 sm:w-5 sm:h-5 border-t border-r border-[#c1a679]/60" />
+          <div className="absolute bottom-0 left-0 w-3 h-3 sm:w-5 sm:h-5 border-b border-l border-[#c1a679]/60" />
+          <div className="absolute bottom-0 right-0 w-3 h-3 sm:w-5 sm:h-5 border-b border-r border-[#c1a679]/60" />
+          
+          {/* Corner Markers */}
+          <div className="absolute -top-4 left-0 text-[#c1a679]/50 font-mono text-[7px] sm:text-[8px] tracking-widest hidden sm:block">SYS.OP.01</div>
+          <div className="absolute -bottom-4 right-0 text-[#c1a679]/50 font-mono text-[7px] sm:text-[8px] tracking-widest hidden sm:block">AXIS_LOCK</div>
+        </div>
+      )}
 
       {/* Inner Green Screen */}
       <div className="absolute inset-0 bg-green overflow-hidden rounded-sm shadow-xl border border-green/20">
