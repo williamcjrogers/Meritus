@@ -34,7 +34,7 @@ export default function InsightsPage() {
           </FadeIn>
             
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-            <div className="lg:col-span-8">
+            <div className="lg:col-span-12 max-w-4xl">
               <FadeIn delay={0.2}>
                 <h1 className="font-serif text-4xl lg:text-[56px] text-cream leading-[1.1] mb-8">
                   Current <span className="text-cream/70 italic">thinking.</span>
@@ -42,27 +42,12 @@ export default function InsightsPage() {
               </FadeIn>
               
               <FadeIn delay={0.3}>
-                <div className="flex gap-6 max-w-2xl">
+                <div className="flex gap-6">
                   <div className="w-[1px] bg-brass/30 shrink-0 mt-2" />
                   <p className="text-[14px] lg:text-[15px] text-cream/70 leading-[1.8] font-light tracking-[0.02em]">
                     Our perspective on the evolving landscape of construction disputes. 
                     Analysis of recent case law, statutory changes, and the commercial realities of modern adjudication.
                   </p>
-                </div>
-              </FadeIn>
-            </div>
-            
-            <div className="lg:col-span-4 hidden lg:flex flex-col items-end text-right pt-4">
-              <FadeIn delay={0.4}>
-                <div className="inline-flex flex-col gap-3 p-6 border border-brass/10 bg-black/10 backdrop-blur-md rounded-sm relative">
-                  {/* Decorative corner markers */}
-                  <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/40" />
-                  <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/40" />
-                  
-                  <div className="font-mono text-[9px] tracking-[0.2em] text-cream/40 uppercase mb-2">Subject Matter</div>
-                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">CASE_LAW_UPDATE</div>
-                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">STATUTORY_COMPLIANCE</div>
-                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">PROCEDURAL_STRATEGY</div>
                 </div>
               </FadeIn>
             </div>
