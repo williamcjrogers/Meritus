@@ -12,17 +12,17 @@ interface FadeInProps {
 }
 
 const directionOffset = {
-  up: { y: 20 },
-  down: { y: -20 },
-  left: { x: 20 },
-  right: { x: -20 },
+  up: { y: 40 },
+  down: { y: -40 },
+  left: { x: 40 },
+  right: { x: -40 },
   none: {},
 };
 
 export function FadeIn({
   children,
   delay = 0,
-  duration = 0.5,
+  duration = 0.8,
   direction = "up",
   className = "",
 }: FadeInProps) {
@@ -36,11 +36,11 @@ export function FadeIn({
           : { opacity: 0, ...directionOffset[direction] }
       }
       whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: true, amount: 0.2, margin: "0px 0px -10% 0px" }}
+      viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
       transition={
         shouldReduceMotion
           ? { duration: 0 }
-          : { duration, delay, ease: [0.16, 1, 0.3, 1] }
+          : { duration, delay, ease: [0.25, 1, 0.5, 1] }
       }
       className={className}
     >
