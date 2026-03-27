@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ComponentType } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
   FadeIn,
   ProjectPulse,
@@ -428,10 +428,7 @@ export function SectorsClient() {
             {SECTORS.map((sector, idx) => (
               <button
                 key={sector.num}
-                onClick={() => {
-                  setActiveTab(idx);
-                  window.scrollTo({ top: window.innerHeight * 0.6, behavior: 'smooth' });
-                }}
+                onClick={() => setActiveTab(idx)}
                 className={`flex items-center gap-3 py-5 px-6 lg:px-8 whitespace-nowrap border-b-2 transition-all duration-300 ${
                   activeTab === idx 
                     ? "border-brass text-cream bg-white/5" 
@@ -450,15 +447,13 @@ export function SectorsClient() {
 
       {/* Active Sector Content */}
       <div className="min-h-[80vh]">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-          >
-            {/* Sector Header */}
+        <motion.div
+          key={activeTab}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {/* Sector Header */}
             <section className="bg-green relative overflow-hidden border-b border-brass/5">
               <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
 
@@ -607,7 +602,6 @@ export function SectorsClient() {
               );
             })}
           </motion.div>
-        </AnimatePresence>
       </div>
 
       <CTABand
