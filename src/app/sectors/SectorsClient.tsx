@@ -422,7 +422,7 @@ export function SectorsClient() {
       </section>
 
       {/* Sticky Tabs */}
-      <div className="bg-[#0b1f13] border-y border-brass/10 sticky top-[72px] lg:top-[88px] z-50 shadow-xl shadow-black/20">
+      <div className="bg-[#0b1f13] border-y border-brass/10 sticky top-[64px] lg:top-[80px] z-50 shadow-xl shadow-black/20">
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
           <div className="flex overflow-x-auto hide-scrollbar">
             {SECTORS.map((sector, idx) => (
