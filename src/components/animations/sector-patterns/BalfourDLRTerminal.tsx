@@ -77,7 +77,7 @@ export function BalfourDLRTerminal({ className = "" }: { className?: string }) {
           <path d="M 0 50 L 100 50 L 150 100 L 350 100" fill="none" stroke="rgba(109, 165, 126, 0.3)" strokeWidth="4" />
           
           {/* Beckton Extension Line (Animated) */}
-          <path d="M 150 100 L 200 150 L 400 150" fill="none" stroke="#6da57e" strokeWidth="4" className="anim-route" />
+          <path d="M 150 100 L 200 150 L 350 150" fill="none" stroke="#6da57e" strokeWidth="4" className="anim-route" />
           
           {/* Stations */}
           <g className="anim-fade">
@@ -86,8 +86,8 @@ export function BalfourDLRTerminal({ className = "" }: { className?: string }) {
             
             <circle cx="150" cy="100" r="5" fill="#112a1d" stroke="#6da57e" strokeWidth="2" />
             
-            <circle cx="400" cy="150" r="5" fill="#112a1d" stroke="#6da57e" strokeWidth="2" />
-            <text x="400" y="170" fill="rgba(109, 165, 126, 0.8)" fontFamily="monospace" fontSize="8" textAnchor="middle">BECKTON_EXT</text>
+            <circle cx="350" cy="150" r="5" fill="#112a1d" stroke="#6da57e" strokeWidth="2" />
+            <text x="350" y="170" fill="rgba(109, 165, 126, 0.8)" fontFamily="monospace" fontSize="8" textAnchor="middle">BECKTON_EXT</text>
           </g>
 
           {/* Moving Train */}
@@ -99,7 +99,7 @@ export function BalfourDLRTerminal({ className = "" }: { className?: string }) {
         </g>
 
         {/* Contract & Certification Diagram */}
-        <g transform="translate(450, 150)">
+        <g transform="translate(420, 150)">
           <text x="0" y="0" fill="#6da57e" fontFamily="monospace" fontSize="10" letterSpacing="1" className="anim-fade">CERTIFICATION_MECHANISM: ICE_5TH</text>
           
           {/* The Setup */}
