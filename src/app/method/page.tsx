@@ -37,13 +37,55 @@ const terminalComponents = {
 export default function MethodPage() {
   return (
     <>
-      <section className="bg-green pt-[clamp(7rem,14vh,9rem)] pb-[clamp(3rem,8vh,5rem)] relative overflow-hidden">
-        <ProjectPulse className="z-0 opacity-30" />
+      <section className="bg-green pt-[clamp(8rem,16vh,12rem)] pb-[clamp(4rem,10vh,6rem)] relative overflow-hidden border-b border-brass/10">
+        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
+        <ProjectPulse className="z-0 opacity-20" />
+        
+        {/* Abstract Technical Background Grid */}
+        <div className="absolute inset-0 pointer-events-none opacity-30">
+          <div className="absolute top-0 left-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
+          <div className="absolute top-0 right-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
+          <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brass/10 to-transparent" />
+        </div>
+
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
           <FadeIn>
-            <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-cream/50 mb-6">Method</div>
-            <h1 className="font-serif text-4xl lg:text-[52px] text-cream leading-tight max-w-4xl">Intelligence, accelerated.</h1>
-            <p className="mt-8 text-base lg:text-lg text-cream/55 max-w-2xl leading-relaxed">We do not sell software. We build tools that allow our experts to digest 100,000 documents in the time it takes others to review 100.</p>
+            <div className="flex items-center gap-4 mb-8">
+              <div className="h-[1px] w-8 bg-brass/50" />
+              <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-brass/80">
+                Method
+              </div>
+              <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-brass/50 to-transparent" />
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
+              <div className="lg:col-span-8">
+                <h1 className="font-serif text-4xl lg:text-[56px] text-cream leading-[1.1] mb-8">
+                  Intelligence, <span className="text-cream/70 italic">accelerated.</span>
+                </h1>
+                
+                <div className="flex gap-6 max-w-2xl">
+                  <div className="w-[1px] bg-brass/30 shrink-0 mt-2" />
+                  <p className="text-[15px] lg:text-lg text-cream/60 leading-relaxed">
+                    We do not sell software. We build tools that allow our experts to digest 
+                    100,000 documents in the time it takes others to review 100.
+                  </p>
+                </div>
+              </div>
+              
+              <div className="lg:col-span-4 hidden lg:flex flex-col items-end text-right pt-4">
+                <div className="inline-flex flex-col gap-3 p-6 border border-brass/10 bg-black/10 backdrop-blur-md rounded-sm relative">
+                  {/* Decorative corner markers */}
+                  <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/40" />
+                  <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/40" />
+                  
+                  <div className="font-mono text-[9px] tracking-[0.2em] text-cream/40 uppercase mb-2">Processing Power</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">ALGORITHMIC_STRUCTURING</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">FORENSIC_INTERROGATION</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">HUMAN_TESTIMONY</div>
+                </div>
+              </div>
+            </div>
           </FadeIn>
         </div>
       </section>
