@@ -19,11 +19,6 @@ export function ProcessStrip() {
     <section className="bg-green-dark py-[clamp(4rem,8vw,8rem)] relative overflow-hidden">
       {/* Background elements for premium feel */}
       <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-serif leading-none text-cream/[0.015] select-none whitespace-nowrap tracking-wider">
-          PROCESS.
-        </div>
-      </div>
 
       <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10 text-center">
 
