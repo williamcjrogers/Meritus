@@ -62,13 +62,6 @@ export function HeroSection() {
         }}
       />
 
-      {/* Abstract Technical Background Grid */}
-      <div className="absolute inset-0 pointer-events-none opacity-20 z-0">
-        <div className="absolute top-0 left-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
-        <div className="absolute top-0 right-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
-        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brass/10 to-transparent" />
-      </div>
-
       {/* Main content */}
       <div className="relative z-10 max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] w-full py-28 lg:py-0">
         <div className="grid items-start gap-14 lg:items-center lg:gap-12 xl:gap-16 lg:grid-cols-[minmax(0,1fr)_320px] xl:grid-cols-[minmax(0,1fr)_360px]">
@@ -114,7 +107,7 @@ export function HeroSection() {
             />
 
             <motion.p
-              className="mt-10 text-[15px] lg:text-[17px] text-cream/70 max-w-2xl leading-[1.8] font-light tracking-[0.02em]"
+              className="mt-10 font-serif text-xl lg:text-2xl 2xl:text-[26px] text-cream/70 max-w-2xl leading-[1.6]"
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.9 }}
@@ -231,7 +224,7 @@ export function HeroSection() {
                     <div className="font-display text-[14px] 2xl:text-[16px] tracking-[0.45em] uppercase text-transparent bg-clip-text bg-gradient-to-b from-brass-light to-brass-dark">
                       Meritus
                     </div>
-                    <div className="mt-3 font-mono text-[9px] tracking-[0.2em] text-cream/40 uppercase">
+                    <div className="mt-3 font-serif text-[14px] 2xl:text-[16px] text-cream/40 italic tracking-wide font-light">
                       earned · deserved · due · proper
                     </div>
                   </motion.div>
@@ -251,7 +244,7 @@ export function HeroSection() {
                     <div className="font-display text-[14px] 2xl:text-[16px] tracking-[0.45em] uppercase text-transparent bg-clip-text bg-gradient-to-b from-brass-light to-brass-dark">
                       Via
                     </div>
-                    <div className="mt-3 font-mono text-[9px] tracking-[0.2em] text-cream/40 uppercase">
+                    <div className="mt-3 font-serif text-[14px] 2xl:text-[16px] text-cream/40 italic tracking-wide font-light">
                       the pathway
                     </div>
                   </motion.div>
@@ -262,9 +255,9 @@ export function HeroSection() {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1, delay: 1.9 }}
                   >
-                    <div className="font-serif text-[16px] 2xl:text-[18px] text-cream/70 italic leading-[1.8] font-light tracking-[0.02em]">
+                    <div className="font-serif text-[18px] 2xl:text-[20px] text-cream/60 italic leading-relaxed">
                       Your Pathway,<br />
-                      <span className="text-cream/90 font-normal">Built on Merit.</span>
+                      <span className="text-cream/90 font-medium">Built on Merit.</span>
                     </div>
                   </motion.div>
                 </div>

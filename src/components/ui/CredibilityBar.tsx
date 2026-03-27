@@ -11,13 +11,6 @@ const METRICS = [
 export function CredibilityBar() {
   return (
     <section className="bg-green-dark grain py-14 lg:py-16 relative overflow-hidden">
-      {/* Subtle background watermark */}
-      <div className="absolute inset-0 pointer-events-none z-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-serif leading-none text-cream/[0.015] select-none whitespace-nowrap tracking-wider">
-          EXP.
-        </div>
-      </div>
-
       <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
         <div className="grid grid-cols-3 gap-y-8 gap-x-0 relative">
           {METRICS.map((metric, i) => (
