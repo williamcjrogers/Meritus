@@ -22,7 +22,7 @@ const services = [
     id: "delay", number: "01", title: "Delay",
     outputs: ["Forensic retrospective delay analysis", "Time Impact Analysis (TIA)", "Windows analysis and As-Planned vs As-Built", "Critical path interrogation and narrative", "NEC3/NEC4 compensation event assessment", "Narratives that survive cross-examination"],
     context: "The data indicates the critical path shifted at event 47. The contractor\u2019s narrative fails to account for concurrent delay between weeks 38 and 52. Our analysis identifies the point of divergence.",
-    tools: "Primavera P6, Asta Powerproject, Microsoft Project \u2014 plus proprietary schedule interrogation tools.",
+    tools: "Primavera P6, Asta Powerproject, Microsoft Project, plus proprietary schedule interrogation tools.",
     terminal: "delay" as const,
   },
   {
@@ -36,7 +36,7 @@ const services = [
     id: "technical", number: "03", title: "Technical",
     outputs: ["Root cause and failure mode analysis", "Defect investigation and causation", "Design liability assessment", "Building Safety Act remediation claims", "Fire safety and cladding disputes", "Specification compliance review"],
     context: "The water ingress at Level 14 is attributable to a design deficiency at the curtain wall interface, not workmanship. The specification was ambiguous at clause 4.3.2. The contractor relied on the design intent drawing, which omitted the secondary seal detail.",
-    tools: "Intrusive survey coordination, thermal imaging, and laboratory testing — supported by proprietary defect mapping tools that cross-reference as-built records against specification requirements.",
+    tools: "Intrusive survey coordination, thermal imaging, and laboratory testing, supported by proprietary defect mapping tools that cross-reference as-built records against specification requirements.",
     terminal: "technical" as const,
   },
   {
