@@ -36,7 +36,7 @@ const services = [
     id: "technical", number: "03", title: "Technical",
     outputs: ["Root cause and failure mode analysis", "Defect investigation and causation", "Design liability assessment", "Building Safety Act remediation claims", "Fire safety and cladding disputes", "Specification compliance review"],
     context: "The water ingress at Level 14 is attributable to a design deficiency at the curtain wall interface, not workmanship. The specification was ambiguous at clause 4.3.2. The contractor relied on the design intent drawing, which omitted the secondary seal detail.",
-    tools: "Technical evidence packs structured for adjudication, arbitration, and litigation.",
+    tools: "Intrusive survey coordination, thermal imaging analysis, laboratory testing interpretation — combined with proprietary defect mapping tools that cross-reference as-built records against specification requirements.",
     terminal: "technical" as const,
   },
   {
