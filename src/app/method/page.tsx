@@ -11,13 +11,13 @@ const capabilities = [
   {
     num: "01",
     title: "Algorithmic evidence structuring",
-    desc: "The days of billing hundreds of hours to read unindexed PDFs are over. Thousands of documents, correspondence, site records, meeting minutes, are classified and structured chronologically in hours. The expert begins their analysis from a perfectly organised evidence base.",
+    desc: "The days of billing hundreds of hours to read unindexed PDFs are over. Thousands of documents \u2014 correspondence, site records, meeting minutes \u2014 are classified and structured chronologically in hours. The expert begins their analysis from a perfectly organised evidence base.",
     terminal: "delay" as const,
   },
   {
     num: "02",
     title: "Forensic interrogation pivot",
-    desc: "Technology isolates the anomalies, schedule logic shifts, unapproved clause deviations, and mathematical discrepancies. Our senior practitioners then interrogate these pivot points, applying decades of site and tribunal experience to separate genuine compensable events from background noise.",
+    desc: "Technology isolates the anomalies \u2014 schedule logic shifts, unapproved clause deviations, and mathematical discrepancies. Our senior practitioners then interrogate these pivot points, applying decades of site and tribunal experience to separate genuine compensable events from background noise.",
     terminal: "quantum" as const,
   },
   {
