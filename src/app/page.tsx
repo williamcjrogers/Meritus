@@ -16,14 +16,45 @@ export default function HomePage() {
       <JsonLd
         data={{
           "@context": "https://schema.org",
-          "@type": "Organization",
+          "@type": ["ProfessionalService", "LocalBusiness"],
           name: SITE_CONFIG.name,
+          legalName: SITE_CONFIG.legalName,
           url: SITE_CONFIG.url,
+          logo: `${SITE_CONFIG.url}/opengraph-image`,
+          image: `${SITE_CONFIG.url}/opengraph-image`,
           description: SITE_CONFIG.description,
+          "@id": SITE_CONFIG.url,
+          sameAs: [SITE_CONFIG.linkedin],
+          address: {
+            "@type": "PostalAddress",
+            addressCountry: "GB",
+          },
+          areaServed: {
+            "@type": "Country",
+            name: "United Kingdom",
+          },
+          knowsAbout: [
+            "Construction Disputes",
+            "Delay Analysis",
+            "Quantum Analysis",
+            "Adjudication",
+            "Expert Witness",
+            "Building Safety Act",
+            "JCT Contracts",
+            "NEC Contracts",
+          ],
+          serviceType: [
+            "Delay Analysis",
+            "Quantum Advisory",
+            "Technical Expert Services",
+            "Construction Disputes Advisory",
+          ],
           contactPoint: {
             "@type": "ContactPoint",
             email: SITE_CONFIG.email,
             contactType: "customer service",
+            areaServed: "GB",
+            availableLanguage: "English",
           },
         }}
       />

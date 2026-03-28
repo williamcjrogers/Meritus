@@ -41,15 +41,61 @@ export const metadata: Metadata = {
   },
   description: SITE_CONFIG.description,
   metadataBase: new URL(SITE_CONFIG.url),
+  keywords: [
+    "construction disputes advisory",
+    "delay analysis",
+    "quantum surveyor",
+    "forensic delay analysis",
+    "adjudication support",
+    "construction law UK",
+    "expert witness construction",
+    "extension of time",
+    "final account dispute",
+    "Building Safety Act",
+    "NEC JCT contract disputes",
+    "construction arbitration",
+    "construction litigation support",
+    "Meritus Via",
+  ],
+  authors: [{ name: SITE_CONFIG.legalName, url: SITE_CONFIG.url }],
+  creator: SITE_CONFIG.legalName,
+  publisher: SITE_CONFIG.legalName,
+  alternates: {
+    canonical: SITE_CONFIG.url,
+  },
   openGraph: {
     type: "website",
     locale: "en_GB",
     url: SITE_CONFIG.url,
     siteName: SITE_CONFIG.name,
-    title: `${SITE_CONFIG.name} \u2014 ${SITE_CONFIG.tagline}`,
+    title: `${SITE_CONFIG.name} | Construction Disputes Advisory`,
     description: SITE_CONFIG.description,
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: `${SITE_CONFIG.name} — Construction Disputes Advisory`,
+      },
+    ],
   },
-  robots: { index: true, follow: true },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE_CONFIG.name} | Construction Disputes Advisory`,
+    description: SITE_CONFIG.description,
+    images: ["/opengraph-image"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
