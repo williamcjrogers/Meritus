@@ -146,7 +146,7 @@ const SECTORS: Sector[] = [
           "Design liability and material substitution causation analysis",
           "Multi-party liability allocation across developer, contractor, and design team",
         ],
-        contracts: ["Statutory", "JCT", "D&B"],
+        contracts: ["Statutory", "JCT", "JCT D&B"],
         disciplines: [
           { label: "Technical", href: "/services#technical" },
           { label: "Quantum", href: "/services#quantum" },
