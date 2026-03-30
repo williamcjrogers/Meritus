@@ -3,7 +3,6 @@
 import { useState } from "react";
 import Link from "next/link";
 import { ComponentType } from "react";
-import { motion } from "framer-motion";
 import {
   FadeIn,
   ProjectPulse,
