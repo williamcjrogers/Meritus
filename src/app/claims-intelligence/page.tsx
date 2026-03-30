@@ -105,7 +105,7 @@ export default function ClaimsIntelligencePage() {
             </p>
             <div className="mt-10 flex flex-wrap items-center gap-5">
               <a
-                href="https://intelligence.meritusvia.com/#dashboard"
+                href="https://intelligence.meritusvia.com/dashboard"
                 className="btn-brass group"
               >
                 Access Dashboard
@@ -167,7 +167,7 @@ export default function ClaimsIntelligencePage() {
               </div>
               <div className="mt-10 flex flex-wrap justify-center items-center gap-5">
                 <a
-                  href="https://intelligence.meritusvia.com/#dashboard"
+                  href="https://intelligence.meritusvia.com/dashboard"
                   className="btn-brass group"
                 >
                   Access Dashboard
