@@ -131,7 +131,7 @@ const SECTORS: Sector[] = [
       },
       {
         id: "bsa",
-        title: "Building Safety Act Remediation",
+        title: "Building Safety Compliance",
         landmarkCase: {
           name: "URS Corporation v BDW Trading",
           citation: "[2025] UKSC 21",
