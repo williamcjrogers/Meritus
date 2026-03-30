@@ -229,6 +229,7 @@ const SECTORS: Sector[] = [
           "AMP programme delay and prolongation claims for regulated utilities",
           "Tunnelling disputes on sewer and water transfer schemes",
           "Performance shortfall claims on treatment plant commissioning",
+          "Gas, telecoms, and electrical distribution infrastructure disputes",
         ],
         contracts: ["NEC3", "NEC4", "ICE"],
         disciplines: [
