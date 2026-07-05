@@ -252,16 +252,11 @@ export function Header() {
             <div className="hidden lg:flex items-center gap-6">
               <Link
                 href="/contact"
-                className={`relative group text-[13px] font-medium tracking-wide transition-colors duration-300 py-1 ${
-                  scrolled ? "text-green/90 hover:text-green" : "text-cream hover:text-cream"
+                className={`inline-flex items-center px-5 py-2 border text-[12px] font-medium tracking-wide transition-all duration-300 hover:border-brass hover:text-brass hover:bg-brass/5 ${
+                  scrolled ? "border-green/25 text-green" : "border-cream/30 text-cream"
                 }`}
               >
                 Request Conflict Check
-                <span 
-                  className={`absolute bottom-0 left-0 w-full h-[1px] transition-all duration-300 ease-out ${
-                    scrolled ? "bg-green/20 group-hover:bg-brass/60" : "bg-cream/20 group-hover:bg-brass/60"
-                  }`} 
-                />
               </Link>
             </div>
 
