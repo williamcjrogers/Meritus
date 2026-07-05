@@ -36,7 +36,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
       { label: "Quantum", href: "/services#quantum", desc: "Valuation and damages assessment" },
       { label: "Technical", href: "/services#technical", desc: "Defects, design, and causation" },
       { label: "Advisory", href: "/services#advisory", desc: "Strategy and adjudication support" },
-      { label: "Technology", href: "/services#technology", desc: "The platforms we build in-house", divider: true },
+      { label: "Technology", href: "/services#technology", desc: "The platforms we build in-house" },
     ],
   },
   {

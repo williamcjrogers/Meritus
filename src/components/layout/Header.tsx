@@ -191,11 +191,7 @@ export function Header() {
                       if (closeTimer.current) clearTimeout(closeTimer.current);
                     }}
                   >
-                    <div className="relative bg-[#0b1f13]/95 backdrop-blur-md border border-brass/15 rounded-sm shadow-2xl shadow-black/40 overflow-hidden">
-                      {/* Decorative corner markers */}
-                      <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/40" />
-                      <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/40" />
-
+                    <div className="relative bg-[#0b1f13]/95 backdrop-blur-md border border-brass/15 rounded-xl shadow-2xl shadow-black/40 overflow-hidden">
                       <div className="grid grid-cols-4 divide-x divide-brass/10 py-4">
                         {NAV_ITEMS.map((section) =>
                           section.children ? (

@@ -100,15 +100,15 @@ const services: Service[] = [
     intro:
       "The fifth discipline is the one most advisory firms rent: our own engineering team, building the platforms our experts work on. Their systems turn 100GB of raw project records into structured, source-linked evidence within hours of instruction,preparation automated, judgment kept human. We are not a software company. We build these systems because our matters demand them.",
     outputs: [
-      "Evidence intelligence: 100GB+ of project records ingested, classified, and cross-referenced within hours of instruction",
+      "Evidence intelligence: complete project records structured, classified, and cross-referenced in hours",
       "Sourced chronologies: every event linked back to the document that proves it",
-      "Claims Intelligence: our practitioner-curated research layer of case law, contract clauses, and guidance,with dashboard access for clients and instructing solicitors",
-      "Deterministic deadline engines: NEC and FIDIC notice periods tracked as live countdowns",
-      "Retrieval-grounded AI review: every flag traceable to a source document, nothing free-running, fully disclosable",
-      "Programme tool integration: Primavera P6, Asta Powerproject, Microsoft Project",
+      "Claims Intelligence: our proprietary research layer, with dashboard access for clients and instructing solicitors",
+      "Live contract deadline tracking across the major standard forms",
+      "AI-assisted review with every output traceable to source and fully disclosable",
+      "Secure infrastructure designed, built, and run entirely by our own team",
     ],
     context: "Every figure, flag, and chronology entry resolves to a source document in one click. When the methodology is challenged,in disclosure, in the hot tub, under cross-examination,the audit trail answers. That is the difference between technology that supports an opinion and technology that undermines one.",
-    tools: "Designed, built, and hosted by our in-house engineering team on UK/EU cloud infrastructure. Tenant isolation, row-level security, encrypted storage, and full audit trails as standard,staged environments, automated testing, and security scanning behind every release. Nothing off the shelf. Nothing outsourced.",
+    tools: "Designed, built, and hosted in-house on UK/EU cloud infrastructure, with security and auditability engineered in from the start. Nothing off the shelf. Nothing outsourced.",
     terminal: "technology" as const,
   },
 ];
@@ -138,7 +138,7 @@ function ServiceTerminal({ type }: { type: Service["terminal"] }) {
               Illustrative run: Overnight matter mobilisation
             </div>
             <p className="font-mono text-[13px] text-cream/70 leading-[1.8]">
-              Instruction received 17:40. Overnight: 12,000 records ingested, OCR complete, correspondence classified and linked to source. The deadline engine binds the contract form and starts the Clause 61.3 countdown. At 08:00, partner review begins from a structured evidence base. The platform prepared. The expert decides.
+              Instruction received 17:40. By 08:00 the following morning: the complete project record ingested, classified, and linked to source, with the contractual deadlines already tracking. Partner review begins from a structured evidence base, not an inbox. The platform prepared. The expert decides.
             </p>
           </div>
 

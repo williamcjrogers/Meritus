@@ -138,7 +138,7 @@ export function PlatformTerminal({
             PLATFORM_CORE
           </text>
 
-          <text x="326" y="176" fill="#6da57e" fontFamily="monospace" fontSize="8" letterSpacing="1.5">INGEST + OCR</text>
+          <text x="326" y="176" fill="#6da57e" fontFamily="monospace" fontSize="8" letterSpacing="1.5">INGEST + INDEX</text>
           <text x="326" y="198" fill="#6da57e" fontFamily="monospace" fontSize="8" letterSpacing="1.5">CLASSIFY</text>
           <text x="326" y="220" fill="#6da57e" fontFamily="monospace" fontSize="8" letterSpacing="1.5">LINK_TO_SOURCE</text>
           <text x="326" y="242" fill="#6da57e" fontFamily="monospace" fontSize="8" letterSpacing="1.5">FLAG + DEADLINE</text>
@@ -168,10 +168,10 @@ export function PlatformTerminal({
         {/* Deadline engine detail beneath the core */}
         <g className="pt-node-3">
           <text x="310" y="305" fill="#6da57e" fontFamily="monospace" fontSize="8" letterSpacing="1">
-            NEC4_61.3 :: 14_DAYS_REMAINING
+            NOTICE_01 :: 14_DAYS_REMAINING
           </text>
           <text x="310" y="320" fill="#6da57e" fontFamily="monospace" fontSize="8" letterSpacing="1" opacity="0.6">
-            FIDIC_20.1 :: 06_DAYS_REMAINING
+            NOTICE_02 :: 06_DAYS_REMAINING
           </text>
         </g>
 
