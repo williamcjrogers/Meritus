@@ -112,6 +112,12 @@ export const SERVICE_PILLARS = [
       "Strategy, merits assessment, adjudication support, and rapid evidence structuring.",
     href: "/services#advisory",
   },
+  {
+    title: "Technology",
+    output:
+      "In-house platforms. Evidence intelligence. Sourced chronologies. Live deadline engines. 100GB structured in hours.",
+    href: "/services#technology",
+  },
 ] as const;
 
 export const INSIGHT_ARTICLES = [

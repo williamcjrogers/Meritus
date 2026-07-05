@@ -6,7 +6,7 @@ import { SequencerTimeline } from "@/components/animations/SequencerTimeline";
 
 const STEPS = [
   { num: "01", label: "Conflict Check*", desc: "Independence confirmed", disciplines: "all disciplines" },
-  { num: "02", label: "Scoping", desc: "Strategy and resourcing", disciplines: "delay \u00b7 quantum \u00b7 technical \u00b7 advisory" },
+  { num: "02", label: "Scoping", desc: "Strategy and resourcing", disciplines: "delay \u00b7 quantum \u00b7 technical \u00b7 advisory \u00b7 technology" },
   { num: "03", label: "Analysis", desc: "Forensic investigation", disciplines: "programme \u00b7 cost \u00b7 engineering \u00b7 strategy" },
   { num: "04", label: "Delivery", desc: "Opinion and testimony", disciplines: "report \u00b7 model \u00b7 opinion \u00b7 evidence" },
 ];

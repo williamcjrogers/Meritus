@@ -98,7 +98,7 @@ const services: Service[] = [
   {
     id: "technology", number: "05", title: "Technology",
     intro:
-      "Behind the four disciplines sits a capability most advisory firms rent: our own engineering team, building the platforms our experts work on. Their systems turn 100GB of raw project records into structured, source-linked evidence within hours of instruction,preparation automated, judgment kept human. We are not a software company. We build these systems because our matters demand them.",
+      "The fifth discipline is the one most advisory firms rent: our own engineering team, building the platforms our experts work on. Their systems turn 100GB of raw project records into structured, source-linked evidence within hours of instruction,preparation automated, judgment kept human. We are not a software company. We build these systems because our matters demand them.",
     outputs: [
       "Evidence intelligence: 100GB+ of project records ingested, classified, and cross-referenced within hours of instruction",
       "Sourced chronologies: every event linked back to the document that proves it",
@@ -280,7 +280,7 @@ export default function ServicesPage() {
             <div className="lg:col-span-8">
               <FadeIn delay={0.2}>
                 <h1 className="font-serif text-4xl lg:text-[56px] text-cream leading-[1.1] mb-8">
-                  Four disciplines. One team.<br />
+                  Five disciplines. One team.<br />
                   <span className="text-cream/70 italic">Outputs, not hours.</span>
                 </h1>
               </FadeIn>
@@ -289,7 +289,7 @@ export default function ServicesPage() {
                 <div className="flex gap-6 max-w-2xl">
                   <div className="w-[1px] bg-brass/30 shrink-0 mt-2" />
                   <p className="text-[15px] lg:text-[16px] text-cream/70 leading-[1.8] font-light tracking-[0.02em]">
-                    We deploy highly integrated teams across delay, quantum, technical, and advisory disciplines. 
+                    We deploy highly integrated teams across delay, quantum, technical, advisory, and technology disciplines.
                     No siloed departments. Just coordinated forensic expertise engineered to resolve your dispute.
                   </p>
                 </div>
@@ -308,8 +308,7 @@ export default function ServicesPage() {
                   <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">02_QUANTUM_VALUATION</div>
                   <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">03_TECHNICAL_CAUSATION</div>
                   <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">04_ADVISORY_STRATEGY</div>
-                  <div className="h-[1px] w-full bg-brass/10 my-1" />
-                  <div className="font-mono text-[10px] tracking-[0.15em] text-cream/40">05_TECHNOLOGY // IN_HOUSE</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">05_TECHNOLOGY_PLATFORMS</div>
                 </div>
               </FadeIn>
             </div>
@@ -320,14 +319,7 @@ export default function ServicesPage() {
       {/* Services List */}
       <section className="flex flex-col">
         {services.map((service, i) => {
-          // Technology is a supporting engineering capability, not a fifth discipline —
-          // give it a subtly cooler, green-tinted stone to set it apart from the four.
-          const bgClass =
-            service.id === "technology"
-              ? "bg-[#d6d9ca]"
-              : i % 2 === 0
-                ? "bg-stone"
-                : "bg-parchment";
+          const bgClass = i % 2 === 0 ? "bg-stone" : "bg-parchment";
 
           return (
             <div key={service.id} id={service.id} className={`${bgClass} relative scroll-mt-16 lg:scroll-mt-20`}>

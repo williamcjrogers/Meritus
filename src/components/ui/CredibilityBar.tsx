@@ -4,7 +4,7 @@ import { CountUp } from "./CountUp";
 
 const METRICS = [
   { value: "100+", label: "Years Combined Experience" },
-  { value: "4", label: "Disciplines" },
+  { value: "5", label: "Disciplines" },
   { value: "100%", label: "Partner Led" },
 ];
 
@@ -26,7 +26,7 @@ export function CredibilityBar() {
           ))}
         </div>
         <div className="mt-8 text-center font-mono text-[8px] tracking-[0.3em] uppercase text-cream/[0.16]" aria-hidden="true">
-          delay &middot; quantum &middot; technical &middot; advisory
+          delay &middot; quantum &middot; technical &middot; advisory &middot; technology
         </div>
       </div>
     </section>
