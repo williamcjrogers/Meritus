@@ -98,17 +98,17 @@ const services: Service[] = [
   {
     id: "technology", number: "05", title: "Technology",
     intro:
-      "Behind the four disciplines sits a capability most advisory firms rent: our own engineering team. They design, build, and run the platforms our experts work on, from evidence intelligence to live contract deadline tracking, so the analysis moves at the pace the dispute demands. We are not a software company. We build these systems because our matters need them.",
+      "Behind the four disciplines sits a capability most advisory firms rent: our own engineering team, building the platforms our experts work on. Their systems turn 100GB of raw project records into structured, source-linked evidence within hours of instruction,preparation automated, judgment kept human. We are not a software company. We build these systems because our matters demand them.",
     outputs: [
-      "Evidence intelligence platform (VeriCase): ingestion, OCR, classification, sourced chronologies",
-      "Live claims workspace: synchronised correspondence, matter registers, and risk views in real time",
+      "Evidence intelligence: 100GB+ of project records ingested, classified, and cross-referenced within hours of instruction",
+      "Sourced chronologies: every event linked back to the document that proves it",
+      "Claims Intelligence: our practitioner-curated research layer of case law, contract clauses, and guidance,with dashboard access for clients and instructing solicitors",
       "Deterministic deadline engines: NEC and FIDIC notice periods tracked as live countdowns",
-      "Retrieval-grounded AI review: every flag traceable to a source document, nothing free-running",
-      "Programme tool integration: Primavera P6, Microsoft Project, Asta Powerproject",
-      "Security engineered in: tenant isolation, row-level security, encrypted storage, full audit trails",
+      "Retrieval-grounded AI review: every flag traceable to a source document, nothing free-running, fully disclosable",
+      "Programme tool integration: Primavera P6, Asta Powerproject, Microsoft Project",
     ],
-    context: "A matter mailbox synchronises overnight. The platform classifies the correspondence, links each event to its clause, and opens a 28-day notice countdown against the flagged event. By morning review, the team is reading a sourced chronology, not an inbox.",
-    tools: "Designed, built, and hosted by our in-house engineering team on UK/EU cloud infrastructure, with staged environments, automated testing, and security scanning behind every release. Nothing off the shelf. Nothing outsourced.",
+    context: "Every figure, flag, and chronology entry resolves to a source document in one click. When the methodology is challenged,in disclosure, in the hot tub, under cross-examination,the audit trail answers. That is the difference between technology that supports an opinion and technology that undermines one.",
+    tools: "Designed, built, and hosted by our in-house engineering team on UK/EU cloud infrastructure. Tenant isolation, row-level security, encrypted storage, and full audit trails as standard,staged environments, automated testing, and security scanning behind every release. Nothing off the shelf. Nothing outsourced.",
     terminal: "technology" as const,
   },
 ];
