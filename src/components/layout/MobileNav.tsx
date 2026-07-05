@@ -45,9 +45,12 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
               <Link
                 href="/contact"
                 onClick={onClose}
-                className="mt-4 inline-flex items-center px-7 py-2.5 rounded-full border border-brass/40 text-sm text-brass tracking-wide transition-all duration-200 hover:border-brass hover:bg-brass/10"
+                className="mt-4 group inline-flex items-center gap-2 px-5 py-2.5 rounded-md border-2 border-brass bg-brass text-sm text-green tracking-wide transition-all duration-200 hover:bg-brass-light hover:border-brass-light hover:-translate-y-px hover:shadow-[0_4px_14px_rgba(181,151,90,0.15)]"
               >
                 Request Conflict Check
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
+                  <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </Link>
             </motion.div>
           </nav>

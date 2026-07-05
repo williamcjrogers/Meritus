@@ -11,9 +11,9 @@ export function Footer() {
       <DisciplineDrift />
 
       <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] pt-12 pb-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
-          {/* Brand (Left - 5 cols) */}
-          <div className="lg:col-span-5 flex flex-col">
+        <div className="flex flex-col lg:flex-row lg:items-start gap-10 lg:gap-8 mb-12">
+          {/* Brand (left; flex-1 mirrors the right spacer so the links sit page-centre) */}
+          <div className="lg:flex-1 flex flex-col">
             <div>
               <HallmarkLogo size="header" variant="light" className="mb-4" />
               <p className="text-[12px] text-cream/50 max-w-[280px] leading-relaxed">
@@ -33,12 +33,12 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Links Grid (Right - 7 cols) */}
-          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
+          {/* Links (page-centred between the two flex-1 blocks) */}
+          <div className="flex flex-wrap gap-x-16 gap-y-10 shrink-0">
             <div>
               <div className="font-mono text-[9px] tracking-[0.2em] uppercase text-brass/60 mb-4">Practice</div>
               <ul className="space-y-2.5">
-                {FOOTER_NAV.main.slice(0, 4).map((item) => (
+                {FOOTER_NAV.main.map((item) => (
                   <li key={item.href}>
                     <Link href={item.href} className="text-[12px] text-cream/60 hover:text-brass transition-colors duration-200">
                       {item.label}
@@ -61,12 +61,6 @@ export function Footer() {
                     Enquiries
                   </a>
                 </li>
-                <li>
-                  <Link href="/claims-intelligence" className="text-[12px] text-brass hover:text-brass-light transition-colors duration-200 flex items-center gap-1.5 group w-fit">
-                    Claims Intelligence
-                    <span className="group-hover:translate-x-0.5 transition-transform">&rarr;</span>
-                  </Link>
-                </li>
               </ul>
             </div>
 
@@ -75,7 +69,7 @@ export function Footer() {
               <ul className="space-y-2.5">
                 {FOOTER_NAV.legal.map((item) => (
                   <li key={item.href}>
-                    <Link href={item.href} className="text-[11px] text-cream/40 hover:text-cream/70 transition-colors duration-200">
+                    <Link href={item.href} className="text-[12px] text-cream/60 hover:text-brass transition-colors duration-200">
                       {item.label}
                     </Link>
                   </li>
@@ -83,6 +77,9 @@ export function Footer() {
               </ul>
             </div>
           </div>
+
+          {/* Right spacer — balances the brand block so the link columns align with the centred content below */}
+          <div className="hidden lg:block lg:flex-1" aria-hidden="true" />
         </div>
 
         {/* Professional Standards */}

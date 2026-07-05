@@ -38,7 +38,7 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
     blocks: [
       {
         kind: "lead",
-        text: "The standard approach to forensic delay analysis,retrospective windows analysis, full as-planned versus as-built comparisons, and granular critical path interrogation,was designed for litigation and arbitration. These methods assume months of preparation time, access to complete project records, and the ability to present technical evidence over multiple hearing days.",
+        text: "The standard approach to forensic delay analysis (retrospective windows analysis, full as-planned versus as-built comparisons, and granular critical path interrogation) was designed for litigation and arbitration. These methods assume months of preparation time, access to complete project records, and the ability to present technical evidence over multiple hearing days.",
       },
       { kind: "heading", num: "01", text: "The statutory clock", id: "s1" },
       {
@@ -50,11 +50,11 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
       },
       {
         kind: "para",
-        text: "Adjudication does not offer any of those luxuries. The statutory right to adjudicate under the Housing Grants, Construction and Regeneration Act 1996, s.108¹ provides for a decision within twenty-eight days of referral. From the moment a Notice of Adjudication is served, the referring party typically has seven days to serve its Referral. The responding party then has a matter of weeks,often as few as fourteen days,to prepare and submit its Response.",
+        text: "Adjudication does not offer any of those luxuries. The statutory right to adjudicate under the Housing Grants, Construction and Regeneration Act 1996, s.108¹ provides for a decision within twenty-eight days of referral. From the moment a Notice of Adjudication is served, the referring party typically has seven days to serve its Referral. The responding party then has a matter of weeks, often as few as fourteen days, to prepare and submit its Response.",
       },
       {
         kind: "para",
-        text: "Yet the same forensic rigour is expected. The adjudicator will scrutinise the delay analysis with the same technical eye as an arbitrator,as confirmed by the TCC's robust approach to enforcement in cases such as CNO Plant Hire Ltd v Caldwell Construction Ltd [2024] EWHC 2188 (TCC).² The difference is that you have a fraction of the time to prepare it.",
+        text: "Yet the same forensic rigour is expected. The adjudicator will scrutinise the delay analysis with the same technical eye as an arbitrator, as confirmed by the TCC's robust approach to enforcement in cases such as CNO Plant Hire Ltd v Caldwell Construction Ltd [2024] EWHC 2188 (TCC).² The difference is that you have a fraction of the time to prepare it.",
       },
       {
         kind: "authority",
@@ -71,32 +71,32 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
       },
       {
         kind: "para",
-        text: "The SCL Delay and Disruption Protocol (2nd Edition, 2017)³ now recognises that no single methodology is preferred,providing a menu of approaches with guidance on selecting the appropriate method for the circumstances. This flexibility is critical in the adjudication context.",
+        text: "The SCL Delay and Disruption Protocol (2nd Edition, 2017)³ now recognises that no single methodology is preferred, providing a menu of approaches with guidance on selecting the appropriate method for the circumstances. This flexibility is critical in the adjudication context.",
       },
       { kind: "heading", num: "03", text: "Concurrency makes it harder", id: "s3" },
       {
         kind: "para",
-        text: "Where concurrent delay is alleged, the position is yet more complex. The principles established in Henry Boot Construction (UK) Ltd v Malmaison Hotel (Manchester) Ltd⁴ and developed in Royal Brompton Hospital NHS Trust v Hammond (No. 7)⁵ require careful analysis of competing delay causes,analysis that must be compressed into days rather than weeks.",
+        text: "Where concurrent delay is alleged, the position is yet more complex. The principles established in Henry Boot Construction (UK) Ltd v Malmaison Hotel (Manchester) Ltd⁴ and developed in Royal Brompton Hospital NHS Trust v Hammond (No. 7)⁵ require careful analysis of competing delay causes: analysis that must be compressed into days rather than weeks.",
       },
       {
         kind: "authority",
         name: "Walter Lilly & Company Ltd v Mackay",
         citation: "[2012] EWHC 1773 (TCC)",
         court: "Technology & Construction Court",
-        point: "The leading modern authority on prospective versus retrospective delay analysis,demanding a level of forensic detail that traditional sequential methodologies struggle to deliver within adjudication timescales.⁶",
+        point: "The leading modern authority on prospective versus retrospective delay analysis, demanding a level of forensic detail that traditional sequential methodologies struggle to deliver within adjudication timescales.⁶",
         url: "https://caselaw.nationalarchives.gov.uk/ewhc/tcc/2012/1773",
       },
       { kind: "pull", text: "The methodology must be adapted to the forum, not the other way around." },
       { kind: "heading", num: "04", text: "Restructuring the analysis", id: "s4" },
       {
         kind: "para",
-        text: "The answer is not to abandon forensic discipline,it is to restructure how the analysis is performed.",
+        text: "The answer is not to abandon forensic discipline; it is to restructure how the analysis is performed.",
       },
       {
         kind: "view",
         paragraphs: [
           "At Meritus Via, we approach adjudication delay analysis differently. Our technology ingests the programme data, daily logs, and correspondence within hours of instruction. The critical path is identified algorithmically. Float consumption is mapped. The narrative is then built by our senior practitioners around the data, not around a traditional sequential methodology.",
-          "The result is a forensically robust delay analysis,one that can withstand scrutiny by the adjudicator,delivered within the timescales that adjudication demands. The analysis is no less rigorous. It is simply structured for the reality of the forum.",
+          "The result is a forensically robust delay analysis: one that can withstand scrutiny by the adjudicator, delivered within the timescales that adjudication demands. The analysis is no less rigorous. It is simply structured for the reality of the forum.",
         ],
       },
       {
@@ -118,13 +118,13 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
   "building-safety-act-remediation": {
     takeaways: [
       "The Act creates retrospective liability: remediation contribution orders can reach developers and contractors on buildings completed decades ago.",
-      "Section 134 extends the Defective Premises Act limitation period from six years to thirty,retrospectively.",
+      "Section 134 extends the Defective Premises Act limitation period from six years to thirty, retrospectively.",
       "Liability turns on forensic reconstruction: who specified, who substituted, who approved, and who inspected.",
     ],
     blocks: [
       {
         kind: "lead",
-        text: "The Building Safety Act 2022¹ has fundamentally reshaped the landscape of construction disputes in England and Wales. For those involved in the remediation of residential buildings,particularly high-rise developments over eighteen metres,the Act has introduced a new class of liability, extended limitation periods, and a degree of multi-party complexity that did not previously exist.",
+        text: "The Building Safety Act 2022¹ has fundamentally reshaped the landscape of construction disputes in England and Wales. For those involved in the remediation of residential buildings, particularly high-rise developments over eighteen metres, the Act has introduced a new class of liability, extended limitation periods, and a degree of multi-party complexity that did not previously exist.",
       },
       { kind: "heading", num: "01", text: "A new class of liability", id: "s1" },
       {
@@ -136,7 +136,7 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
         value: "30",
         suffix: "years",
         label: "Retrospective limitation",
-        detail: "Section 134 extends the Defective Premises Act 1972 limitation period from six years to thirty,reopening exposure on projects completed decades ago.",
+        detail: "Section 134 extends the Defective Premises Act 1972 limitation period from six years to thirty, reopening exposure on projects completed decades ago.",
       },
       {
         kind: "para",
@@ -149,7 +149,7 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
       },
       {
         kind: "pull",
-        text: "The question is not simply whether the cladding is non-compliant,it is who specified it, who approved the substitution, who inspected the installation, and who bears the duty to remediate.",
+        text: "The question is not simply whether the cladding is non-compliant; it is who specified it, who approved the substitution, who inspected the installation, and who bears the duty to remediate.",
       },
       { kind: "heading", num: "03", text: "Anatomy of a remediation dispute", id: "s3" },
       {
@@ -160,7 +160,7 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
         kind: "list",
         title: "The liability cascade",
         items: [
-          "The leaseholders have a direct statutory route to remediation,with protections ensuring they are not required to bear the costs⁷",
+          "The leaseholders have a direct statutory route to remediation, with protections ensuring they are not required to bear the costs⁷",
           "The developer faces a remediation contribution order before the First-tier Tribunal",
           "The developer, in turn, seeks recovery from the D&B contractor",
           "The contractor blames the façade subcontractor for the substitution",
@@ -174,7 +174,7 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
       { kind: "heading", num: "04", text: "Old discipline, new framework", id: "s4" },
       {
         kind: "para",
-        text: "This is where traditional disputes expertise meets a new statutory framework. The technical investigation,intrusive surveys, core sampling, BS 8414 compliance testing,must be coupled with a forensic document review that traces every specification change, every request for information, and every approval through the project lifecycle.",
+        text: "This is where traditional disputes expertise meets a new statutory framework. The technical investigation (intrusive surveys, core sampling, BS 8414 compliance testing) must be coupled with a forensic document review that traces every specification change, every request for information, and every approval through the project lifecycle.",
       },
       {
         kind: "view",
@@ -185,30 +185,30 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
     ],
     references: [
       { id: "1", text: "Building Safety Act 2022 (c. 30).", url: "https://www.legislation.gov.uk/ukpga/2022/30/contents" },
-      { id: "2", text: "Building Safety Act 2022, ss.116–125 and Schedule 8 (Remediation of certain defects).", url: "https://www.legislation.gov.uk/ukpga/2022/30/section/124" },
+      { id: "2", text: "Building Safety Act 2022, ss.116-125 and Schedule 8 (Remediation of certain defects).", url: "https://www.legislation.gov.uk/ukpga/2022/30/section/124" },
       { id: "3", text: "The Building Regulations 2010 (SI 2010/2214).", url: "https://www.legislation.gov.uk/uksi/2010/2214/contents" },
       { id: "4", text: "Defective Premises Act 1972, s.1 (as amended by Building Safety Act 2022, s.134, extending the limitation period to 30 years retrospectively).", url: "https://www.legislation.gov.uk/ukpga/1972/35/section/1" },
       { id: "5", text: "BS 8414-1:2015+A1:2017,Fire performance of external cladding systems. Test method for non-loadbearing external cladding systems applied to the masonry face of a building." },
-      { id: "6", text: "HM Government, Approved Document B: Fire Safety,Volume 1: Dwellings (2019 edition incorporating amendments).", url: "https://www.gov.uk/government/publications/fire-safety-approved-document-b" },
-      { id: "7", text: "Building Safety Act 2022, Schedule 8, paras 2–4 (Leaseholder protections,qualifying leaseholders of relevant buildings are protected from remediation costs).", url: "https://www.legislation.gov.uk/ukpga/2022/30/schedule/8" },
+      { id: "6", text: "HM Government, Approved Document B: Fire Safety, Volume 1: Dwellings (2019 edition incorporating amendments).", url: "https://www.gov.uk/government/publications/fire-safety-approved-document-b" },
+      { id: "7", text: "Building Safety Act 2022, Schedule 8, paras 2-4 (Leaseholder protections: qualifying leaseholders of relevant buildings are protected from remediation costs).", url: "https://www.legislation.gov.uk/ukpga/2022/30/schedule/8" },
     ],
   },
 
   "ai-in-construction-disputes": {
     takeaways: [
-      "Most tools marketed as 'AI for disputes' perform document processing, not forensic analysis. Useful,but not an opinion.",
-      "Under CPR Part 35 and the Academy of Experts' 2026 guidance, AI use must be disclosed,and the expert remains personally responsible.",
+      "Most tools marketed as 'AI for disputes' perform document processing, not forensic analysis. Useful, but not an opinion.",
+      "Under CPR Part 35 and the Academy of Experts' 2026 guidance, AI use must be disclosed, and the expert remains personally responsible.",
       "The advantage goes to practitioners who use AI to build the evidence base while retaining full ownership of the professional judgment.",
     ],
     blocks: [
       {
         kind: "lead",
-        text: "Every technology company in the construction disputes space is talking about artificial intelligence. The marketing materials promise automated delay analysis, instant quantum assessments, and AI-generated expert reports. The reality is more nuanced,and, for practitioners who understand the difference, more useful.",
+        text: "Every technology company in the construction disputes space is talking about artificial intelligence. The marketing materials promise automated delay analysis, instant quantum assessments, and AI-generated expert reports. The reality is more nuanced and, for practitioners who understand the difference, more useful.",
       },
       { kind: "heading", num: "01", text: "Processing is not analysis", id: "s1" },
       {
         kind: "para",
-        text: "The first distinction to draw is between genuine analytical capability and simple document processing. Most tools marketed as 'AI for construction disputes' are performing document classification, keyword extraction, and basic pattern matching. These are useful functions,being able to rapidly sort one hundred thousand project documents into chronological, thematic, or party-based categories saves significant analyst time. But they are not performing forensic analysis.",
+        text: "The first distinction to draw is between genuine analytical capability and simple document processing. Most tools marketed as 'AI for construction disputes' are performing document classification, keyword extraction, and basic pattern matching. These are useful functions: being able to rapidly sort one hundred thousand project documents into chronological, thematic, or party-based categories saves significant analyst time. But they are not performing forensic analysis.",
       },
       {
         kind: "para",
@@ -218,22 +218,22 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
       {
         kind: "view",
         paragraphs: [
-          "What AI can do, effectively, is prepare the evidence base for human analysis. At Meritus Via, our proprietary tools ingest programme data,Primavera P6, Asta Powerproject, Microsoft Project schedules,and automatically map the critical path, identify float consumption patterns, and flag schedule anomalies. The system cross-references correspondence dates with programme updates to highlight potential areas of interest. It does not produce conclusions. It produces a structured evidence base that our senior practitioners can interrogate.",
-          "The same principle applies to quantum analysis. Our tools can parse bills of quantities, variation accounts, and cost reports to identify mathematical inconsistencies, duplicated claims, and unsupported figures. The output is a flagged dataset,not a damages assessment. The assessment remains the responsibility of the quantum expert who understands the contractual mechanism, the applicable formula for head office overheads, and the evidential burden for each head of claim.",
+          "What AI can do, effectively, is prepare the evidence base for human analysis. At Meritus Via, our proprietary tools ingest programme data (Primavera P6, Asta Powerproject, Microsoft Project schedules) and automatically map the critical path, identify float consumption patterns, and flag schedule anomalies. The system cross-references correspondence dates with programme updates to highlight potential areas of interest. It does not produce conclusions. It produces a structured evidence base that our senior practitioners can interrogate.",
+          "The same principle applies to quantum analysis. Our tools can parse bills of quantities, variation accounts, and cost reports to identify mathematical inconsistencies, duplicated claims, and unsupported figures. The output is a flagged dataset, not a damages assessment. The assessment remains the responsibility of the quantum expert who understands the contractual mechanism, the applicable formula for head office overheads, and the evidential burden for each head of claim.",
         ],
       },
       { kind: "heading", num: "03", text: "The disclosure test", id: "s3" },
       {
         kind: "para",
-        text: "This distinction is critical because the output of any technology-assisted analysis must be disclosable. Under CPR Part 35.3,¹ the expert's overriding duty is to the court,and that duty extends to full transparency about methodology. Practice Direction 35² requires experts to state the substance of all material instructions and the methodology employed.",
+        text: "This distinction is critical because the output of any technology-assisted analysis must be disclosable. Under CPR Part 35.3,¹ the expert's overriding duty is to the court, and that duty extends to full transparency about methodology. Practice Direction 35² requires experts to state the substance of all material instructions and the methodology employed.",
       },
       {
         kind: "para",
-        text: "The Academy of Experts' guidance on AI use (2026)³ makes clear that experts must disclose any use of AI tools and are personally responsible for all material produced in their name, regardless of AI involvement. An expert who relies on an opaque AI system to produce conclusions will face significant difficulties under cross-examination. An expert who uses technology to structure and accelerate their own analysis,and can demonstrate exactly how,has a significant advantage.",
+        text: "The Academy of Experts' guidance on AI use (2026)³ makes clear that experts must disclose any use of AI tools and are personally responsible for all material produced in their name, regardless of AI involvement. An expert who relies on an opaque AI system to produce conclusions will face significant difficulties under cross-examination. An expert who uses technology to structure and accelerate their own analysis, and can demonstrate exactly how, has a significant advantage.",
       },
       {
         kind: "authority",
-        name: "Expert Witnesses,Vital Participants in Civil Justice",
+        name: "Expert Witnesses: Vital Participants in Civil Justice",
         citation: "Lord Justice Birss, EWI Annual Conference, 20 June 2025",
         court: "Courts & Tribunals Judiciary",
         point: "CPR 35.1 restricts expert evidence to that 'reasonably required to resolve the proceedings',a principle that demands focus and selectivity, not the indiscriminate volume that AI tools can generate.⁴",
@@ -247,15 +247,239 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
       { kind: "heading", num: "04", text: "Where the advantage lies", id: "s4" },
       {
         kind: "para",
-        text: "The gap between what technology companies promise and what practitioners actually need is substantial. The practitioners who will benefit most from AI are not those who hand over their analysis to a machine. They are those who use AI to work faster, more accurately, and with a more complete evidence base,while retaining full ownership of their professional opinions.",
+        text: "The gap between what technology companies promise and what practitioners actually need is substantial. The practitioners who will benefit most from AI are not those who hand over their analysis to a machine. They are those who use AI to work faster, more accurately, and with a more complete evidence base, while retaining full ownership of their professional opinions.",
       },
     ],
     references: [
       { id: "1", text: "Civil Procedure Rules, Part 35.3,Experts: overriding duty to the court.", url: "https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part35" },
       { id: "2", text: "Practice Direction 35,Experts and Assessors, para 3.2.", url: "https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part35/pd_part35" },
       { id: "3", text: "The Academy of Experts, Guidance for Expert Witnesses on the Use of Artificial Intelligence (January 2026).", url: "https://academyofexperts.org/practising-as-expert/expert-witness-guidance/guidance-for-expert-witnesses-on-the-use-of-artificial-intelligence-ai/" },
-      { id: "4", text: "Lord Justice Birss, 'Expert Witnesses,Vital Participants in Civil Justice', Speech to the Expert Witness Institute Annual Conference (20 June 2025).", url: "https://www.judiciary.uk/speech-by-lord-justice-birss-expert-witnesses-vital-participants-in-civil-justice/" },
+      { id: "4", text: "Lord Justice Birss, 'Expert Witnesses: Vital Participants in Civil Justice', Speech to the Expert Witness Institute Annual Conference (20 June 2025).", url: "https://www.judiciary.uk/speech-by-lord-justice-birss-expert-witnesses-vital-participants-in-civil-justice/" },
       { id: "5", text: "Solicitors Regulation Authority, Code of Conduct for Solicitors, RELs and RFLs (as updated).", url: "https://www.sra.org.uk/solicitors/standards-regulations/code-conduct-solicitors/" },
+    ],
+  },
+
+  "proving-disruption-claims": {
+    takeaways: [
+      "Disruption is lost productivity, not lost time. It can exist without any delay to completion, and it is recovered as loss and expense or damages, with the burden squarely on the claiming party.",
+      "The measured mile remains the most persuasive method, but it demands a clean comparator. Where none exists, alternative methods succeed only when applied with the same bottom-up rigour.",
+      "Tribunals reward causation built from contemporaneous records. Global assertions of overspend fail, however large the number and however sophisticated the presentation.",
+    ],
+    blocks: [
+      {
+        kind: "lead",
+        text: "Ask any quantum practitioner which head of claim is hardest to prove and the answer rarely varies: disruption. It appears in nearly every substantial final account dispute, it is frequently the largest single figure on the schedule, and it fails more often than any other. The reason is structural. Disruption is a claim about productivity, and productivity is invisible until it is measured.",
+      },
+      { kind: "heading", num: "01", text: "Lost productivity, not lost time", id: "s1" },
+      {
+        kind: "para",
+        text: "The two are routinely conflated, and the distinction matters. Delay is about time: the works finished later than they should have. Disruption is about efficiency: the works cost more to build than they should have, because labour and plant achieved less per hour than the contractor was entitled to expect. The SCL Delay and Disruption Protocol draws the line precisely, recognising that disruption can occur without any delay to completion at all.¹ A contractor can hold the completion date by flooding the site with additional resource and still carry a substantial disruption loss for the cost of doing so.",
+      },
+      {
+        kind: "para",
+        text: "That is also why the compensation route differs. There is no extension of time to claim. Disruption is recovered as loss and expense under the contract, or as damages for breach, and the claiming party bears the full burden of establishing cause, effect, and quantum.",
+      },
+      { kind: "heading", num: "02", text: "The measured mile and its limits", id: "s2" },
+      {
+        kind: "para",
+        text: "The most persuasive method remains the measured mile: identify a period or section of the works unaffected by the events complained of, measure productivity there, and compare it with the impacted work. Done properly, the comparison strips out matters that sit at the contractor's own risk: tender optimism, poor supervision, defective workmanship. The logic has judicial pedigree reaching back to Whittall Builders v Chester-le-Street District Council, where output achieved in an undisrupted period provided the yardstick for valuing the disrupted one.²",
+      },
+      {
+        kind: "para",
+        text: "The difficulty is that the method presumes a clean comparator, and complex projects rarely offer one. Where the whole site was impacted from the first week, or the works are too heterogeneous to compare, the analysis must reach for alternatives: earned value analysis, work sampling, programme-based studies, or, at the bottom of the evidential hierarchy, published industry productivity factors.³ None of these is illegitimate. Each is judged by the same test: does it demonstrate, rather than assert, the causal link between the event and the lost productivity?",
+      },
+      { kind: "pull", text: "A disruption claim is won or lost in the project records, long before an expert touches it." },
+      { kind: "heading", num: "03", text: "Where these claims die", id: "s3" },
+      {
+        kind: "para",
+        text: "The case law is a catalogue of self-inflicted wounds. In Van Oord v Allseas, claims presented with apparent sophistication collapsed on contact with the contemporaneous record: the witness evidence was contradicted by the documents, and the quantum evidence had taken the pleaded figures largely on trust.⁴ The judgment remains the standard citation for what happens when a disruption claim is built top-down from the overspend rather than bottom-up from the records.",
+      },
+      {
+        kind: "authority",
+        name: "Walter Lilly & Company Ltd v Mackay",
+        citation: "[2012] EWHC 1773 (TCC)",
+        court: "Technology & Construction Court",
+        point: "Akenhead J's treatment of global claims: a total-cost presentation is not automatically barred, but the claimant assumes the evidential risk that any significant cause of the overspend was its own responsibility. That risk materialises with regularity.⁵",
+        url: "https://caselaw.nationalarchives.gov.uk/ewhc/tcc/2012/1773",
+      },
+      {
+        kind: "para",
+        text: "The pattern repeats because the arithmetic is seductive. Actual cost minus tender allowance equals claim. But that formula assumes the tender was adequate, the site was otherwise efficient, and every unproductive hour traces to the respondent. Tribunals do not extend that courtesy, and opposing experts are retained precisely to withhold it.",
+      },
+      { kind: "heading", num: "04", text: "Building the claim bottom-up", id: "s4" },
+      {
+        kind: "list",
+        title: "What the evidence base requires",
+        items: [
+          "A baseline: tender build-ups, productivity norms, or an unimpacted comparator, established before the impacted analysis begins",
+          "Resource records: allocation sheets, timesheets, and plant returns showing where labour actually went, week by week",
+          "Cause-and-effect mapping: each disruptive event tied to the specific work fronts, trades, and periods it affected",
+          "Contemporaneous corroboration: site diaries, progress photographs, and correspondence recording the disruption as it happened, not as reconstructed for the dispute",
+        ],
+      },
+      {
+        kind: "view",
+        paragraphs: [
+          "At Meritus Via, disruption analysis starts with the records, not the pleaded number. Our platforms ingest timesheets, allocation sheets, daily diaries, and progress data at scale, then reconstruct where resource was deployed and what it achieved, period by period. Where a measured mile exists, it is identified from the data rather than asserted from recollection.",
+          "The result is a productivity analysis a tribunal can interrogate: every figure traced to a source document, every impacted period tied to a cause. Claims built this way settle more often than they fight, because the opposing expert can verify them rather than merely dispute them.",
+        ],
+      },
+    ],
+    references: [
+      { id: "1", text: "Society of Construction Law, Delay and Disruption Protocol, 2nd Edition (February 2017), Part B guidance on disruption.", url: "https://www.scl.org.uk/resources/delay-disruption-protocol" },
+      { id: "2", text: "Whittall Builders Co Ltd v Chester-le-Street District Council (1985) 40 BLR 82." },
+      { id: "3", text: "AACE International, Recommended Practice No. 25R-03, Estimating Lost Labor Productivity in Construction Claims (2004)." },
+      { id: "4", text: "Van Oord UK Ltd v Allseas UK Ltd [2015] EWHC 3074 (TCC).", url: "https://caselaw.nationalarchives.gov.uk/ewhc/tcc/2015/3074" },
+      { id: "5", text: "Walter Lilly & Company Ltd v Mackay [2012] EWHC 1773 (TCC).", url: "https://caselaw.nationalarchives.gov.uk/ewhc/tcc/2012/1773" },
+    ],
+  },
+
+  "smash-and-grab-true-value": {
+    takeaways: [
+      "Section 111 makes the notified sum payable without deduction. Miss the payment notice and pay less notice windows and the application stands as the debt, merits notwithstanding.",
+      "S&T v Grove confirmed the true-value counterweight, but it is subordinate to the immediate payment obligation. The sequencing rule is pay first, dispute second.",
+      "Most smash-and-grab losses are administrative failures, not valuation disputes. Notice discipline is a system, and systems can be engineered.",
+    ],
+    blocks: [
+      {
+        kind: "lead",
+        text: "The vocabulary is inelegant, but everyone in the industry understands it. A smash-and-grab adjudication seeks payment of the sum stated in an application not because the valuation is right, but because the paying party failed to serve a valid payment notice or pay less notice in time. For the better part of a decade the courts have been mapping the boundaries of that tactic and of its counterweight, the true-value adjudication. The map is now reasonably settled. The casualties are the parties who have not read it.",
+      },
+      { kind: "heading", num: "01", text: "The notified sum rule", id: "s1" },
+      {
+        kind: "stat",
+        value: "5",
+        suffix: "days",
+        label: "The payment notice window",
+        detail: "Under section 110A of the Construction Act, a payment notice must be given not later than five days after the payment due date. In its absence, a compliant application for payment can itself become the notified sum.",
+      },
+      {
+        kind: "para",
+        text: "The machinery is unforgiving by design. The Housing Grants, Construction and Regeneration Act 1996, as amended, requires the notified sum to be paid on or before the final date for payment.¹ A payer intending to pay less must say so in a valid pay less notice, served within the prescribed period and setting out the sum it considers due and the basis on which that sum is calculated.² Serve nothing, or serve something defective, and section 111 converts the payee's application into an enforceable debt. Adjudicators enforce it, and the TCC enforces the adjudicators.",
+      },
+      {
+        kind: "para",
+        text: "The reported cases turn on small administrative facts: a notice served a day late, a notice that states a figure without the basis of calculation, an application issued outside the contractual window, a due date miscalculated under a bespoke payment schedule. The valuation merits are irrelevant at this stage. That is not a defect in the regime; it is the point of it. Cash flow first, argument afterwards.",
+      },
+      { kind: "heading", num: "02", text: "The Grove counterweight", id: "s2" },
+      {
+        kind: "authority",
+        name: "S&T (UK) Ltd v Grove Developments Ltd",
+        citation: "[2018] EWCA Civ 2448",
+        court: "Court of Appeal",
+        point: "The employer who misses its notices must pay the notified sum, but may then commence its own adjudication on the true value of the works. The decision dismantled the idea that a missed notice fixes the valuation for good.³",
+        url: "https://caselaw.nationalarchives.gov.uk/ewca/civ/2018/2448",
+      },
+      {
+        kind: "para",
+        text: "Grove restored balance, but on strict terms. The right to a true-value adjudication arises only once the section 111 obligation has been discharged. In M Davenport Builders v Greer, the court refused to let a paying party deploy a true-value decision as a set-off against an unpaid notified sum.⁴ In Bexheat v Essex Services Group, the point was put beyond argument: the immediate payment obligation must be performed before a true-value adjudication on the same cycle can be pursued.⁵",
+      },
+      { kind: "pull", text: "Pay now, argue later is not a slogan. It is the sequencing rule the courts actually enforce." },
+      {
+        kind: "para",
+        text: "The margins still generate litigation, notably over when the right to refer a true valuation accrues and what happens to a reference launched prematurely, as in Henry Construction Projects v Alu-Fix.⁶ But the architecture is stable. The notified sum is a debt. The true value is a later question.",
+      },
+      { kind: "heading", num: "03", text: "Losses that were never about valuation", id: "s3" },
+      {
+        kind: "para",
+        text: "Step back from the authorities and a pattern emerges: very few smash-and-grab defeats involve a genuine disagreement about what the works were worth. They involve paperwork. Payment administration is typically manual, distributed across a commercial team, and invisible until it fails; a payment calendar that quietly diverged from the contract after the works were varied is discovered only when the money has already moved.",
+      },
+      {
+        kind: "list",
+        title: "Where the machinery breaks",
+        items: [
+          "Due dates miscalculated under amended or bespoke payment schedules",
+          "Payment notices served late, or without the required basis of calculation",
+          "Pay less notices that respond to the wrong application or state a bare figure",
+          "Applications for payment that are themselves invalid: served early, served late, or lacking the substantiation the contract demands",
+        ],
+      },
+      { kind: "heading", num: "04", text: "Discipline as a system", id: "s4" },
+      {
+        kind: "view",
+        paragraphs: [
+          "At Meritus Via, we treat payment-cycle discipline as an engineering problem. Our deadline engines hold every live contract's payment calendar, from due dates to notice windows to final dates for payment, and track compliance in real time, so a five-day window is never discovered in retrospect. When a dispute crystallises, the notice chronology is already assembled and evidenced.",
+          "The same discipline serves the referring party. A smash-and-grab succeeds or fails on the validity of the application and the invalidity of the response. Both are documentary questions, and both reward the party who can put a complete notice record in front of an adjudicator on day one.",
+        ],
+      },
+      {
+        kind: "para",
+        text: "The payment regime exists to keep cash moving through the industry, and it does. But it rewards administrative precision over commercial merit, and it will keep transferring money from the disorganised to the organised until notices are treated with the seriousness the statute always intended.",
+      },
+    ],
+    references: [
+      { id: "1", text: "Housing Grants, Construction and Regeneration Act 1996, s.111, as substituted by the Local Democracy, Economic Development and Construction Act 2009, s.144.", url: "https://www.legislation.gov.uk/ukpga/2009/20/section/144" },
+      { id: "2", text: "Housing Grants, Construction and Regeneration Act 1996, ss.110A and 110B (payment notices and payee's notices in default).", url: "https://www.legislation.gov.uk/ukpga/1996/53/section/110A" },
+      { id: "3", text: "S&T (UK) Ltd v Grove Developments Ltd [2018] EWCA Civ 2448.", url: "https://caselaw.nationalarchives.gov.uk/ewca/civ/2018/2448" },
+      { id: "4", text: "M Davenport Builders Ltd v Greer & Anor [2019] EWHC 318 (TCC).", url: "https://caselaw.nationalarchives.gov.uk/ewhc/tcc/2019/318" },
+      { id: "5", text: "Bexheat Ltd v Essex Services Group Ltd [2022] EWHC 936 (TCC).", url: "https://caselaw.nationalarchives.gov.uk/ewhc/tcc/2022/936" },
+      { id: "6", text: "Henry Construction Projects Ltd v Alu-Fix (UK) Ltd [2023] EWHC 2010 (TCC).", url: "https://caselaw.nationalarchives.gov.uk/ewhc/tcc/2023/2010" },
+    ],
+  },
+
+  "expert-witness-independence": {
+    takeaways: [
+      "The expert's overriding duty is to the tribunal, not the instructing party, and the courts now enforce it by excluding evidence rather than merely discounting it.",
+      "Credibility is rarely destroyed in cross-examination. It is destroyed earlier: undisclosed contact and site visits, solicitor-shaped opinions, positions that shift with the client's case.",
+      "The strongest protection is a traceable evidence base: an opinion the expert can walk backwards, from conclusion to source document, without a gap.",
+    ],
+    blocks: [
+      {
+        kind: "lead",
+        text: "Every expert report filed in the Technology and Construction Court carries the same declaration: that the expert understands the duty to the court and has complied with it. For years that declaration was treated as boilerplate. It is not treated as boilerplate now. The modern court reads it as a warranty, and it has shown itself willing to exclude expert evidence entirely where the warranty proves false.",
+      },
+      { kind: "heading", num: "01", text: "The duty, restated", id: "s1" },
+      {
+        kind: "para",
+        text: "The content of the duty has been settled since The Ikarian Reefer: expert evidence should be, and be seen to be, the independent product of the expert, uninfluenced by the exigencies of litigation.¹ CPR Part 35 gives it procedural force. Expert evidence is restricted to what is reasonably required, the duty to the court overrides any obligation to the party paying the fee, and the report must state the substance of all material instructions.² And since Jones v Kaney, the expert who fails in that duty can no longer shelter behind immunity from suit.³",
+      },
+      {
+        kind: "authority",
+        name: "The Ikarian Reefer",
+        citation: "[1993] 2 Lloyd's Rep 68",
+        court: "Commercial Court",
+        point: "Cresswell J's classic statement of the expert's obligations: independent assistance by way of objective, unbiased opinion, never the role of an advocate. Three decades on, it remains the standard against which construction experts are measured.",
+      },
+      { kind: "heading", num: "02", text: "From criticism to exclusion", id: "s2" },
+      {
+        kind: "para",
+        text: "For a long time the sanction for partisanship was rhetorical: adverse comment in the judgment and diminished weight. That era has ended. In Dana UK Axle v Freudenberg, the TCC excluded a party's technical expert evidence in its entirety, mid-trial, after it emerged that the experts had made undisclosed site visits and enjoyed a free flow of information from their client that was never revealed in their reports.⁴ The message was structural: serious breaches of Practice Direction 35 go to admissibility, not merely to weight.",
+      },
+      {
+        kind: "para",
+        text: "Andrews v Kronospan runs on the same line. Where an expert had engaged in extensive undisclosed communications with the instructing solicitors while the experts' joint statement was being negotiated, the court revoked permission to rely on him altogether.⁵ The joint statement process, long treated by some as a private drafting exercise, is now firmly understood as a space in which the experts must be left alone.",
+      },
+      { kind: "pull", text: "An expert who argues the case stops assisting the tribunal. And tribunals have stopped pretending not to notice." },
+      { kind: "heading", num: "03", text: "How credibility actually dies", id: "s3" },
+      {
+        kind: "para",
+        text: "The construction authorities share an anatomy. In Imperial Chemical Industries v Merit Merrell Technology, the court restated the governing principles after finding that experts had approached their task as advocates for the party instructing them.⁶ In Beattie Passive Norse v Canham Consulting, an expert whose analysis departed from the contemporaneous record was dismantled in the judgment, and the claim substantially failed with him.⁷",
+      },
+      {
+        kind: "para",
+        text: "Note what these failures have in common. None was produced by a brilliant cross-examination. Each was latent in how the opinion was assembled: a selective document diet, conclusions formed early and defended late, positions that tracked the pleadings rather than the evidence. Cross-examination merely surfaced what the working method had already built in.",
+      },
+      { kind: "heading", num: "04", text: "Traceability as protection", id: "s4" },
+      {
+        kind: "para",
+        text: "The practical question is how to make independence demonstrable rather than declaratory. The answer is architectural. An opinion is defensible when every figure, every date, and every causal statement can be walked backwards to a source document, and when the methodology, including any technology deployed in the analysis, is disclosed and repeatable.",
+      },
+      {
+        kind: "view",
+        paragraphs: [
+          "At Meritus Via, every expert opinion sits on a structured evidence base. The documents relied on are indexed and sourced, the analysis connecting record to conclusion is traceable step by step, and the same platforms that accelerate the work produce, as a by-product, the audit trail that Practice Direction 35 demands. Nothing in the opinion rests on recollection or assertion.",
+          "Independence is not a temperament. It is a working method, and it is visible in the work product. The expert who can show the tribunal exactly how the opinion was built has nothing to fear from the question that ends careers: who decided that?",
+        ],
+      },
+    ],
+    references: [
+      { id: "1", text: "National Justice Compania Naviera SA v Prudential Assurance Co Ltd (The Ikarian Reefer) [1993] 2 Lloyd's Rep 68." },
+      { id: "2", text: "Civil Procedure Rules, Part 35 and Practice Direction 35.", url: "https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part35" },
+      { id: "3", text: "Jones v Kaney [2011] UKSC 13.", url: "https://caselaw.nationalarchives.gov.uk/uksc/2011/13" },
+      { id: "4", text: "Dana UK Axle Ltd v Freudenberg FST GmbH [2021] EWHC 1413 (TCC).", url: "https://caselaw.nationalarchives.gov.uk/ewhc/tcc/2021/1413" },
+      { id: "5", text: "Andrews & Ors v Kronospan Ltd [2022] EWHC 479 (QB).", url: "https://caselaw.nationalarchives.gov.uk/ewhc/qb/2022/479" },
+      { id: "6", text: "Imperial Chemical Industries Ltd v Merit Merrell Technology Ltd [2018] EWHC 1577 (TCC).", url: "https://caselaw.nationalarchives.gov.uk/ewhc/tcc/2018/1577" },
+      { id: "7", text: "Beattie Passive Norse Ltd v Canham Consulting Ltd [2021] EWHC 1116 (TCC).", url: "https://caselaw.nationalarchives.gov.uk/ewhc/tcc/2021/1116" },
     ],
   },
 };

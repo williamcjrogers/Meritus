@@ -69,11 +69,15 @@ export function CTABand({
 
           {leftGraphic === "monogram" && (
             <FadeIn className="lg:col-span-4 order-1 lg:order-2 text-center lg:text-right" direction="up">
-              <div className="font-serif text-[110px] lg:text-[160px] leading-none text-brass/20 tracking-tight select-none" aria-hidden="true">
-                M
-              </div>
-              <div className="mt-1 font-mono text-[10px] tracking-[0.2em] uppercase text-cream/20">
-                Meritus Via
+              {/* Shrink-wrapped block so the label centres on the M at every alignment */}
+              <div className="inline-block text-center">
+                <div className="font-serif text-[110px] lg:text-[160px] leading-none text-brass/20 tracking-tight select-none" aria-hidden="true">
+                  M
+                </div>
+                {/* pl matches the tracking so the trailing letter-space doesn't skew centring */}
+                <div className="mt-1 font-mono text-[10px] tracking-[0.2em] uppercase text-cream/20 pl-[0.2em]">
+                  Meritus Via
+                </div>
               </div>
             </FadeIn>
           )}

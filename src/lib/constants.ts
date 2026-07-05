@@ -7,7 +7,7 @@ export const SITE_CONFIG = {
     "Senior-led construction disputes advisory. Forensic delay analysis, quantum, technical expert, and advisory services for high-value disputes.",
   url: "https://meritusvia.com",
   email: "enquiries@meritusvia.com",
-  linkedin: "https://linkedin.com/company/meritus-via",
+  linkedin: "https://www.linkedin.com/company/meritusvia/about/",
   legalName: "Meritus Via LLP",
   copyright: `\u00a9 ${new Date().getFullYear()} Meritus Via. All rights reserved.`,
   legalFooter:
@@ -61,13 +61,50 @@ export const NAV_ITEMS: readonly NavItem[] = [
     label: "Insights",
     href: "/insights",
     children: [
-      { label: "All Insights", href: "/insights" },
-      { label: "Delay Analysis in Adjudications", href: "/insights/delay-analysis-adjudications", divider: true },
-      { label: "The Building Safety Act", href: "/insights/building-safety-act-remediation" },
-      { label: "AI in Construction Disputes", href: "/insights/ai-in-construction-disputes" },
+      { label: "All Insights", href: "/insights", desc: "The full briefing archive" },
+      { label: "Proving Disruption", href: "/insights/proving-disruption-claims", desc: "Evidencing productivity loss" },
+      { label: "Smash-and-Grab v True Value", href: "/insights/smash-and-grab-true-value", desc: "Payment notices and cash flow" },
+      { label: "Expert Independence", href: "/insights/expert-witness-independence", desc: "Duties, credibility, admissibility" },
     ],
   },
 ];
+
+/* Section-specific content for the right rail of the header mega menu.
+   Keyed by NAV_ITEMS label. The Insights rail additionally surfaces the
+   latest briefing from INSIGHT_ARTICLES. */
+export interface NavPanelInfo {
+  eyebrow: string;
+  body: string;
+  linkLabel: string;
+  stat?: { value: string; label: string };
+  quote?: string;
+}
+
+export const NAV_PANEL_INFO: Record<string, NavPanelInfo> = {
+  Services: {
+    eyebrow: "The practice",
+    body: "Senior-led advisory across delay, quantum, technical, and strategy, with platforms we build in-house. Five disciplines around one evidence base.",
+    linkLabel: "Explore services",
+    stat: { value: "05", label: "Disciplines. One evidence base." },
+  },
+  Sectors: {
+    eyebrow: "Where we work",
+    body: "From residential towers to rail, water, and generation: forensic experience across the full breadth of the built environment.",
+    linkLabel: "View sectors",
+    stat: { value: "03", label: "Sectors. One forensic discipline." },
+  },
+  Method: {
+    eyebrow: "The principle",
+    body: "Every output traceable, disclosable, and reviewed by a partner before it carries the firm's name.",
+    linkLabel: "Read the method",
+    quote: "We automate the preparation. Never the judgment.",
+  },
+  Insights: {
+    eyebrow: "Current thinking",
+    body: "Analysis of recent case law, statutory change, and the commercial realities of modern adjudication.",
+    linkLabel: "All insights",
+  },
+};
 
 export const FOOTER_NAV = {
   main: [
@@ -75,8 +112,6 @@ export const FOOTER_NAV = {
     { label: "Sectors", href: "/sectors" },
     { label: "Method", href: "/method" },
     { label: "Insights", href: "/insights" },
-    { label: "Contact", href: "/contact" },
-    { label: "Claims Intelligence", href: "/claims-intelligence" },
   ],
   legal: [
     { label: "Privacy", href: "/privacy-policy" },
@@ -156,6 +191,42 @@ export const INSIGHT_ARTICLES = [
       "The gap between what technology companies promise and what practitioners need is substantial. Here is what actually works.",
     category: "The Tech",
     href: "/insights/ai-in-construction-disputes",
+  },
+  {
+    slug: "proving-disruption-claims",
+    title:
+      "Proving Disruption: The Hardest Claim in the Final Account",
+    date: "May 2026",
+    isoDate: "2026-05-14",
+    readTime: "7 min",
+    excerpt:
+      "Disruption is pleaded in almost every major final account and proved in almost none. The difference between assertion and evidence decides where these claims land.",
+    category: "The Measure",
+    href: "/insights/proving-disruption-claims",
+  },
+  {
+    slug: "smash-and-grab-true-value",
+    title:
+      "Smash-and-Grab, True Value, and the Price of a Missed Notice",
+    date: "June 2026",
+    isoDate: "2026-06-11",
+    readTime: "6 min",
+    excerpt:
+      "Eight years after Grove, the payment battleground has a settled shape: the notified sum rules, and the true-value counterpunch waits behind it.",
+    category: "The Ledger",
+    href: "/insights/smash-and-grab-true-value",
+  },
+  {
+    slug: "expert-witness-independence",
+    title:
+      "Independence on Trial: What the TCC Now Expects of Experts",
+    date: "July 2026",
+    isoDate: "2026-07-02",
+    readTime: "7 min",
+    excerpt:
+      "The courts have moved from criticising partisan experts to excluding their evidence altogether. Independence is now an admissibility threshold, not professional etiquette.",
+    category: "The Duty",
+    href: "/insights/expert-witness-independence",
   },
 ] as const;
 
