@@ -71,7 +71,6 @@ export function PillarsSection() {
             <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80 uppercase">
               Four disciplines. One team.
             </div>
-            <div className="h-[1px] w-12 bg-brass/30"></div>
           </div>
           <h2 className="font-serif text-3xl lg:text-4xl text-green leading-tight mb-12">
             What we do

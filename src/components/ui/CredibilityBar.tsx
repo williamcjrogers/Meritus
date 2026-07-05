@@ -21,7 +21,6 @@ export function CredibilityBar() {
               {i > 0 && (
                 <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
               )}
-              <span className="block w-10 h-[2px] bg-brass/40 mb-5" />
               <CountUp value={metric.value} label={metric.label} />
             </div>
           ))}

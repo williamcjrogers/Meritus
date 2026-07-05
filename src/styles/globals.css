@@ -237,11 +237,53 @@ h1, h2, h3, h4 {
 }
 
 .footer-drift {
-  animation: footerDrift 50s linear infinite;
+  animation: footerDrift 45s linear infinite;
+}
+
+/*
+ * Orange spotlight: a second, orange copy of the ticker is stacked exactly over
+ * the faint base copy and drifts in sync. This mask hides it everywhere except a
+ * band at the horizontal centre of the page, so each keyword turns orange only
+ * while it is crossing the middle, then fades back.
+ */
+.drift-spotlight {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent calc(50% - 120px),
+    #000 calc(50% - 70px),
+    #000 calc(50% + 70px),
+    transparent calc(50% + 120px)
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent calc(50% - 120px),
+    #000 calc(50% - 70px),
+    #000 calc(50% + 70px),
+    transparent calc(50% + 120px)
+  );
+}
+
+@media (max-width: 640px) {
+  /* Narrower spotlight so it lights one keyword at a time on small screens */
+  .drift-spotlight {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent calc(50% - 70px),
+      #000 calc(50% - 36px),
+      #000 calc(50% + 36px),
+      transparent calc(50% + 70px)
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent calc(50% - 70px),
+      #000 calc(50% - 36px),
+      #000 calc(50% + 36px),
+      transparent calc(50% + 70px)
+    );
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .footer-drift,
   .scroll-indicator {
     animation: none;
   }

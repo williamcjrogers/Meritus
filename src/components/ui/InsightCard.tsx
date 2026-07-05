@@ -35,7 +35,7 @@ export function InsightCard({ title, date, readTime, excerpt, category, href }: 
           {title}
         </h3>
         
-        <p className="text-[14px] text-slate/70 group-hover:text-cream/60 transition-colors duration-500 leading-relaxed flex-1 mb-8">
+        <p className="text-[15px] text-slate/70 group-hover:text-cream/60 transition-colors duration-500 leading-relaxed flex-1 mb-8">
           {excerpt}
         </p>
 

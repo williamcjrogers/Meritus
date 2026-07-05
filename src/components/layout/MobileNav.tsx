@@ -50,19 +50,6 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                 Request Conflict Check
               </Link>
             </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: (NAV_ITEMS.length + 1) * 0.06 }}
-            >
-              <Link
-                href="/claims-intelligence"
-                onClick={onClose}
-                className="mt-6 text-sm text-green bg-brass px-6 py-2 rounded-sm tracking-wide font-medium inline-block"
-              >
-                Claims Intelligence
-              </Link>
-            </motion.div>
           </nav>
         </motion.div>
       )}

@@ -14,12 +14,60 @@ export const SITE_CONFIG = {
     "Meritus Via is a trading name of Meritus Via LLP.",
 } as const;
 
-export const NAV_ITEMS = [
-  { label: "Services", href: "/services" },
-  { label: "Sectors", href: "/sectors" },
-  { label: "Method", href: "/method" },
-  { label: "Insights", href: "/insights" },
-] as const;
+export interface NavChild {
+  label: string;
+  href: string;
+  desc?: string;
+  divider?: boolean;
+}
+
+export interface NavItem {
+  label: string;
+  href: string;
+  children?: readonly NavChild[];
+}
+
+export const NAV_ITEMS: readonly NavItem[] = [
+  {
+    label: "Services",
+    href: "/services",
+    children: [
+      { label: "Delay", href: "/services#delay", desc: "Forensic programme analysis" },
+      { label: "Quantum", href: "/services#quantum", desc: "Valuation and damages assessment" },
+      { label: "Technical", href: "/services#technical", desc: "Defects, design, and causation" },
+      { label: "Advisory", href: "/services#advisory", desc: "Strategy and adjudication support" },
+      { label: "Technology", href: "/services#technology", desc: "The platforms we build in-house", divider: true },
+    ],
+  },
+  {
+    label: "Sectors",
+    href: "/sectors",
+    children: [
+      { label: "Buildings", href: "/sectors#buildings", desc: "Residential, commercial, healthcare" },
+      { label: "Infrastructure", href: "/sectors#infrastructure", desc: "Rail, highways, water, tunnelling" },
+      { label: "Energy", href: "/sectors#energy", desc: "Generation, renewables, industrial" },
+    ],
+  },
+  {
+    label: "Method",
+    href: "/method",
+    children: [
+      { label: "The Principle", href: "/method#principle", desc: "Preparation automated, judgment human" },
+      { label: "Capabilities", href: "/method#capabilities", desc: "Evidence structuring to testimony" },
+      { label: "Governance", href: "/method#governance", desc: "Traceable, disclosable, reviewed" },
+    ],
+  },
+  {
+    label: "Insights",
+    href: "/insights",
+    children: [
+      { label: "All Insights", href: "/insights" },
+      { label: "Delay Analysis in Adjudications", href: "/insights/delay-analysis-adjudications", divider: true },
+      { label: "The Building Safety Act", href: "/insights/building-safety-act-remediation" },
+      { label: "AI in Construction Disputes", href: "/insights/ai-in-construction-disputes" },
+    ],
+  },
+];
 
 export const FOOTER_NAV = {
   main: [
@@ -72,6 +120,7 @@ export const INSIGHT_ARTICLES = [
     title:
       "Why Traditional Delay Analysis Fails in 28-Day Adjudications",
     date: "February 2026",
+    isoDate: "2026-02-15",
     readTime: "6 min",
     excerpt:
       "The standard approach to forensic programme analysis was designed for litigation timescales. Adjudication demands a fundamentally different discipline.",
@@ -83,6 +132,7 @@ export const INSIGHT_ARTICLES = [
     title:
       "The Building Safety Act: The New Frontier of Remediation Claims",
     date: "March 2026",
+    isoDate: "2026-03-12",
     readTime: "8 min",
     excerpt:
       "Multi-party liability, complex causation, and extended limitation periods are creating a distinct class of construction dispute.",
@@ -94,6 +144,7 @@ export const INSIGHT_ARTICLES = [
     title:
       "Beyond the Hype: What AI Actually Looks Like in a Dispute",
     date: "April 2026",
+    isoDate: "2026-04-09",
     readTime: "5 min",
     excerpt:
       "The gap between what technology companies promise and what practitioners need is substantial. Here is what actually works.",

@@ -1,8 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cinzel, Cormorant_Garamond, Inter, JetBrains_Mono } from "next/font/google";
 import { Header } from "@/components/layout";
 import { Footer } from "@/components/layout";
-import { BatesStamp } from "@/components/ui";
+import { Analytics } from "@/components/seo/Analytics";
+import { ViaSpine } from "@/components/ui/ViaSpine";
 import { SITE_CONFIG } from "@/lib/constants";
 import "@/styles/globals.css";
 
@@ -55,6 +56,10 @@ export const metadata: Metadata = {
     "NEC JCT contract disputes",
     "construction arbitration",
     "construction litigation support",
+    "construction disputes technology",
+    "evidence intelligence platform",
+    "AI document review construction",
+    "legal technology construction",
     "Meritus Via",
   ],
   authors: [{ name: SITE_CONFIG.legalName, url: SITE_CONFIG.url }],
@@ -96,6 +101,13 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0B3B24",
 };
 
 export default function RootLayout({
@@ -114,9 +126,10 @@ export default function RootLayout({
           Skip to content
         </a>
         <Header />
+        <ViaSpine />
         <main id="main-content">{children}</main>
-        <BatesStamp />
         <Footer />
+        <Analytics />
       </body>
     </html>
   );

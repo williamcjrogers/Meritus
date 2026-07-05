@@ -2,17 +2,13 @@ import Link from "next/link";
 import { SITE_CONFIG, FOOTER_NAV } from "@/lib/constants";
 import { LinkedInIcon } from "@/components/icons";
 import { HallmarkLogo } from "@/components/icons/HallmarkLogo";
+import { DisciplineDrift } from "./DisciplineDrift";
 
 export function Footer() {
   return (
     <footer className="bg-[#052314] text-cream/50 border-t border-brass/10" role="contentinfo">
-      {/* Discipline drift,ticker tape at the top of the footer */}
-      <div className="border-b border-brass/10 overflow-hidden py-3 bg-[#041a0f]" aria-hidden="true">
-        <div className="footer-drift whitespace-nowrap font-mono text-[9px] tracking-[0.3em] uppercase text-brass/30">
-          <span>delay analysis &middot; quantum &middot; fire safety &middot; drawing review &middot; prolongation &middot; causation &middot; advisory &middot; measured works &middot; cladding &middot; specification compliance &middot; mediation &middot; disruption &middot; building safety act &middot; final account &middot; expert testimony &middot; design liability &middot;&nbsp;</span>
-          <span>delay analysis &middot; quantum &middot; fire safety &middot; drawing review &middot; prolongation &middot; causation &middot; advisory &middot; measured works &middot; cladding &middot; specification compliance &middot; mediation &middot; disruption &middot; building safety act &middot; final account &middot; expert testimony &middot; design liability &middot;&nbsp;</span>
-        </div>
-      </div>
+      {/* Discipline drift — endlessly left-scrolling keyword ticker */}
+      <DisciplineDrift />
 
       <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] pt-12 pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">

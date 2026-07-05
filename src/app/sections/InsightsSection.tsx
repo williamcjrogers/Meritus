@@ -43,7 +43,6 @@ export function InsightsSection() {
                 <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80 uppercase">
                   Insights
                 </div>
-                <div className="h-[1px] w-12 bg-brass/30"></div>
               </div>
               <h2 className="font-serif text-3xl lg:text-4xl text-cream leading-tight">
                 Current analysis
@@ -84,7 +83,7 @@ export function InsightsSection() {
                     <h3 className="font-serif text-xl lg:text-2xl text-cream leading-snug group-hover:text-brass transition-colors duration-500 mb-4">
                       {article.title}
                     </h3>
-                    <p className="text-[14px] lg:text-[15px] font-sans font-light tracking-[0.01em] text-cream/60 leading-[1.8]">
+                    <p className="text-[15px] lg:text-[16px] font-sans font-light tracking-[0.01em] text-cream/60 leading-[1.8]">
                       {article.excerpt}
                     </p>
                   </div>

@@ -1,13 +1,21 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { FadeIn, ProjectPulse } from "@/components/animations";
 import { CTABand } from "@/components/ui";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Claims Intelligence",
   description:
     "Proprietary legal research and case law intelligence for construction disputes. 60+ UK authorities, RICS guidance, standard form contract analysis, and judicial trend mapping.",
-};
+  path: "/claims-intelligence",
+  keywords: [
+    "construction case law research",
+    "RICS guidance construction",
+    "NEC JCT FIDIC contract analysis",
+    "adjudication case authorities",
+    "construction judicial trends",
+  ],
+});
 
 const PLATFORM_STATS = [
   { value: "60", label: "Case Authorities" },

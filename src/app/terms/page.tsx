@@ -1,11 +1,12 @@
-import type { Metadata } from "next";
 import { FadeIn } from "@/components/animations";
 import { SITE_CONFIG } from "@/lib/constants";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Terms of Use",
-  description: "Terms of use for the Meritus Via website.",
-};
+  description: "Terms of use for the Meritus Via website. The basis on which you may use this site.",
+  path: "/terms",
+});
 
 export default function TermsPage() {
   return (
@@ -22,7 +23,7 @@ export default function TermsPage() {
       <section className="bg-stone py-16 lg:py-20">
         <div className="max-w-[800px] mx-auto px-6 lg:px-[8%]">
           <FadeIn>
-            <div className="space-y-10 text-[14px] text-slate leading-relaxed">
+            <div className="space-y-10 text-[15px] text-slate leading-relaxed">
               <div>
                 <h2 className="font-serif text-xl text-green italic mb-3">
                   Introduction

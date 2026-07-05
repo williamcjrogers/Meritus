@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import { FadeIn } from "@/components/animations";
 import { SITE_CONFIG } from "@/lib/constants";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Accessibility",
   description:
     "Meritus Via accessibility statement. Our commitment to WCAG 2.1 Level AA conformance.",
-};
+  path: "/accessibility",
+});
 
 const LIST_STYLE = "flex items-start gap-2";
 const DASH = <span className="text-brass/50 mt-0.5 shrink-0">&mdash;</span>;
@@ -27,7 +28,7 @@ export default function AccessibilityPage() {
       <section className="bg-stone py-16 lg:py-20">
         <div className="max-w-[800px] mx-auto px-6 lg:px-[8%]">
           <FadeIn>
-            <div className="space-y-10 text-[14px] text-slate leading-relaxed">
+            <div className="space-y-10 text-[15px] text-slate leading-relaxed">
               {/* 1. Our Commitment */}
               <div>
                 <h2 className="font-serif text-xl text-green italic mb-3">

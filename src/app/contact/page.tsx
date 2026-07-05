@@ -1,14 +1,21 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
 import { FadeIn, ProjectPulse } from "@/components/animations";
 import { ContactForm } from "./ContactForm";
 import { SITE_CONFIG } from "@/lib/constants";
 import { LinkedInIcon } from "@/components/icons";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Contact",
   description: "Request a conflict check with Meritus Via. Direct access to a senior construction disputes practitioner within 24 hours.",
-};
+  path: "/contact",
+  keywords: [
+    "construction disputes contact",
+    "instruct construction expert witness",
+    "adjudication referral support",
+    "conflict check construction dispute",
+  ],
+});
 
 export default function ContactPage() {
   return (
@@ -22,11 +29,9 @@ export default function ContactPage() {
             <div className="lg:col-span-8">
               <FadeIn delay={0.1}>
                 <div className="flex items-center gap-4 mb-8">
-                  <div className="h-[1px] w-8 bg-brass/50" />
                   <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-brass/80">
                     Contact & Appointments
                   </div>
-                  <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-brass/50 to-transparent" />
                 </div>
               </FadeIn>
               
@@ -39,7 +44,7 @@ export default function ContactPage() {
               <FadeIn delay={0.3}>
                 <div className="flex gap-6 max-w-2xl">
                   <div className="w-[1px] bg-brass/30 shrink-0 mt-2" />
-                  <p className="text-[14px] lg:text-[15px] text-cream/70 leading-[1.8] font-light tracking-[0.02em]">
+                  <p className="text-[15px] lg:text-[16px] text-cream/70 leading-[1.8] font-light tracking-[0.02em]">
                     Submit the initial details of your matter below. A partner will review for commercial and legal conflicts and respond directly within 24 hours. All submissions are strictly confidential.
                   </p>
                 </div>
@@ -53,7 +58,6 @@ export default function ContactPage() {
                   <div className="text-[14px] text-cream mb-4">
                     <a href={`mailto:${SITE_CONFIG.email}`} className="hover:text-brass transition-colors duration-200">{SITE_CONFIG.email}</a>
                   </div>
-                  <div className="w-[40px] h-[1px] bg-brass/20 mb-4" />
                   <div className="font-mono text-[9px] tracking-[0.15em] text-brass/60">STRICTLY_CONFIDENTIAL</div>
                   <div className="font-mono text-[9px] tracking-[0.15em] text-brass/60 mt-2">PARTNER_REVIEW_ONLY</div>
                 </div>
@@ -78,7 +82,7 @@ export default function ContactPage() {
                   <div className="absolute inset-1 border border-green/5 pointer-events-none" />
                   
                   <div className="font-mono text-[11px] tracking-[0.2em] uppercase text-brass mb-6">Credentials Portal</div>
-                  <p className="text-[13px] text-slate/70 leading-[1.8] mb-6 font-light">
+                  <p className="text-[14px] text-slate/70 leading-[1.8] mb-6 font-light">
                     Meritus Via is a partnership of industry-recognised experts. Full partner biographies, representative matter histories, and sample expert reports are available via secure access.
                   </p>
                   <a href="/credentials" className="inline-flex items-center gap-2 text-[11px] font-mono tracking-[0.15em] uppercase text-green hover:text-brass transition-colors duration-300 group">
