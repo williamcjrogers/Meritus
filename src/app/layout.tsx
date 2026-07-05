@@ -3,7 +3,6 @@ import { Cinzel, Cormorant_Garamond, Inter, JetBrains_Mono } from "next/font/goo
 import { Header } from "@/components/layout";
 import { Footer } from "@/components/layout";
 import { Analytics } from "@/components/seo/Analytics";
-import { ViaSpine } from "@/components/ui/ViaSpine";
 import { SITE_CONFIG } from "@/lib/constants";
 import "@/styles/globals.css";
 
@@ -126,7 +125,6 @@ export default function RootLayout({
           Skip to content
         </a>
         <Header />
-        <ViaSpine />
         <main id="main-content">{children}</main>
         <Footer />
         <Analytics />
