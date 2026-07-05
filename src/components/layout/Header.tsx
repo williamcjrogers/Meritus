@@ -248,8 +248,8 @@ export function Header() {
             <div className="hidden lg:flex items-center gap-6">
               <Link
                 href="/contact"
-                className={`inline-flex items-center px-5 py-2 border text-[12px] font-medium tracking-wide transition-all duration-300 hover:border-brass hover:text-brass hover:bg-brass/5 ${
-                  scrolled ? "border-green/25 text-green" : "border-cream/30 text-cream"
+                className={`inline-flex items-center px-6 py-2 rounded-full border text-[12px] font-medium tracking-wide transition-all duration-300 hover:border-brass hover:text-brass hover:bg-brass/10 hover:shadow-[0_2px_12px_rgba(181,151,90,0.18)] ${
+                  scrolled ? "border-green/25 text-green" : "border-cream/40 text-cream"
                 }`}
               >
                 Request Conflict Check

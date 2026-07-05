@@ -45,7 +45,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
               <Link
                 href="/contact"
                 onClick={onClose}
-                className="mt-4 inline-flex items-center px-6 py-2.5 border border-brass/40 text-sm text-brass tracking-wide transition-all duration-200 hover:border-brass hover:bg-brass/5"
+                className="mt-4 inline-flex items-center px-7 py-2.5 rounded-full border border-brass/40 text-sm text-brass tracking-wide transition-all duration-200 hover:border-brass hover:bg-brass/10"
               >
                 Request Conflict Check
               </Link>
