@@ -118,7 +118,7 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
   "building-safety-act-remediation": {
     takeaways: [
       "The Act creates retrospective liability: remediation contribution orders can reach developers and contractors on buildings completed decades ago.",
-      "Section 134 extends the Defective Premises Act limitation period from six years to thirty, retrospectively.",
+      "Section 135 extends the Defective Premises Act limitation period from six years to thirty, retrospectively.",
       "Liability turns on forensic reconstruction: who specified, who substituted, who approved, and who inspected.",
     ],
     blocks: [
@@ -136,11 +136,11 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
         value: "30",
         suffix: "years",
         label: "Retrospective limitation",
-        detail: "Section 134 extends the Defective Premises Act 1972 limitation period from six years to thirty, reopening exposure on projects completed decades ago.",
+        detail: "Section 135 extends the Defective Premises Act 1972 limitation period from six years to thirty, reopening exposure on projects completed decades ago.",
       },
       {
         kind: "para",
-        text: "The extended limitation period is particularly significant. Section 134 amends the Defective Premises Act 1972⁴ to extend the limitation period from six years to thirty years retrospectively for claims relating to dwellings. This single provision has reopened the liability exposure of developers, contractors, and design professionals on projects completed decades ago.",
+        text: "The extended limitation period is particularly significant. Section 135 amends the Defective Premises Act 1972⁴ to extend the limitation period from six years to thirty years retrospectively for claims relating to dwellings. This single provision has reopened the liability exposure of developers, contractors, and design professionals on projects completed decades ago.",
       },
       { kind: "heading", num: "02", text: "Causation is the real battleground", id: "s2" },
       {
@@ -187,8 +187,8 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
       { id: "1", text: "Building Safety Act 2022 (c. 30).", url: "https://www.legislation.gov.uk/ukpga/2022/30/contents" },
       { id: "2", text: "Building Safety Act 2022, ss.116-125 and Schedule 8 (Remediation of certain defects).", url: "https://www.legislation.gov.uk/ukpga/2022/30/section/124" },
       { id: "3", text: "The Building Regulations 2010 (SI 2010/2214).", url: "https://www.legislation.gov.uk/uksi/2010/2214/contents" },
-      { id: "4", text: "Defective Premises Act 1972, s.1 (as amended by Building Safety Act 2022, s.134, extending the limitation period to 30 years retrospectively).", url: "https://www.legislation.gov.uk/ukpga/1972/35/section/1" },
-      { id: "5", text: "BS 8414-1:2015+A1:2017,Fire performance of external cladding systems. Test method for non-loadbearing external cladding systems applied to the masonry face of a building.", url: "https://knowledge.bsigroup.com/products/fire-performance-of-external-cladding-systems-test-method-for-non-loadbearing-external-cladding-systems-applied-to-the-masonry-face-of-a-building" },
+      { id: "4", text: "Defective Premises Act 1972, s.1 (as amended by Building Safety Act 2022, s.135, extending the limitation period to 30 years retrospectively).", url: "https://www.legislation.gov.uk/ukpga/1972/35/section/1" },
+      { id: "5", text: "BS 8414-1:2015+A1:2017, Fire performance of external cladding systems. Test method for non-loadbearing external cladding systems applied to the masonry face of a building.", url: "https://knowledge.bsigroup.com/products/fire-performance-of-external-cladding-systems-test-method-for-non-loadbearing-external-cladding-systems-applied-to-the-masonry-face-of-a-building" },
       { id: "6", text: "HM Government, Approved Document B: Fire Safety, Volume 1: Dwellings (2019 edition incorporating amendments).", url: "https://www.gov.uk/government/publications/fire-safety-approved-document-b" },
       { id: "7", text: "Building Safety Act 2022, Schedule 8, paras 2-4 (Leaseholder protections: qualifying leaseholders of relevant buildings are protected from remediation costs).", url: "https://www.legislation.gov.uk/ukpga/2022/30/schedule/8" },
     ],
@@ -236,7 +236,7 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
         name: "Expert Witnesses: Vital Participants in Civil Justice",
         citation: "Lord Justice Birss, EWI Annual Conference, 20 June 2025",
         court: "Courts & Tribunals Judiciary",
-        point: "CPR 35.1 restricts expert evidence to that 'reasonably required to resolve the proceedings',a principle that demands focus and selectivity, not the indiscriminate volume that AI tools can generate.⁴",
+        point: "CPR 35.1 restricts expert evidence to that 'reasonably required to resolve the proceedings', a principle that demands focus and selectivity, not the indiscriminate volume that AI tools can generate.⁴",
         url: "https://www.judiciary.uk/speech-by-lord-justice-birss-expert-witnesses-vital-participants-in-civil-justice/",
       },
       {
@@ -251,8 +251,8 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
       },
     ],
     references: [
-      { id: "1", text: "Civil Procedure Rules, Part 35.3,Experts: overriding duty to the court.", url: "https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part35" },
-      { id: "2", text: "Practice Direction 35,Experts and Assessors, para 3.2.", url: "https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part35/pd_part35" },
+      { id: "1", text: "Civil Procedure Rules, Part 35.3, Experts: overriding duty to the court.", url: "https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part35" },
+      { id: "2", text: "Practice Direction 35, Experts and Assessors, para 3.2.", url: "https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part35/pd_part35" },
       { id: "3", text: "The Academy of Experts, Guidance for Expert Witnesses on the Use of Artificial Intelligence (January 2026).", url: "https://academyofexperts.org/practising-as-expert/expert-witness-guidance/guidance-for-expert-witnesses-on-the-use-of-artificial-intelligence-ai/" },
       { id: "4", text: "Lord Justice Birss, 'Expert Witnesses: Vital Participants in Civil Justice', Speech to the Expert Witness Institute Annual Conference (20 June 2025).", url: "https://www.judiciary.uk/speech-by-lord-justice-birss-expert-witnesses-vital-participants-in-civil-justice/" },
       { id: "5", text: "Solicitors Regulation Authority, Code of Conduct for Solicitors, RELs and RFLs (as updated).", url: "https://www.sra.org.uk/solicitors/standards-regulations/code-conduct-solicitors/" },
