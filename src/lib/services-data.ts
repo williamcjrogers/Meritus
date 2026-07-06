@@ -62,7 +62,7 @@ export const SERVICES: ServicePage[] = [
     ],
     metaTitle: "Delay Analysis Expert UK | Meritus Via",
     metaDescription:
-      "Forensic programme analysis and delay expert services. Time Impact Analysis, Windows Analysis, NEC delay assessment. Senior-led, technology-augmented.",
+      "Forensic programme analysis and delay expert services. Time Impact Analysis, Windows Analysis, NEC delay assessment. Partner-led, technology-augmented.",
   },
   {
     slug: "quantum",
@@ -213,7 +213,7 @@ export const SERVICES: ServicePage[] = [
     ],
     metaTitle: "Adjudication Advisory Services UK | Meritus Via",
     metaDescription:
-      "Construction adjudication support, expert reporting, and dispute resolution advisory. 28-day adjudication specialists. Senior-led, responsive, structured.",
+      "Construction adjudication support, expert reporting, and dispute resolution advisory. 28-day adjudication specialists. Partner-led, responsive, structured.",
   },
 ];
 

@@ -4,7 +4,7 @@ export const SITE_CONFIG = {
   secondaryTagline: "Built on merit.",
   legalTagline: "Built on merit.",
   description:
-    "Senior-led construction disputes advisory. Forensic delay analysis, quantum, technical expert, and advisory services for high-value disputes.",
+    "Partner-led construction disputes advisory. Forensic delay analysis, quantum, technical and expert witness services for high-value UK disputes.",
   url: "https://meritusvia.com",
   email: "enquiries@meritusvia.com",
   linkedin: "https://www.linkedin.com/company/meritusvia/about/",
@@ -84,7 +84,7 @@ export const NAV_PANEL_INFO: Record<string, NavPanelInfo> = {
   Services: {
     eyebrow: "The practice",
     heading: "Five disciplines, one evidence base",
-    body: "Senior-led forensic advisory across delay, quantum, technical, and strategy, plus the platforms we build in-house.",
+    body: "Partner-led forensic advisory across delay, quantum, technical, and strategy, plus the platforms we build in-house.",
     linkLabel: "Explore all services",
     rightEyebrow: "The disciplines",
   },
@@ -105,7 +105,7 @@ export const NAV_PANEL_INFO: Record<string, NavPanelInfo> = {
   Insights: {
     eyebrow: "Current thinking",
     heading: "Explore our recent insights",
-    body: "Senior-led briefings on the rulings and rule changes reshaping construction disputes, from payment and delay to expert evidence and the Building Safety Act.",
+    body: "Partner-led briefings on the rulings and rule changes reshaping construction disputes, from payment and delay to expert evidence and the Building Safety Act.",
     linkLabel: "View all insights",
     rightEyebrow: "Recent briefings",
   },
