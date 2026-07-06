@@ -18,6 +18,7 @@ export function Header() {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendingHash = useRef<string | null>(null);
+  const headerRef = useRef<HTMLElement | null>(null);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -95,17 +96,24 @@ export function Header() {
     pendingHash.current = null;
 
     let attempts = 0;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    let cancelled = false;
     const tryScroll = () => {
+      if (cancelled) return;
       const el = document.getElementById(hash);
       if (el) {
         window.scrollTo({ top: 0, behavior: "instant" });
         window.history.replaceState(null, "", `#${hash}`);
         smoothScrollToId(hash);
       } else if (attempts++ < 40) {
-        setTimeout(tryScroll, 50);
+        timer = setTimeout(tryScroll, 50);
       }
     };
     tryScroll();
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
   }, [pathname]);
 
   const openDropdown = (label: string) => {
@@ -146,9 +154,35 @@ export function Header() {
     return () => window.removeEventListener("keydown", handleKey);
   }, []);
 
+  // Close the mega menu when a pointer press lands outside the header (covers
+  // clicking elsewhere on the page while the panel is open, e.g. after opening
+  // it via keyboard focus).
+  useEffect(() => {
+    if (!overlayOpen) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) {
+        setOpenMenu(null);
+      }
+    };
+    window.addEventListener("pointerdown", onPointerDown);
+    return () => window.removeEventListener("pointerdown", onPointerDown);
+  }, [overlayOpen]);
+
+  // Clear any pending hover-close timer on unmount.
+  useEffect(
+    () => () => {
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    },
+    []
+  );
+
   return (
     <>
       <header
+        ref={headerRef}
+        onBlur={(e) => {
+          if (!e.currentTarget.contains(e.relatedTarget as Node)) scheduleClose();
+        }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b ${
           darkChrome
             ? "bg-stone/95 backdrop-blur-md shadow-[0_1px_3px_rgba(0,0,0,0.05)] border-green/5"
@@ -168,11 +202,6 @@ export function Header() {
             <div
               className="hidden lg:flex items-center justify-center absolute left-[45%] -translate-x-1/2 gap-8"
               onMouseLeave={scheduleClose}
-              onBlur={(e) => {
-                if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-                  scheduleClose();
-                }
-              }}
             >
               {NAV_ITEMS.map((item) => {
                 const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -183,8 +212,8 @@ export function Header() {
                     href={item.href}
                     onMouseEnter={() => (item.children ? openDropdown(item.label) : scheduleClose())}
                     onFocus={() => item.children && openDropdown(item.label)}
-                    aria-haspopup={item.children ? "menu" : undefined}
                     aria-expanded={item.children ? isOpen : undefined}
+                    aria-controls={item.children ? "mega-menu-panel" : undefined}
                     className={`relative group inline-flex items-center gap-1.5 text-[13px] font-medium tracking-wide transition-colors duration-300 py-1 ${
                       darkChrome ? "text-green/70 hover:text-green" : "text-cream/80 hover:text-cream"
                     } ${isActive ? "!text-brass" : ""}`}
@@ -253,6 +282,9 @@ export function Header() {
           {activeSection && (
             <motion.div
               key="mega-sheet"
+              id="mega-menu-panel"
+              role="region"
+              aria-label={`${activeSection.label} navigation`}
               initial={{ y: "-100%" }}
               animate={{ y: 0 }}
               exit={{ y: "-100%" }}

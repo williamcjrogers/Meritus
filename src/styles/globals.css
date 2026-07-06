@@ -292,6 +292,9 @@ h1, h2, h3, h4 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
   .footer-drift,
   .scroll-indicator {
     animation: none;

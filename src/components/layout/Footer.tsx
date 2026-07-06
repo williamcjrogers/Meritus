@@ -34,7 +34,7 @@ export function Footer() {
           </div>
 
           {/* Links (right — three equal columns, kept compact so they sit close together) */}
-          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-10 sm:max-w-[440px]">
+          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-10 sm:max-w-[440px] sm:mx-auto">
             <div>
               <div className="font-mono text-[9px] tracking-[0.2em] uppercase text-brass/60 mb-4">Practice</div>
               <ul className="space-y-2.5">

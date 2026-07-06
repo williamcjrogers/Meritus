@@ -7,7 +7,15 @@
  * does not double-ease every frame.
  */
 
-const HEADER_OFFSET = 80;
+// Measure the actual fixed header rather than hardcoding a height: the header
+// is 64px below the lg breakpoint and 80px at/above it, so a fixed value lands
+// mobile jumps short.
+function headerOffset(): number {
+  if (typeof document === "undefined") return 80;
+  const header = document.querySelector("header");
+  const h = header instanceof HTMLElement ? header.offsetHeight : 64;
+  return h + 12; // clear the fixed header, plus a small breathing gap
+}
 
 let cancelCurrent: (() => void) | null = null;
 
@@ -19,9 +27,10 @@ export function smoothScrollToId(id: string): void {
   const el = document.getElementById(id);
   if (!el) return;
 
+  const offset = headerOffset();
   const targetYNow = () =>
     Math.min(
-      el.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET,
+      el.getBoundingClientRect().top + window.scrollY - offset,
       document.documentElement.scrollHeight - window.innerHeight
     );
 
