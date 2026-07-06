@@ -40,7 +40,7 @@ export function PillarsSection() {
   useEffect(() => {
     if (!isInView) return;
 
-    const sequence = [0, 1, 2, 3];
+    const sequence = [0, 1, 2, 3, 4];
     const duration = 800; // ms per flash
     let timeoutId: NodeJS.Timeout;
 
@@ -69,9 +69,8 @@ export function PillarsSection() {
         <FadeIn delay={0.1}>
           <div className="flex items-center gap-4 mb-6">
             <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80 uppercase">
-              Four disciplines. One team.
+              Five disciplines. One team.
             </div>
-            <div className="h-[1px] w-12 bg-brass/30"></div>
           </div>
           <h2 className="font-serif text-3xl lg:text-4xl text-green leading-tight mb-12">
             What we do
@@ -102,14 +101,18 @@ export function PillarsSection() {
             const isActive = activePillar === index || hoveredPillar === index;
 
             return (
-              <motion.div key={pillar.title} variants={itemVariants}>
+              <motion.div
+                key={pillar.title}
+                variants={itemVariants}
+                className={index === 4 ? "md:col-span-2" : undefined}
+              >
                 <Link
                   href={pillar.href}
                   className="block h-full"
                   onMouseEnter={() => setHoveredPillar(index)}
                   onMouseLeave={() => setHoveredPillar(null)}
                 >
-                  <div className={`pillar-card relative overflow-hidden h-full p-8 lg:p-10 border-t border-[#6da57e]/30 transition-all duration-[600ms] ease-out ${isActive ? "bg-[#112a1d]" : "bg-transparent"} ${index % 2 === 0 ? "md:border-r md:border-r-[#6da57e]/30" : ""} ${index < 2 ? "md:border-t-0" : ""}`}>
+                  <div className={`pillar-card relative overflow-hidden h-full p-8 lg:p-10 border-t border-[#6da57e]/30 transition-all duration-[600ms] ease-out ${isActive ? "bg-[#112a1d]" : "bg-transparent"} ${index % 2 === 0 && index !== 4 ? "md:border-r md:border-r-[#6da57e]/30" : ""} ${index < 2 ? "md:border-t-0" : ""}`}>
 
                     <PillarPattern index={index} className={`transition-opacity duration-[600ms] ${isActive ? "opacity-100" : "opacity-10"}`} />
 

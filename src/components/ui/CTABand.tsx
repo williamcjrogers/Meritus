@@ -22,36 +22,11 @@ export function CTABand({
     <section className="bg-green grain py-20 lg:py-28 relative overflow-hidden">
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brass/15 to-transparent" aria-hidden="true" />
 
-      <div className="max-w-[1100px] 2xl:max-w-[1300px] 3xl:max-w-[1500px] mx-auto px-6 lg:px-[8%] relative z-10">
+      <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
         <div className={`grid grid-cols-1 ${hasLeft ? "lg:grid-cols-12" : "lg:grid-cols-1"} gap-10 lg:gap-16 items-center`}>
 
-          {leftGraphic === "numeral" && (
-            <FadeIn className="lg:col-span-4 text-center lg:text-left" direction="up">
-              <div className="font-serif text-[72px] lg:text-[100px] leading-none text-brass/25 tracking-tight">
-                100
-                <span className="text-[40px] lg:text-[56px] align-top">GB</span>
-                <span className="text-[40px] lg:text-[56px]">+</span>
-              </div>
-              <div className="mt-2 font-mono text-[10px] tracking-[0.2em] uppercase text-cream/25">
-                Per matter. In hours.
-              </div>
-            </FadeIn>
-          )}
-
-          {leftGraphic === "monogram" && (
-            <FadeIn className="lg:col-span-4 text-center lg:text-left" direction="up">
-              <div className="font-serif text-[110px] lg:text-[160px] leading-none text-brass/20 tracking-tight select-none" aria-hidden="true">
-                M
-              </div>
-              <div className="mt-1 font-mono text-[10px] tracking-[0.2em] uppercase text-cream/20">
-                Meritus Via
-              </div>
-            </FadeIn>
-          )}
-
-          {/* Copy + CTA */}
-          <FadeIn className={hasLeft ? "lg:col-span-8" : "text-center"} direction="up" delay={0.08}>
-            <span className={`block w-12 h-px bg-brass/40 mb-8 ${!hasLeft ? "mx-auto" : ""}`} />
+          {/* Copy + CTA (left column, aligned with the section content above) */}
+          <FadeIn className={hasLeft ? "lg:col-span-8 order-2 lg:order-1" : "text-center"} direction="up" delay={0.08}>
             <h2 className="font-serif text-3xl md:text-4xl lg:text-[42px] text-cream leading-[1.2]">
               {heading.includes("Never") ? (
                 <>
@@ -77,6 +52,35 @@ export function CTABand({
               </span>
             </div>
           </FadeIn>
+
+          {/* Graphic (right column, sitting where the section visuals above sit) */}
+          {leftGraphic === "numeral" && (
+            <FadeIn className="lg:col-span-4 order-1 lg:order-2 text-center lg:text-right" direction="up">
+              <div className="font-serif text-[72px] lg:text-[100px] leading-none text-brass/25 tracking-tight">
+                100
+                <span className="text-[40px] lg:text-[56px] align-top">GB</span>
+                <span className="text-[40px] lg:text-[56px]">+</span>
+              </div>
+              <div className="mt-2 font-mono text-[10px] tracking-[0.2em] uppercase text-cream/25">
+                Per matter. In hours.
+              </div>
+            </FadeIn>
+          )}
+
+          {leftGraphic === "monogram" && (
+            <FadeIn className="lg:col-span-4 order-1 lg:order-2 text-center lg:text-right" direction="up">
+              {/* Shrink-wrapped block so the label centres on the M at every alignment */}
+              <div className="inline-block text-center">
+                <div className="font-serif text-[110px] lg:text-[160px] leading-none text-brass/20 tracking-tight select-none" aria-hidden="true">
+                  M
+                </div>
+                {/* pl matches the tracking so the trailing letter-space doesn't skew centring */}
+                <div className="mt-1 font-mono text-[10px] tracking-[0.2em] uppercase text-cream/20 pl-[0.2em]">
+                  Meritus Via
+                </div>
+              </div>
+            </FadeIn>
+          )}
 
         </div>
       </div>

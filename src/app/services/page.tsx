@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { FadeIn, ProjectPulse } from "@/components/animations";
 import {
   TerminalBox,
@@ -9,15 +8,65 @@ import {
   AdvisoryStrategyTerminal,
   TechnicalDefectTerminal,
   TechnicalBSATerminal,
+  PlatformTerminal,
 } from "@/components/animations/terminal-patterns";
-import { CTABand, TerminalToggle, BlueprintDivider } from "@/components/ui";
+import { CTABand, TerminalToggle } from "@/components/ui";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { pageMetadata } from "@/lib/seo";
+import { SITE_CONFIG } from "@/lib/constants";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Services",
-  description: "Delay, quantum, technical, and advisory services. Forensic construction disputes expertise from senior practitioners.",
+  description: "Delay, quantum, technical, and advisory services, supported by platforms we engineer in-house. Forensic construction disputes expertise from senior practitioners.",
+  path: "/services",
+  keywords: [
+    "construction disputes services",
+    "forensic delay analysis",
+    "quantum expert construction",
+    "technical expert witness",
+    "adjudication advisory",
+    "construction disputes technology",
+    "evidence intelligence platform",
+    "AI document review construction",
+  ],
+});
+
+const SERVICES_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  name: "Meritus Via — Construction Disputes Services",
+  itemListElement: [
+    { name: "Delay", anchor: "delay" },
+    { name: "Quantum & Valuation", anchor: "quantum" },
+    { name: "Technical", anchor: "technical" },
+    { name: "Advisory", anchor: "advisory" },
+    { name: "Technology", anchor: "technology" },
+  ].map((s, i) => ({
+    "@type": "ListItem",
+    position: i + 1,
+    item: {
+      "@type": "Service",
+      name: s.name,
+      serviceType: `Construction disputes — ${s.name}`,
+      provider: { "@type": "Organization", name: SITE_CONFIG.name, url: SITE_CONFIG.url },
+      areaServed: { "@type": "Country", name: "United Kingdom" },
+      url: `${SITE_CONFIG.url}/services#${s.anchor}`,
+    },
+  })),
 };
 
-const services = [
+interface Service {
+  id: string;
+  number: string;
+  title: string;
+  intro?: string;
+  outputs: string[];
+  context: string;
+  tools: string;
+  terminal: "delay" | "quantum" | "technical" | "advisory" | "technology";
+}
+
+const services: Service[] = [
   {
     id: "delay", number: "01", title: "Delay",
     outputs: ["Forensic retrospective delay analysis", "Time Impact Analysis (TIA)", "Windows analysis and As-Planned vs As-Built", "Critical path interrogation and narrative", "NEC3/NEC4 compensation event assessment", "Narratives that survive cross-examination"],
@@ -46,9 +95,63 @@ const services = [
     tools: "Proprietary document ingestion compresses weeks of review into days.",
     terminal: "advisory" as const,
   },
+  {
+    id: "technology", number: "05", title: "Technology",
+    intro:
+      "The fifth discipline is the one most advisory firms rent: our own engineering team, building the platforms our experts work on. Their systems turn 100GB of raw project records into structured, source-linked evidence within hours of instruction,preparation automated, judgment kept human. We are not a software company. We build these systems because our matters demand them.",
+    outputs: [
+      "Evidence intelligence: complete project records structured, classified, and cross-referenced in hours",
+      "Sourced chronologies: every event linked back to the document that proves it",
+      "Claims Intelligence: our proprietary research layer, with dashboard access for clients and instructing solicitors",
+      "Live contract deadline tracking across the major standard forms",
+      "AI-assisted review with every output traceable to source and fully disclosable",
+      "Secure infrastructure designed, built, and run entirely by our own team",
+    ],
+    context: "Every figure, flag, and chronology entry resolves to a source document in one click. When the methodology is challenged,in disclosure, in the hot tub, under cross-examination,the audit trail answers. That is the difference between technology that supports an opinion and technology that undermines one.",
+    tools: "Designed, built, and hosted in-house on UK/EU cloud infrastructure, with security and auditability engineered in from the start. Nothing off the shelf. Nothing outsourced.",
+    terminal: "technology" as const,
+  },
 ];
 
-function ServiceTerminal({ type }: { type: "delay" | "quantum" | "technical" | "advisory" }) {
+function ServiceTerminal({ type }: { type: Service["terminal"] }) {
+  if (type === "technology") {
+    return (
+      <div className="relative h-full">
+        {/* Outer HUD Borders for Technology */}
+        <div className="absolute -inset-2 sm:-inset-4 pointer-events-none z-20">
+          {/* Corner Brackets */}
+          <div className="absolute top-0 left-0 w-3 h-3 sm:w-5 sm:h-5 border-t border-l border-[#c1a679]/60" />
+          <div className="absolute top-0 right-0 w-3 h-3 sm:w-5 sm:h-5 border-t border-r border-[#c1a679]/60" />
+          <div className="absolute bottom-0 left-0 w-3 h-3 sm:w-5 sm:h-5 border-b border-l border-[#c1a679]/60" />
+          <div className="absolute bottom-0 right-0 w-3 h-3 sm:w-5 sm:h-5 border-b border-r border-[#c1a679]/60" />
+
+          {/* Corner Markers */}
+          <div className="absolute -top-4 left-0 text-[#c1a679]/50 font-mono text-[7px] sm:text-[8px] tracking-widest hidden sm:block">SYS.ENG.05</div>
+          <div className="absolute -bottom-4 right-0 text-[#c1a679]/50 font-mono text-[7px] sm:text-[8px] tracking-widest hidden sm:block">IN_HOUSE</div>
+        </div>
+
+        <div className="flex flex-col h-full bg-green p-6 lg:p-8 relative overflow-hidden">
+          <div className="absolute inset-x-0 bottom-0 h-[200px] bg-gradient-to-t from-stone/10 to-transparent pointer-events-none z-0" />
+
+          <div className="relative z-10 mb-8 min-h-[100px] animate-in fade-in duration-500">
+            <div className="font-mono text-[10px] tracking-[0.15em] text-brass/60 mb-2 mt-2">
+              Illustrative run: Overnight matter mobilisation
+            </div>
+            <p className="font-mono text-[13px] text-cream/70 leading-[1.8]">
+              Instruction received 17:40. By 08:00 the following morning: the complete project record ingested, classified, and linked to source, with the contractual deadlines already tracking. Partner review begins from a structured evidence base, not an inbox. The platform prepared. The expert decides.
+            </p>
+          </div>
+
+          <div className="relative z-10 flex-1 w-full min-h-[300px]">
+            <TerminalBox className="" hideBorders>
+              <PlatformTerminal />
+            </TerminalBox>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (type === "technical") {
     return (
       <TerminalToggle
@@ -152,6 +255,7 @@ function ServiceTerminal({ type }: { type: "delay" | "quantum" | "technical" | "
 export default function ServicesPage() {
   return (
     <>
+      <JsonLd data={SERVICES_SCHEMA} />
       <section className="bg-green pt-[clamp(8rem,16vh,12rem)] pb-[clamp(4rem,10vh,6rem)] relative overflow-hidden border-b border-brass/10">
         <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
         <ProjectPulse className="z-0 opacity-20" />
@@ -166,11 +270,9 @@ export default function ServicesPage() {
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
           <FadeIn delay={0.1}>
             <div className="flex items-center gap-4 mb-8">
-              <div className="h-[1px] w-8 bg-brass/50" />
               <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-brass/80">
                 Services
               </div>
-              <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-brass/50 to-transparent" />
             </div>
           </FadeIn>
             
@@ -178,7 +280,7 @@ export default function ServicesPage() {
             <div className="lg:col-span-8">
               <FadeIn delay={0.2}>
                 <h1 className="font-serif text-4xl lg:text-[56px] text-cream leading-[1.1] mb-8">
-                  Four disciplines. One team.<br />
+                  Five disciplines. One team.<br />
                   <span className="text-cream/70 italic">Outputs, not hours.</span>
                 </h1>
               </FadeIn>
@@ -186,8 +288,8 @@ export default function ServicesPage() {
               <FadeIn delay={0.3}>
                 <div className="flex gap-6 max-w-2xl">
                   <div className="w-[1px] bg-brass/30 shrink-0 mt-2" />
-                  <p className="text-[14px] lg:text-[15px] text-cream/70 leading-[1.8] font-light tracking-[0.02em]">
-                    We deploy highly integrated teams across delay, quantum, technical, and advisory disciplines. 
+                  <p className="text-[15px] lg:text-[16px] text-cream/70 leading-[1.8] font-light tracking-[0.02em]">
+                    We deploy highly integrated teams across delay, quantum, technical, advisory, and technology disciplines.
                     No siloed departments. Just coordinated forensic expertise engineered to resolve your dispute.
                   </p>
                 </div>
@@ -206,6 +308,7 @@ export default function ServicesPage() {
                   <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">02_QUANTUM_VALUATION</div>
                   <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">03_TECHNICAL_CAUSATION</div>
                   <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">04_ADVISORY_STRATEGY</div>
+                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">05_TECHNOLOGY_PLATFORMS</div>
                 </div>
               </FadeIn>
             </div>
@@ -217,21 +320,15 @@ export default function ServicesPage() {
       <section className="flex flex-col">
         {services.map((service, i) => {
           const bgClass = i % 2 === 0 ? "bg-stone" : "bg-parchment";
-          
+
           return (
-            <div key={service.id} id={service.id} className={`${bgClass} relative`}>
+            <div key={service.id} id={service.id} className={`${bgClass} relative scroll-mt-16 lg:scroll-mt-20`}>
               {/* Huge watermark number in the background */}
               <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[40vw] font-serif leading-none text-green/[0.02] select-none">
                   {service.number}
                 </div>
               </div>
-
-              {i > 0 && (
-                <div className="absolute top-0 left-0 w-full z-10">
-                  <BlueprintDivider />
-                </div>
-              )}
 
               <div className="py-[clamp(4.5rem,8vw,8rem)] relative z-10">
                 <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
@@ -243,7 +340,6 @@ export default function ServicesPage() {
                           <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80">
                             SRV.{service.number}
                           </div>
-                          <div className="h-[1px] w-12 bg-brass/30"></div>
                         </div>
                       </FadeIn>
 
@@ -253,6 +349,14 @@ export default function ServicesPage() {
                         </h2>
                       </FadeIn>
 
+                      {service.intro && (
+                        <FadeIn delay={0.25}>
+                          <p className="text-[15px] text-slate/90 leading-[1.8] mb-8 max-w-xl">
+                            {service.intro}
+                          </p>
+                        </FadeIn>
+                      )}
+
                       <FadeIn delay={0.3}>
                         <div className="space-y-8">
                           <div>
@@ -261,8 +365,8 @@ export default function ServicesPage() {
                             </div>
                             <ul className="space-y-3.5">
                               {service.outputs.map((output, j) => (
-                                <li key={j} className="text-[14px] text-slate leading-[1.6] flex items-start gap-3">
-                                  <span className="text-brass/50 mt-[3px] shrink-0">&mdash;</span>
+                                <li key={j} className="text-[15px] text-slate leading-[1.6] flex items-start gap-3">
+                                  <span className="text-brass/70 text-[16px] leading-none mt-[2px] shrink-0">&bull;</span>
                                   {output}
                                 </li>
                               ))}
@@ -273,7 +377,7 @@ export default function ServicesPage() {
                             <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate/50 mb-4">
                               Context & Toolkit
                             </div>
-                            <p className="text-[14px] text-slate/80 leading-[1.6] mb-4">
+                            <p className="text-[15px] text-slate/80 leading-[1.6] mb-4">
                               <span className="italic">{service.context}</span>
                             </p>
                             <p className="text-[12px] text-slate/60 bg-green/5 p-3 rounded-sm border border-green/10">
@@ -287,7 +391,8 @@ export default function ServicesPage() {
 
                     {/* Terminal Graphic Side */}
                     <div className={`relative w-full lg:h-full ${i % 2 !== 0 ? "order-2 lg:order-1" : "order-2 lg:order-2"}`}>
-                      <div className="lg:sticky lg:top-[20vh] w-full h-auto">
+                      {/* 42px = eyebrow row height + margin, so the box top sits level with the section title */}
+                      <div className="lg:sticky lg:top-[20vh] lg:mt-[42px] w-full h-auto">
                         <FadeIn delay={0.4} className="w-full">
                           <ServiceTerminal type={service.terminal} />
                         </FadeIn>

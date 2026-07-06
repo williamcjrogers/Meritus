@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_ITEMS } from "@/lib/constants";
@@ -10,6 +11,22 @@ interface MobileNavProps {
 }
 
 export function MobileNav({ isOpen, onClose }: MobileNavProps) {
+  // While the full-screen menu is open: close on Escape and lock body scroll so
+  // the page behind the overlay cannot scroll (notably on iOS).
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [isOpen, onClose]);
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -45,22 +62,12 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
               <Link
                 href="/contact"
                 onClick={onClose}
-                className="mt-4 text-sm text-brass border-b border-brass/40 pb-1 tracking-wide"
+                className="mt-4 group inline-flex items-center gap-2 px-5 py-2.5 rounded-md border-2 border-brass bg-brass text-sm text-green tracking-wide transition-all duration-200 hover:bg-brass-light hover:border-brass-light hover:-translate-y-px hover:shadow-[0_4px_14px_rgba(181,151,90,0.15)]"
               >
                 Request Conflict Check
-              </Link>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: (NAV_ITEMS.length + 1) * 0.06 }}
-            >
-              <Link
-                href="/claims-intelligence"
-                onClick={onClose}
-                className="mt-6 text-sm text-green bg-brass px-6 py-2 rounded-sm tracking-wide font-medium inline-block"
-              >
-                Claims Intelligence
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
+                  <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
               </Link>
             </motion.div>
           </nav>

@@ -98,14 +98,6 @@ export function HeroSection() {
               </motion.div>
             </div>
 
-            <motion.span
-              className="brass-rule-wide mt-10 block"
-              initial={{ scaleX: 0, opacity: 0 }}
-              animate={{ scaleX: 1, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              style={{ transformOrigin: "left" }}
-            />
-
             <motion.p
               className="mt-10 font-serif text-xl lg:text-2xl 2xl:text-[26px] text-cream/70 max-w-2xl leading-[1.6]"
               initial={{ opacity: 0, y: 24 }}
@@ -136,20 +128,6 @@ export function HeroSection() {
               </Link>
               <Link href="/method" className="btn-outline group/btn2">
                 Our Method
-              </Link>
-            </motion.div>
-
-            <motion.div
-              className="mt-8 flex items-center"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.3 }}
-            >
-              <Link href="/claims-intelligence" className="group flex items-center gap-2 text-[11px] font-mono tracking-[0.15em] uppercase text-brass/60 hover:text-brass transition-colors">
-                <span className="border-b border-transparent hover:border-brass/40 pb-0.5 transition-colors">
-                  Claims Intelligence
-                </span>
-                <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
               </Link>
             </motion.div>
           </div>

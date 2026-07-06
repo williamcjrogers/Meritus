@@ -50,14 +50,9 @@ export function FestinaLenteBand() {
           </p>
         </FadeIn>
 
-        {/* Brass divider */}
-        <FadeIn direction="none" delay={0.35}>
-          <span className="block w-16 h-px bg-brass/40 mx-auto mt-6 mb-6" />
-        </FadeIn>
-
         {/* Philosophy copy */}
         <FadeIn direction="up" delay={0.4}>
-          <div className="space-y-6 max-w-2xl mx-auto text-left md:text-center">
+          <div className="mt-10 space-y-6 max-w-2xl mx-auto text-left md:text-center">
             <p className="text-[15px] lg:text-[16px] text-cream/70 leading-[1.8] font-light tracking-[0.02em]">
               Technology has given our industry extraordinary capability,and
               extraordinary risk. We see it every day: outputs accepted without

@@ -31,11 +31,9 @@ export default function CredentialsPage() {
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
           <FadeIn delay={0.1}>
             <div className="flex items-center gap-4 mb-8 justify-center">
-              <div className="h-[1px] w-6 bg-brass/30" />
               <div className="font-mono text-[9px] tracking-[0.3em] uppercase text-brass/60">
                 Secure Access
               </div>
-              <div className="h-[1px] w-6 bg-brass/30" />
             </div>
           </FadeIn>
           
@@ -61,7 +59,7 @@ export default function CredentialsPage() {
               
               <HallmarkLogo size="standalone" variant="dark" showDescriptor className="mx-auto mb-10" />
               
-              <p className="text-[13px] text-slate/70 leading-[1.8] font-light text-center mb-10">
+              <p className="text-[14px] text-slate/70 leading-[1.8] font-light text-center mb-10">
                 Meritus Via is a partnership of industry-recognised experts formerly of leading international practices. 
                 Due to commercial sensitivities, full biographies and case histories require secure access.
               </p>
@@ -112,11 +110,9 @@ export default function CredentialsPage() {
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
           <FadeIn delay={0.1}>
             <div className="flex items-center gap-4 mb-8">
-              <div className="h-[1px] w-8 bg-brass/50" />
               <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-brass/80">
                 Credentials Portal
               </div>
-              <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-brass/50 to-transparent" />
             </div>
           </FadeIn>
           <FadeIn delay={0.2}>
@@ -146,7 +142,7 @@ export default function CredentialsPage() {
                 <div key={item.title} className="p-8 bg-parchment border border-green/5 relative group transition-all duration-300 hover:border-brass/20 hover:shadow-md">
                   <div className="font-mono text-[9px] tracking-[0.2em] text-brass/50 mb-6 uppercase">{item.ref}</div>
                   <h3 className="font-serif text-2xl text-green mb-4 group-hover:text-brass transition-colors duration-300">{item.title}</h3>
-                  <p className="text-[14px] text-slate/80 leading-[1.8] font-light mb-8">{item.description}</p>
+                  <p className="text-[15px] text-slate/80 leading-[1.8] font-light mb-8">{item.description}</p>
                   
                   <div className="pt-6 border-t border-green/5 flex items-center justify-between">
                     <span className="font-mono text-[9px] tracking-widest text-slate/40 uppercase">Pending Upload</span>

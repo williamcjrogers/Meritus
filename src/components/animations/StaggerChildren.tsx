@@ -20,7 +20,10 @@ export function StaggerChildren({
 
   return (
     <motion.div
-      initial={shouldReduceMotion ? "visible" : "hidden"}
+      // Keep the initial state identical on server and client (the server
+      // cannot know the reduced-motion setting) — otherwise hydration
+      // mismatches. Reduced motion is honoured via zeroed timings below.
+      initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.12, margin: "0px 0px -10% 0px" }}
       variants={{
@@ -28,7 +31,8 @@ export function StaggerChildren({
         visible: {
           opacity: 1,
           transition: {
-            delayChildren,
+            ...(shouldReduceMotion ? { duration: 0 } : {}),
+            delayChildren: shouldReduceMotion ? 0 : delayChildren,
             staggerChildren: shouldReduceMotion ? 0 : staggerDelay,
           },
         },
@@ -51,21 +55,18 @@ export function StaggerItem({
 
   return (
     <motion.div
-      variants={
-        shouldReduceMotion
-          ? {
-              hidden: { opacity: 1, y: 0 },
-              visible: { opacity: 1, y: 0 },
-            }
-          : {
-              hidden: { opacity: 0, y: 24 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
-              },
-            }
-      }
+      // The hidden state must resolve identically on server and client to
+      // avoid hydration mismatches; reduced motion only zeroes the timing.
+      variants={{
+        hidden: { opacity: 0, y: 24 },
+        visible: {
+          opacity: 1,
+          y: 0,
+          transition: shouldReduceMotion
+            ? { duration: 0 }
+            : { duration: 0.55, ease: [0.16, 1, 0.3, 1] },
+        },
+      }}
       className={className}
     >
       {children}

@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import { FadeIn } from "@/components/animations";
 import { SITE_CONFIG } from "@/lib/constants";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
+export const metadata = pageMetadata({
   title: "Privacy Policy",
   description:
     "Meritus Via privacy policy. How we collect, use, store, and protect your personal data under UK GDPR.",
-};
+  path: "/privacy-policy",
+});
 
 const LIST_STYLE = "flex items-start gap-2";
 const DASH = <span className="text-brass/50 mt-0.5 shrink-0">&mdash;</span>;
@@ -27,7 +28,7 @@ export default function PrivacyPolicyPage() {
       <section className="bg-stone py-16 lg:py-20">
         <div className="max-w-[800px] mx-auto px-6 lg:px-[8%]">
           <FadeIn>
-            <div className="space-y-10 text-[14px] text-slate leading-relaxed">
+            <div className="space-y-10 text-[15px] text-slate leading-relaxed">
               {/* 1. Data Controller */}
               <div>
                 <h2 className="font-serif text-xl text-green italic mb-3">
@@ -35,8 +36,9 @@ export default function PrivacyPolicyPage() {
                 </h2>
                 <p>
                   {SITE_CONFIG.legalName} is the data controller responsible for
-                  your personal data. We are a limited liability partnership
-                  registered in England and Wales.
+                  your personal data. We are a private limited company registered
+                  in England and Wales (company number {SITE_CONFIG.companyNumber}),
+                  with our registered office at {SITE_CONFIG.registeredOffice}.
                 </p>
                 <p className="mt-3">
                   If you have questions about this policy or wish to exercise your

@@ -1,11 +1,21 @@
 "use client";
 
+import Link from "next/link";
 import { CountUp } from "./CountUp";
 
 const METRICS = [
   { value: "100+", label: "Years Combined Experience" },
-  { value: "4", label: "Disciplines" },
+  { value: "5", label: "Disciplines" },
   { value: "100%", label: "Partner Led" },
+];
+
+// The five disciplines double as quick links into the Services page.
+const DISCIPLINES = [
+  { label: "Delay", anchor: "delay" },
+  { label: "Quantum", anchor: "quantum" },
+  { label: "Technical", anchor: "technical" },
+  { label: "Advisory", anchor: "advisory" },
+  { label: "Technology", anchor: "technology" },
 ];
 
 export function CredibilityBar() {
@@ -21,13 +31,24 @@ export function CredibilityBar() {
               {i > 0 && (
                 <div className="absolute left-0 top-0 bottom-0 w-[1px] bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
               )}
-              <span className="block w-10 h-[2px] bg-brass/40 mb-5" />
               <CountUp value={metric.value} label={metric.label} />
             </div>
           ))}
         </div>
-        <div className="mt-8 text-center font-mono text-[8px] tracking-[0.3em] uppercase text-cream/[0.16]" aria-hidden="true">
-          delay &middot; quantum &middot; technical &middot; advisory
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono text-[9px] tracking-[0.3em] uppercase text-cream/35">
+          {DISCIPLINES.map((d, i) => (
+            <span key={d.anchor} className="flex items-center gap-x-3">
+              <Link
+                href={`/services#${d.anchor}`}
+                className="hover:text-brass focus-visible:text-brass transition-colors duration-200"
+              >
+                {d.label}
+              </Link>
+              {i < DISCIPLINES.length - 1 && (
+                <span className="text-brass/25" aria-hidden="true">&middot;</span>
+              )}
+            </span>
+          ))}
         </div>
       </div>
     </section>
