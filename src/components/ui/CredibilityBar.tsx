@@ -1,11 +1,21 @@
 "use client";
 
+import Link from "next/link";
 import { CountUp } from "./CountUp";
 
 const METRICS = [
   { value: "100+", label: "Years Combined Experience" },
   { value: "5", label: "Disciplines" },
   { value: "100%", label: "Partner Led" },
+];
+
+// The five disciplines double as quick links into the Services page.
+const DISCIPLINES = [
+  { label: "Delay", anchor: "delay" },
+  { label: "Quantum", anchor: "quantum" },
+  { label: "Technical", anchor: "technical" },
+  { label: "Advisory", anchor: "advisory" },
+  { label: "Technology", anchor: "technology" },
 ];
 
 export function CredibilityBar() {
@@ -25,8 +35,20 @@ export function CredibilityBar() {
             </div>
           ))}
         </div>
-        <div className="mt-8 text-center font-mono text-[8px] tracking-[0.3em] uppercase text-cream/[0.16]" aria-hidden="true">
-          delay &middot; quantum &middot; technical &middot; advisory &middot; technology
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 font-mono text-[9px] tracking-[0.3em] uppercase text-cream/35">
+          {DISCIPLINES.map((d, i) => (
+            <span key={d.anchor} className="flex items-center gap-x-3">
+              <Link
+                href={`/services#${d.anchor}`}
+                className="hover:text-brass focus-visible:text-brass transition-colors duration-200"
+              >
+                {d.label}
+              </Link>
+              {i < DISCIPLINES.length - 1 && (
+                <span className="text-brass/25" aria-hidden="true">&middot;</span>
+              )}
+            </span>
+          ))}
         </div>
       </div>
     </section>

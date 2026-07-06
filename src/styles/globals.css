@@ -64,6 +64,14 @@ h1, h2, h3, h4 {
   outline-offset: 2px;
 }
 
+/* Conflict-check form fields signal focus with their brass underline,
+   so the global focus-ring box is suppressed on them. */
+.conflict-form input:focus-visible,
+.conflict-form select:focus-visible,
+.conflict-form textarea:focus-visible {
+  outline: none;
+}
+
 /* ──────────────────────────────────────────────
    Skip link
    ────────────────────────────────────────────── */

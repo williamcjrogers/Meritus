@@ -15,7 +15,7 @@ export function PhilosophyBand() {
           <h3 className="font-serif text-[28px] lg:text-[34px] italic font-normal text-[#8ba995] m-0 mb-6">
             Never the judgment.
           </h3>
-          <p className="text-[15px] lg:text-[16px] text-[#6da57e] leading-[1.6] max-w-[520px] font-sans font-light m-0">
+          <p className="text-[15px] lg:text-[16px] text-cream/80 leading-[1.6] max-w-[520px] font-sans font-light m-0">
             100GB of project data,correspondence, site records, contract documents,
             programme files,classified, cross-referenced, and chronologically
             structured in hours. So our partners spend their time in the analysis,

@@ -188,7 +188,7 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
       { id: "2", text: "Building Safety Act 2022, ss.116-125 and Schedule 8 (Remediation of certain defects).", url: "https://www.legislation.gov.uk/ukpga/2022/30/section/124" },
       { id: "3", text: "The Building Regulations 2010 (SI 2010/2214).", url: "https://www.legislation.gov.uk/uksi/2010/2214/contents" },
       { id: "4", text: "Defective Premises Act 1972, s.1 (as amended by Building Safety Act 2022, s.134, extending the limitation period to 30 years retrospectively).", url: "https://www.legislation.gov.uk/ukpga/1972/35/section/1" },
-      { id: "5", text: "BS 8414-1:2015+A1:2017,Fire performance of external cladding systems. Test method for non-loadbearing external cladding systems applied to the masonry face of a building." },
+      { id: "5", text: "BS 8414-1:2015+A1:2017,Fire performance of external cladding systems. Test method for non-loadbearing external cladding systems applied to the masonry face of a building.", url: "https://knowledge.bsigroup.com/products/fire-performance-of-external-cladding-systems-test-method-for-non-loadbearing-external-cladding-systems-applied-to-the-masonry-face-of-a-building" },
       { id: "6", text: "HM Government, Approved Document B: Fire Safety, Volume 1: Dwellings (2019 edition incorporating amendments).", url: "https://www.gov.uk/government/publications/fire-safety-approved-document-b" },
       { id: "7", text: "Building Safety Act 2022, Schedule 8, paras 2-4 (Leaseholder protections: qualifying leaseholders of relevant buildings are protected from remediation costs).", url: "https://www.legislation.gov.uk/ukpga/2022/30/schedule/8" },
     ],
@@ -328,7 +328,7 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
     references: [
       { id: "1", text: "Society of Construction Law, Delay and Disruption Protocol, 2nd Edition (February 2017), Part B guidance on disruption.", url: "https://www.scl.org.uk/resources/delay-disruption-protocol" },
       { id: "2", text: "Whittall Builders Co Ltd v Chester-le-Street District Council (1985) 40 BLR 82." },
-      { id: "3", text: "AACE International, Recommended Practice No. 25R-03, Estimating Lost Labor Productivity in Construction Claims (2004)." },
+      { id: "3", text: "AACE International, Recommended Practice No. 25R-03, Estimating Lost Labor Productivity in Construction Claims (2004).", url: "https://web.aacei.org/docs/default-source/toc/toc_25r-03.pdf" },
       { id: "4", text: "Van Oord UK Ltd v Allseas UK Ltd [2015] EWHC 3074 (TCC).", url: "https://caselaw.nationalarchives.gov.uk/ewhc/tcc/2015/3074" },
       { id: "5", text: "Walter Lilly & Company Ltd v Mackay [2012] EWHC 1773 (TCC).", url: "https://caselaw.nationalarchives.gov.uk/ewhc/tcc/2012/1773" },
     ],
@@ -473,7 +473,7 @@ const ARTICLE_CONTENT: Record<string, ArticleData> = {
       },
     ],
     references: [
-      { id: "1", text: "National Justice Compania Naviera SA v Prudential Assurance Co Ltd (The Ikarian Reefer) [1993] 2 Lloyd's Rep 68." },
+      { id: "1", text: "National Justice Compania Naviera SA v Prudential Assurance Co Ltd (The Ikarian Reefer) [1993] 2 Lloyd's Rep 68.", url: "https://www.uniset.ca/other/cs2/19932LLR68.html" },
       { id: "2", text: "Civil Procedure Rules, Part 35 and Practice Direction 35.", url: "https://www.justice.gov.uk/courts/procedure-rules/civil/rules/part35" },
       { id: "3", text: "Jones v Kaney [2011] UKSC 13.", url: "https://caselaw.nationalarchives.gov.uk/uksc/2011/13" },
       { id: "4", text: "Dana UK Axle Ltd v Freudenberg FST GmbH [2021] EWHC 1413 (TCC).", url: "https://caselaw.nationalarchives.gov.uk/ewhc/tcc/2021/1413" },

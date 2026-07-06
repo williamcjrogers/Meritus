@@ -11,9 +11,9 @@ export function Footer() {
       <DisciplineDrift />
 
       <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] pt-12 pb-8">
-        <div className="flex flex-col lg:flex-row lg:items-start gap-10 lg:gap-8 mb-12">
-          {/* Brand (left; flex-1 mirrors the right spacer so the links sit page-centre) */}
-          <div className="lg:flex-1 flex flex-col">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 mb-12">
+          {/* Brand (left — 5 of 12 columns) */}
+          <div className="lg:col-span-5 flex flex-col">
             <div>
               <HallmarkLogo size="header" variant="light" className="mb-4" />
               <p className="text-[12px] text-cream/50 max-w-[280px] leading-relaxed">
@@ -33,8 +33,8 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Links (page-centred between the two flex-1 blocks) */}
-          <div className="flex flex-wrap gap-x-16 gap-y-10 shrink-0">
+          {/* Links (right — three equal columns, kept compact so they sit close together) */}
+          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-10 sm:max-w-[440px]">
             <div>
               <div className="font-mono text-[9px] tracking-[0.2em] uppercase text-brass/60 mb-4">Practice</div>
               <ul className="space-y-2.5">
@@ -49,7 +49,7 @@ export function Footer() {
             </div>
             
             <div>
-              <div className="font-mono text-[9px] tracking-[0.2em] uppercase text-brass/60 mb-4">Firm</div>
+              <div className="font-mono text-[9px] tracking-[0.2em] uppercase text-brass/60 mb-4">Company</div>
               <ul className="space-y-2.5">
                 <li>
                   <Link href="/contact" className="text-[12px] text-cream/60 hover:text-brass transition-colors duration-200">
@@ -57,9 +57,9 @@ export function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <a href={`mailto:${SITE_CONFIG.email}`} className="text-[12px] text-cream/60 hover:text-brass transition-colors duration-200">
-                    Enquiries
-                  </a>
+                  <Link href="/credentials" className="text-[12px] text-cream/60 hover:text-brass transition-colors duration-200">
+                    Credentials
+                  </Link>
                 </li>
               </ul>
             </div>
@@ -77,9 +77,6 @@ export function Footer() {
               </ul>
             </div>
           </div>
-
-          {/* Right spacer — balances the brand block so the link columns align with the centred content below */}
-          <div className="hidden lg:block lg:flex-1" aria-hidden="true" />
         </div>
 
         {/* Professional Standards */}
@@ -100,9 +97,6 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-brass/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <p className="text-[10px] text-cream/30">{SITE_CONFIG.copyright}</p>
-          <p className="text-[10px] text-cream/30 md:text-right max-w-lg">
-            {SITE_CONFIG.legalFooter} Partners hold chartered and fellowship-level memberships across leading professional institutions.
-          </p>
         </div>
       </div>
     </footer>

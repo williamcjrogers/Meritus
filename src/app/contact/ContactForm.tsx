@@ -31,7 +31,7 @@ export function ContactForm() {
   const err = "text-[11px] text-oxblood mt-1";
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8" noValidate>
+    <form onSubmit={handleSubmit(onSubmit)} className="conflict-form space-y-8" noValidate>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         <div><label htmlFor="name" className={lbl}>Name</label><input id="name" type="text" className={inp} {...register("name", { required: "Required" })} />{errors.name && <p className={err}>{errors.name.message}</p>}</div>
         <div><label htmlFor="firm" className={lbl}>Firm</label><input id="firm" type="text" className={inp} {...register("firm", { required: "Required" })} />{errors.firm && <p className={err}>{errors.firm.message}</p>}</div>

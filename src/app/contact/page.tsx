@@ -56,7 +56,7 @@ export default function ContactPage() {
                 <div className="flex flex-col items-end">
                   <div className="font-mono text-[9px] tracking-[0.2em] text-cream/40 uppercase mb-4">Direct Contact</div>
                   <div className="text-[14px] text-cream mb-4">
-                    <a href={`mailto:${SITE_CONFIG.email}`} className="hover:text-brass transition-colors duration-200">{SITE_CONFIG.email}</a>
+                    <span className="select-all cursor-text">{SITE_CONFIG.email}</span>
                   </div>
                   <div className="font-mono text-[9px] tracking-[0.15em] text-brass/60">STRICTLY_CONFIDENTIAL</div>
                   <div className="font-mono text-[9px] tracking-[0.15em] text-brass/60 mt-2">PARTNER_REVIEW_ONLY</div>

@@ -27,7 +27,9 @@ export function Header() {
   const overlayOpen = openMenu !== null;
   const darkChrome = scrolled && !overlayOpen;
   const activeSection = NAV_ITEMS.find((item) => item.label === openMenu && item.children);
-  const latestInsight = INSIGHT_ARTICLES[INSIGHT_ARTICLES.length - 1];
+  // The Insights mega panel surfaces the most recent briefings, newest first;
+  // slicing keeps it in step with INSIGHT_ARTICLES as new pieces are published.
+  const recentInsights = INSIGHT_ARTICLES.slice(-2).reverse();
 
   // The sheet's height glides between sections: measure the natural content
   // height on open and on every section switch, and let framer tween to it.
@@ -279,120 +281,178 @@ export function Header() {
                   transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                   className="grid grid-cols-12 gap-10"
                 >
-                    {/* Left — the hovered section's links */}
-                    <div className="col-span-5">
-                      <div className="font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-brass mb-3 px-1">
-                        {activeSection.label}
-                      </div>
-                      <div className="h-[1px] bg-brass/15 mb-2" />
-                      {activeSection.children!.map((child, i) => (
-                        <motion.div
-                          key={child.href}
-                          initial={{ opacity: 0, x: -12 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.35, delay: 0.1 + i * 0.05, ease: [0.22, 1, 0.36, 1] }}
-                        >
-                          <Link
-                            href={child.href}
-                            onClick={(e) => handleChildClick(e, child.href)}
-                            className="group/item relative flex items-center justify-between gap-6 py-3 px-1"
+                    {(() => {
+                      const info = NAV_PANEL_INFO[activeSection.label];
+                      if (!info) return null;
+                      const isInsights = activeSection.label === "Insights";
+                      return (
+                        <>
+                          {/* Left rail — what the section is + its primary route in (identical across every panel) */}
+                          <motion.div
+                            className="col-span-5"
+                            initial={{ opacity: 0, x: -12 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.35, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
                           >
-                            <span>
-                              <span className="block font-serif text-[19px] leading-snug text-cream/90 group-hover/item:text-brass transition-colors duration-300">
-                                {child.label}
-                              </span>
-                              {child.desc && (
-                                <span className="block text-[11px] font-light text-cream/40 mt-0.5">
-                                  {child.desc}
-                                </span>
-                              )}
-                            </span>
-                            <span
-                              aria-hidden="true"
-                              className="shrink-0 inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.2em] uppercase text-brass opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-300"
+                            <div className="font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-brass mb-3 px-1">
+                              {info.eyebrow}
+                            </div>
+                            <div className="h-[1px] bg-brass/15 mb-6" />
+                            <h3 className="font-serif text-[28px] leading-[1.15] text-cream/90 max-w-[340px]">
+                              {info.heading}
+                            </h3>
+                            <p className="mt-4 text-[13px] text-cream/55 font-light leading-[1.8] max-w-[300px]">
+                              {info.body}
+                            </p>
+                            <Link
+                              href={activeSection.href}
+                              onClick={() => setOpenMenu(null)}
+                              className="mt-7 inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] uppercase text-brass hover:text-brass-light transition-colors duration-200 group/lnk"
                             >
-                              Visit <span className="text-sm leading-none" aria-hidden="true">→</span>
-                            </span>
-                            <span
-                              aria-hidden="true"
-                              className="pointer-events-none absolute inset-x-0 bottom-0 h-px w-0 bg-brass/25 transition-all duration-500 ease-out group-hover/item:w-full"
-                            />
-                          </Link>
-                        </motion.div>
-                      ))}
-                    </div>
+                              {info.linkLabel}
+                              <span aria-hidden="true" className="group-hover/lnk:translate-x-0.5 transition-transform duration-200">→</span>
+                            </Link>
+                          </motion.div>
 
-                    {/* Right — information specific to the hovered section */}
-                    <div className="col-span-7 pl-10 grid grid-cols-2 gap-8 content-start">
-                      {(() => {
-                        const info = NAV_PANEL_INFO[activeSection.label];
-                        if (!info) return null;
-                        return (
-                          <>
-                            <motion.div
-                              initial={{ opacity: 0, y: 12 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.35, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-                            >
-                              <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-brass/70 mb-4">
-                                {info.eyebrow}
+                          {/* Right — a treatment tuned to each section: briefing cards (Insights),
+                              a numbered index (Services), market cards (Sectors), a numbered
+                              process (Method) */}
+                          <div className="col-span-7 pl-10">
+                            <div className="font-mono text-[10px] font-medium uppercase tracking-[0.25em] text-brass/70 mb-3 px-1">
+                              {info.rightEyebrow}
+                            </div>
+                            <div className="h-[1px] bg-brass/15 mb-6" />
+                            {isInsights ? (
+                              <div className="grid grid-cols-2 gap-5">
+                                {recentInsights.map((article, i) => (
+                                  <motion.div
+                                    key={article.slug}
+                                    initial={{ opacity: 0, y: 12 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.35, delay: 0.16 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                                  >
+                                    <Link
+                                      href={article.href}
+                                      onClick={() => setOpenMenu(null)}
+                                      className="group/card relative flex h-full flex-col border border-brass/15 bg-white/[0.02] p-6 hover:border-brass/40 hover:bg-white/[0.04] transition-colors duration-300"
+                                    >
+                                      <span className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/40" aria-hidden="true" />
+                                      <span className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/40" aria-hidden="true" />
+                                      <span className="block font-mono text-[9px] tracking-[0.2em] uppercase text-brass/70">
+                                        {article.category} · {article.date}
+                                      </span>
+                                      <span className="mt-3 block font-serif text-[18px] leading-snug text-cream/90 group-hover/card:text-brass transition-colors duration-300">
+                                        {article.title}
+                                      </span>
+                                      <span className="mt-3 text-[12px] font-light text-cream/45 leading-[1.7] line-clamp-2">
+                                        {article.excerpt}
+                                      </span>
+                                      <span className="mt-auto pt-5 inline-flex items-center gap-2 font-mono text-[9px] tracking-[0.15em] uppercase text-cream/40 group-hover/card:text-brass/80 transition-colors duration-300">
+                                        {article.readTime} · Read briefing
+                                        <span aria-hidden="true" className="group-hover/card:translate-x-0.5 transition-transform duration-200">→</span>
+                                      </span>
+                                    </Link>
+                                  </motion.div>
+                                ))}
                               </div>
-                              <p className="text-[13px] text-cream/60 font-light leading-[1.8]">
-                                {info.body}
-                              </p>
-                              <Link
-                                href={activeSection.href}
-                                className="mt-6 inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.2em] uppercase text-brass hover:text-brass-light transition-colors duration-200 group/lnk"
-                              >
-                                {info.linkLabel}
-                                <span aria-hidden="true" className="group-hover/lnk:translate-x-0.5 transition-transform duration-200">→</span>
-                              </Link>
-                            </motion.div>
-
-                            <motion.div
-                              initial={{ opacity: 0, y: 12 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.35, delay: 0.26, ease: [0.22, 1, 0.36, 1] }}
-                              className="self-start"
-                            >
-                              {activeSection.label === "Insights" ? (
-                                <Link
-                                  href={latestInsight.href}
-                                  className="group/card relative block border border-brass/15 bg-white/[0.02] p-6 hover:border-brass/40 transition-colors duration-300"
-                                >
-                                  <span className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/40" aria-hidden="true" />
-                                  <span className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/40" aria-hidden="true" />
-                                  <span className="block font-mono text-[9px] tracking-[0.2em] uppercase text-brass/70">
-                                    {latestInsight.category} · {latestInsight.date}
-                                  </span>
-                                  <span className="mt-3 block font-serif text-[17px] leading-snug text-cream/90 group-hover/card:text-brass transition-colors duration-300">
-                                    {latestInsight.title}
-                                  </span>
-                                  <span className="mt-4 block font-mono text-[9px] tracking-[0.15em] uppercase text-cream/40">
-                                    {latestInsight.readTime} · Read briefing →
-                                  </span>
-                                </Link>
-                              ) : info.quote ? (
-                                <div className="relative border border-brass/15 bg-white/[0.02] p-6">
-                                  <span className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/40" aria-hidden="true" />
-                                  <span className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/40" aria-hidden="true" />
-                                  <p className="font-serif italic text-[18px] text-cream/80 leading-snug">
-                                    {info.quote}
-                                  </p>
-                                </div>
-                              ) : info.stat ? (
-                                <div className="relative border border-brass/15 bg-white/[0.02] p-6">
-                                  <span className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/40" aria-hidden="true" />
-                                  <span className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/40" aria-hidden="true" />
-                                  <div className="font-serif text-[56px] leading-none text-brass/30">{info.stat.value}</div>
-                                  <div className="mt-3 font-mono text-[9px] tracking-[0.2em] uppercase text-cream/40">{info.stat.label}</div>
-                                </div>
-                              ) : null}
-                            </motion.div>
-                          </>
-                        );
-                      })()}
-                    </div>
+                            ) : activeSection.label === "Sectors" ? (
+                              <div className="grid grid-cols-3 gap-4">
+                                {activeSection.children!.map((child, i) => (
+                                  <motion.div
+                                    key={child.href}
+                                    initial={{ opacity: 0, y: 12 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.35, delay: 0.16 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                                  >
+                                    <Link
+                                      href={child.href}
+                                      onClick={(e) => handleChildClick(e, child.href)}
+                                      className="group/card relative flex h-full flex-col border border-brass/15 bg-white/[0.02] p-5 hover:border-brass/40 hover:bg-white/[0.04] transition-colors duration-300"
+                                    >
+                                      <span className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/40" aria-hidden="true" />
+                                      <span className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/40" aria-hidden="true" />
+                                      <span className="font-mono text-[11px] tracking-[0.15em] text-brass/50 tabular-nums">0{i + 1}</span>
+                                      <span className="mt-3 block font-serif text-[18px] leading-snug text-cream/90 group-hover/card:text-brass transition-colors duration-300">
+                                        {child.label}
+                                      </span>
+                                      {child.desc && (
+                                        <span className="mt-2 block flex-1 text-[11px] font-light text-cream/45 leading-[1.6]">
+                                          {child.desc}
+                                        </span>
+                                      )}
+                                    </Link>
+                                  </motion.div>
+                                ))}
+                              </div>
+                            ) : activeSection.label === "Method" ? (
+                              <div>
+                                {activeSection.children!.map((child, i) => (
+                                  <motion.div
+                                    key={child.href}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.35, delay: 0.16 + i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                                  >
+                                    <Link
+                                      href={child.href}
+                                      onClick={(e) => handleChildClick(e, child.href)}
+                                      className="group/step relative flex items-start gap-5 py-3"
+                                    >
+                                      <span className="relative z-10 shrink-0 flex h-9 w-9 items-center justify-center rounded-full border border-brass/30 bg-[#0b1f13] font-mono text-[10px] text-brass/80 group-hover/step:border-brass group-hover/step:text-brass group-hover/step:bg-brass/10 transition-colors duration-300 tabular-nums">
+                                        0{i + 1}
+                                      </span>
+                                      <span className="pt-1">
+                                        <span className="block font-serif text-[18px] leading-snug text-cream/90 group-hover/step:text-brass transition-colors duration-300">
+                                          {child.label}
+                                        </span>
+                                        {child.desc && (
+                                          <span className="block text-[11px] font-light text-cream/40 mt-0.5">
+                                            {child.desc}
+                                          </span>
+                                        )}
+                                      </span>
+                                    </Link>
+                                  </motion.div>
+                                ))}
+                              </div>
+                            ) : (
+                              <div>
+                                {activeSection.children!.map((child, i) => (
+                                  <motion.div
+                                    key={child.href}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.35, delay: 0.16 + i * 0.05, ease: [0.22, 1, 0.36, 1] }}
+                                  >
+                                    <Link
+                                      href={child.href}
+                                      onClick={(e) => handleChildClick(e, child.href)}
+                                      className="group/item relative flex items-center gap-5 py-3 px-1"
+                                    >
+                                      <span className="shrink-0 font-mono text-[11px] tracking-[0.15em] text-brass/45 group-hover/item:text-brass transition-colors duration-300 tabular-nums">
+                                        0{i + 1}
+                                      </span>
+                                      <span className="flex-1">
+                                        <span className="block font-serif text-[18px] leading-snug text-cream/90 group-hover/item:text-brass transition-colors duration-300">
+                                          {child.label}
+                                        </span>
+                                        {child.desc && (
+                                          <span className="block text-[11px] font-light text-cream/40 mt-0.5">
+                                            {child.desc}
+                                          </span>
+                                        )}
+                                      </span>
+                                      <span aria-hidden="true" className="shrink-0 font-mono text-[9px] tracking-[0.2em] uppercase text-brass opacity-0 -translate-x-1 group-hover/item:opacity-100 group-hover/item:translate-x-0 transition-all duration-300">→</span>
+                                      <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-px w-0 bg-brass/25 transition-all duration-500 ease-out group-hover/item:w-full" />
+                                    </Link>
+                                  </motion.div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </>
+                      );
+                    })()}
                 </motion.div>
                   </div>
                 </div>

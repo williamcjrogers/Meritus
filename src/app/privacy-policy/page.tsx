@@ -36,8 +36,9 @@ export default function PrivacyPolicyPage() {
                 </h2>
                 <p>
                   {SITE_CONFIG.legalName} is the data controller responsible for
-                  your personal data. We are a limited liability partnership
-                  registered in England and Wales.
+                  your personal data. We are a private limited company registered
+                  in England and Wales (company number {SITE_CONFIG.companyNumber}),
+                  with our registered office at {SITE_CONFIG.registeredOffice}.
                 </p>
                 <p className="mt-3">
                   If you have questions about this policy or wish to exercise your

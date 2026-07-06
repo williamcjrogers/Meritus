@@ -8,10 +8,10 @@ export const SITE_CONFIG = {
   url: "https://meritusvia.com",
   email: "enquiries@meritusvia.com",
   linkedin: "https://www.linkedin.com/company/meritusvia/about/",
-  legalName: "Meritus Via LLP",
-  copyright: `\u00a9 ${new Date().getFullYear()} Meritus Via. All rights reserved.`,
-  legalFooter:
-    "Meritus Via is a trading name of Meritus Via LLP.",
+  legalName: "Meritus Group Ltd",
+  companyNumber: "16260734",
+  registeredOffice: "85 Great Portland Street, London, England, W1W 7LT",
+  copyright: `© ${new Date().getFullYear()} Meritus Group Ltd. All rights reserved.`,
 } as const;
 
 export interface NavChild {
@@ -60,49 +60,54 @@ export const NAV_ITEMS: readonly NavItem[] = [
   {
     label: "Insights",
     href: "/insights",
-    children: [
-      { label: "All Insights", href: "/insights", desc: "The full briefing archive" },
-      { label: "Proving Disruption", href: "/insights/proving-disruption-claims", desc: "Evidencing productivity loss" },
-      { label: "Smash-and-Grab v True Value", href: "/insights/smash-and-grab-true-value", desc: "Payment notices and cash flow" },
-      { label: "Expert Independence", href: "/insights/expert-witness-independence", desc: "Duties, credibility, admissibility" },
-    ],
+    // Insights opens an article-driven mega panel (see Header) that pulls the
+    // latest briefings straight from INSIGHT_ARTICLES, so it needs no hardcoded
+    // article list. This single entry marks that the item has a panel and names
+    // its canonical destination.
+    children: [{ label: "All insights", href: "/insights" }],
   },
 ];
 
-/* Section-specific content for the right rail of the header mega menu.
-   Keyed by NAV_ITEMS label. The Insights rail additionally surfaces the
-   latest briefing from INSIGHT_ARTICLES. */
+/* Copy for the left rail of each header mega-menu panel: eyebrow, serif
+   heading, body, and the CTA into the section overview. Keyed by NAV_ITEMS
+   label. The right side of the panel lists the section's areas — or, for
+   Insights, the most recent briefings from INSIGHT_ARTICLES. */
 export interface NavPanelInfo {
   eyebrow: string;
+  heading: string;
   body: string;
   linkLabel: string;
-  stat?: { value: string; label: string };
-  quote?: string;
+  rightEyebrow: string;
 }
 
 export const NAV_PANEL_INFO: Record<string, NavPanelInfo> = {
   Services: {
     eyebrow: "The practice",
-    body: "Senior-led advisory across delay, quantum, technical, and strategy, with platforms we build in-house. Five disciplines around one evidence base.",
-    linkLabel: "Explore services",
-    stat: { value: "05", label: "Disciplines. One evidence base." },
+    heading: "Five disciplines, one evidence base",
+    body: "Senior-led forensic advisory across delay, quantum, technical, and strategy, plus the platforms we build in-house.",
+    linkLabel: "Explore all services",
+    rightEyebrow: "The disciplines",
   },
   Sectors: {
     eyebrow: "Where we work",
-    body: "From residential towers to rail, water, and generation: forensic experience across the full breadth of the built environment.",
-    linkLabel: "View sectors",
-    stat: { value: "03", label: "Sectors. One forensic discipline." },
+    heading: "The full breadth of the built environment",
+    body: "Forensic experience from residential towers to rail, water, and generation.",
+    linkLabel: "View all sectors",
+    rightEyebrow: "The sectors",
   },
   Method: {
     eyebrow: "The principle",
+    heading: "Preparation automated. Judgment human.",
     body: "Every output traceable, disclosable, and reviewed by a partner before it carries the firm's name.",
     linkLabel: "Read the method",
-    quote: "We automate the preparation. Never the judgment.",
+    rightEyebrow: "The framework",
   },
   Insights: {
     eyebrow: "Current thinking",
-    body: "Analysis of recent case law, statutory change, and the commercial realities of modern adjudication.",
-    linkLabel: "All insights",
+    heading: "Explore our recent insights",
+    body: "Senior-led briefings on the rulings and rule changes reshaping construction disputes, from payment and delay to expert evidence and the Building Safety Act.",
+    linkLabel: "View all insights",
+    rightEyebrow: "Recent briefings",
   },
 };
 
@@ -112,6 +117,7 @@ export const FOOTER_NAV = {
     { label: "Sectors", href: "/sectors" },
     { label: "Method", href: "/method" },
     { label: "Insights", href: "/insights" },
+    { label: "Technology", href: "/services#technology" },
   ],
   legal: [
     { label: "Privacy", href: "/privacy-policy" },

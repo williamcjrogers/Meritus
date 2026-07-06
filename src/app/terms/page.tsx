@@ -40,8 +40,10 @@ export default function TermsPage() {
                   About Us
                 </h2>
                 <p>
-                  This website is operated by {SITE_CONFIG.legalName}, a limited
-                  liability partnership registered in England and Wales.
+                  This website is operated by {SITE_CONFIG.legalName}, a private
+                  limited company registered in England and Wales (company number{" "}
+                  {SITE_CONFIG.companyNumber}), with its registered office at{" "}
+                  {SITE_CONFIG.registeredOffice}.
                 </p>
               </div>
 
