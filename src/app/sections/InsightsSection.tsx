@@ -29,7 +29,8 @@ const itemVariants = {
 };
 
 export function InsightsSection() {
-  const [featured, ...rest] = INSIGHT_ARTICLES;
+  // Teaser: the three most recent briefings; the full archive lives at /insights.
+  const latest = INSIGHT_ARTICLES.slice(-3);
 
   return (
     <section className="bg-green-dark py-[clamp(4rem,8vw,8rem)] relative overflow-hidden border-t border-brass/5">
@@ -43,7 +44,6 @@ export function InsightsSection() {
                 <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80 uppercase">
                   Insights
                 </div>
-                <div className="h-[1px] w-12 bg-brass/30"></div>
               </div>
               <h2 className="font-serif text-3xl lg:text-4xl text-cream leading-tight">
                 Current analysis
@@ -66,7 +66,7 @@ export function InsightsSection() {
           viewport={{ once: true, margin: "-10%" }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-cream/10 border border-cream/10"
         >
-          {INSIGHT_ARTICLES.map((article, index) => (
+          {latest.map((article) => (
             <motion.div key={article.title} variants={itemVariants} className="h-full">
               <Link href={article.href} className="group block h-full">
                 <article className="p-8 lg:p-10 bg-green h-full flex flex-col justify-between relative transition-colors duration-500 hover:bg-[#0B2516]">
@@ -84,7 +84,7 @@ export function InsightsSection() {
                     <h3 className="font-serif text-xl lg:text-2xl text-cream leading-snug group-hover:text-brass transition-colors duration-500 mb-4">
                       {article.title}
                     </h3>
-                    <p className="text-[14px] lg:text-[15px] font-sans font-light tracking-[0.01em] text-cream/60 leading-[1.8]">
+                    <p className="text-[15px] lg:text-[16px] font-sans font-light tracking-[0.01em] text-cream/60 leading-[1.8]">
                       {article.excerpt}
                     </p>
                   </div>

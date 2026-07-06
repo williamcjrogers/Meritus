@@ -11,3 +11,4 @@ export { AdvisoryStrategyTerminal } from "./AdvisoryStrategyTerminal";
 export { GovernanceTerminal } from "./GovernanceTerminal";
 export { TechnicalDefectTerminal } from "./TechnicalDefectTerminal";
 export { TechnicalBSATerminal } from "./TechnicalBSATerminal";
+export { PlatformTerminal } from "./PlatformTerminal";

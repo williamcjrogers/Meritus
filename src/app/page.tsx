@@ -68,7 +68,7 @@ export default function HomePage() {
       <InsightsSection />
       <CTABand
         heading="Your next matter starts here."
-        subtext="Speak directly with a partner. No intermediaries, no sales teams,just a confidential conversation about your case."
+        subtext="Speak directly with a partner. No intermediaries, no sales teams, just a confidential conversation about your case."
         leftGraphic="monogram"
       />
 

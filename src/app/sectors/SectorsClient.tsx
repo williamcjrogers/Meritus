@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ComponentType } from "react";
 import {
@@ -19,7 +19,8 @@ import {
   HojgaardTerminal,
   SabicTerminal,
 } from "@/components/animations";
-import { CTABand, BlueprintDivider } from "@/components/ui";
+import { CTABand } from "@/components/ui";
+import { smoothScrollToId } from "@/lib/smooth-scroll";
 
 interface SubSector {
   id: string;
@@ -351,8 +352,25 @@ const SECTORS: Sector[] = [
   },
 ];
 
+const SECTOR_HASHES = ["buildings", "infrastructure", "energy"];
+
 export function SectorsClient() {
   const [activeTab, setActiveTab] = useState(0);
+
+  // Allow /sectors#buildings, #infrastructure, #energy to select a tab and
+  // bring that sector into view (used by the header Sectors dropdown).
+  useEffect(() => {
+    const applyHash = () => {
+      const idx = SECTOR_HASHES.indexOf(window.location.hash.replace("#", "").toLowerCase());
+      if (idx < 0) return;
+      setActiveTab(idx);
+      // Defer so the tab content commits before we scroll the tabs into view.
+      window.setTimeout(() => smoothScrollToId("sector-top"), 60);
+    };
+    applyHash();
+    window.addEventListener("hashchange", applyHash);
+    return () => window.removeEventListener("hashchange", applyHash);
+  }, []);
 
   return (
     <>
@@ -370,11 +388,9 @@ export function SectorsClient() {
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
           <FadeIn delay={0.1}>
             <div className="flex items-center gap-4 mb-8">
-              <div className="h-[1px] w-8 bg-brass/50" />
               <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-brass/80">
                 Sector Experience
               </div>
-              <div className="h-[1px] flex-1 max-w-[100px] bg-gradient-to-r from-brass/50 to-transparent" />
             </div>
           </FadeIn>
 
@@ -390,7 +406,7 @@ export function SectorsClient() {
               <FadeIn delay={0.3}>
                 <div className="flex gap-6 max-w-2xl">
                   <div className="w-[1px] bg-brass/30 shrink-0 mt-2" />
-                  <p className="text-[14px] lg:text-[15px] text-cream/70 leading-[1.8] font-light tracking-[0.02em]">
+                  <p className="text-[15px] lg:text-[16px] text-cream/70 leading-[1.8] font-light tracking-[0.02em]">
                     The UK construction disputes landscape splits into three distinct
                     contractual ecosystems: buildings, infrastructure, and energy. Each
                     has different procurement routes, standard forms, and dispute
@@ -421,14 +437,22 @@ export function SectorsClient() {
         </div>
       </section>
 
+      {/* Non-sticky anchor: marks the tabs' natural position. The sticky bar's own
+          rect reads as its stuck offset once pinned, which breaks scroll targeting. */}
+      <div id="sector-top" aria-hidden="true" />
+
       {/* Sticky Tabs */}
-      <div className="bg-[#0b1f13] border-y border-brass/10 sticky top-[64px] lg:top-[80px] z-50 shadow-xl shadow-black/20">
+      <div id="sector-tabs" className="bg-[#0b1f13] border-y border-brass/10 sticky top-[64px] lg:top-[80px] z-30 shadow-xl shadow-black/20">
         <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-2 lg:px-6 xl:px-[8%]">
           <div className="grid grid-cols-3 lg:flex lg:overflow-x-auto lg:hide-scrollbar">
             {SECTORS.map((sector, idx) => (
               <button
                 key={sector.num}
-                onClick={() => setActiveTab(idx)}
+                onClick={() => {
+                  setActiveTab(idx);
+                  // Return to the top of the sector content so the reader starts fresh
+                  window.setTimeout(() => smoothScrollToId("sector-top"), 60);
+                }}
                 className={`flex flex-col lg:flex-row items-center justify-center gap-1 lg:gap-3 py-3 lg:py-5 px-1 lg:px-8 whitespace-nowrap border-b-2 transition-all duration-300 ${
                   activeTab === idx 
                     ? "border-brass text-cream bg-white/5" 
@@ -458,7 +482,6 @@ export function SectorsClient() {
                     <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80">
                       SEC.{SECTORS[activeTab].num}
                     </div>
-                    <div className="h-[1px] w-16 bg-brass/30" />
                     <div className="font-mono text-[9px] tracking-[0.15em] text-cream/30 uppercase">
                       {SECTORS[activeTab].contractContext}
                     </div>
@@ -470,7 +493,7 @@ export function SectorsClient() {
 
                   <div className="flex gap-6 max-w-3xl">
                     <div className="w-[1px] bg-brass/20 shrink-0 mt-2" />
-                    <p className="text-[14px] lg:text-[15px] text-cream/60 leading-[1.8] font-light tracking-[0.02em]">
+                    <p className="text-[15px] lg:text-[16px] text-cream/60 leading-[1.8] font-light tracking-[0.02em]">
                       {SECTORS[activeTab].description}
                     </p>
                   </div>
@@ -492,12 +515,6 @@ export function SectorsClient() {
                     </div>
                   </div>
 
-                  {subIdx > 0 && (
-                    <div className="absolute top-0 left-0 w-full z-10">
-                      <BlueprintDivider />
-                    </div>
-                  )}
-
                   <div className="py-[clamp(4.5rem,8vw,8rem)] relative z-10">
                     <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
                       <div className={`grid grid-cols-1 gap-12 lg:gap-20 ${isReversed ? "lg:grid-cols-[minmax(400px,500px)_1fr] 2xl:grid-cols-[550px_1fr]" : "lg:grid-cols-[1fr_minmax(400px,500px)] 2xl:grid-cols-[1fr_550px]"}`}>
@@ -508,7 +525,6 @@ export function SectorsClient() {
                               <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80">
                                 SEC.{SECTORS[activeTab].num}.{subIdx + 1}
                               </div>
-                              <div className="h-[1px] w-12 bg-brass/30"></div>
                             </div>
 
                             <h3 className="font-serif text-2xl lg:text-3xl text-green leading-tight mb-4">
@@ -542,7 +558,7 @@ export function SectorsClient() {
                                 <ul className="space-y-3.5">
                                   {sub.disputes.map((dispute, j) => (
                                     <li key={j} className="flex items-start gap-3 text-[14px] text-ink/75 leading-relaxed">
-                                      <span className="text-brass/50 mt-[3px] shrink-0">&mdash;</span>
+                                      <span className="text-brass/70 text-[16px] leading-none mt-[2px] shrink-0">&bull;</span>
                                       {dispute}
                                     </li>
                                   ))}

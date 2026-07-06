@@ -30,11 +30,11 @@ export function FadeIn({
 
   return (
     <motion.div
-      initial={
-        shouldReduceMotion
-          ? { opacity: 1 }
-          : { opacity: 0, ...directionOffset[direction] }
-      }
+      // The initial state must be identical on server and client — the server
+      // cannot know the visitor's reduced-motion setting, and any difference
+      // here triggers a hydration mismatch. Reduced motion is honoured via
+      // the transition (duration 0) instead, which never renders into HTML.
+      initial={{ opacity: 0, ...directionOffset[direction] }}
       whileInView={{ opacity: 1, x: 0, y: 0 }}
       viewport={{ once: true, amount: 0.1, margin: "0px 0px -50px 0px" }}
       transition={

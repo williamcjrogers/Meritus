@@ -75,36 +75,30 @@ export function HeroSection() {
               Construction Disputes Advisory
             </motion.div>
 
-            <div className="overflow-hidden">
-              <motion.div
-                className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[84px] xl:text-[96px] 2xl:text-[112px] 3xl:text-[128px] text-cream leading-[1.0] tracking-tight italic"
-                custom={0}
-                variants={lineVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                Expertise.
-              </motion.div>
-            </div>
-            <div className="overflow-hidden">
-              <motion.div
-                className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[84px] xl:text-[96px] 2xl:text-[112px] 3xl:text-[128px] text-cream leading-[1.0] tracking-tight italic"
-                custom={1}
-                variants={lineVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                Evolved.
-              </motion.div>
-            </div>
-
-            <motion.span
-              className="brass-rule-wide mt-10 block"
-              initial={{ scaleX: 0, opacity: 0 }}
-              animate={{ scaleX: 1, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              style={{ transformOrigin: "left" }}
-            />
+            <h1 className="m-0">
+              <span className="block overflow-hidden">
+                <motion.span
+                  className="block font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[84px] xl:text-[96px] 2xl:text-[112px] 3xl:text-[128px] text-cream leading-[1.0] tracking-tight italic"
+                  custom={0}
+                  variants={lineVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  Expertise.
+                </motion.span>
+              </span>
+              <span className="block overflow-hidden">
+                <motion.span
+                  className="block font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[84px] xl:text-[96px] 2xl:text-[112px] 3xl:text-[128px] text-cream leading-[1.0] tracking-tight italic"
+                  custom={1}
+                  variants={lineVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  Evolved.
+                </motion.span>
+              </span>
+            </h1>
 
             <motion.p
               className="mt-10 font-serif text-xl lg:text-2xl 2xl:text-[26px] text-cream/70 max-w-2xl leading-[1.6]"
@@ -136,20 +130,6 @@ export function HeroSection() {
               </Link>
               <Link href="/method" className="btn-outline group/btn2">
                 Our Method
-              </Link>
-            </motion.div>
-
-            <motion.div
-              className="mt-8 flex items-center"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.3 }}
-            >
-              <Link href="/claims-intelligence" className="group flex items-center gap-2 text-[11px] font-mono tracking-[0.15em] uppercase text-brass/60 hover:text-brass transition-colors">
-                <span className="border-b border-transparent hover:border-brass/40 pb-0.5 transition-colors">
-                  Claims Intelligence
-                </span>
-                <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
               </Link>
             </motion.div>
           </div>

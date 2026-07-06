@@ -25,12 +25,13 @@ export function ContactForm() {
     );
   }
 
-  const inp = "w-full px-0 py-3 bg-transparent border-0 border-b border-green/15 text-[14px] text-green placeholder:text-slate/40 focus:outline-none focus:border-brass transition-colors duration-300";
+  // 16px on mobile — anything smaller makes iOS Safari zoom the page on focus
+  const inp = "w-full px-0 py-3 bg-transparent border-0 border-b border-green/15 text-[16px] sm:text-[14px] text-green placeholder:text-slate/40 focus:outline-none focus:border-brass transition-colors duration-300";
   const lbl = "block text-[12px] tracking-wide text-slate mb-1";
   const err = "text-[11px] text-oxblood mt-1";
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8" noValidate>
+    <form onSubmit={handleSubmit(onSubmit)} className="conflict-form space-y-8" noValidate>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         <div><label htmlFor="name" className={lbl}>Name</label><input id="name" type="text" className={inp} {...register("name", { required: "Required" })} />{errors.name && <p className={err}>{errors.name.message}</p>}</div>
         <div><label htmlFor="firm" className={lbl}>Firm</label><input id="firm" type="text" className={inp} {...register("firm", { required: "Required" })} />{errors.firm && <p className={err}>{errors.firm.message}</p>}</div>
@@ -42,7 +43,7 @@ export function ContactForm() {
         <div><label htmlFor="forum" className={lbl}>Forum</label><select id="forum" className={inp} {...register("forum")}><option value="">Select</option>{CONTACT_FORM_OPTIONS.forum.map((o) => <option key={o} value={o}>{o}</option>)}</select></div>
       </div>
       <div><label htmlFor="description" className={lbl}>Brief summary</label><textarea id="description" rows={3} className={inp} placeholder="e.g. Curtain wall defects at interface with structural frame, associated delay to completion, and disputed variation account..." {...register("description")} /></div>
-      <button type="submit" disabled={isSubmitting} className="text-[13px] text-brass tracking-wide border-b border-brass/40 pb-1 hover:border-brass transition-colors duration-300 disabled:opacity-40">
+      <button type="submit" disabled={isSubmitting} className="btn-outline text-[13px] disabled:opacity-40 disabled:pointer-events-none">
         {isSubmitting ? "Submitting\u2026" : "Request Conflict Check"}
       </button>
     </form>

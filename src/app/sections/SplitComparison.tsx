@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { FadeIn } from "@/components/animations";
 
 export function SplitComparison() {
@@ -11,7 +12,6 @@ export function SplitComparison() {
             <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80 uppercase">
               The Difference
             </div>
-            <div className="h-[1px] w-12 bg-brass/30"></div>
           </div>
           <h2 className="font-serif text-3xl lg:text-4xl text-green leading-tight mb-12">
             The traditional approach <span className="text-green/40 italic font-light">vs.</span> The Meritus standard.
@@ -34,14 +34,11 @@ export function SplitComparison() {
                   </li>
                 ))}
               </ul>
-              <div className="absolute inset-0 pointer-events-none flex items-center justify-center opacity-50 group-hover:opacity-100 transition-opacity duration-700" aria-hidden="true">
-                <div className="w-[80%] h-px bg-ink/10 rotate-[-2deg]" />
-              </div>
             </div>
           </FadeIn>
 
           <FadeIn delay={0.3} className="h-full">
-            <div className="p-8 lg:p-14 bg-green grain h-full relative overflow-hidden group">
+            <Link href="/method" className="block p-8 lg:p-14 bg-green grain h-full relative overflow-hidden group">
               {/* Abstract Technical Background Grid */}
               <div className="absolute inset-0 pointer-events-none opacity-20">
                 <div className="absolute top-0 right-[20%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
@@ -65,7 +62,7 @@ export function SplitComparison() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </Link>
           </FadeIn>
         </div>
       </div>

@@ -2,21 +2,17 @@ import Link from "next/link";
 import { SITE_CONFIG, FOOTER_NAV } from "@/lib/constants";
 import { LinkedInIcon } from "@/components/icons";
 import { HallmarkLogo } from "@/components/icons/HallmarkLogo";
+import { DisciplineDrift } from "./DisciplineDrift";
 
 export function Footer() {
   return (
     <footer className="bg-[#052314] text-cream/50 border-t border-brass/10" role="contentinfo">
-      {/* Discipline drift,ticker tape at the top of the footer */}
-      <div className="border-b border-brass/10 overflow-hidden py-3 bg-[#041a0f]" aria-hidden="true">
-        <div className="footer-drift whitespace-nowrap font-mono text-[9px] tracking-[0.3em] uppercase text-brass/30">
-          <span>delay analysis &middot; quantum &middot; fire safety &middot; drawing review &middot; prolongation &middot; causation &middot; advisory &middot; measured works &middot; cladding &middot; specification compliance &middot; mediation &middot; disruption &middot; building safety act &middot; final account &middot; expert testimony &middot; design liability &middot;&nbsp;</span>
-          <span>delay analysis &middot; quantum &middot; fire safety &middot; drawing review &middot; prolongation &middot; causation &middot; advisory &middot; measured works &middot; cladding &middot; specification compliance &middot; mediation &middot; disruption &middot; building safety act &middot; final account &middot; expert testimony &middot; design liability &middot;&nbsp;</span>
-        </div>
-      </div>
+      {/* Discipline drift — endlessly left-scrolling keyword ticker */}
+      <DisciplineDrift />
 
       <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] pt-12 pb-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 mb-12">
-          {/* Brand (Left - 5 cols) */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 mb-12">
+          {/* Brand (left — 5 of 12 columns) */}
           <div className="lg:col-span-5 flex flex-col">
             <div>
               <HallmarkLogo size="header" variant="light" className="mb-4" />
@@ -37,12 +33,12 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Links Grid (Right - 7 cols) */}
-          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
+          {/* Links (right — three equal columns, kept compact so they sit close together) */}
+          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-x-8 gap-y-10 sm:max-w-[440px] sm:mx-auto">
             <div>
               <div className="font-mono text-[9px] tracking-[0.2em] uppercase text-brass/60 mb-4">Practice</div>
               <ul className="space-y-2.5">
-                {FOOTER_NAV.main.slice(0, 4).map((item) => (
+                {FOOTER_NAV.main.map((item) => (
                   <li key={item.href}>
                     <Link href={item.href} className="text-[12px] text-cream/60 hover:text-brass transition-colors duration-200">
                       {item.label}
@@ -53,7 +49,7 @@ export function Footer() {
             </div>
             
             <div>
-              <div className="font-mono text-[9px] tracking-[0.2em] uppercase text-brass/60 mb-4">Firm</div>
+              <div className="font-mono text-[9px] tracking-[0.2em] uppercase text-brass/60 mb-4">Company</div>
               <ul className="space-y-2.5">
                 <li>
                   <Link href="/contact" className="text-[12px] text-cream/60 hover:text-brass transition-colors duration-200">
@@ -61,14 +57,8 @@ export function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <a href={`mailto:${SITE_CONFIG.email}`} className="text-[12px] text-cream/60 hover:text-brass transition-colors duration-200">
-                    Enquiries
-                  </a>
-                </li>
-                <li>
-                  <Link href="/claims-intelligence" className="text-[12px] text-brass hover:text-brass-light transition-colors duration-200 flex items-center gap-1.5 group w-fit">
-                    Claims Intelligence
-                    <span className="group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+                  <Link href="/credentials" className="text-[12px] text-cream/60 hover:text-brass transition-colors duration-200">
+                    Credentials
                   </Link>
                 </li>
               </ul>
@@ -79,7 +69,7 @@ export function Footer() {
               <ul className="space-y-2.5">
                 {FOOTER_NAV.legal.map((item) => (
                   <li key={item.href}>
-                    <Link href={item.href} className="text-[11px] text-cream/40 hover:text-cream/70 transition-colors duration-200">
+                    <Link href={item.href} className="text-[12px] text-cream/60 hover:text-brass transition-colors duration-200">
                       {item.label}
                     </Link>
                   </li>
@@ -107,9 +97,6 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-brass/10 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <p className="text-[10px] text-cream/30">{SITE_CONFIG.copyright}</p>
-          <p className="text-[10px] text-cream/30 md:text-right max-w-lg">
-            {SITE_CONFIG.legalFooter} Partners hold chartered and fellowship-level memberships across leading professional institutions.
-          </p>
         </div>
       </div>
     </footer>
