@@ -234,6 +234,18 @@ export const INSIGHT_ARTICLES = [
     category: "The Duty",
     href: "/insights/expert-witness-independence",
   },
+  {
+    slug: "concurrent-delay-entitlement",
+    title:
+      "Concurrent Delay: Who Keeps the Time, Who Pays for It",
+    date: "July 2026",
+    isoDate: "2026-07-06",
+    readTime: "7 min",
+    excerpt:
+      "Concurrent delay preserves the contractor's time and forfeits its money. In England the law is settled; the arguments fail on the records, not the principles.",
+    category: "The Overlap",
+    href: "/insights/concurrent-delay-entitlement",
+  },
 ] as const;
 
 export const CONTACT_FORM_OPTIONS = {
