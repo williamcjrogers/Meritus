@@ -11,7 +11,7 @@ interface CTABandProps {
 
 export function CTABand({
   heading = "We automate the preparation. Never the judgment.",
-  subtext = "100GB of project data,classified, cross-referenced, and structured in hours. So our partners spend their time in the analysis, not the archive.",
+  subtext = "100GB of project data: classified, cross-referenced, and structured in hours. So our partners spend their time in the analysis, not the archive.",
   buttonText = "Discuss Your Matter",
   buttonHref = "/contact",
   leftGraphic = "numeral",

@@ -75,28 +75,30 @@ export function HeroSection() {
               Construction Disputes Advisory
             </motion.div>
 
-            <div className="overflow-hidden">
-              <motion.div
-                className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[84px] xl:text-[96px] 2xl:text-[112px] 3xl:text-[128px] text-cream leading-[1.0] tracking-tight italic"
-                custom={0}
-                variants={lineVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                Expertise.
-              </motion.div>
-            </div>
-            <div className="overflow-hidden">
-              <motion.div
-                className="font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[84px] xl:text-[96px] 2xl:text-[112px] 3xl:text-[128px] text-cream leading-[1.0] tracking-tight italic"
-                custom={1}
-                variants={lineVariants}
-                initial="hidden"
-                animate="visible"
-              >
-                Evolved.
-              </motion.div>
-            </div>
+            <h1 className="m-0">
+              <span className="block overflow-hidden">
+                <motion.span
+                  className="block font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[84px] xl:text-[96px] 2xl:text-[112px] 3xl:text-[128px] text-cream leading-[1.0] tracking-tight italic"
+                  custom={0}
+                  variants={lineVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  Expertise.
+                </motion.span>
+              </span>
+              <span className="block overflow-hidden">
+                <motion.span
+                  className="block font-serif text-5xl sm:text-6xl md:text-7xl lg:text-[84px] xl:text-[96px] 2xl:text-[112px] 3xl:text-[128px] text-cream leading-[1.0] tracking-tight italic"
+                  custom={1}
+                  variants={lineVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  Evolved.
+                </motion.span>
+              </span>
+            </h1>
 
             <motion.p
               className="mt-10 font-serif text-xl lg:text-2xl 2xl:text-[26px] text-cream/70 max-w-2xl leading-[1.6]"

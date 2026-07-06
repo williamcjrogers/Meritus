@@ -84,7 +84,7 @@ export function TechnologyPattern({ className = "" }: { className?: string }) {
 
         {/* Title bar */}
         <text x={34} y={72} fill="#B5975A" opacity="0.05" fontFamily="monospace" fontSize="4">
-          meritus://engine,matter 2847
+          meritus://engine/matter-2847
         </text>
         <g fill="#B5975A" opacity="0.10">
           <circle cx={430} cy={69} r={1.4} />
