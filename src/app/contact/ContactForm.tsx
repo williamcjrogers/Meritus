@@ -11,7 +11,14 @@ export function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
 
   const onSubmit = async (data: FormData) => {
-    try { await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) }); } catch { /* noop */ }
+    try {
+      const res = await fetch("/api/contact", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
+      if (res.ok) {
+        // Ad-platform conversion signal; category only, no personal data.
+        const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
+        gtag?.("event", "generate_lead", { form: "conflict_check", dispute_nature: data.disputeNature });
+      }
+    } catch { /* noop */ }
     setSubmitted(true);
   };
 

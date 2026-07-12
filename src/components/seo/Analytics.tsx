@@ -11,7 +11,9 @@ import Script from "next/script";
  * Both can run together (e.g. GA for ad platforms, Plausible for clean metrics).
  */
 export function Analytics() {
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  // GA4 measurement IDs are public (they ship in page source); the env var
+  // still wins so a different property can be swapped in without a code change.
+  const gaId = process.env.NEXT_PUBLIC_GA_ID || "G-QHWGQM7Q66";
   const plausibleDomain = process.env.NEXT_PUBLIC_PLAUSIBLE_DOMAIN;
 
   return (
