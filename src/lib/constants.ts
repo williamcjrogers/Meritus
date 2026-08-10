@@ -246,6 +246,18 @@ export const INSIGHT_ARTICLES = [
     category: "The Overlap",
     href: "/insights/concurrent-delay-entitlement",
   },
+  {
+    slug: "gateway-delay-risk-allocation",
+    title:
+      "Stuck at the Gateway: Who Owns Building Safety Regulator Delay?",
+    date: "August 2026",
+    isoDate: "2026-08-10",
+    readTime: "8 min",
+    excerpt:
+      "Gateway processing times have almost halved in a year. That fixes the queue, not the two years of regulator delay already absorbed into live contracts, and no standard form allocates it.",
+    category: "The Gateway",
+    href: "/insights/gateway-delay-risk-allocation",
+  },
 ] as const;
 
 export const CONTACT_FORM_OPTIONS = {
