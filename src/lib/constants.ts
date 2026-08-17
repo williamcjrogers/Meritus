@@ -258,6 +258,18 @@ export const INSIGHT_ARTICLES = [
     category: "The Gateway",
     href: "/insights/gateway-delay-risk-allocation",
   },
+  {
+    slug: "building-safety-levy-completion",
+    title:
+      "The Levy and the Locked Door",
+    date: "August 2026",
+    isoDate: "2026-08-17",
+    readTime: "7 min",
+    excerpt:
+      "From 1 October 2026 the completion certificate is withheld until the Building Safety Levy is paid. A tax has been converted into a condition of completion, and almost no live contract says who bears it.",
+    category: "The Lock",
+    href: "/insights/building-safety-levy-completion",
+  },
 ] as const;
 
 export const CONTACT_FORM_OPTIONS = {
