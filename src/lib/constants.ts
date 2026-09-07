@@ -270,6 +270,18 @@ export const INSIGHT_ARTICLES = [
     category: "The Lock",
     href: "/insights/building-safety-levy-completion",
   },
+  {
+    slug: "adjudication-building-liability-orders",
+    title:
+      "Adjudicate, Then Attach: One Decision, the Whole Group",
+    date: "September 2026",
+    isoDate: "2026-09-07",
+    readTime: "9 min",
+    excerpt:
+      "A twenty-eight day adjudication now reaches companies that never signed the contract. What decided Crest Nicholson v Ardmore was not the law on building liability orders; it was six years of engagement history sitting in the file.",
+    category: "The Reach",
+    href: "/insights/adjudication-building-liability-orders",
+  },
 ] as const;
 
 export const CONTACT_FORM_OPTIONS = {
