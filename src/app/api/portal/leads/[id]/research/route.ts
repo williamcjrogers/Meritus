@@ -30,7 +30,7 @@ export async function POST(
   if (gate.error) return gate.error;
   const dbError = requireDatabaseOr503();
   if (dbError) return dbError;
-  if (!isAiConfigured()) return setupResponse("OPENAI_API_KEY or AI_GATEWAY_API_KEY is not configured");
+  if (!isAiConfigured()) return setupResponse("Vercel AI Gateway is not configured");
 
   const { id } = await context.params;
   const lead = await getLead(id);

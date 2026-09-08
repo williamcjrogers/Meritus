@@ -8,8 +8,8 @@ export function SetupNotice({ title = "Portal setup required" }: { title?: strin
       <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-brass mb-3">Setup</p>
       <h2 className="font-serif text-2xl text-green mb-3">{title}</h2>
       <p className="text-[14px] text-slate leading-relaxed mb-6">
-        The public site is unchanged. Provision the missing environment variables, run the
-        database migration, and invite partners in Clerk. Sign-up stays off — invite only.
+        The public site is unchanged. Marketplace services are still connecting. After
+        Clerk is live, invite partners only — public sign-up stays off.
       </p>
       <ul className="space-y-2">
         {flags.map((flag) => (

@@ -17,7 +17,12 @@ export function isBlobConfigured(): boolean {
 }
 
 export function isAiConfigured(): boolean {
-  return Boolean(process.env.OPENAI_API_KEY || process.env.AI_GATEWAY_API_KEY);
+  return Boolean(
+    process.env.VERCEL_OIDC_TOKEN ||
+      process.env.AI_GATEWAY_API_KEY ||
+      process.env.OPENAI_API_KEY ||
+      process.env.VERCEL
+  );
 }
 
 export function isCompaniesHouseConfigured(): boolean {
@@ -35,7 +40,7 @@ export function getSetupFlags(): SetupFlag[] {
     { key: "Clerk", ready: isClerkConfigured(), required: true },
     { key: "Postgres (DATABASE_URL)", ready: isDatabaseConfigured(), required: true },
     { key: "Vercel Blob", ready: isBlobConfigured(), required: true },
-    { key: "OpenAI or AI Gateway", ready: isAiConfigured(), required: true },
+    { key: "Vercel AI Gateway", ready: isAiConfigured(), required: true },
     { key: "Companies House", ready: isCompaniesHouseConfigured(), required: false },
   ];
 }
