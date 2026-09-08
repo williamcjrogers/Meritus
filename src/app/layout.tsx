@@ -123,7 +123,13 @@ export default function RootLayout({
         <a href="#main-content" className="skip-to-content">
           Skip to content
         </a>
-        {isClerkConfigured() ? <ClerkProvider>{children}</ClerkProvider> : children}
+        {isClerkConfigured() ? (
+          <ClerkProvider signInFallbackRedirectUrl="/portal" signInForceRedirectUrl="/portal">
+            {children}
+          </ClerkProvider>
+        ) : (
+          children
+        )}
       </body>
     </html>
   );

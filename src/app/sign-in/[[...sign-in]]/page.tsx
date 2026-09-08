@@ -17,6 +17,8 @@ export default function SignInPage() {
       </Link>
       {isClerkConfigured() ? (
         <SignIn
+          fallbackRedirectUrl="/portal"
+          forceRedirectUrl="/portal"
           appearance={{
             variables: {
               colorPrimary: "#B5975A",
