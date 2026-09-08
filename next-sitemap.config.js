@@ -2,7 +2,7 @@
 module.exports = {
   siteUrl: "https://meritusvia.com",
   generateRobotsTxt: false,
-  exclude: ["/credentials"],
+  exclude: ["/credentials", "/portal", "/portal/*", "/sign-in", "/sign-in/*"],
   changefreq: "weekly",
   priority: 0.7,
   transform: async (config, path) => {

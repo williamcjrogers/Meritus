@@ -1,0 +1,28 @@
+export const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
+
+const ALLOWED_MIME = new Set([
+  "application/pdf",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "text/plain",
+]);
+
+const ALLOWED_EXT = new Set([".pdf", ".docx", ".xlsx", ".jpg", ".jpeg", ".png", ".webp", ".txt"]);
+
+export function isAllowedUpload(fileName: string, mime: string): boolean {
+  const ext = extensionOf(fileName);
+  if (ALLOWED_MIME.has(mime)) return true;
+  return ALLOWED_EXT.has(ext);
+}
+
+export function extensionOf(fileName: string): string {
+  const i = fileName.lastIndexOf(".");
+  return i >= 0 ? fileName.slice(i).toLowerCase() : "";
+}
+
+export function sanitizeFileName(fileName: string): string {
+  return fileName.replace(/[^\w.\- ()]+/g, "_").slice(0, 180);
+}

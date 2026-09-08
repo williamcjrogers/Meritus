@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel, Cormorant_Garamond, Inter, JetBrains_Mono } from "next/font/google";
-import { Header } from "@/components/layout";
-import { Footer } from "@/components/layout";
-import { Analytics } from "@/components/seo/Analytics";
+import { ClerkProvider } from "@clerk/nextjs";
 import { SITE_CONFIG } from "@/lib/constants";
+import { isClerkConfigured } from "@/lib/env";
 import "@/styles/globals.css";
 
 const cinzel = Cinzel({
@@ -124,10 +123,7 @@ export default function RootLayout({
         <a href="#main-content" className="skip-to-content">
           Skip to content
         </a>
-        <Header />
-        <main id="main-content">{children}</main>
-        <Footer />
-        <Analytics />
+        {isClerkConfigured() ? <ClerkProvider>{children}</ClerkProvider> : children}
       </body>
     </html>
   );

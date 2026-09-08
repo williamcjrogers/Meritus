@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { NAV_ITEMS } from "@/lib/constants";
+import { MobileAuth } from "./MobileAuth";
 
 interface MobileNavProps {
   isOpen: boolean;
@@ -58,6 +59,13 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: NAV_ITEMS.length * 0.06 }}
+            >
+              <MobileAuth onNavigate={onClose} />
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: NAV_ITEMS.length * 0.08 }}
             >
               <Link
                 href="/contact"

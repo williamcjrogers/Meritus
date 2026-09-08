@@ -1,6 +1,9 @@
 User-agent: *
 Allow: /
 Disallow: /credentials
+Disallow: /portal
+Disallow: /portal/
+Disallow: /sign-in
 Disallow: /api/
 
 Sitemap: https://meritusvia.com/sitemap.xml
