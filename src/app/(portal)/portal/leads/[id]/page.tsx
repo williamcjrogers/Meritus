@@ -53,6 +53,18 @@ export default async function LeadPage({ params }: { params: Promise<{ id: strin
         {lead.companyNumber && (
           <p className="mt-2 font-mono text-[12px] text-slate">CH {lead.companyNumber}</p>
         )}
+        {lead.website && (
+          <p className="mt-2">
+            <a
+              href={lead.website}
+              target="_blank"
+              rel="noreferrer"
+              className="font-mono text-[12px] text-brass hover:text-green"
+            >
+              {lead.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+            </a>
+          </p>
+        )}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

@@ -19,6 +19,7 @@ export function NewLeadForm() {
       body: JSON.stringify({
         companyName: form.get("companyName"),
         companyNumber: form.get("companyNumber"),
+        website: form.get("website"),
         contactName: form.get("contactName"),
         contactEmail: form.get("contactEmail"),
         source: form.get("source"),
@@ -50,9 +51,13 @@ export function NewLeadForm() {
           <input id="companyNumber" name="companyNumber" className={field} />
         </div>
         <div>
-          <label className={label} htmlFor="source">Source</label>
-          <input id="source" name="source" className={field} placeholder="Referral, intro, etc." />
+          <label className={label} htmlFor="website">Website</label>
+          <input id="website" name="website" className={field} placeholder="https://" />
         </div>
+      </div>
+      <div>
+        <label className={label} htmlFor="source">Source</label>
+        <input id="source" name="source" className={field} placeholder="Referral, intro, etc." />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <div>

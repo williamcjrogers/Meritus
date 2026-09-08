@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireDatabaseOr503, requirePortalUser } from "@/lib/portal/auth";
 import { createLead, listLeads } from "@/lib/db/queries";
+import { normalizeWebsite } from "@/lib/research/urls";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +24,7 @@ export async function POST(request: Request) {
   const body = (await request.json()) as {
     companyName?: string;
     companyNumber?: string;
+    website?: string;
     contactName?: string;
     contactEmail?: string;
     source?: string;
@@ -37,6 +39,7 @@ export async function POST(request: Request) {
     id: crypto.randomUUID(),
     companyName,
     companyNumber: body.companyNumber?.trim() || null,
+    website: normalizeWebsite(body.website),
     contactName: body.contactName?.trim() || null,
     contactEmail: body.contactEmail?.trim() || null,
     source: body.source?.trim() || null,

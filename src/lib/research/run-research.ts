@@ -1,10 +1,13 @@
-import { generateObject, generateText } from "ai";
+import { generateObject } from "ai";
 import { z } from "zod";
-import { eq } from "drizzle-orm";
+import { and, eq, sql } from "drizzle-orm";
 import { requireDb } from "@/lib/db";
 import { leads, notes, researchRuns, type ResearchDossier } from "@/lib/db/schema";
-import { assertAiConfigured, getLanguageModel, getResearchModel } from "@/lib/ai/model";
+import { listLeadChatTexts, listNotes } from "@/lib/db/queries";
+import { assertAiConfigured, getLanguageModel } from "@/lib/ai/model";
 import { fetchCompaniesHouseSnapshot } from "./companies-house";
+import { searchWeb } from "./search-web";
+import { extractUrls } from "./urls";
 
 const dossierSchema = z.object({
   company: z.object({
@@ -57,6 +60,17 @@ export async function runLeadResearch(input: {
     throw new Error("Lead not found");
   }
 
+  await db
+    .update(researchRuns)
+    .set({ status: "failed", error: "Superseded by a newer research run" })
+    .where(
+      and(
+        eq(researchRuns.leadId, lead.id),
+        eq(researchRuns.status, "running"),
+        sql`${researchRuns.createdAt} < now() - interval '2 minutes'`
+      )
+    );
+
   const runId = crypto.randomUUID();
   await db.insert(researchRuns).values({
     id: runId,
@@ -65,20 +79,38 @@ export async function runLeadResearch(input: {
   });
 
   try {
-    const house = await fetchCompaniesHouseSnapshot({
-      companyName: lead.companyName,
-      companyNumber: lead.companyNumber,
-    });
+    const [house, leadNotes, chatTexts] = await Promise.all([
+      fetchCompaniesHouseSnapshot({
+        companyName: lead.companyName,
+        companyNumber: lead.companyNumber,
+      }),
+      listNotes(lead.id),
+      listLeadChatTexts(lead.id),
+    ]);
+    const websites = extractUrls(
+      lead.website,
+      lead.source,
+      ...leadNotes.map((note) => note.body),
+      ...chatTexts
+    );
 
     let webNotes = "";
+    let webSources: string[] = [];
     try {
-      const web = await generateText({
-        model: getResearchModel(),
-        prompt: `Research the UK company "${lead.companyName}"${
-          lead.companyNumber ? ` (Companies House ${lead.companyNumber})` : ""
-        }. Focus on construction, disputes, insolvency, directors, recent news, and litigation risk. Return concise bullets with sources.`,
-      });
+      const web = await searchWeb(
+        [
+          `Research this company for a UK construction-disputes advisory firm assessing a prospective instruction.`,
+          `Company name: ${lead.companyName}`,
+          lead.companyNumber ? `Companies House number: ${lead.companyNumber}` : "",
+          websites.length ? `Inspect these URLs: ${websites.join(", ")}` : "Find the official website if one exists.",
+          `Cover: what the company does, geography, directors/officers, Companies House identity, recent news, insolvency, adjudication/litigation, and intake risk.`,
+          `Return concise bullets with sources. Mark inference as inference. Prefer UK sources.`,
+        ]
+          .filter(Boolean)
+          .join("\n")
+      );
       webNotes = web.text;
+      webSources = web.sources;
     } catch {
       webNotes = "";
     }
@@ -90,9 +122,11 @@ export async function runLeadResearch(input: {
         `Build a structured research dossier for a construction-disputes advisory firm evaluating a prospective instruction.`,
         `Company name: ${lead.companyName}`,
         lead.companyNumber ? `Company number: ${lead.companyNumber}` : "",
+        websites.length ? `Known websites: ${websites.join(", ")}` : "",
         house ? `Companies House payload:\n${JSON.stringify(house).slice(0, 12_000)}` : "Companies House was not queried.",
         webNotes ? `Web research notes:\n${webNotes.slice(0, 8_000)}` : "",
-        `Be conservative. Mark inference as inference. Prefer UK sources.`,
+        webSources.length ? `Web sources: ${webSources.join("; ")}` : "",
+        `Be conservative. Mark inference as inference. Prefer UK sources. Do not invent a Companies House number.`,
       ]
         .filter(Boolean)
         .join("\n\n"),
@@ -114,7 +148,11 @@ export async function runLeadResearch(input: {
 
     await db
       .update(leads)
-      .set({ status: "researching", updatedAt: new Date() })
+      .set({
+        status: "researching",
+        website: lead.website ?? websites[0] ?? null,
+        updatedAt: new Date(),
+      })
       .where(eq(leads.id, lead.id));
 
     return { runId, dossier, error: null };

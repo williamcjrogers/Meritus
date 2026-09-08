@@ -48,6 +48,7 @@ export async function updateLead(
   values: Partial<{
     companyName: string;
     companyNumber: string | null;
+    website: string | null;
     contactName: string | null;
     contactEmail: string | null;
     source: string | null;
@@ -140,6 +141,14 @@ export async function listChatMessages(threadId: string) {
     .from(chatMessages)
     .where(eq(chatMessages.threadId, threadId))
     .orderBy(chatMessages.createdAt);
+}
+
+export async function listLeadChatTexts(leadId: string): Promise<string[]> {
+  const db = requireDb();
+  const [thread] = await db.select().from(chatThreads).where(eq(chatThreads.leadId, leadId)).limit(1);
+  if (!thread) return [];
+  const rows = await listChatMessages(thread.id);
+  return rows.map((row) => row.content);
 }
 
 export async function addChatMessage(values: { threadId: string; role: string; content: string }) {

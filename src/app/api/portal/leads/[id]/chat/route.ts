@@ -1,9 +1,11 @@
 import { stepCountIs, streamText, tool, type UIMessage } from "ai";
 import { z } from "zod";
 import { requireDatabaseOr503, requirePortalUser, setupResponse } from "@/lib/portal/auth";
-import { addChatMessage, addNote, getLead, getOrCreateThread, latestResearch, listDocuments } from "@/lib/db/queries";
+import { addChatMessage, addNote, getLead, getOrCreateThread, latestResearch, listDocuments, updateLead } from "@/lib/db/queries";
 import { isAiConfigured } from "@/lib/env";
 import { getLanguageModel } from "@/lib/ai/model";
+import { searchWeb } from "@/lib/research/search-web";
+import { extractUrls } from "@/lib/research/urls";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -49,11 +51,14 @@ export async function POST(
   const messages = body.messages ?? [];
   const thread = await getOrCreateThread(id);
   const last = messages[messages.length - 1];
-  if (last?.role === "user") {
-    const content = textFromMessage(last);
-    if (content) {
-      await addChatMessage({ threadId: thread.id, role: "user", content });
-    }
+  const lastText = last?.role === "user" ? textFromMessage(last) : "";
+  if (lastText) {
+    await addChatMessage({ threadId: thread.id, role: "user", content: lastText });
+  }
+
+  const pastedUrls = extractUrls(lastText, lead.website, lead.source);
+  if (!lead.website && pastedUrls[0]) {
+    await updateLead(id, { website: pastedUrls[0] });
   }
 
   const [research, files] = await Promise.all([
@@ -61,8 +66,33 @@ export async function POST(
     listDocuments({ scope: "lead", leadId: id }),
   ]);
   const dossier = research?.status === "complete" ? research.dossierJson : null;
+  const website = lead.website ?? pastedUrls[0] ?? null;
 
   const tools = {
+    search_web: tool({
+      description:
+        "Search the live web and read company websites, news, and filings. Use this whenever a dossier is missing or the partner pastes a URL.",
+      inputSchema: z.object({
+        query: z.string().min(1),
+        url: z.string().optional(),
+      }),
+      execute: async ({ query, url }) => {
+        const result = await searchWeb(
+          [
+            `Research this for a UK construction-disputes advisory firm assessing a prospective instruction.`,
+            `Lead company: ${lead.companyName}`,
+            lead.companyNumber ? `Companies House number: ${lead.companyNumber}` : "",
+            website ? `Stored website: ${website}` : "",
+            url ? `Inspect this URL: ${url}` : "",
+            `Query: ${query}`,
+            `Return concise bullets with sources. Cover identity, what they do, geography, directors, news, insolvency, and dispute risk. Mark inference as inference.`,
+          ]
+            .filter(Boolean)
+            .join("\n")
+        );
+        return jsonSafe(result);
+      },
+    }),
     read_dossier: tool({
       description: "Read the latest company research dossier for this lead",
       inputSchema: z.object({}),
@@ -120,17 +150,20 @@ export async function POST(
   const result = streamText({
     model: getLanguageModel(),
     system: [
-      "You are a research assistant for Meritus Via partners.",
+      "You are a research assistant for Meritus Via partners assessing a prospective construction-disputes instruction.",
       `Lead company: ${lead.companyName}`,
       lead.companyNumber ? `Companies House number: ${lead.companyNumber}` : "",
+      website ? `Company website: ${website}` : "",
       dossier
         ? `Latest research dossier (JSON):\n${JSON.stringify(dossier).slice(0, 12_000)}`
         : "No completed research dossier is stored yet.",
       files.length
         ? `Uploaded documents: ${files.map((file) => `${file.title} (${file.id})`).join("; ")}`
         : "No documents have been uploaded to this lead.",
-      "Use tools if you need the full dossier, uploaded document text, or to save a lasting note.",
-      "Always answer the partner in plain text after any tool calls. Be conservative and cite sources.",
+      "You can inspect live websites and search the web with search_web. Never say you cannot browse, cannot open a URL, or need the partner to paste page text.",
+      "If the partner sends a URL or asks about the company and the dossier is missing or thin, call search_web first, then answer from those results.",
+      "Do not offer investment-screening templates or generic frameworks unless a partner explicitly asks for a template.",
+      "Use read_dossier, document tools, or save_note when they help. Always answer in plain text after any tool calls. Be conservative and cite sources.",
     ]
       .filter(Boolean)
       .join("\n"),

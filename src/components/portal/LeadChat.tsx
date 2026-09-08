@@ -92,7 +92,7 @@ export function LeadChat({
           value={input}
           onChange={(e) => setInput(e.target.value)}
           className="flex-1 bg-transparent border-b border-green/15 px-0 py-2 text-[14px] text-green focus:outline-none focus:border-brass"
-          placeholder="Ask about the company or documents…"
+          placeholder="Ask about the company, or paste a website…"
         />
         <button type="submit" disabled={busy} className="btn-outline text-[12px] disabled:opacity-40">
           Send

@@ -53,7 +53,9 @@ export function LeadResearch({
           )}
         </div>
       ) : (
-        <p className="text-[13px] text-slate">No dossier yet. Run research to build one.</p>
+        <p className="text-[13px] text-slate">
+          No dossier yet. Run research, or paste a company website in chat.
+        </p>
       )}
     </section>
   );
