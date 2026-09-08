@@ -1,4 +1,4 @@
-import { convertToModelMessages, streamText, tool, type UIMessage } from "ai";
+import { convertToModelMessages, stepCountIs, streamText, tool, type UIMessage } from "ai";
 import { z } from "zod";
 import { requireDatabaseOr503, requirePortalUser, setupResponse } from "@/lib/portal/auth";
 import { addChatMessage, addNote, getLead, getOrCreateThread, latestResearch, listDocuments } from "@/lib/db/queries";
@@ -99,13 +99,14 @@ export async function POST(
       "You are a research assistant for Meritus Via partners.",
       `Lead company: ${lead.companyName}`,
       lead.companyNumber ? `Companies House number: ${lead.companyNumber}` : "",
-      "Use tools to read the dossier and uploaded documents before answering.",
+      "Use tools when a dossier or uploaded documents exist. If they are empty, answer from the lead details and say what is missing.",
       "Save lasting conclusions with save_note. Be conservative and cite sources.",
     ]
       .filter(Boolean)
       .join("\n"),
     messages: await convertToModelMessages(messages, { tools }),
     tools,
+    stopWhen: stepCountIs(6),
     onFinish: async ({ text }) => {
       if (text.trim()) {
         await addChatMessage({ threadId: thread.id, role: "assistant", content: text });

@@ -9,17 +9,17 @@ import { fetchCompaniesHouseSnapshot } from "./companies-house";
 const dossierSchema = z.object({
   company: z.object({
     name: z.string(),
-    number: z.string().optional(),
-    status: z.string().optional(),
-    incorporatedOn: z.string().optional(),
-    address: z.string().optional(),
-    sicCodes: z.array(z.string()).optional(),
+    number: z.string().nullable(),
+    status: z.string().nullable(),
+    incorporatedOn: z.string().nullable(),
+    address: z.string().nullable(),
+    sicCodes: z.array(z.string()),
   }),
   officers: z.array(
     z.object({
       name: z.string(),
-      role: z.string().optional(),
-      appointedOn: z.string().optional(),
+      role: z.string().nullable(),
+      appointedOn: z.string().nullable(),
     })
   ),
   filingsHint: z.string(),
