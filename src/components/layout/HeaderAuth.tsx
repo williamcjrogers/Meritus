@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { Show, UserButton } from "@clerk/nextjs";
 import { isClerkPublishable } from "@/lib/env";
 
 export function HeaderAuth({ darkChrome }: { darkChrome: boolean }) {
@@ -19,12 +19,14 @@ export function HeaderAuth({ darkChrome }: { darkChrome: boolean }) {
 
   return (
     <div className="flex items-center gap-4">
-      <SignedOut>
-        <Link href="/sign-in" className={linkClass}>
-          Login
-        </Link>
-      </SignedOut>
-      <SignedIn>
+      <Show
+        when="signed-in"
+        fallback={
+          <Link href="/sign-in" className={linkClass}>
+            Login
+          </Link>
+        }
+      >
         <Link href="/portal" className={linkClass}>
           Portal
         </Link>
@@ -35,7 +37,7 @@ export function HeaderAuth({ darkChrome }: { darkChrome: boolean }) {
             },
           }}
         />
-      </SignedIn>
+      </Show>
     </div>
   );
 }
