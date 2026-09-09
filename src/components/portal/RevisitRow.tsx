@@ -38,7 +38,7 @@ export function RevisitRow({
           <Link href={`/portal/pursuits/${pursuit.id}`} className="font-serif text-xl leading-tight text-green hover:text-brass">
             {pursuit.firm}
           </Link>
-          <span className="text-[13px] text-ink/70">{pursuit.nextAction || "No next action"}</span>
+          <span className="text-[13px] text-ink/70">{pursuit.nextAction || "Revisit date reached"}</span>
         </div>
         <p className="mt-1 flex items-center gap-2 text-[12px] text-ink/70">
           {pursuit.nextActionDue && (

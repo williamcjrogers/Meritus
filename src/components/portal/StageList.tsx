@@ -60,9 +60,9 @@ export function StageList({
                   <td className="whitespace-nowrap px-4 py-3 font-mono text-[11px] text-ink/70">{shortDate(pursuit.stageChangedAt)}</td>
                   {dormant && (
                     <td className="px-4 py-3 text-ink/80">
-                      {pursuit.nextAction ?? "–"}
+                      {pursuit.nextAction ?? (pursuit.nextActionDue ? "Revisit" : "–")}
                       {pursuit.nextActionDue && (
-                        <span className="ml-2 font-mono text-[10px] tracking-[0.05em] text-ink/60">due {dueLabel(pursuit.nextActionDue)}</span>
+                        <span className="ml-2 font-mono text-[10px] tracking-[0.05em] text-ink/70">due {dueLabel(pursuit.nextActionDue)}</span>
                       )}
                     </td>
                   )}
