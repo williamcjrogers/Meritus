@@ -15,25 +15,25 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
-async function signedInDirectorName(): Promise<string | null> {
+async function signedInDirector(): Promise<{ name: string; initials: string } | null> {
   if (!isClerkConfigured()) return null;
   try {
     const { userId } = await auth();
     if (!userId) return null;
     const director = await getDirector(userId);
-    return director?.name ?? null;
+    return director ? { name: director.name, initials: director.initials } : null;
   } catch {
     return null;
   }
 }
 
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
-  const name = await signedInDirectorName();
+  const director = await signedInDirector();
   const clerk = isClerkConfigured();
 
   return (
     <div className="portal min-h-screen bg-stone text-ink">
-      <aside className="grain fixed inset-y-0 left-0 z-20 hidden w-56 flex-col bg-green text-cream lg:flex">
+      <aside className="portal-rail fixed inset-y-0 left-0 z-20 hidden w-56 flex-col bg-green text-cream lg:flex">
         <div className="border-b border-brass/15 px-3 pb-5 pt-7">
           <Link href="/portal" aria-label="Pursuit desk home" className="block">
             <HallmarkLogo size="header" variant="light" />
@@ -51,7 +51,7 @@ export default async function PortalLayout({ children }: { children: React.React
           </NavLink>
         </nav>
         <div className="space-y-4 border-t border-brass/15 px-4 py-5">
-          {clerk && <DirectorMenu name={name} />}
+          {clerk && <DirectorMenu name={director?.name ?? null} initials={director?.initials ?? null} />}
           <Link href="/" className="inline-block font-mono text-[10px] tracking-[0.2em] uppercase text-brass hover:text-brass-light">
             Back to site
           </Link>
@@ -59,7 +59,7 @@ export default async function PortalLayout({ children }: { children: React.React
       </aside>
 
       <div className="lg:pl-56">
-        <header className="grain sticky top-0 z-10 flex items-center justify-between gap-4 bg-green px-4 py-3 text-cream lg:hidden">
+        <header className="portal-rail sticky top-0 z-10 flex items-center justify-between gap-4 bg-green px-4 py-3 text-cream lg:hidden">
           <Link href="/portal" aria-label="Pursuit desk home" className="shrink-0">
             <HallmarkLogo size="favicon" variant="light" />
           </Link>
@@ -71,7 +71,7 @@ export default async function PortalLayout({ children }: { children: React.React
               Library
             </NavLink>
           </nav>
-          {clerk ? <DirectorMenu name={name} compact /> : <span />}
+          {clerk ? <DirectorMenu name={director?.name ?? null} initials={director?.initials ?? null} compact /> : <span />}
         </header>
         <main id="main-content" className="px-4 py-6 lg:px-10 lg:py-10">
           {children}

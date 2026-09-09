@@ -342,7 +342,7 @@ export function PursuitShell({
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
-        <div className="order-1 lg:col-span-8">
+        <div className="order-1 lg:order-none lg:col-span-8">
           <BriefPanel
             pursuitId={pursuit.id}
             subject={subject}
