@@ -36,9 +36,11 @@ export function sourcesOf(message: AskMessage): QuestionSource[] {
     const output = part.output as { sources?: unknown; title?: unknown } | undefined;
     if (part.type === "tool-search_web" && Array.isArray(output?.sources)) {
       for (const url of output.sources) {
-        if (typeof url !== "string" || seen.has(url)) continue;
-        seen.add(url);
-        found.push({ label: hostOf(url), url });
+        if (typeof url !== "string") continue;
+        const host = hostOf(url);
+        if (seen.has(`host:${host}`)) continue;
+        seen.add(`host:${host}`);
+        found.push({ label: host, url });
       }
     } else if (part.type === "tool-read_document" && typeof output?.title === "string") {
       const key = `doc:${output.title}`;

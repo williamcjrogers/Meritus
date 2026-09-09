@@ -14,7 +14,7 @@ export async function GET() {
   return NextResponse.json({ documents: await listDocuments({ scope: "library" }) });
 }
 
-export async function POST(request: Request) {
+async function handlePost(request: Request) {
   const gate = await requirePortalUser();
   if (gate.error) return gate.error;
   const dbError = requireDatabaseOr503();
@@ -38,5 +38,16 @@ export async function POST(request: Request) {
   } catch (error) {
     const message = error instanceof Error ? error.message : "Upload failed";
     return NextResponse.json({ error: message }, { status: 400 });
+  }
+}
+
+/** Any failure, including one from a parser that cannot load, comes back as JSON with its reason. */
+export async function POST(request: Request) {
+  try {
+    return await handlePost(request);
+  } catch (error) {
+    console.error("upload failed", error);
+    const message = error instanceof Error ? error.message : "Upload failed";
+    return NextResponse.json({ error: `Upload failed: ${message}` }, { status: 500 });
   }
 }

@@ -7,7 +7,7 @@ import { storePortalDocument } from "@/lib/portal/upload";
 export const dynamic = "force-dynamic";
 
 /** Multipart upload of one file to a pursuit; the store logs `file_added`. */
-export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
+async function handlePost(request: Request, context: { params: Promise<{ id: string }> }) {
   const gate = await requirePortalUser();
   if (gate.error) return gate.error;
   const dbError = requireDatabaseOr503();
@@ -42,5 +42,16 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
   } catch (error) {
     const message = error instanceof Error ? error.message : "Upload failed";
     return NextResponse.json({ error: message }, { status: 400 });
+  }
+}
+
+/** Any failure, including one from a parser that cannot load, comes back as JSON with its reason. */
+export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
+  try {
+    return await handlePost(request, context);
+  } catch (error) {
+    console.error("upload failed", error);
+    const message = error instanceof Error ? error.message : "Upload failed";
+    return NextResponse.json({ error: `Upload failed: ${message}` }, { status: 500 });
   }
 }

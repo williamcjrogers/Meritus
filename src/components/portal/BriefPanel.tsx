@@ -44,7 +44,7 @@ function revive(data: { latestRun?: BriefRunSummary | null; brief?: (Omit<Brief,
 }
 
 function isResearchNotice(line: BriefAnalysisLine): boolean {
-  return line.source === "reasoning" && line.text.trim() === RESEARCH_UNAVAILABLE;
+  return line.source === "reasoning" && line.text.trim().startsWith(RESEARCH_UNAVAILABLE);
 }
 
 function generatedBy(directors: Director[], createdBy: string): string {
@@ -280,7 +280,7 @@ function CompleteBrief({
 }) {
   void directors;
   const analysis = (brief.analysis ?? []).filter((line) => !isResearchNotice(line));
-  const researchUnavailable = (brief.analysis ?? []).some(isResearchNotice);
+  const researchNotice = (brief.analysis ?? []).find(isResearchNotice)?.text ?? null;
 
   return (
     <div className="space-y-5">
@@ -318,7 +318,7 @@ function CompleteBrief({
         </ul>
       )}
 
-      {researchUnavailable && <p className="text-[12px] text-ink/60">{RESEARCH_UNAVAILABLE}</p>}
+      {researchNotice && <p className="text-[12px] text-ink/70">{researchNotice}</p>}
 
       {brief.summary && <p className="border-t border-green/10 pt-4 text-[14px] leading-relaxed text-ink">{brief.summary}</p>}
     </div>

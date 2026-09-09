@@ -232,6 +232,7 @@ export async function runBrief(
     // 3: web research, tolerated when it fails. The enquiry text never travels here,
     // and the firm's website only describes the firm, so it stays out when the party is the subject.
     let research: { text: string; sources: string[] } | null = null;
+    let researchFailure: string | null = null;
     try {
       research = await withTimeout(
         deps.research(
@@ -246,7 +247,8 @@ export async function runBrief(
         "Web research timed out"
       );
     } catch (error) {
-      console.warn("brief web research failed", pursuitId, errorMessage(error));
+      researchFailure = errorMessage(error);
+      console.warn("brief web research failed", pursuitId, researchFailure);
       research = null;
     }
 
@@ -268,7 +270,10 @@ export async function runBrief(
     const registerLink = register.confirmed && register.number ? registerUrl(register.number) : null;
     const allowed = research?.sources ?? [];
     const analysis = normaliseAnalysis(output.analysis, allowed, registerLink);
-    if (!research) analysis.push(RESEARCH_UNAVAILABLE);
+    if (!research) {
+      // The reason travels with the notice so a director (and a log reader) can tell a timeout from an outage.
+      analysis.push({ ...RESEARCH_UNAVAILABLE, text: researchFailure ? `${RESEARCH_UNAVAILABLE.text}: ${researchFailure}` : RESEARCH_UNAVAILABLE.text });
+    }
     const sources = Array.from(new Set(registerLink ? [...allowed, registerLink] : allowed));
     website = acceptWebsite(output.website, allowed);
 

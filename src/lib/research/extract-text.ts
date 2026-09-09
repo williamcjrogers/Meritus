@@ -1,7 +1,8 @@
-import mammoth from "mammoth";
-import { PDFParse } from "pdf-parse";
-import PostalMime, { type Address, type Email } from "postal-mime";
+import type { Address, Email } from "postal-mime";
 import { fullDate, TIME_ZONE } from "@/lib/portal/dates";
+
+// The parsers load on demand, inside the branch that needs them, so a parser that cannot
+// initialise on the serverless runtime only affects its own file type rather than every upload.
 
 const MAX_CHARS = 50_000;
 
@@ -20,21 +21,24 @@ export async function extractUploadText(file: File): Promise<string | null> {
 
   if (matches(file, "application/pdf", ".pdf")) {
     const buffer = Buffer.from(await file.arrayBuffer());
-    const parser = new PDFParse({ data: buffer });
+    let parser: { getText(): Promise<{ text?: string }>; destroy(): Promise<void> } | null = null;
     try {
+      const { PDFParse } = await import("pdf-parse");
+      parser = new PDFParse({ data: buffer });
       const result = await parser.getText();
       return clip(result.text ?? "");
     } catch (error) {
       console.warn("pdf extraction failed", file.name, error);
       return null;
     } finally {
-      await parser.destroy();
+      await parser?.destroy().catch(() => undefined);
     }
   }
 
   if (matches(file, DOCX_MIME, ".docx")) {
     const buffer = Buffer.from(await file.arrayBuffer());
     try {
+      const { default: mammoth } = await import("mammoth");
       const result = await mammoth.extractRawText({ buffer });
       return clip(result.value);
     } catch (error) {
@@ -45,7 +49,7 @@ export async function extractUploadText(file: File): Promise<string | null> {
 
   if (matches(file, EML_MIME, ".eml")) {
     try {
-      const email = await PostalMime.parse(await file.arrayBuffer());
+      const email = await (await import("postal-mime")).default.parse(await file.arrayBuffer());
       return clip(renderEmail(email));
     } catch (error) {
       console.warn("eml extraction failed", file.name, error);

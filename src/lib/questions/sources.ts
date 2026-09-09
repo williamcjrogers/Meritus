@@ -27,7 +27,8 @@ export function collectSources(parts: UIMessagePart<any, any>[]): QuestionSource
   const found: QuestionSource[] = [];
   const seen = new Set<string>();
   const add = (source: QuestionSource) => {
-    const key = source.url ? `url:${source.url}` : `label:${source.label}`;
+    // One entry per host keeps the list readable; the first page seen on a host stands for it.
+    const key = source.url ? `host:${source.label}` : `label:${source.label}`;
     if (seen.has(key)) return;
     seen.add(key);
     found.push(source);
