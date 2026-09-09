@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import type { DocumentRow } from "@/lib/db/schema";
+import { hasReadableText } from "@/lib/portal/files";
 
 function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -52,7 +53,7 @@ export function FileList({
 
   return (
     <div>
-      <label className="btn-outline text-[12px] cursor-pointer">
+      <label className="btn-secondary cursor-pointer">
         <input type="file" className="sr-only" onChange={onUpload} disabled={pending} />
         {pending ? "Uploading…" : "Upload file"}
       </label>
@@ -64,20 +65,23 @@ export function FileList({
               <a href={`/api/portal/documents/${doc.id}`} className="block truncate text-green hover:text-brass">
                 {doc.title}
               </a>
-              <p className="font-mono text-[10px] tracking-[0.12em] text-slate">
-                {formatSize(doc.size)} · {doc.createdAt.toLocaleDateString("en-GB")}
+              <p className="font-mono text-[10px] tracking-[0.12em] text-ink/70">
+                {formatSize(doc.size)} · {doc.createdAt.toLocaleDateString("en-GB")} ·{" "}
+                <span className={hasReadableText(doc) ? "text-green" : "text-ink/50"} title={hasReadableText(doc) ? "The questions drawer can read this file" : "No readable text in this file"}>
+                  {hasReadableText(doc) ? "text" : "no text"}
+                </span>
               </p>
             </div>
             <button
               type="button"
               onClick={() => onDelete(doc.id)}
-              className="font-mono text-[9px] tracking-[0.15em] uppercase text-slate hover:text-oxblood"
+              className="font-mono text-[9px] tracking-[0.15em] uppercase text-ink/70 hover:text-oxblood"
             >
               Delete
             </button>
           </li>
         ))}
-        {documents.length === 0 && <li className="py-3 text-[13px] text-slate">No files.</li>}
+        {documents.length === 0 && <li className="py-3 text-[13px] text-ink/70">No files.</li>}
       </ul>
     </div>
   );
