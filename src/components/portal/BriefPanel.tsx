@@ -100,10 +100,27 @@ export function BriefPanel({
     if (!runId) return;
     let stopped = false;
     let ticks = 0;
+    async function poll(): Promise<boolean> {
+      try {
+        const res = await fetch(briefEndpoint);
+        if (!res.ok || stopped) return false;
+        const next = revive((await res.json()) as Parameters<typeof revive>[0]);
+        if (stopped || next.latestRun?.status === "running") return false;
+        stop();
+        setState(next);
+        if (next.latestRun?.status === "complete") onCompleteRef.current?.();
+        return true;
+      } catch {
+        return false; // A failed poll is retried on the next tick.
+      }
+    }
     const timer = setInterval(async () => {
       if (stopped) return;
       ticks += 1;
       if (ticks * POLL_INTERVAL_MS >= POLL_LIMIT_MS) {
+        // One last look before giving up, so a run that finished in the final seconds is not reported as failed.
+        const settled = await poll();
+        if (settled || stopped) return;
         stop();
         setState((current) => ({
           ...current,
@@ -111,17 +128,7 @@ export function BriefPanel({
         }));
         return;
       }
-      try {
-        const res = await fetch(briefEndpoint);
-        if (!res.ok || stopped) return;
-        const next = revive((await res.json()) as Parameters<typeof revive>[0]);
-        if (stopped || next.latestRun?.status === "running") return;
-        stop();
-        setState(next);
-        if (next.latestRun?.status === "complete") onCompleteRef.current?.();
-      } catch {
-        // A failed poll is retried on the next tick.
-      }
+      await poll();
     }, POLL_INTERVAL_MS);
     function stop() {
       stopped = true;
@@ -234,26 +241,24 @@ export function BriefPanel({
 
       {startError && <p className="mt-4 text-[12px] text-oxblood">{startError}</p>}
 
-      {!running && (
-        <div className="mt-6 flex flex-wrap items-center justify-end gap-3 border-t border-green/10 pt-4">
-          {brief && (
-            <p className="mr-auto font-mono text-[10px] tracking-[0.12em] uppercase text-ink/70">
-              Generated {fullDate(brief.createdAt)} by {generatedBy(directors, brief.createdBy)}
-            </p>
-          )}
-          {!(brief && failed) && (
-            <button
-              type="button"
-              className={brief || failed ? "btn-secondary" : "btn-brass text-[12px]"}
-              onClick={() => void build()}
-              disabled={starting}
-            >
-              {buildLabel}
-            </button>
-          )}
-          {askButton}
-        </div>
-      )}
+      <div className="mt-6 flex flex-wrap items-center justify-end gap-3 border-t border-green/10 pt-4">
+        {brief && (
+          <p className="mr-auto font-mono text-[10px] tracking-[0.12em] uppercase text-ink/70">
+            Generated {fullDate(brief.createdAt)} by {generatedBy(directors, brief.createdBy)}
+          </p>
+        )}
+        {!(brief && failed) && (
+          <button
+            type="button"
+            className={brief || failed ? "btn-secondary" : "btn-brass text-[12px]"}
+            onClick={() => void build()}
+            aria-disabled={starting || running || undefined}
+          >
+            {running ? "Building…" : buildLabel}
+          </button>
+        )}
+        {askButton}
+      </div>
     </Panel>
   );
 }
@@ -287,7 +292,7 @@ function CompleteBrief({
             <li key={index} className="flex items-start gap-3 text-[14px] leading-relaxed text-ink">
               <span
                 className={`mt-[3px] w-11 shrink-0 font-mono text-[9px] tracking-[0.15em] ${
-                  line.kind === "fact" ? "text-green" : "text-brass-dark"
+                  line.kind === "fact" ? "text-green" : "text-ink/70"
                 }`}
               >
                 {line.kind === "fact" ? "FACT" : "INFER"}

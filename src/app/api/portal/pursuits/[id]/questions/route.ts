@@ -12,7 +12,9 @@ import { isAiConfigured } from "@/lib/env";
 import { requireDatabaseOr503, requirePortalUser, setupResponse } from "@/lib/portal/auth";
 import { listDirectors } from "@/lib/portal/directors";
 import { isUrlPermitted } from "@/lib/questions/allowlist";
-import { collectSources, finalText, shouldPersist } from "@/lib/questions/sources";
+import { collectSourcesFromSteps, finalText } from "@/lib/questions/sources";
+import { fencedBlock } from "@/lib/ai/fence";
+import { extractUrls } from "@/lib/research/urls";
 import { buildSystemPrompt } from "@/lib/questions/system-prompt";
 import { searchWeb } from "@/lib/research/search-web";
 
@@ -24,14 +26,6 @@ const MAX_DOCUMENT_CHARS = 60_000;
 
 function jsonSafe<T>(value: T): T {
   return JSON.parse(JSON.stringify(value)) as T;
-}
-
-function escapeAttribute(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/"/g, "&quot;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
 }
 
 export async function POST(request: Request, context: { params: Promise<{ id: string }> }) {
@@ -84,7 +78,10 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
           .describe("A page to inspect: the pursuit website, a brief source, or a url the director gave"),
       }),
       execute: async ({ query, url }) => {
-        if (url && !isUrlPermitted(url, { website: pursuit.website, briefSources, messageText: question })) {
+        const allow = { website: pursuit.website, briefSources, messageText: question };
+        // The allowlist covers the whole input: a url smuggled into the query is refused too.
+        const smuggled = extractUrls(query).find((candidate) => !isUrlPermitted(candidate, allow));
+        if ((url && !isUrlPermitted(url, allow)) || smuggled) {
           return { error: "URL not permitted" };
         }
         const result = await searchWeb(
@@ -132,10 +129,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
           text.length > MAX_DOCUMENT_CHARS
             ? `${text.slice(0, MAX_DOCUMENT_CHARS)}\n[Text cut at ${MAX_DOCUMENT_CHARS} characters]`
             : text;
-        return {
-          title: row.title,
-          text: `<document title="${escapeAttribute(row.title)}">\n${clipped}\n</document>`,
-        };
+        return { title: row.title, text: fencedBlock("document", clipped, { title: row.title }) };
       },
     }),
   };
@@ -147,16 +141,12 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
     tools,
     stopWhen: stepCountIs(4),
     timeout: { toolMs: 45_000 },
-  });
-
-  // Run the stream to completion even if the drawer is closed early, so onEnd fires.
-  void result.consumeStream();
-
-  return result.toUIMessageStreamResponse({
-    originalMessages: messages,
-    onEnd: async ({ isAborted, outcome, responseMessage }) => {
-      const answer = finalText(responseMessage);
-      if (!shouldPersist({ isAborted, outcome, text: answer })) return;
+    // Persist when the generation itself ends, not when the browser's stream does: a closed
+    // drawer or a reload then still leaves the answer on the thread for the next visit.
+    onEnd: async (event) => {
+      if (event.finishReason === "error") return;
+      const answer = event.text.trim();
+      if (!answer) return;
       try {
         const db = requireDb();
         const askedAt = new Date();
@@ -174,7 +164,7 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
             pursuitId: id,
             role: "assistant",
             content: answer,
-            sources: collectSources(responseMessage.parts),
+            sources: collectSourcesFromSteps(event.steps),
             createdAt: new Date(askedAt.getTime() + 1),
           }),
         ]);
@@ -183,4 +173,9 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
       }
     },
   });
+
+  // Run the generation to completion even if the drawer is closed early, so onEnd fires.
+  void result.consumeStream();
+
+  return result.toUIMessageStreamResponse({ originalMessages: messages });
 }

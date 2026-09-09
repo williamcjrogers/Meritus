@@ -42,11 +42,11 @@ function makePursuit(overrides: Partial<Pursuit> = {}): Pursuit {
 const ids = (rows: Pursuit[]) => rows.map((row) => row.id);
 
 describe("partitionDesk", () => {
-  it("puts unowned pursuits in active stages in the inbox, oldest first", () => {
+  it("puts unowned pursuits in active stages in the inbox, newest first", () => {
     const newer = makePursuit({ id: "newer", stage: "enquiry", createdAt: new Date("2026-09-08T09:00:00Z") });
     const older = makePursuit({ id: "older", stage: "scoping", createdAt: new Date("2026-09-02T09:00:00Z") });
     const result = partitionDesk([newer, older], { scope: "all", userId: ME, now: NOW });
-    expect(ids(result.inbox)).toEqual(["older", "newer"]);
+    expect(ids(result.inbox)).toEqual(["newer", "older"]);
     expect(result.board.enquiry).toEqual([]);
     expect(result.board.scoping).toEqual([]);
   });

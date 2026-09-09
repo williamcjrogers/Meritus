@@ -9,7 +9,7 @@ import { StageList } from "@/components/portal/StageList";
 import { SCOPE_COOKIE } from "@/components/portal/MineAllToggle";
 import type { DeskExtras, RelatedRef } from "@/components/portal/desk-types";
 import type { Pursuit, PursuitStage } from "@/lib/db/schema";
-import { latestStageChanges, listActivity } from "@/lib/db/activity";
+import { latestEnquiryActivity, latestStageChanges } from "@/lib/db/activity";
 import { countByStage, getPursuit, listByStage, listDeskPursuits } from "@/lib/db/pursuits";
 import { isClerkConfigured, isDatabaseConfigured, missingRequiredSetup } from "@/lib/env";
 import { longDayDate, shortDate } from "@/lib/portal/dates";
@@ -36,8 +36,7 @@ async function deskExtras(pursuits: Pursuit[]): Promise<DeskExtras> {
 
   await Promise.all(
     inbox.map(async (pursuit) => {
-      const entries = await listActivity(pursuit.id, 8);
-      const enquiry = entries.find((entry) => entry.kind === "enquiry_received");
+      const enquiry = await latestEnquiryActivity(pursuit.id);
       if (!enquiry) return;
       if (enquiry.meta?.alert) alerts[pursuit.id] = enquiry.meta.alert;
       const ids = enquiry.meta?.relatedPursuitIds ?? [];

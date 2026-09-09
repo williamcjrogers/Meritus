@@ -21,6 +21,7 @@ export function Stepper({
 }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [announcement, setAnnouncement] = useState("");
   const buttons = useRef<Array<HTMLButtonElement | null>>([]);
   const currentIndex = STEPPER_STAGES.indexOf(current);
 
@@ -30,7 +31,12 @@ export function Stepper({
     setError(null);
     try {
       const result = await onMove(to);
-      if (!result.ok) setError(result.error);
+      if (!result.ok) {
+        setError(result.error);
+      } else {
+        setAnnouncement(`Moved to ${stageLabel(to)}`);
+        buttons.current[STEPPER_STAGES.indexOf(to)]?.focus();
+      }
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Something went wrong, try again");
     } finally {
@@ -74,9 +80,9 @@ export function Stepper({
                 type="button"
                 aria-current={isCurrent ? "step" : undefined}
                 aria-label={isCurrent ? `${label}, current stage` : `Move to ${label}`}
-                disabled={busy}
+                aria-disabled={busy || undefined}
                 onClick={() => void commit(stage)}
-                className={`group inline-flex items-center gap-2 py-1 font-mono text-[11px] tracking-[0.15em] uppercase transition-colors disabled:opacity-50 ${
+                className={`group inline-flex items-center gap-2 py-1 font-mono text-[11px] tracking-[0.15em] uppercase transition-colors aria-disabled:opacity-50 ${
                   isCurrent ? "text-green" : "text-ink/60 hover:text-green"
                 }`}
               >
@@ -96,7 +102,12 @@ export function Stepper({
           );
         })}
       </ol>
-      {error && <p className="mt-2 text-[12px] text-oxblood">{error}</p>}
+      <p aria-live="polite" className="sr-only">{announcement}</p>
+      {error && (
+        <p role="status" className="mt-2 text-[12px] text-oxblood">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { fencedBlock } from "@/lib/ai/fence";
 /**
  * Pure pieces of the research brief: matching a subject to the register,
  * shaping the facts block, the two prompts, and the rules that keep the
@@ -14,7 +15,7 @@ import {
 } from "@/lib/db/schema";
 import { normaliseFirm } from "@/lib/portal/intake";
 import type { CompanyRecord } from "@/lib/research/companies-house";
-import { normalizeWebsite } from "@/lib/research/urls";
+import { canonicalUrl, normalizeWebsite } from "@/lib/research/urls";
 
 /* ----------------------------------------------------------------------- */
 /* Names and matching                                                       */
@@ -78,17 +79,6 @@ export function buildFacts(input: {
 /* ----------------------------------------------------------------------- */
 
 /** A comparable form of a url: normalised, no trailing slash, no fragment. */
-function canonicalUrl(value: string | null | undefined): string | null {
-  const normalised = normalizeWebsite(value);
-  if (!normalised) return null;
-  try {
-    const url = new URL(normalised);
-    url.hash = "";
-    return url.href.replace(/\/$/, "");
-  } catch {
-    return null;
-  }
-}
 
 /**
  * Keeps the model honest about provenance: a web line must cite a url the
@@ -238,6 +228,8 @@ export function briefPrompt(input: {
   companyNumber: string | null;
   facts: BriefFacts | null;
   research: string | null;
+  /** Urls the web research cited; the only urls a "web" line may carry. */
+  sources?: string[];
   enquiry: string | null;
   nature: string | null;
   value: string | null;
@@ -251,17 +243,19 @@ export function briefPrompt(input: {
     contextLine(input),
     `Material follows in three named blocks. ${MATERIAL_RULE}`,
     "",
-    "<companies_house>",
-    factsBlock(input.facts),
-    "</companies_house>",
+    fencedBlock("companies_house", factsBlock(input.facts)),
     "",
-    "<web_research>",
-    input.research?.trim() || NO_RESEARCH,
-    "</web_research>",
+    fencedBlock(
+      "web_research",
+      [
+        input.research?.trim() || NO_RESEARCH,
+        ...(input.sources?.length
+          ? ["", 'Sources cited by the web research (the only urls allowed for source "web", copied exactly):', ...input.sources.map((url) => `- ${url}`)]
+          : []),
+      ].join("\n")
+    ),
     "",
-    "<enquiry>",
-    input.enquiry?.trim() || NO_ENQUIRY,
-    "</enquiry>",
+    fencedBlock("enquiry", input.enquiry?.trim() || NO_ENQUIRY),
     "",
     "Produce the brief as an object with three fields.",
     'analysis: up to twelve short lines, each with text, kind, source and url. kind is "fact" only where the line restates something stated in the material; every conclusion, likelihood or reading between the lines is an "inference". source is "companies_house" for the register, "web" for the web research (url must be one of the urls cited in the web research, copied exactly), "enquiry" for the enquiry text, or "reasoning" for your own inference; url is null for every source except "web". Cover who the subject is, its trading position, its officers and any charges or overdue accounts, what the dispute appears to be, and what the directors should check before scoping.',

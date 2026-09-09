@@ -19,7 +19,7 @@ export const STAGE_LABELS: Record<PursuitStage, string> = {
  * Every stage, in schema order. Taken from the labels rather than the schema so
  * this module only imports types from the database layer and can ship to the client.
  */
-const ALL_STAGES = Object.keys(STAGE_LABELS) as readonly PursuitStage[];
+export const ALL_STAGES = Object.keys(STAGE_LABELS) as readonly PursuitStage[];
 
 export function stageLabel(stage: PursuitStage): string {
   return STAGE_LABELS[stage];

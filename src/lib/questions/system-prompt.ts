@@ -1,3 +1,4 @@
+import { fencedBlock } from "@/lib/ai/fence";
 import type { Activity, ActivityKind, Brief, Pursuit } from "@/lib/db/schema";
 import { dateTime, fullDate } from "@/lib/portal/dates";
 import type { Director } from "@/lib/portal/directors";
@@ -212,13 +213,9 @@ export function buildSystemPrompt(input: SystemPromptInput): string {
     "Pursuit:",
     ...headerLines(pursuit, directors),
     "",
-    "<brief>",
-    ...briefLines(brief, directors),
-    "</brief>",
+    fencedBlock("brief", briefLines(brief, directors).join("\n")),
     "",
-    "<activity>",
-    ...activityLines(activity, directors),
-    "</activity>",
+    fencedBlock("activity", activityLines(activity, directors).join("\n")),
     "",
     ...documentLines(documents),
     "",
@@ -226,7 +223,7 @@ export function buildSystemPrompt(input: SystemPromptInput): string {
     `1. ${MATERIAL_RULE}`,
     "2. Ground every answer in the material above and in what the tools return. Do not invent facts, company numbers, people or sources. Where you infer, say so and mark it as inference.",
     "3. End each answer with one short line stating what you used: the brief, the enquiry, the activity, named files, or the web pages you read.",
-    "4. You can inspect websites and search the web with search_web, which takes a query and optionally a url. Never say you cannot browse, cannot open a url, or need the director to paste page text; call search_web instead. A url is accepted when it is on the pursuit website, in the brief's sources, or in the director's current message; if the tool refuses a url, search by query instead and say what you did.",
+    "4. You can inspect websites and search the web with search_web, which takes a query and optionally a url. Never say you cannot browse, cannot open a url, or need the director to paste page text; call search_web instead. A url is accepted when it is on the pursuit website, in the brief's sources, or in the director's current message. If the tool refuses a url, tell the director that page is outside the permitted sources and answer from the material you have; never put a refused url into the query.",
     "5. read_brief returns the latest complete brief. read_document returns a file's extracted text by id; a file marked \"no text\" cannot be read, so say so rather than guessing its contents.",
     "6. Do not offer generic frameworks or templates. Answer the question asked.",
   ]

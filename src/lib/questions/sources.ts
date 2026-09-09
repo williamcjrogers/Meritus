@@ -69,3 +69,17 @@ export function finalText(message: UIMessage): string {
     .join("\n\n")
     .trim();
 }
+
+/** The same collection, read from streamText's step results rather than UI parts. */
+export function collectSourcesFromSteps(
+  steps: ReadonlyArray<{ toolResults?: ReadonlyArray<{ toolName: string; output: unknown }> }>
+): QuestionSource[] {
+  const parts: LoosePart[] = [];
+  for (const step of steps) {
+    for (const result of step.toolResults ?? []) {
+      parts.push({ type: `tool-${result.toolName}`, state: "output-available", output: result.output });
+    }
+  }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return collectSources(parts as UIMessagePart<any, any>[]);
+}

@@ -42,11 +42,11 @@ export async function listBoard(): Promise<Pursuit[]> {
 
 export async function listByStage(stage: PursuitStage): Promise<Pursuit[]> {
   const db = requireDb();
-  return db
-    .select()
-    .from(pursuits)
-    .where(eq(pursuits.stage, stage))
-    .orderBy(desc(pursuits.stageChangedAt));
+  const query = db.select().from(pursuits).where(eq(pursuits.stage, stage));
+  if (stage === "dormant") {
+    return query.orderBy(sql`${pursuits.nextActionDue} asc nulls last`, desc(pursuits.stageChangedAt));
+  }
+  return query.orderBy(desc(pursuits.stageChangedAt));
 }
 
 export async function countByStage(): Promise<Record<PursuitStage, number>> {
@@ -176,9 +176,15 @@ const RELATED_CANDIDATE_LIMIT = 50;
 
 /** The most recent unowned enquiry from this address created within the last 24 hours, if any. */
 export async function findDoubleSubmissionCandidate(email: string, now: Date): Promise<Pursuit | null> {
+  const [row] = await findDoubleSubmissionCandidates(email, now);
+  return row ?? null;
+}
+
+/** Unowned enquiries from this address in the last 24 hours, newest first, so the firm can be matched in code. */
+export async function findDoubleSubmissionCandidates(email: string, now: Date): Promise<Pursuit[]> {
   const db = requireDb();
   const since = new Date(now.getTime() - DOUBLE_SUBMISSION_WINDOW_MS);
-  const [row] = await db
+  return db
     .select()
     .from(pursuits)
     .where(
@@ -190,8 +196,7 @@ export async function findDoubleSubmissionCandidate(email: string, now: Date): P
       )
     )
     .orderBy(desc(pursuits.createdAt))
-    .limit(1);
-  return row ?? null;
+    .limit(5);
 }
 
 function escapeLike(value: string): string {
@@ -260,4 +265,65 @@ export async function createPursuitWithEnquiry(
       .returning(),
   ]);
   return { pursuit: pursuitRows[0], activity: activityRows[0] };
+}
+
+/** Updates a pursuit and writes one activity entry as a single batch, so neither lands alone. */
+export async function updatePursuitWithActivity(
+  id: string,
+  values: PursuitPatch,
+  entry: ActivityEntry
+): Promise<Pursuit | null> {
+  const db = requireDb();
+  const [rows] = await db.batch([
+    db
+      .update(pursuits)
+      .set({ ...values, updatedAt: new Date() })
+      .where(eq(pursuits.id, id))
+      .returning(),
+    db.insert(activityTable).values({
+      id: entry.id ?? crypto.randomUUID(),
+      pursuitId: id,
+      kind: entry.kind,
+      actorId: entry.actorId,
+      body: entry.body ?? null,
+      meta: entry.meta ?? null,
+    }),
+  ]);
+  return rows[0] ?? null;
+}
+
+/**
+ * Declines an unowned pursuit from the inbox and logs it in one batch. The guard is the
+ * `owner_id is null` condition: when another director got there first no row updates, the
+ * batch is rolled back (the activity insert is discarded with it) and false is returned.
+ */
+export async function declinePursuitGuardedWithActivity(
+  id: string,
+  ownerId: string,
+  now: Date,
+  entry: ActivityEntry
+): Promise<boolean> {
+  const db = requireDb();
+  const activityId = entry.id ?? crypto.randomUUID();
+  const [rows] = await db.batch([
+    db
+      .update(pursuits)
+      .set({ ownerId, stage: "declined", stageChangedAt: now, updatedAt: now })
+      .where(and(eq(pursuits.id, id), isNull(pursuits.ownerId)))
+      .returning({ id: pursuits.id }),
+    db.insert(activityTable).values({
+      id: activityId,
+      pursuitId: id,
+      kind: entry.kind,
+      actorId: entry.actorId,
+      body: entry.body ?? null,
+      meta: entry.meta ?? null,
+    }),
+  ]);
+  if (rows.length === 0) {
+    // The guard matched nothing, so the entry written in the same batch is withdrawn.
+    await db.delete(activityTable).where(eq(activityTable.id, activityId));
+    return false;
+  }
+  return true;
 }

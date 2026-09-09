@@ -94,11 +94,11 @@ export function NextActionField({
       <button
         ref={triggerRef}
         type="button"
-        aria-label="Edit next action"
         onClick={open}
         className="group flex w-full flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-transparent py-1 text-left hover:border-brass/40"
       >
         <span className="portal-label mb-0 shrink-0">Next action</span>
+        <span className="sr-only">{text ? "Edit next action:" : "Set a next action:"}</span>
         {text ? (
           <span className={`text-[14px] ${overdue ? "text-oxblood" : "text-green"}`}>
             {overdue && (
@@ -109,7 +109,7 @@ export function NextActionField({
             {text}
           </span>
         ) : (
-          <span className="text-[14px] text-ink/50">Set a next action</span>
+          <span className="text-[14px] text-ink/70">Set a next action</span>
         )}
         {text && due && (
           <span className={`font-mono text-[11px] tracking-[0.05em] ${overdue ? "text-oxblood" : "text-ink/70"}`}>

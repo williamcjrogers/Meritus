@@ -39,7 +39,7 @@ export type BriefDeps = {
   fetchOfficers(number: string): Promise<BriefOfficer[]>;
   searchCompanies(name: string): Promise<CompanyCandidate[]>;
   research(prompt: string): Promise<{ text: string; sources: string[] }>;
-  analyse(prompt: string): Promise<{ analysis: BriefAnalysisLine[]; summary: string; website: string | null }>;
+  analyse(prompt: string, timeoutMs?: number): Promise<{ analysis: BriefAnalysisLine[]; summary: string; website: string | null }>;
   completeBrief: typeof completeBrief;
   failBrief: typeof failBrief;
   addActivity: typeof addActivity;
@@ -49,11 +49,14 @@ export type BriefDeps = {
 };
 
 const ANALYSIS_TIMEOUT_MS = 90_000;
-/** Web research is tolerated when it fails, so a hung call must not consume the run's two minutes. */
+/** Web research is tolerated when it fails, so a hung call must not consume the run's budget. */
 const RESEARCH_TIMEOUT_MS = 45_000;
+/** The whole run must finish inside the route's maxDuration (120 s) with room for the writes. */
+export const RUN_BUDGET_MS = 105_000;
+const MIN_STAGE_MS = 5_000;
 const RESEARCH_UNAVAILABLE: BriefAnalysisLine = {
   text: "Web research unavailable",
-  kind: "fact",
+  kind: "inference",
   source: "reasoning",
   url: null,
 };
@@ -81,13 +84,13 @@ export function defaultBriefDeps(): BriefDeps {
     fetchCompany,
     fetchOfficers,
     searchCompanies: (name) => searchCompanies(name, 5),
-    research: (prompt) => withTimeout(searchWeb(prompt), RESEARCH_TIMEOUT_MS, "Web research timed out"),
-    analyse: async (prompt): Promise<AnalysisOutput> => {
+    research: (prompt) => searchWeb(prompt),
+    analyse: async (prompt, timeoutMs = ANALYSIS_TIMEOUT_MS): Promise<AnalysisOutput> => {
       const result = await generateText({
         model: getLanguageModel(),
         prompt,
         output: Output.object({ schema: analysisSchema }),
-        timeout: { totalMs: ANALYSIS_TIMEOUT_MS },
+        timeout: { totalMs: timeoutMs },
       });
       return result.output;
     },
@@ -212,6 +215,9 @@ export async function runBrief(
   try {
     const now = deps.now();
 
+    const deadline = now.getTime() + RUN_BUDGET_MS;
+    const remaining = (ceiling: number) => Math.max(MIN_STAGE_MS, Math.min(ceiling, deadline - Date.now()));
+
     // 1 and 2: the subject and the register.
     const register = await registerStep(subject, deps, now);
     if (register.matchedNumber) {
@@ -227,13 +233,17 @@ export async function runBrief(
     // and the firm's website only describes the firm, so it stays out when the party is the subject.
     let research: { text: string; sources: string[] } | null = null;
     try {
-      research = await deps.research(
-        researchPrompt({
-          subject: subject.name,
-          companyNumber: register.number,
-          website: subject.isParty ? null : normalizeWebsite(pursuit.website),
-          ...context,
-        })
+      research = await withTimeout(
+        deps.research(
+          researchPrompt({
+            subject: subject.name,
+            companyNumber: register.number,
+            website: subject.isParty ? null : normalizeWebsite(pursuit.website),
+            ...context,
+          })
+        ),
+        remaining(RESEARCH_TIMEOUT_MS),
+        "Web research timed out"
       );
     } catch (error) {
       console.warn("brief web research failed", pursuitId, errorMessage(error));
@@ -247,9 +257,11 @@ export async function runBrief(
         companyNumber: register.number,
         facts: register.facts,
         research: research?.text ?? null,
+        sources: research?.sources ?? [],
         enquiry: pursuit.summary,
         ...context,
-      })
+      }),
+      remaining(ANALYSIS_TIMEOUT_MS)
     );
 
     // 5: provenance rules.

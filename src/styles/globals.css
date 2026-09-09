@@ -448,8 +448,14 @@ dialog.portal-confirm {
   }
 }
 .portal-field:focus {
-  outline: none;
   border-bottom-color: var(--color-brass);
+}
+.portal-field:focus:not(:focus-visible) {
+  outline: none;
+}
+.portal-field:focus-visible {
+  outline: 2px solid var(--color-green);
+  outline-offset: 2px;
 }
 .portal-field::placeholder {
   color: var(--color-slate);

@@ -55,3 +55,15 @@ export async function updateActivityMeta(id: string, meta: ActivityMeta): Promis
   const db = requireDb();
   await db.update(activity).set({ meta }).where(eq(activity.id, id));
 }
+
+/** The newest enquiry_received entry on a pursuit, which carries the alert outcome and related ids. */
+export async function latestEnquiryActivity(pursuitId: string): Promise<Activity | null> {
+  const db = requireDb();
+  const [row] = await db
+    .select()
+    .from(activity)
+    .where(and(eq(activity.pursuitId, pursuitId), eq(activity.kind, "enquiry_received")))
+    .orderBy(desc(activity.createdAt))
+    .limit(1);
+  return row ?? null;
+}

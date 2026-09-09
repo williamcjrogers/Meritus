@@ -4,7 +4,7 @@ import { insertDocument } from "@/lib/db/documents";
 import type { DocumentScope } from "@/lib/db/schema";
 import { isBlobConfigured } from "@/lib/env";
 import { extractUploadText } from "@/lib/research/extract-text";
-import { isAllowedUpload, MAX_UPLOAD_BYTES, sanitizeFileName } from "./files";
+import { isAllowedUpload, MAX_UPLOAD_BYTES, MAX_UPLOAD_LABEL, sanitizeFileName } from "./files";
 
 export async function storePortalDocument(input: {
   file: File;
@@ -17,7 +17,7 @@ export async function storePortalDocument(input: {
     throw new Error("BLOB_READ_WRITE_TOKEN is not configured");
   }
   if (input.file.size > MAX_UPLOAD_BYTES) {
-    throw new Error("File exceeds 25MB");
+    throw new Error(`File exceeds ${MAX_UPLOAD_LABEL}`);
   }
   if (!isAllowedUpload(input.file.name, input.file.type || "application/octet-stream")) {
     throw new Error("File type not allowed");

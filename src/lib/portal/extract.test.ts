@@ -171,6 +171,10 @@ describe("isAllowedUpload", () => {
 
   it("rejects executables and unknown types", () => {
     expect(isAllowedUpload("setup.exe", "application/octet-stream")).toBe(false);
+    expect(isAllowedUpload("setup.exe", "text/plain")).toBe(false);
+    expect(isAllowedUpload("payload.html", "application/pdf")).toBe(false);
+    expect(isAllowedUpload("report.pdf", "")).toBe(true);
+    expect(isAllowedUpload("report.pdf", "text/html")).toBe(false);
     expect(isAllowedUpload("setup.exe", "application/x-msdownload")).toBe(false);
     expect(isAllowedUpload("archive.zip", "application/zip")).toBe(false);
   });

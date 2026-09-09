@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { startTransition, useEffect, useMemo, useOptimistic, useRef, useState } from "react";
-import type { Activity, DocumentRow, Pursuit, PursuitStage } from "@/lib/db/schema";
+import type { Activity, Pursuit, PursuitStage } from "@/lib/db/schema";
+import type { DocumentSummary } from "@/lib/portal/files";
 import { fullDate, isOverdue, shortDate } from "@/lib/portal/dates";
 import type { Director } from "@/lib/portal/director-helpers";
 import {
@@ -93,7 +94,7 @@ export function PursuitShell({
   related: RelatedRef[];
   latestChange: Activity | null;
   activity: Activity[];
-  documents: DocumentRow[];
+  documents: DocumentSummary[];
   briefState: BriefState;
   questions: AskMessage[];
   now: string;
@@ -107,7 +108,11 @@ export function PursuitShell({
   const [deleting, setDeleting] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
   const [headerError, setHeaderError] = useState<string | null>(null);
+  const [reopening, setReopening] = useState(false);
+  const [editKey, setEditKey] = useState(0);
   const moreRef = useRef<HTMLDivElement>(null);
+  const moreButtonRef = useRef<HTMLButtonElement>(null);
+  const moreItemsRef = useRef<Array<HTMLButtonElement | null>>([]);
 
   function run(changes: Partial<Pursuit>, action: () => Promise<ActionResult>): Promise<ActionResult> {
     return new Promise((resolve) => {
@@ -125,7 +130,13 @@ export function PursuitShell({
   const move = (to: PursuitStage, reason?: string, revisitDue?: string) =>
     run({ stage: to, stageChangedAt: nowDate, ...(revisitDue ? { nextActionDue: revisitDue } : {}) }, () => movePursuit(pursuit.id, to, reason, revisitDue));
   const reopenStage = resolveReopenStage(latestChange ? [latestChange] : []);
-  const reopen = () => run({ stage: reopenStage, stageChangedAt: nowDate }, () => reopenPursuit(pursuit.id));
+  const reopen = async () => {
+    setReopening(true);
+    setHeaderError(null);
+    const result = await run({ stage: reopenStage, stageChangedAt: nowDate }, () => reopenPursuit(pursuit.id));
+    setReopening(false);
+    if (!result.ok) setHeaderError(result.error);
+  };
   const changeOwner = async (ownerId: string | null) => {
     setHeaderError(null);
     const result = await run({ ownerId }, () => setOwner(pursuit.id, ownerId));
@@ -147,12 +158,35 @@ export function PursuitShell({
 
   useEffect(() => {
     if (!moreOpen) return;
+    moreItemsRef.current[0]?.focus();
     function onClick(event: MouseEvent) {
       if (moreRef.current && !moreRef.current.contains(event.target as Node)) setMoreOpen(false);
     }
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, [moreOpen]);
+
+  function closeMore(returnFocus = true) {
+    setMoreOpen(false);
+    if (returnFocus) moreButtonRef.current?.focus();
+  }
+
+  function onMoreKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeMore();
+      return;
+    }
+    const items = moreItemsRef.current.filter(Boolean) as HTMLButtonElement[];
+    const index = items.findIndex((item) => item === document.activeElement);
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      items[(index + 1) % items.length]?.focus();
+    } else if (event.key === "ArrowUp") {
+      event.preventDefault();
+      items[(index - 1 + items.length) % items.length]?.focus();
+    }
+  }
 
   async function saveEdit(input: PursuitFormInput) {
     const result = await updatePursuit(pursuit.id, input);
@@ -195,23 +229,56 @@ export function PursuitShell({
         </Link>
         <div className="flex items-center gap-2">
           <MoveToMenu current={pursuit.stage} onMove={move} />
-          <div ref={moreRef} className="relative">
+          <div
+            ref={moreRef}
+            className="relative"
+            onKeyDown={onMoreKeyDown}
+            onBlur={(event) => {
+              if (moreOpen && !moreRef.current?.contains(event.relatedTarget as Node | null)) closeMore(false);
+            }}
+          >
             <button
+              ref={moreButtonRef}
               type="button"
               className="btn-quiet"
               aria-haspopup="menu"
               aria-expanded={moreOpen}
               aria-label="More actions"
-              onClick={() => setMoreOpen((open) => !open)}
+              onClick={() => (moreOpen ? closeMore() : setMoreOpen(true))}
             >
               ···
             </button>
             {moreOpen && (
               <div role="menu" aria-label="More actions" className="absolute right-0 z-30 mt-1 min-w-[180px] border border-green/15 bg-parchment p-1 shadow-[0_8px_24px_rgba(11,59,36,0.16)]">
-                <button type="button" role="menuitem" className="block w-full px-3 py-2 text-left text-[13px] text-green hover:bg-stone/60" onClick={() => { setMoreOpen(false); setEditOpen(true); }}>
+                <button
+                  ref={(el) => {
+                    moreItemsRef.current[0] = el;
+                  }}
+                  type="button"
+                  role="menuitem"
+                  tabIndex={-1}
+                  className="block w-full px-3 py-2 text-left text-[13px] text-green hover:bg-stone/60 focus:bg-stone/60 focus:outline-none"
+                  onClick={() => {
+                    closeMore(false);
+                    setEditKey((key) => key + 1);
+                    setEditOpen(true);
+                  }}
+                >
                   Edit details
                 </button>
-                <button type="button" role="menuitem" className="block w-full px-3 py-2 text-left text-[13px] text-oxblood hover:bg-stone/60" onClick={() => { setMoreOpen(false); setDeleteOpen(true); }}>
+                <button
+                  ref={(el) => {
+                    moreItemsRef.current[1] = el;
+                  }}
+                  type="button"
+                  role="menuitem"
+                  tabIndex={-1}
+                  className="block w-full px-3 py-2 text-left text-[13px] text-oxblood hover:bg-stone/60 focus:bg-stone/60 focus:outline-none"
+                  onClick={() => {
+                    closeMore(false);
+                    setDeleteOpen(true);
+                  }}
+                >
                   Delete pursuit
                 </button>
               </div>
@@ -259,8 +326,8 @@ export function PursuitShell({
                 {latestChange?.meta?.reason ? ` · ${latestChange.meta.reason}` : ""}
               </span>
             </div>
-            <button type="button" className="btn-secondary" onClick={() => void reopen()}>
-              Reopen at {stageLabel(reopenStage)}
+            <button type="button" className="btn-secondary" onClick={() => void reopen()} aria-disabled={reopening || undefined}>
+              {reopening ? "Reopening…" : `Reopen at ${stageLabel(reopenStage)}`}
             </button>
           </div>
         )}
@@ -275,7 +342,7 @@ export function PursuitShell({
       </div>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
-        <div className="space-y-6 lg:col-span-8">
+        <div className="order-1 lg:col-span-8">
           <BriefPanel
             pursuitId={pursuit.id}
             subject={subject}
@@ -285,15 +352,9 @@ export function PursuitShell({
             onPick={(number) => setCompanyNumber(pursuit.id, number, subject.target)}
             onComplete={() => router.refresh()}
           />
-          <Panel eyebrow="Activity" title="Timeline">
-            <div className="mb-5">
-              <NoteBox onSave={(body) => addNote(pursuit.id, body)} />
-            </div>
-            <ActivityTimeline entries={activity} directors={directors} />
-          </Panel>
         </div>
 
-        <aside className="space-y-6 lg:col-span-4">
+        <aside className="order-2 space-y-6 lg:order-none lg:col-span-4 lg:row-span-2">
           <Panel eyebrow="Enquiry" title={pursuit.contactName ?? "No contact name"}>
             <dl className="space-y-2 text-[13px]">
               {pursuit.contactEmail && (
@@ -351,6 +412,15 @@ export function PursuitShell({
             <FileList documents={documents} uploadUrl={`/api/portal/pursuits/${pursuit.id}/documents`} />
           </Panel>
         </aside>
+
+        <div className="order-3 lg:order-none lg:col-span-8">
+          <Panel eyebrow="Activity" title="Timeline">
+            <div className="mb-5">
+              <NoteBox onSave={(body) => addNote(pursuit.id, body)} />
+            </div>
+            <ActivityTimeline entries={activity} directors={directors} />
+          </Panel>
+        </div>
       </div>
 
       <AskDrawer
@@ -362,7 +432,7 @@ export function PursuitShell({
         onClear={() => clearQuestions(pursuit.id)}
       />
       <SlideOver open={editOpen} onClose={() => setEditOpen(false)} eyebrow="Pursuit" title="Edit details">
-        <PursuitForm mode="edit" initial={toFormInput(serverPursuit)} onSubmit={saveEdit} onCancel={() => setEditOpen(false)} />
+        <PursuitForm key={editKey} mode="edit" initial={toFormInput(serverPursuit)} onSubmit={saveEdit} onCancel={() => setEditOpen(false)} />
       </SlideOver>
       <ConfirmDialog
         open={deleteOpen}

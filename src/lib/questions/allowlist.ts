@@ -1,4 +1,4 @@
-import { extractUrls, normalizeWebsite } from "@/lib/research/urls";
+import { canonicalUrl, extractUrls, normalizeWebsite } from "@/lib/research/urls";
 
 export type AllowlistContext = {
   /** The pursuit website as stored, with or without a scheme. */
@@ -44,10 +44,9 @@ export function isUrlPermitted(url: string, ctx: AllowlistContext): boolean {
   const websiteUrl = website ? parseHttpUrl(website) : null;
   if (websiteUrl && websiteUrl.origin === target.origin) return true;
 
-  for (const source of ctx.briefSources) {
-    if (normalizeWebsite(source) === target.href) return true;
-  }
+  const wanted = canonicalUrl(target.href);
+  if (wanted && ctx.briefSources.some((source) => canonicalUrl(source) === wanted)) return true;
 
   if (ctx.messageText.includes(requested)) return true;
-  return extractUrls(ctx.messageText).includes(target.href);
+  return extractUrls(ctx.messageText).some((url) => canonicalUrl(url) === wanted);
 }

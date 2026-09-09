@@ -10,6 +10,7 @@ import { SlideOver } from "./SlideOver";
 export function NewPursuitButton({ className = "btn-brass text-[12px]" }: { className?: string }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [formKey, setFormKey] = useState(0);
 
   async function submit(input: PursuitFormInput) {
     const result = await createPursuit(input);
@@ -22,11 +23,11 @@ export function NewPursuitButton({ className = "btn-brass text-[12px]" }: { clas
 
   return (
     <>
-      <button type="button" className={className} onClick={() => setOpen(true)}>
+      <button type="button" className={className} onClick={() => { setFormKey((key) => key + 1); setOpen(true); }}>
         New pursuit
       </button>
       <SlideOver open={open} onClose={() => setOpen(false)} eyebrow="Pursuit" title="New pursuit">
-        <PursuitForm mode="create" onSubmit={submit} onCancel={() => setOpen(false)} />
+        <PursuitForm key={formKey} mode="create" onSubmit={submit} onCancel={() => setOpen(false)} />
       </SlideOver>
     </>
   );

@@ -185,7 +185,7 @@ describe("runBrief", () => {
 
     expect(deps.failBrief).not.toHaveBeenCalled();
     const values = completed(deps)!;
-    expect(values.analysis).toContainEqual({ text: "Web research unavailable", kind: "fact", source: "reasoning", url: null });
+    expect(values.analysis).toContainEqual({ text: "Web research unavailable", kind: "inference", source: "reasoning", url: null });
     expect(values.analysis.find((line) => line.text === "Probably the architect on Saxton Lane")).toMatchObject({ source: "reasoning", url: null });
     expect(values.sources).toEqual([REGISTER]);
     const prompt = vi.mocked(deps.analyse).mock.calls[0][0];

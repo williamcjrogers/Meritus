@@ -228,7 +228,7 @@ Previously: Brewster Bye Architects, declined 14 August 2026
 
 **Activity.** Reverse-chronological timeline. A note box at the top (plain text, up to 4,000 characters, Cmd or Ctrl and Enter to save). Each entry: date and time, actor initials or "Site", and the body. Stage changes read "Moved to Scoping" with the reason beneath. Files read "Added Letter of claim.pdf" with a link. Briefs read "Brief generated". Enquiries read "Enquiry received" and expand to show the submission; "Alert not sent" appears beneath when the alert failed.
 
-**Right rail.** The enquiry as submitted: contact name, email (mailto), phone (tel), website, company number, and the summary in quotation marks. Below it, Files: upload button, list with title, size, date, a mono tag "text" or "no text" showing whether the questions drawer can read it, download link and delete. Allowed types: pdf, docx, xlsx, jpg, png, webp, txt, eml, msg, 25 MB. Text is extracted from pdf (pdf-parse), docx (mammoth), eml (postal-mime: From, To, Date, Subject as a header, then the text part) and txt; xlsx, images and msg store without text.
+**Right rail.** The enquiry as submitted: contact name, email (mailto), phone (tel), website, company number, and the summary in quotation marks. Below it, Files: upload button, list with title, size, date, a mono tag "text" or "no text" showing whether the questions drawer can read it, download link and delete. Allowed types: pdf, docx, xlsx, jpg, png, webp, txt, eml, msg, 4 MB (Vercel functions refuse larger request bodies). Text is extracted from pdf (pdf-parse), docx (mammoth), eml (postal-mime: From, To, Date, Subject as a header, then the text part) and txt; xlsx, images and msg store without text.
 
 **Ask drawer.** See 8.3. Opens from the Ask button and from `?` when no field is focused.
 
@@ -296,7 +296,7 @@ Accessibility: SlideOver, AskDrawer and ConfirmDialog use `<dialog>` with `showM
 
 ## 10. Mutations, errors and empty states
 
-Route handlers: `POST /api/contact`; `GET|POST /api/portal/pursuits/[id]/brief`; `POST /api/portal/pursuits/[id]/questions`; `POST /api/portal/pursuits/[id]/documents` (multipart, 25 MB; logs `file_added`); `GET|DELETE /api/portal/documents/[id]` (DELETE logs `file_removed`); `GET /api/portal/companies-house?q=` (search for the picker); `POST /api/portal/library`.
+Route handlers: `POST /api/contact`; `GET|POST /api/portal/pursuits/[id]/brief`; `POST /api/portal/pursuits/[id]/questions`; `POST /api/portal/pursuits/[id]/documents` (multipart, 4 MB; logs `file_added`); `GET|DELETE /api/portal/documents/[id]` (DELETE logs `file_removed`); `GET /api/portal/companies-house?q=` (search for the picker); `POST /api/portal/library`.
 
 Server actions in `src/lib/portal/actions.ts` (`"use server"`): `createPursuit`, `updatePursuit`, `deletePursuit`, `takePursuit`, `declinePursuit`, `movePursuit`, `reopenPursuit`, `setOwner`, `setNextAction`, `addNote`, `saveAnswerAsNote`, `clearQuestions`, `setCompanyNumber`. Each returns `{ ok: true }` (or `{ ok: true, id }` for create) or `{ ok: false, error }`, never throws a redirect, and ends with `revalidatePath("/portal", "layout")`. A `requireActionUser()` guard beside `requirePortalUser()` returns `{ ok: false, error: "Sign in again" }` rather than a `NextResponse`. Clients call actions inside `startTransition` so the refreshed tree and the optimistic state settle together; `Desk` and `PursuitShell` hold the `useOptimistic` state.
 

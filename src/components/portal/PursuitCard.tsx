@@ -68,7 +68,7 @@ export function PursuitCard({
             </span>
           </>
         ) : (
-          <span className="text-ink/50">No next action</span>
+          <span className="text-ink/70">No next action</span>
         )}
       </p>
     </article>

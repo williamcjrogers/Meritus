@@ -1,6 +1,8 @@
 import type { DocumentRow } from "@/lib/db/schema";
 
-export const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
+/** Vercel functions refuse request bodies above 4.5 MB, so the desk stops a little under it. */
+export const MAX_UPLOAD_BYTES = 4 * 1024 * 1024;
+export const MAX_UPLOAD_LABEL = "4 MB";
 
 const ALLOWED_MIME = new Set([
   "application/pdf",
@@ -29,8 +31,9 @@ const ALLOWED_EXT = new Set([
 
 export function isAllowedUpload(fileName: string, mime: string): boolean {
   const ext = extensionOf(fileName);
-  if (ALLOWED_MIME.has(mime)) return true;
-  return ALLOWED_EXT.has(ext);
+  if (!ALLOWED_EXT.has(ext)) return false;
+  // The declared type only corroborates the extension; a generic or missing type is accepted.
+  return mime === "" || mime === "application/octet-stream" || ALLOWED_MIME.has(mime);
 }
 
 export function extensionOf(fileName: string): string {
@@ -45,4 +48,17 @@ export function sanitizeFileName(fileName: string): string {
 /** True when the questions drawer can read the document, shown as the "text" or "no text" tag. */
 export function hasReadableText(doc: Pick<DocumentRow, "extractedText">): boolean {
   return typeof doc.extractedText === "string" && doc.extractedText.trim().length > 0;
+}
+
+/** What the browser needs about a file: never the extracted text itself. */
+export type DocumentSummary = {
+  id: string;
+  title: string;
+  size: number;
+  createdAt: Date;
+  hasText: boolean;
+};
+
+export function summariseDocument(doc: DocumentRow): DocumentSummary {
+  return { id: doc.id, title: doc.title, size: doc.size, createdAt: doc.createdAt, hasText: hasReadableText(doc) };
 }

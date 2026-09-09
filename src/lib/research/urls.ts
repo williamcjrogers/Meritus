@@ -28,3 +28,16 @@ export function normalizeWebsite(value: string | null | undefined): string | nul
     return null;
   }
 }
+
+/** A url with its fragment removed and no trailing slash, for comparing sources. */
+export function canonicalUrl(value: string | null | undefined): string | null {
+  const normalised = normalizeWebsite(value);
+  if (!normalised) return null;
+  try {
+    const url = new URL(normalised);
+    url.hash = "";
+    return url.href.replace(/\/$/, "");
+  } catch {
+    return null;
+  }
+}

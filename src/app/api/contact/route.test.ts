@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { Activity, Pursuit } from "@/lib/db/schema";
 
 vi.mock("@/lib/db/pursuits", () => ({
-  findDoubleSubmissionCandidate: vi.fn(),
+  findDoubleSubmissionCandidates: vi.fn(),
   findRelatedPursuits: vi.fn(),
   createPursuitWithEnquiry: vi.fn(),
   touchPursuit: vi.fn(),
@@ -26,7 +26,7 @@ vi.mock("@/lib/portal/alerts", () => ({
 import { addActivity, updateActivityMeta } from "@/lib/db/activity";
 import {
   createPursuitWithEnquiry,
-  findDoubleSubmissionCandidate,
+  findDoubleSubmissionCandidates,
   findRelatedPursuits,
   touchPursuit,
 } from "@/lib/db/pursuits";
@@ -108,7 +108,7 @@ describe("POST /api/contact", () => {
     vi.spyOn(console, "warn").mockImplementation(() => {});
     vi.mocked(registerEnquiryAttempt).mockResolvedValue(allowed);
     vi.mocked(purgeExpiredThrottle).mockResolvedValue(undefined);
-    vi.mocked(findDoubleSubmissionCandidate).mockResolvedValue(null);
+    vi.mocked(findDoubleSubmissionCandidates).mockResolvedValue([]);
     vi.mocked(findRelatedPursuits).mockResolvedValue([]);
     vi.mocked(createPursuitWithEnquiry).mockImplementation(async (values, entry) => ({
       pursuit: makePursuit({ id: values.id }),
@@ -264,7 +264,7 @@ describe("POST /api/contact", () => {
   });
 
   it("appends a double submission to the existing enquiry instead of creating a pursuit", async () => {
-    vi.mocked(findDoubleSubmissionCandidate).mockResolvedValue(makePursuit({ id: "existing" }));
+    vi.mocked(findDoubleSubmissionCandidates).mockResolvedValue([makePursuit({ id: "existing" })]);
     const res = await post(body);
     expect(res.status).toBe(200);
     expect(createPursuitWithEnquiry).not.toHaveBeenCalled();
@@ -280,7 +280,7 @@ describe("POST /api/contact", () => {
   });
 
   it("treats a double submission as stored even when touching the pursuit fails", async () => {
-    vi.mocked(findDoubleSubmissionCandidate).mockResolvedValue(makePursuit({ id: "existing" }));
+    vi.mocked(findDoubleSubmissionCandidates).mockResolvedValue([makePursuit({ id: "existing" })]);
     vi.mocked(touchPursuit).mockRejectedValue(new Error("connection reset"));
     const res = await post(body);
     expect(res.status).toBe(200);
@@ -295,7 +295,7 @@ describe("POST /api/contact", () => {
   });
 
   it("creates a new pursuit when the candidate is not a double submission", async () => {
-    vi.mocked(findDoubleSubmissionCandidate).mockResolvedValue(makePursuit({ id: "existing", firm: "Someone Else LLP" }));
+    vi.mocked(findDoubleSubmissionCandidates).mockResolvedValue([makePursuit({ id: "existing", firm: "Someone Else LLP" })]);
     await post(body);
     expect(addActivity).not.toHaveBeenCalled();
     expect(createPursuitWithEnquiry).toHaveBeenCalledTimes(1);

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
-import { PURSUIT_STAGES, type PursuitStage } from "@/lib/db/schema";
-import { requiresReason, stageLabel } from "@/lib/portal/stages";
+import type { PursuitStage } from "@/lib/db/schema";
+import { ALL_STAGES, requiresReason, stageLabel } from "@/lib/portal/stages";
 import type { ActionResult } from "@/lib/portal/types";
 
 export type MoveHandler = (
@@ -41,7 +41,7 @@ export function MoveToMenu({
   const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
   const menuId = useId();
 
-  const options = PURSUIT_STAGES.filter((stage) => stage !== current);
+  const options = ALL_STAGES.filter((stage) => stage !== current);
 
   function close(returnFocus = true) {
     setOpen(false);

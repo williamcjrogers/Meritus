@@ -13,6 +13,7 @@ import { listQuestions } from "@/lib/db/questions";
 import { isClerkConfigured, isDatabaseConfigured, missingRequiredSetup } from "@/lib/env";
 import { shortDate } from "@/lib/portal/dates";
 import { listDirectors } from "@/lib/portal/directors";
+import { summariseDocument } from "@/lib/portal/files";
 import { normaliseFirm } from "@/lib/portal/intake";
 
 export const dynamic = "force-dynamic";
@@ -69,7 +70,7 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
       related={related}
       latestChange={changes.get(id) ?? null}
       activity={activity}
-      documents={documents}
+      documents={documents.map(summariseDocument)}
       briefState={briefState}
       questions={thread}
       now={new Date().toISOString()}

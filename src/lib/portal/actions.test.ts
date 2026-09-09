@@ -8,10 +8,12 @@ import { listDocuments } from "@/lib/db/documents";
 import {
   createPursuitWithEnquiry,
   declinePursuitGuarded,
+  declinePursuitGuardedWithActivity,
   deletePursuit as removePursuit,
   getPursuit,
   takePursuitGuarded,
   updatePursuit as patchPursuit,
+  updatePursuitWithActivity,
 } from "@/lib/db/pursuits";
 import { clearQuestions as deleteQuestions } from "@/lib/db/questions";
 import type { Activity, DocumentRow, Pursuit, PursuitStage } from "@/lib/db/schema";
@@ -29,6 +31,8 @@ vi.mock("@/lib/db/pursuits", () => ({
   deletePursuit: vi.fn(),
   takePursuitGuarded: vi.fn(),
   declinePursuitGuarded: vi.fn(),
+  declinePursuitGuardedWithActivity: vi.fn(),
+  updatePursuitWithActivity: vi.fn(),
 }));
 vi.mock("@/lib/db/activity", () => ({ addActivity: vi.fn(), listActivity: vi.fn() }));
 vi.mock("@/lib/db/documents", () => ({ listDocuments: vi.fn() }));
@@ -134,6 +138,8 @@ beforeEach(() => {
   vi.mocked(removePursuit).mockResolvedValue(undefined);
   vi.mocked(takePursuitGuarded).mockResolvedValue(true);
   vi.mocked(declinePursuitGuarded).mockResolvedValue(true);
+  vi.mocked(declinePursuitGuardedWithActivity).mockResolvedValue(true);
+  vi.mocked(updatePursuitWithActivity).mockImplementation(async (id, values) => makePursuit({ id, ...values }));
   vi.mocked(addActivity).mockResolvedValue({} as Activity);
   vi.mocked(listActivity).mockResolvedValue([]);
   vi.mocked(listDocuments).mockResolvedValue([]);
@@ -177,6 +183,7 @@ describe("the action guard", () => {
   it("returns a plain error when the database throws", async () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     vi.mocked(patchPursuit).mockRejectedValue(new Error("connection refused"));
+    vi.mocked(updatePursuitWithActivity).mockRejectedValue(new Error("connection refused"));
     const result = await actions.setOwner("p1", "user_md");
     expect(result.ok).toBe(false);
     if (!result.ok) expect(result.error).not.toContain("connection refused");
@@ -236,17 +243,18 @@ describe("declinePursuit", () => {
   it("requires a reason of at least three characters", async () => {
     const result = await actions.declinePursuit("p1", "no");
     expect(result).toEqual({ ok: false, error: "Give a reason (at least three characters)" });
-    expect(declinePursuitGuarded).not.toHaveBeenCalled();
+    expect(declinePursuitGuardedWithActivity).not.toHaveBeenCalled();
     expectRevalidated();
   });
 
   it("declines from the inbox behind the guard and logs the stage change with the reason", async () => {
     const result = await actions.declinePursuit("p1", "  Already acting for the counterparty ");
     expect(result).toEqual({ ok: true });
-    expect(declinePursuitGuarded).toHaveBeenCalledWith("p1", "user_wr", expect.any(Date));
-    expect(addActivity).toHaveBeenCalledWith(
+    expect(declinePursuitGuardedWithActivity).toHaveBeenCalledWith(
+      "p1",
+      "user_wr",
+      expect.any(Date),
       expect.objectContaining({
-        pursuitId: "p1",
         kind: "stage_changed",
         actorId: "user_wr",
         body: "Moved to Declined",
@@ -257,7 +265,7 @@ describe("declinePursuit", () => {
   });
 
   it("names the director who took it first when the guard fails", async () => {
-    vi.mocked(declinePursuitGuarded).mockResolvedValue(false);
+    vi.mocked(declinePursuitGuardedWithActivity).mockResolvedValue(false);
     vi.mocked(getPursuit).mockResolvedValue(makePursuit({ ownerId: "user_md" }));
     const result = await actions.declinePursuit("p1", "Out of scope");
     expect(result).toEqual({ ok: false, error: "Taken by MD a moment ago" });
@@ -270,31 +278,31 @@ describe("movePursuit", () => {
     vi.mocked(getPursuit).mockResolvedValue(makePursuit({ stage: "scoping" }));
     const result = await actions.movePursuit("p1", "scoping");
     expect(result).toEqual({ ok: false, error: "Already at Scoping" });
-    expect(patchPursuit).not.toHaveBeenCalled();
+    expect(updatePursuitWithActivity).not.toHaveBeenCalled();
     expectRevalidated();
   });
 
   it("refuses a move to Dormant without a reason", async () => {
     const result = await actions.movePursuit("p1", "dormant");
     expect(result).toEqual({ ok: false, error: "Give a reason (at least three characters)" });
-    expect(patchPursuit).not.toHaveBeenCalled();
+    expect(updatePursuitWithActivity).not.toHaveBeenCalled();
     expect(addActivity).not.toHaveBeenCalled();
   });
 
   it("rejects a stage that does not exist", async () => {
     const result = await actions.movePursuit("p1", "archived" as PursuitStage);
     expect(result).toEqual({ ok: false, error: "Choose a stage from the list" });
-    expect(patchPursuit).not.toHaveBeenCalled();
+    expect(updatePursuitWithActivity).not.toHaveBeenCalled();
     expect(getPursuit).not.toHaveBeenCalled();
   });
 
   it("ignores a revisit date on a move that is not to Dormant", async () => {
     const result = await actions.movePursuit("p1", "proposal", undefined, "2026-10-01");
     expect(result).toEqual({ ok: true });
-    expect(patchPursuit).toHaveBeenCalledWith("p1", {
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", {
       stage: "proposal",
       stageChangedAt: expect.any(Date),
-    });
+    }, expect.anything());
   });
 
   it("moves to Dormant with a revisit date, stamps the change and logs it", async () => {
@@ -305,14 +313,15 @@ describe("movePursuit", () => {
       "2026-10-01"
     );
     expect(result).toEqual({ ok: true });
-    expect(patchPursuit).toHaveBeenCalledWith("p1", {
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", {
       stage: "dormant",
       stageChangedAt: expect.any(Date),
       nextActionDue: "2026-10-01",
-    });
-    expect(addActivity).toHaveBeenCalledWith(
+    }, expect.anything());
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith(
+      "p1",
+      expect.anything(),
       expect.objectContaining({
-        pursuitId: "p1",
         kind: "stage_changed",
         actorId: "user_wr",
         body: "Moved to Dormant",
@@ -325,17 +334,19 @@ describe("movePursuit", () => {
   it("refuses a revisit date that is not a date", async () => {
     const result = await actions.movePursuit("p1", "dormant", "Waiting on the client", "next week");
     expect(result).toEqual({ ok: false, error: "Give the revisit date as a valid date" });
-    expect(patchPursuit).not.toHaveBeenCalled();
+    expect(updatePursuitWithActivity).not.toHaveBeenCalled();
   });
 
   it("moves to Scoping without a reason and leaves the next action alone", async () => {
     const result = await actions.movePursuit("p1", "scoping");
     expect(result).toEqual({ ok: true });
-    expect(patchPursuit).toHaveBeenCalledWith("p1", {
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", {
       stage: "scoping",
       stageChangedAt: expect.any(Date),
-    });
-    expect(addActivity).toHaveBeenCalledWith(
+    }, expect.anything());
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith(
+      "p1",
+      expect.anything(),
       expect.objectContaining({
         kind: "stage_changed",
         body: "Moved to Scoping",
@@ -360,11 +371,14 @@ describe("reopenPursuit", () => {
     ]);
     const result = await actions.reopenPursuit("p1");
     expect(result).toEqual({ ok: true });
-    expect(patchPursuit).toHaveBeenCalledWith("p1", {
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", {
       stage: "proposal",
       stageChangedAt: expect.any(Date),
-    });
-    expect(addActivity).toHaveBeenCalledWith(
+      nextActionDue: null,
+    }, expect.anything());
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith(
+      "p1",
+      expect.anything(),
       expect.objectContaining({
         kind: "reopened",
         actorId: "user_wr",
@@ -379,14 +393,14 @@ describe("reopenPursuit", () => {
     vi.mocked(getPursuit).mockResolvedValue(makePursuit({ stage: "declined" }));
     const result = await actions.reopenPursuit("p1");
     expect(result).toEqual({ ok: true });
-    expect(patchPursuit).toHaveBeenCalledWith("p1", expect.objectContaining({ stage: "enquiry" }));
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", expect.objectContaining({ stage: "enquiry" }), expect.anything());
   });
 
   it("refuses to reopen a pursuit that is still open", async () => {
     vi.mocked(getPursuit).mockResolvedValue(makePursuit({ stage: "scoping" }));
     const result = await actions.reopenPursuit("p1");
     expect(result).toEqual({ ok: false, error: "Only declined or dormant pursuits can be reopened" });
-    expect(patchPursuit).not.toHaveBeenCalled();
+    expect(updatePursuitWithActivity).not.toHaveBeenCalled();
   });
 });
 
@@ -394,8 +408,10 @@ describe("setOwner", () => {
   it("assigns a director and logs the assignment by name", async () => {
     const result = await actions.setOwner("p1", "user_md");
     expect(result).toEqual({ ok: true });
-    expect(patchPursuit).toHaveBeenCalledWith("p1", { ownerId: "user_md" });
-    expect(addActivity).toHaveBeenCalledWith(
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", { ownerId: "user_md" }, expect.anything());
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith(
+      "p1",
+      expect.anything(),
       expect.objectContaining({
         kind: "assigned",
         actorId: "user_wr",
@@ -409,8 +425,10 @@ describe("setOwner", () => {
   it("returns a pursuit to the inbox when the owner is cleared", async () => {
     const result = await actions.setOwner("p1", null);
     expect(result).toEqual({ ok: true });
-    expect(patchPursuit).toHaveBeenCalledWith("p1", { ownerId: null });
-    expect(addActivity).toHaveBeenCalledWith(
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", { ownerId: null }, expect.anything());
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith(
+      "p1",
+      expect.anything(),
       expect.objectContaining({
         kind: "assigned",
         body: "Returned to the inbox",
@@ -420,7 +438,7 @@ describe("setOwner", () => {
   });
 
   it("reports a pursuit that no longer exists", async () => {
-    vi.mocked(patchPursuit).mockResolvedValue(null);
+    vi.mocked(updatePursuitWithActivity).mockResolvedValue(null);
     const result = await actions.setOwner("p1", "user_md");
     expect(result).toEqual({ ok: false, error: "This pursuit no longer exists" });
     expect(addActivity).not.toHaveBeenCalled();
@@ -429,7 +447,7 @@ describe("setOwner", () => {
   it("refuses an owner who is not a current director", async () => {
     const result = await actions.setOwner("p1", "user_zz");
     expect(result).toEqual({ ok: false, error: "Choose a director from the list" });
-    expect(patchPursuit).not.toHaveBeenCalled();
+    expect(updatePursuitWithActivity).not.toHaveBeenCalled();
     expect(addActivity).not.toHaveBeenCalled();
     expectRevalidated();
   });
@@ -438,8 +456,10 @@ describe("setOwner", () => {
     vi.mocked(listDirectors).mockResolvedValue([]);
     const result = await actions.setOwner("p1", "user_md");
     expect(result).toEqual({ ok: true });
-    expect(patchPursuit).toHaveBeenCalledWith("p1", { ownerId: "user_md" });
-    expect(addActivity).toHaveBeenCalledWith(
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", { ownerId: "user_md" }, expect.anything());
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith(
+      "p1",
+      expect.anything(),
       expect.objectContaining({ kind: "assigned", body: "Assigned to a director", meta: { ownerId: "user_md" } })
     );
   });
@@ -449,7 +469,7 @@ describe("setNextAction", () => {
   it("keeps the next action to 140 characters", async () => {
     const result = await actions.setNextAction("p1", "x".repeat(141), null);
     expect(result).toEqual({ ok: false, error: "Keep the next action to 140 characters" });
-    expect(patchPursuit).not.toHaveBeenCalled();
+    expect(updatePursuitWithActivity).not.toHaveBeenCalled();
     expectRevalidated();
   });
 
@@ -461,17 +481,19 @@ describe("setNextAction", () => {
   it("refuses a due date that is not a date", async () => {
     const result = await actions.setNextAction("p1", "Call Jane Partner", "Friday");
     expect(result).toEqual({ ok: false, error: "Give the due date as a valid date" });
-    expect(patchPursuit).not.toHaveBeenCalled();
+    expect(updatePursuitWithActivity).not.toHaveBeenCalled();
   });
 
   it("saves the trimmed text and due date and logs them", async () => {
     const result = await actions.setNextAction("p1", "  Call Jane Partner ", "2026-09-12");
     expect(result).toEqual({ ok: true });
-    expect(patchPursuit).toHaveBeenCalledWith("p1", {
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", {
       nextAction: "Call Jane Partner",
       nextActionDue: "2026-09-12",
-    });
-    expect(addActivity).toHaveBeenCalledWith(
+    }, expect.anything());
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith(
+      "p1",
+      expect.anything(),
       expect.objectContaining({
         kind: "next_action_set",
         actorId: "user_wr",
@@ -484,8 +506,10 @@ describe("setNextAction", () => {
   it("clears the text and the date together when the text is empty", async () => {
     const result = await actions.setNextAction("p1", "   ", "2026-09-12");
     expect(result).toEqual({ ok: true });
-    expect(patchPursuit).toHaveBeenCalledWith("p1", { nextAction: null, nextActionDue: null });
-    expect(addActivity).toHaveBeenCalledWith(
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", { nextAction: null, nextActionDue: null }, expect.anything());
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith(
+      "p1",
+      expect.anything(),
       expect.objectContaining({
         kind: "next_action_set",
         body: "Next action cleared",
@@ -813,6 +837,8 @@ describe("every action revalidates the portal tree", () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     vi.mocked(getPursuit).mockRejectedValue(new Error("boom"));
     vi.mocked(patchPursuit).mockRejectedValue(new Error("boom"));
+    vi.mocked(updatePursuitWithActivity).mockRejectedValue(new Error("boom"));
+    vi.mocked(declinePursuitGuardedWithActivity).mockRejectedValue(new Error("boom"));
     vi.mocked(createPursuitWithEnquiry).mockRejectedValue(new Error("boom"));
     vi.mocked(takePursuitGuarded).mockRejectedValue(new Error("boom"));
     vi.mocked(deleteQuestions).mockRejectedValue(new Error("boom"));

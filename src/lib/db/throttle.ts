@@ -56,16 +56,16 @@ export async function registerEnquiryAttempt(
   now: Date = new Date()
 ): Promise<ThrottleVerdict> {
   const db = requireDb();
-  const [emailRows, ipRows, globalRows] = await db.batch([
+  const [emailRows, ipRows] = await db.batch([
     bump(keys.email, EMAIL_WINDOW_MS, now),
     bump(keys.ip, IP_WINDOW_MS, now),
-    bump(GLOBAL_KEY, GLOBAL_WINDOW_MS, now),
   ]);
-  return decideThrottle({
-    email: emailRows[0]?.count ?? 1,
-    ip: ipRows[0]?.count ?? 1,
-    global: globalRows[0]?.count ?? 1,
-  });
+  const counts = { email: emailRows[0]?.count ?? 1, ip: ipRows[0]?.count ?? 1, global: 0 };
+  const capped = decideThrottle(counts);
+  // A rejected submission sends no alert, so it must not use up the hourly alert budget.
+  if (!capped.emailAllowed || !capped.ipAllowed) return capped;
+  const globalRows = await bump(GLOBAL_KEY, GLOBAL_WINDOW_MS, now);
+  return decideThrottle({ ...counts, global: globalRows[0]?.count ?? 1 });
 }
 
 /** Deletes counters whose window began more than 24 hours ago. */

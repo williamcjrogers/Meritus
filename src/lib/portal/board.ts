@@ -19,10 +19,6 @@ export type DeskPartition = {
   counts: Record<BoardStage, number>;
 };
 
-function byCreatedAt(a: Pursuit, b: Pursuit): number {
-  return a.createdAt.getTime() - b.createdAt.getTime();
-}
-
 function byStageChangedAt(a: Pursuit, b: Pursuit): number {
   return a.stageChangedAt.getTime() - b.stageChangedAt.getTime();
 }
@@ -66,7 +62,7 @@ export function partitionDesk(
 
   const inbox = pursuits
     .filter((p) => p.ownerId === null && isActiveStage(p.stage))
-    .sort(byCreatedAt);
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
 
   const revisit = pursuits
     .filter((p) => p.stage === "dormant" && isOverdue(p.nextActionDue, now))

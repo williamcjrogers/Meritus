@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { DocumentRow } from "@/lib/db/schema";
-import { hasReadableText } from "@/lib/portal/files";
+import { shortDate } from "@/lib/portal/dates";
+import { MAX_UPLOAD_LABEL, type DocumentSummary } from "@/lib/portal/files";
 
 function formatSize(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
@@ -15,7 +15,7 @@ export function FileList({
   documents,
   uploadUrl,
 }: {
-  documents: DocumentRow[];
+  documents: DocumentSummary[];
   uploadUrl: string;
 }) {
   const router = useRouter();
@@ -53,10 +53,11 @@ export function FileList({
 
   return (
     <div>
-      <label className="btn-secondary cursor-pointer">
+      <label className="btn-secondary cursor-pointer has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-green has-[:focus-visible]:outline-offset-2">
         <input type="file" className="sr-only" onChange={onUpload} disabled={pending} />
         {pending ? "Uploading…" : "Upload file"}
       </label>
+      <span className="ml-3 font-mono text-[10px] tracking-[0.08em] text-ink/70">pdf, docx, xlsx, images, txt, eml, msg · up to {MAX_UPLOAD_LABEL}</span>
       {error && <p className="mt-2 text-[12px] text-oxblood">{error}</p>}
       <ul className="mt-4 divide-y divide-green/10">
         {documents.map((doc) => (
@@ -66,9 +67,9 @@ export function FileList({
                 {doc.title}
               </a>
               <p className="font-mono text-[10px] tracking-[0.12em] text-ink/70">
-                {formatSize(doc.size)} · {doc.createdAt.toLocaleDateString("en-GB")} ·{" "}
-                <span className={hasReadableText(doc) ? "text-green" : "text-ink/50"} title={hasReadableText(doc) ? "The questions drawer can read this file" : "No readable text in this file"}>
-                  {hasReadableText(doc) ? "text" : "no text"}
+                {formatSize(doc.size)} · {shortDate(doc.createdAt)} ·{" "}
+                <span className={doc.hasText ? "text-green" : "text-ink/70"} title={doc.hasText ? "The questions drawer can read this file" : "No readable text in this file"}>
+                  {doc.hasText ? "text" : "no text"}
                 </span>
               </p>
             </div>

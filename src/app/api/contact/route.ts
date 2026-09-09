@@ -3,7 +3,7 @@ import { SITE_CONFIG } from "@/lib/constants";
 import { addActivity, updateActivityMeta } from "@/lib/db/activity";
 import {
   createPursuitWithEnquiry,
-  findDoubleSubmissionCandidate,
+  findDoubleSubmissionCandidates,
   findRelatedPursuits,
   touchPursuit,
 } from "@/lib/db/pursuits";
@@ -48,10 +48,12 @@ function message(err: unknown): string {
  */
 async function store(input: EnquiryInput, now: Date): Promise<Stored> {
   const submission = toSubmission(input, now);
-  const candidate = await findDoubleSubmissionCandidate(input.email, now);
+  const candidates = await findDoubleSubmissionCandidates(input.email, now);
+  const candidate = candidates.find((row) => isDoubleSubmission(row, input, now)) ?? null;
 
-  if (candidate && isDoubleSubmission(candidate, input, now)) {
-    const meta: ActivityMeta = { submission };
+  if (candidate) {
+    const relatedToCandidate = await findRelatedPursuits(input.email, normaliseFirm(input.firm), candidate.id);
+    const meta: ActivityMeta = { submission, relatedPursuitIds: relatedToCandidate.map((row) => row.id) };
     const entry = await addActivity({ pursuitId: candidate.id, kind: "enquiry_received", actorId: "site", meta });
     try {
       await touchPursuit(candidate.id);

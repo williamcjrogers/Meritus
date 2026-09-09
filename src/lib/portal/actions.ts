@@ -8,11 +8,12 @@ import { addActivity, listActivity } from "@/lib/db/activity";
 import { listDocuments } from "@/lib/db/documents";
 import {
   createPursuitWithEnquiry,
-  declinePursuitGuarded,
+  declinePursuitGuardedWithActivity,
   deletePursuit as removePursuit,
   getPursuit,
   takePursuitGuarded,
   updatePursuit as patchPursuit,
+  updatePursuitWithActivity,
   type PursuitPatch,
 } from "@/lib/db/pursuits";
 import { clearQuestions as deleteQuestions } from "@/lib/db/questions";
@@ -185,20 +186,13 @@ function parseForm(
 
 // Shared steps ------------------------------------------------------------------------------
 
-async function logStageChange(
-  pursuitId: string,
-  actorId: string,
-  from: PursuitStage,
-  to: PursuitStage,
-  reason?: string | null
-): Promise<void> {
-  await addActivity({
-    pursuitId,
-    kind: "stage_changed",
+function stageChangeEntry(actorId: string, from: PursuitStage, to: PursuitStage, reason?: string | null) {
+  return {
+    kind: "stage_changed" as const,
     actorId,
     body: `Moved to ${stageLabel(to)}`,
     meta: { from, to, reason: asText(reason).trim() || null },
-  });
+  };
 }
 
 /** Explains a failed guarded update: the pursuit went, or another director got there first. */
@@ -299,9 +293,13 @@ export async function declinePursuit(id: string, reason: string): Promise<Action
     if (!pursuit) return notFound();
     const check = validateMove(pursuit.stage, "declined", asText(reason));
     if (!check.ok) return check;
-    const declined = await declinePursuitGuarded(id, userId, new Date());
+    const declined = await declinePursuitGuardedWithActivity(
+      id,
+      userId,
+      new Date(),
+      stageChangeEntry(userId, pursuit.stage, "declined", reason)
+    );
     if (!declined) return { ok: false, error: await whyGuardFailed(id) };
-    await logStageChange(id, userId, pursuit.stage, "declined", reason);
     return { ok: true };
   });
 }
@@ -328,8 +326,8 @@ export async function movePursuit(
       }
       patch.nextActionDue = revisitDue;
     }
-    await patchPursuit(id, patch);
-    await logStageChange(id, userId, pursuit.stage, to, reason);
+    const moved = await updatePursuitWithActivity(id, patch, stageChangeEntry(userId, pursuit.stage, to, reason));
+    if (!moved) return notFound();
     return { ok: true };
   });
 }
@@ -343,14 +341,16 @@ export async function reopenPursuit(id: string): Promise<ActionResult> {
       return { ok: false, error: "Only declined or dormant pursuits can be reopened" };
     }
     const to = resolveReopenStage(await listActivity(id));
-    await patchPursuit(id, { stage: to, stageChangedAt: new Date() });
-    await addActivity({
-      pursuitId: id,
+    // A revisit date set when parking the pursuit has done its job; without a next action it would only read as overdue.
+    const patch: PursuitPatch = { stage: to, stageChangedAt: new Date() };
+    if (pursuit.stage === "dormant" && !pursuit.nextAction) patch.nextActionDue = null;
+    const reopened = await updatePursuitWithActivity(id, patch, {
       kind: "reopened",
       actorId: userId,
       body: `Reopened at ${stageLabel(to)}`,
       meta: { from: pursuit.stage, to },
     });
+    if (!reopened) return notFound();
     return { ok: true };
   });
 }
@@ -373,15 +373,17 @@ export async function setOwner(id: string, ownerId: string | null): Promise<Acti
       }
       ownerName = director?.name ?? ownerName;
     }
-    const updated = await patchPursuit(id, { ownerId: owner });
+    const updated = await updatePursuitWithActivity(
+      id,
+      { ownerId: owner },
+      {
+        kind: "assigned",
+        actorId: userId,
+        body: owner ? `Assigned to ${ownerName}` : "Returned to the inbox",
+        meta: { ownerId: owner },
+      }
+    );
     if (!updated) return notFound();
-    await addActivity({
-      pursuitId: id,
-      kind: "assigned",
-      actorId: userId,
-      body: owner ? `Assigned to ${ownerName}` : "Returned to the inbox",
-      meta: { ownerId: owner },
-    });
     return { ok: true };
   });
 }
@@ -399,15 +401,17 @@ export async function setNextAction(id: string, text: string, due: string | null
       return { ok: false, error: "Give the due date as a valid date" };
     }
     const nextActionDue = nextAction && dueText ? dueText : null;
-    const updated = await patchPursuit(id, { nextAction: nextAction || null, nextActionDue });
+    const updated = await updatePursuitWithActivity(
+      id,
+      { nextAction: nextAction || null, nextActionDue },
+      {
+        kind: "next_action_set",
+        actorId: userId,
+        body: nextAction || "Next action cleared",
+        meta: { nextAction: nextAction || null, nextActionDue },
+      }
+    );
     if (!updated) return notFound();
-    await addActivity({
-      pursuitId: id,
-      kind: "next_action_set",
-      actorId: userId,
-      body: nextAction || "Next action cleared",
-      meta: { nextAction: nextAction || null, nextActionDue },
-    });
     return { ok: true };
   });
 }

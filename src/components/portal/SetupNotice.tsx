@@ -1,13 +1,14 @@
 import { getSetupFlags } from "@/lib/env";
+import { Eyebrow } from "./Eyebrow";
 
 export function SetupNotice({ title = "Portal setup required" }: { title?: string }) {
   const flags = getSetupFlags();
 
   return (
     <div className="bg-parchment border border-green/10 p-8">
-      <p className="font-mono text-[10px] tracking-[0.2em] uppercase text-brass mb-3">Setup</p>
+      <Eyebrow className="mb-3">Setup</Eyebrow>
       <h2 className="font-serif text-2xl text-green mb-3">{title}</h2>
-      <p className="text-[14px] text-slate leading-relaxed mb-6">
+      <p className="text-[14px] text-ink/70 leading-relaxed mb-6">
         The public site is unchanged. Marketplace services are still connecting. After
         Clerk is live, invite the three directors only; public sign-up stays off.
       </p>

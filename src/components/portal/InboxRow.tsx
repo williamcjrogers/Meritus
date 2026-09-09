@@ -22,6 +22,8 @@ export function InboxRow({
   alert,
   directors,
   now,
+  error: refusal,
+  onDismiss,
   onTake,
   onDecline,
 }: {
@@ -30,14 +32,19 @@ export function InboxRow({
   alert?: AlertOutcome;
   directors: Director[];
   now: Date;
+  /** A refusal the desk remembered for this row, for example "Taken by MD a moment ago". */
+  error?: string;
+  onDismiss?: () => void;
   onTake: (id: string) => Promise<ActionResult>;
   onDecline: (id: string, reason: string) => Promise<ActionResult>;
 }) {
   const [declining, setDeclining] = useState(false);
   const [reason, setReason] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [taken, setTaken] = useState<string | null>(null);
+  const [localError, setError] = useState<string | null>(null);
+  const [localTaken, setTaken] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const taken = localTaken ?? (refusal && /taken/i.test(refusal) ? refusal : null);
+  const error = localError ?? (refusal && !/taken/i.test(refusal) ? refusal : null);
 
   async function take() {
     setBusy(true);
@@ -106,6 +113,11 @@ export function InboxRow({
           <p className="flex items-center gap-2 text-[12px] text-ink/70">
             {takenInitials && <OwnerAvatar initials={takenInitials} name={taken} />}
             {taken}
+            {onDismiss && (
+              <button type="button" className="btn-quiet text-[11px]" onClick={onDismiss}>
+                Dismiss
+              </button>
+            )}
           </p>
         ) : declining ? (
           <form

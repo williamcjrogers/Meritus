@@ -48,11 +48,7 @@ export async function DELETE(
   const document = await getDocument(id);
   if (!document) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  try {
-    await del(document.blobUrl);
-  } catch (error) {
-    console.warn("blob delete failed", document.blobPathname, error);
-  }
+  // The database is authoritative: remove the row first so a listed file can never point at a missing blob.
   await deleteDocumentRow(id);
   if (document.pursuitId) {
     await addActivity({
@@ -62,6 +58,11 @@ export async function DELETE(
       body: `Removed ${document.title}`,
       meta: { documentId: document.id, title: document.title },
     });
+  }
+  try {
+    await del(document.blobUrl);
+  } catch (error) {
+    console.warn("blob delete failed", document.blobPathname, error);
   }
   return NextResponse.json({ ok: true });
 }
