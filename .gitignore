@@ -32,3 +32,6 @@ Meritus_Business_Plan.md
 Meritus_Website_Plan.md
 Meritus_Website_Spec.md
 .vercel
+
+# TypeScript incremental state
+tsconfig.tsbuildinfo
