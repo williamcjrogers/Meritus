@@ -1,6 +1,16 @@
-import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, gte, ilike, inArray, isNull, or, sql } from "drizzle-orm";
+import { normaliseFirm } from "@/lib/portal/intake";
 import { requireDb } from "./index";
-import { pursuits, type NewPursuit, type Pursuit, type PursuitStage } from "./schema";
+import {
+  activity as activityTable,
+  pursuits,
+  type Activity,
+  type ActivityKind,
+  type ActivityMeta,
+  type NewPursuit,
+  type Pursuit,
+  type PursuitStage,
+} from "./schema";
 
 export const ACTIVE_STAGES: readonly PursuitStage[] = ["enquiry", "scoping", "proposal"];
 
@@ -83,8 +93,12 @@ export type PursuitPatch = Partial<
     | "firm"
     | "contactName"
     | "contactEmail"
+    | "contactPhone"
     | "website"
     | "companyNumber"
+    | "party"
+    | "partyCompanyNumber"
+    | "counterparty"
     | "disputeNature"
     | "approximateValue"
     | "forum"
@@ -117,4 +131,133 @@ export async function touchPursuit(id: string): Promise<void> {
 export async function deletePursuit(id: string): Promise<void> {
   const db = requireDb();
   await db.delete(pursuits).where(eq(pursuits.id, id));
+}
+
+/** Everything the desk shows: the three active stages for the inbox and board, plus dormant for the revisit strip. */
+export async function listDeskPursuits(): Promise<Pursuit[]> {
+  const db = requireDb();
+  return db
+    .select()
+    .from(pursuits)
+    .where(inArray(pursuits.stage, [...ACTIVE_STAGES, "dormant"]))
+    .orderBy(pursuits.createdAt);
+}
+
+/**
+ * Assigns an unowned pursuit to a director. The `owner_id is null` guard means two directors
+ * pressing Take at once cannot both win; the loser gets false and the caller reports who won.
+ */
+export async function takePursuitGuarded(id: string, ownerId: string): Promise<boolean> {
+  const db = requireDb();
+  const rows = await db
+    .update(pursuits)
+    .set({ ownerId, updatedAt: new Date() })
+    .where(and(eq(pursuits.id, id), isNull(pursuits.ownerId)))
+    .returning({ id: pursuits.id });
+  return rows.length > 0;
+}
+
+/**
+ * Declines an unowned pursuit straight from the inbox, recording the declining director as
+ * its owner. Same guard as takePursuitGuarded; returns false when someone took it first.
+ */
+export async function declinePursuitGuarded(id: string, ownerId: string, now: Date): Promise<boolean> {
+  const db = requireDb();
+  const rows = await db
+    .update(pursuits)
+    .set({ stage: "declined", ownerId, stageChangedAt: now, updatedAt: now })
+    .where(and(eq(pursuits.id, id), isNull(pursuits.ownerId)))
+    .returning({ id: pursuits.id });
+  return rows.length > 0;
+}
+
+const DOUBLE_SUBMISSION_WINDOW_MS = 24 * 60 * 60 * 1000;
+const RELATED_CANDIDATE_LIMIT = 50;
+
+/** The most recent unowned enquiry from this address created within the last 24 hours, if any. */
+export async function findDoubleSubmissionCandidate(email: string, now: Date): Promise<Pursuit | null> {
+  const db = requireDb();
+  const since = new Date(now.getTime() - DOUBLE_SUBMISSION_WINDOW_MS);
+  const [row] = await db
+    .select()
+    .from(pursuits)
+    .where(
+      and(
+        eq(pursuits.contactEmail, email.trim().toLowerCase()),
+        eq(pursuits.stage, "enquiry"),
+        isNull(pursuits.ownerId),
+        gte(pursuits.createdAt, since)
+      )
+    )
+    .orderBy(desc(pursuits.createdAt))
+    .limit(1);
+  return row ?? null;
+}
+
+function escapeLike(value: string): string {
+  return value.replace(/[\\%_]/g, (c) => `\\${c}`);
+}
+
+/**
+ * Other pursuits sharing the contact email or the normalised firm name. Candidates come from
+ * the database by email and by a case-insensitive prefix of the firm; the firm comparison
+ * itself runs in code so both sides use the same normalisation.
+ */
+export async function findRelatedPursuits(
+  email: string | null,
+  firmNormalised: string,
+  excludeId?: string
+): Promise<Pursuit[]> {
+  const lowerEmail = email?.trim().toLowerCase() || null;
+  const prefix = firmNormalised.trim().split(" ")[0] ?? "";
+  const conditions = [
+    lowerEmail ? eq(pursuits.contactEmail, lowerEmail) : undefined,
+    prefix ? ilike(pursuits.firm, `${escapeLike(prefix)}%`) : undefined,
+  ].filter((c) => c !== undefined);
+  if (conditions.length === 0) return [];
+
+  const db = requireDb();
+  const rows = await db
+    .select()
+    .from(pursuits)
+    .where(or(...conditions))
+    .orderBy(desc(pursuits.updatedAt))
+    .limit(RELATED_CANDIDATE_LIMIT);
+
+  return rows.filter((row) => {
+    if (excludeId && row.id === excludeId) return false;
+    if (lowerEmail && row.contactEmail?.toLowerCase() === lowerEmail) return true;
+    return firmNormalised !== "" && normaliseFirm(row.firm) === firmNormalised;
+  });
+}
+
+export type ActivityEntry = {
+  id?: string;
+  kind: ActivityKind;
+  actorId: string;
+  body?: string | null;
+  meta?: ActivityMeta | null;
+};
+
+/** Inserts a pursuit and its first activity as one batch, so the pair is all or nothing. */
+export async function createPursuitWithEnquiry(
+  values: NewPursuit,
+  entry: ActivityEntry
+): Promise<{ pursuit: Pursuit; activity: Activity }> {
+  const db = requireDb();
+  const [pursuitRows, activityRows] = await db.batch([
+    db.insert(pursuits).values(values).returning(),
+    db
+      .insert(activityTable)
+      .values({
+        id: entry.id ?? crypto.randomUUID(),
+        pursuitId: values.id,
+        kind: entry.kind,
+        actorId: entry.actorId,
+        body: entry.body ?? null,
+        meta: entry.meta ?? null,
+      })
+      .returning(),
+  ]);
+  return { pursuit: pursuitRows[0], activity: activityRows[0] };
 }

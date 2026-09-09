@@ -29,6 +29,11 @@ export function isCompaniesHouseConfigured(): boolean {
   return Boolean(process.env.COMPANIES_HOUSE_API_KEY);
 }
 
+/** Enquiry alerts go out through Resend; without a key they are skipped and recorded as such. */
+export function isResendConfigured(): boolean {
+  return Boolean(process.env.RESEND_API_KEY);
+}
+
 export type SetupFlag = {
   key: string;
   ready: boolean;
@@ -42,6 +47,7 @@ export function getSetupFlags(): SetupFlag[] {
     { key: "Vercel Blob", ready: isBlobConfigured(), required: true },
     { key: "Vercel AI Gateway", ready: isAiConfigured(), required: true },
     { key: "Companies House", ready: isCompaniesHouseConfigured(), required: false },
+    { key: "Resend", ready: isResendConfigured(), required: false },
   ];
 }
 

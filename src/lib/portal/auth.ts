@@ -34,3 +34,23 @@ export function requireDatabaseOr503(): NextResponse | null {
   }
   return null;
 }
+
+export type ActionUser = { ok: true; userId: string } | { ok: false; error: string };
+
+/**
+ * The server-action counterpart of requirePortalUser: a result object rather than a
+ * NextResponse, so an action can hand it straight back to the client.
+ */
+export async function requireActionUser(): Promise<ActionUser> {
+  if (!isClerkConfigured()) {
+    return { ok: false, error: "Clerk is not configured" };
+  }
+  if (!isDatabaseConfigured()) {
+    return { ok: false, error: "DATABASE_URL is not configured" };
+  }
+  const { userId } = await auth();
+  if (!userId) {
+    return { ok: false, error: "Sign in again" };
+  }
+  return { ok: true, userId };
+}

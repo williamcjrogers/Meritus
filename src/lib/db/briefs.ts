@@ -35,7 +35,7 @@ export async function expireStaleRuns(pursuitId: string): Promise<void> {
   const db = requireDb();
   await db
     .update(briefs)
-    .set({ status: "failed", error: "Superseded by a newer run" })
+    .set({ status: "failed", error: "Timed out, try again" })
     .where(
       and(
         eq(briefs.pursuitId, pursuitId),

@@ -1,64 +1,79 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { UserButton } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { HallmarkLogo } from "@/components/icons/HallmarkLogo";
+import { DirectorMenu } from "@/components/portal/DirectorMenu";
+import { Eyebrow } from "@/components/portal/Eyebrow";
+import { NavLink } from "@/components/portal/NavLink";
 import { isClerkConfigured } from "@/lib/env";
+import { getDirector } from "@/lib/portal/directors";
 
 export const metadata: Metadata = {
-  title: "Partner portal",
+  title: "Pursuit desk",
   robots: { index: false, follow: false },
 };
 
 export const dynamic = "force-dynamic";
 
-const NAV = [
-  { href: "/portal", label: "Home" },
-  { href: "/portal/leads", label: "Leads" },
-  { href: "/portal/library", label: "Library" },
-] as const;
+async function signedInDirectorName(): Promise<string | null> {
+  if (!isClerkConfigured()) return null;
+  try {
+    const { userId } = await auth();
+    if (!userId) return null;
+    const director = await getDirector(userId);
+    return director?.name ?? null;
+  } catch {
+    return null;
+  }
+}
 
-export default function PortalLayout({ children }: { children: React.ReactNode }) {
+export default async function PortalLayout({ children }: { children: React.ReactNode }) {
+  const name = await signedInDirectorName();
+  const clerk = isClerkConfigured();
+
   return (
-    <div className="min-h-screen bg-stone text-ink">
-      <aside className="fixed inset-y-0 left-0 z-20 hidden w-56 flex-col bg-green text-cream lg:flex">
-        <div className="px-5 pt-8 pb-6 border-b border-brass/15">
-          <HallmarkLogo size="header" variant="light" />
-          <p className="mt-3 font-mono text-[9px] tracking-[0.25em] uppercase text-brass/80">
-            Partner portal
-          </p>
+    <div className="portal min-h-screen bg-stone text-ink">
+      <aside className="grain fixed inset-y-0 left-0 z-20 hidden w-56 flex-col bg-green text-cream lg:flex">
+        <div className="border-b border-brass/15 px-3 pb-5 pt-7">
+          <Link href="/portal" aria-label="Pursuit desk home" className="block">
+            <HallmarkLogo size="header" variant="light" />
+          </Link>
+          <Eyebrow tone="brass" className="mt-3 px-1">
+            Pursuit desk
+          </Eyebrow>
         </div>
-        <nav className="flex-1 px-3 py-6 space-y-1" aria-label="Portal">
-          {NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="block px-3 py-2 text-[13px] text-cream/75 hover:text-brass hover:bg-white/5 transition-colors"
-            >
-              {item.label}
-            </Link>
-          ))}
+        <nav className="flex-1 space-y-1 py-5" aria-label="Portal">
+          <NavLink href="/portal" match="desk">
+            Home
+          </NavLink>
+          <NavLink href="/portal/library">
+            Library
+          </NavLink>
         </nav>
-        <div className="px-5 py-5 border-t border-brass/15">
-          <Link href="/" className="font-mono text-[10px] tracking-[0.2em] uppercase text-brass hover:text-brass-light">
+        <div className="space-y-4 border-t border-brass/15 px-4 py-5">
+          {clerk && <DirectorMenu name={name} />}
+          <Link href="/" className="inline-block font-mono text-[10px] tracking-[0.2em] uppercase text-brass hover:text-brass-light">
             Back to site
           </Link>
         </div>
       </aside>
 
       <div className="lg:pl-56">
-        <header className="sticky top-0 z-10 flex items-center justify-between gap-4 border-b border-green/10 bg-stone/95 px-4 py-3 backdrop-blur lg:px-8">
-          <nav className="flex items-center gap-4 lg:hidden" aria-label="Portal mobile">
-            {NAV.map((item) => (
-              <Link key={item.href} href={item.href} className="text-[12px] text-green/70 hover:text-green">
-                {item.label}
-              </Link>
-            ))}
+        <header className="grain sticky top-0 z-10 flex items-center justify-between gap-4 bg-green px-4 py-3 text-cream lg:hidden">
+          <Link href="/portal" aria-label="Pursuit desk home" className="shrink-0">
+            <HallmarkLogo size="favicon" variant="light" />
+          </Link>
+          <nav className="flex items-center gap-4" aria-label="Portal">
+            <NavLink href="/portal" match="desk" variant="bar">
+              Home
+            </NavLink>
+            <NavLink href="/portal/library" variant="bar">
+              Library
+            </NavLink>
           </nav>
-          <div className="ml-auto flex items-center gap-3">
-            {isClerkConfigured() ? <UserButton /> : null}
-          </div>
+          {clerk ? <DirectorMenu name={name} compact /> : <span />}
         </header>
-        <main id="main-content" className="px-4 py-8 lg:px-10 lg:py-10">
+        <main id="main-content" className="px-4 py-6 lg:px-10 lg:py-10">
           {children}
         </main>
       </div>

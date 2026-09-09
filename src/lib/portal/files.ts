@@ -1,3 +1,5 @@
+import type { DocumentRow } from "@/lib/db/schema";
+
 export const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
 
 const ALLOWED_MIME = new Set([
@@ -8,9 +10,22 @@ const ALLOWED_MIME = new Set([
   "image/png",
   "image/webp",
   "text/plain",
+  "message/rfc822",
+  "application/vnd.ms-outlook",
 ]);
 
-const ALLOWED_EXT = new Set([".pdf", ".docx", ".xlsx", ".jpg", ".jpeg", ".png", ".webp", ".txt"]);
+const ALLOWED_EXT = new Set([
+  ".pdf",
+  ".docx",
+  ".xlsx",
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".webp",
+  ".txt",
+  ".eml",
+  ".msg",
+]);
 
 export function isAllowedUpload(fileName: string, mime: string): boolean {
   const ext = extensionOf(fileName);
@@ -25,4 +40,9 @@ export function extensionOf(fileName: string): string {
 
 export function sanitizeFileName(fileName: string): string {
   return fileName.replace(/[^\w.\- ()]+/g, "_").slice(0, 180);
+}
+
+/** True when the questions drawer can read the document, shown as the "text" or "no text" tag. */
+export function hasReadableText(doc: Pick<DocumentRow, "extractedText">): boolean {
+  return typeof doc.extractedText === "string" && doc.extractedText.trim().length > 0;
 }

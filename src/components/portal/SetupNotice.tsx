@@ -9,7 +9,7 @@ export function SetupNotice({ title = "Portal setup required" }: { title?: strin
       <h2 className="font-serif text-2xl text-green mb-3">{title}</h2>
       <p className="text-[14px] text-slate leading-relaxed mb-6">
         The public site is unchanged. Marketplace services are still connecting. After
-        Clerk is live, invite partners only — public sign-up stays off.
+        Clerk is live, invite the three directors only; public sign-up stays off.
       </p>
       <ul className="space-y-2">
         {flags.map((flag) => (

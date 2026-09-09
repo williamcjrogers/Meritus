@@ -49,3 +49,9 @@ export async function latestStageChanges(pursuitIds: string[]): Promise<Map<stri
   }
   return result;
 }
+
+/** Replaces an activity's meta, used to record the alert outcome on an enquiry after the email is attempted. */
+export async function updateActivityMeta(id: string, meta: ActivityMeta): Promise<void> {
+  const db = requireDb();
+  await db.update(activity).set({ meta }).where(eq(activity.id, id));
+}

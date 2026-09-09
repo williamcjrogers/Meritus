@@ -1,4 +1,5 @@
 import { put } from "@vercel/blob";
+import { addActivity } from "@/lib/db/activity";
 import { insertDocument } from "@/lib/db/documents";
 import type { DocumentScope } from "@/lib/db/schema";
 import { isBlobConfigured } from "@/lib/env";
@@ -28,11 +29,12 @@ export async function storePortalDocument(input: {
   const id = crypto.randomUUID();
   const fileName = sanitizeFileName(input.file.name);
   const pathname = `portal/${input.scope}/${input.pursuitId ?? "firm"}/${id}-${fileName}`;
+  // Extract before writing the blob so a failure here leaves nothing behind in the store.
+  const extractedText = await extractUploadText(input.file);
   const blob = await put(pathname, input.file, {
     access: "private",
     addRandomSuffix: false,
   });
-  const extractedText = await extractUploadText(input.file);
 
   const row = await insertDocument({
       id,
@@ -47,6 +49,16 @@ export async function storePortalDocument(input: {
       extractedText,
       uploadedBy: input.uploadedBy,
   });
+
+  if (row.scope === "pursuit" && row.pursuitId) {
+    await addActivity({
+      pursuitId: row.pursuitId,
+      kind: "file_added",
+      actorId: input.uploadedBy,
+      body: `Added ${row.title}`,
+      meta: { documentId: row.id, title: row.title },
+    });
+  }
 
   return row;
 }
