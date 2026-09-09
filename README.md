@@ -29,6 +29,10 @@ Schema lives in `src/lib/db/schema.ts`; migrations in `drizzle/`. Generate a mig
 3. **Vercel firewall**: add a rate-limit rule for `POST /api/contact`.
 4. **Companies House**: set `COMPANIES_HOUSE_API_KEY` so briefs carry register facts.
 
+### Uploads
+
+Files on a pursuit or in the library are capped at 4 MB because Vercel functions refuse larger request bodies. Allowed types: pdf, docx, xlsx, jpg, png, webp, txt, eml, msg; text is extracted from pdf, docx, eml and txt for the questions drawer.
+
 ### Environment
 
 See `.env.example`. `RESEND_API_KEY` is optional; without it enquiries are still stored and the inbox row shows "Alert not sent".
