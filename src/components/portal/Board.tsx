@@ -2,7 +2,7 @@
 
 import type { BoardColumns, BoardStage } from "@/lib/portal/board";
 import { BOARD_STAGES, stageLabel } from "@/lib/portal/stages";
-import type { Director } from "@/lib/portal/directors";
+import type { Director } from "@/lib/portal/director-helpers";
 import { Eyebrow } from "./Eyebrow";
 import { PursuitCard, type CardMoveHandler } from "./PursuitCard";
 

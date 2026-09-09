@@ -14,7 +14,7 @@ export type PursuitFormInput = {
   disputeNature: string;
   approximateValue?: string;
   forum?: string;
-  source: "referral" | "introduction" | "existing_client" | "other";
+  source: "site_form" | "referral" | "introduction" | "existing_client" | "other";
   sourceDetail?: string;
   summary?: string;
 };

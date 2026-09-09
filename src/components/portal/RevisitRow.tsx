@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import type { Pursuit, PursuitStage } from "@/lib/db/schema";
 import { dueLabel } from "@/lib/portal/dates";
-import { directorInitials, directorName, type Director } from "@/lib/portal/directors";
+import { directorInitials, directorName, type Director } from "@/lib/portal/director-helpers";
 import { stageLabel } from "@/lib/portal/stages";
 import type { ActionResult } from "@/lib/portal/types";
 import { OwnerAvatar } from "./OwnerAvatar";

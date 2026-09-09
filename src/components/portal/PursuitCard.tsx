@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { Pursuit, PursuitStage } from "@/lib/db/schema";
 import { daysInStage, dueLabel, isOverdue } from "@/lib/portal/dates";
-import { directorInitials, directorName, type Director } from "@/lib/portal/directors";
+import { directorInitials, directorName, type Director } from "@/lib/portal/director-helpers";
 import type { ActionResult } from "@/lib/portal/types";
 import { MoveToMenu } from "./MoveToMenu";
 import { OwnerAvatar } from "./OwnerAvatar";

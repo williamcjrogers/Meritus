@@ -107,6 +107,7 @@ export function PursuitForm({
           <label className="block">
             <span className="portal-label">Source</span>
             <select name="source" defaultValue={initial.source ?? "referral"} className="portal-field">
+              {initial.source === "site_form" && <option value="site_form">Site form</option>}
               {SOURCES.map((source) => (
                 <option key={source.value} value={source.value}>
                   {source.label}

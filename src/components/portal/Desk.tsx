@@ -3,7 +3,7 @@
 import { startTransition, useMemo, useOptimistic } from "react";
 import type { Pursuit, PursuitStage } from "@/lib/db/schema";
 import { partitionDesk, type Scope } from "@/lib/portal/board";
-import type { Director } from "@/lib/portal/directors";
+import type { Director } from "@/lib/portal/director-helpers";
 import { declinePursuit, movePursuit, reopenPursuit, takePursuit } from "@/lib/portal/actions";
 import type { ActionResult } from "@/lib/portal/types";
 import { Board } from "./Board";

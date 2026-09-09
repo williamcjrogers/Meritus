@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Activity, Pursuit, PursuitStage } from "@/lib/db/schema";
 import { dueLabel, shortDate } from "@/lib/portal/dates";
-import { directorInitials, directorName, type Director } from "@/lib/portal/directors";
+import { directorInitials, directorName, type Director } from "@/lib/portal/director-helpers";
 import { stageLabel } from "@/lib/portal/stages";
 import { Eyebrow } from "./Eyebrow";
 import { OwnerAvatar } from "./OwnerAvatar";
@@ -53,20 +53,20 @@ export function StageList({
                       {pursuit.firm}
                     </Link>
                   </td>
-                  <td className="px-4 py-3 text-ink/70">{pursuit.disputeNature ?? "—"}</td>
+                  <td className="px-4 py-3 text-ink/70">{pursuit.disputeNature ?? "–"}</td>
                   <td className="px-4 py-3">
                     <OwnerAvatar initials={directorInitials(directors, pursuit.ownerId)} name={directorName(directors, pursuit.ownerId)} />
                   </td>
                   <td className="whitespace-nowrap px-4 py-3 font-mono text-[11px] text-ink/70">{shortDate(pursuit.stageChangedAt)}</td>
                   {dormant && (
                     <td className="px-4 py-3 text-ink/80">
-                      {pursuit.nextAction ?? "—"}
+                      {pursuit.nextAction ?? "–"}
                       {pursuit.nextActionDue && (
                         <span className="ml-2 font-mono text-[10px] tracking-[0.05em] text-ink/60">due {dueLabel(pursuit.nextActionDue)}</span>
                       )}
                     </td>
                   )}
-                  <td className="px-4 py-3 text-ink/70">{change?.meta?.reason ?? "—"}</td>
+                  <td className="px-4 py-3 text-ink/70">{change?.meta?.reason ?? "–"}</td>
                 </tr>
               ))
             )}

@@ -1,4 +1,4 @@
-import { UNASSIGNED_INITIALS } from "@/lib/portal/directors";
+import { UNASSIGNED_INITIALS } from "@/lib/portal/director-helpers";
 
 const SIZES = { sm: "h-6 w-6 text-[9px]", md: "h-7 w-7 text-[10px]", lg: "h-9 w-9 text-[12px]" } as const;
 
@@ -16,7 +16,7 @@ export function OwnerAvatar({
   current?: boolean;
   className?: string;
 }) {
-  const unassigned = !initials || initials === UNASSIGNED_INITIALS || initials === "—";
+  const unassigned = !initials || initials === UNASSIGNED_INITIALS;
   return (
     <span
       title={name}
