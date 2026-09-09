@@ -5,15 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1788876800000,
-      "tag": "0000_portal",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1788908800000,
-      "tag": "0001_lead_website",
+      "when": 1788918656735,
+      "tag": "0000_pursuit_desk",
       "breakpoints": true
     }
   ]

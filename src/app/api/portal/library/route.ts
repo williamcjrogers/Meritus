@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireDatabaseOr503, requirePortalUser, setupResponse } from "@/lib/portal/auth";
-import { listDocuments } from "@/lib/db/queries";
+import { listDocuments } from "@/lib/db/documents";
 import { storePortalDocument } from "@/lib/portal/upload";
 import { isBlobConfigured } from "@/lib/env";
 

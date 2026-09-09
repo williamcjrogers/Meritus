@@ -1,62 +1,107 @@
 import {
+  date,
+  index,
+  integer,
+  jsonb,
   pgEnum,
   pgTable,
   text,
   timestamp,
-  integer,
-  jsonb,
 } from "drizzle-orm/pg-core";
 
-export const leadStatusEnum = pgEnum("lead_status", [
-  "new",
-  "researching",
-  "conflict_check",
+// Stages a pursuit passes through. There is no conflict-check stage.
+export const PURSUIT_STAGES = [
+  "enquiry",
+  "scoping",
+  "proposal",
   "instructed",
   "declined",
-  "parked",
-]);
+  "dormant",
+] as const;
+export const pursuitStageEnum = pgEnum("pursuit_stage", PURSUIT_STAGES);
 
-export const noteSourceEnum = pgEnum("note_source", ["human", "research", "chat"]);
+export const PURSUIT_SOURCES = [
+  "site_form",
+  "referral",
+  "introduction",
+  "existing_client",
+  "other",
+] as const;
+export const pursuitSourceEnum = pgEnum("pursuit_source", PURSUIT_SOURCES);
 
-export const documentScopeEnum = pgEnum("document_scope", ["lead", "library"]);
+export const ACTIVITY_KINDS = [
+  "enquiry_received",
+  "created",
+  "assigned",
+  "note",
+  "stage_changed",
+  "file_added",
+  "file_removed",
+  "brief_generated",
+  "next_action_set",
+  "reopened",
+] as const;
+export const activityKindEnum = pgEnum("activity_kind", ACTIVITY_KINDS);
 
-export const researchStatusEnum = pgEnum("research_status", [
-  "running",
-  "complete",
-  "failed",
-]);
+export const briefStatusEnum = pgEnum("brief_status", ["running", "complete", "failed"]);
 
-export const leads = pgTable("leads", {
-  id: text("id").primaryKey(),
-  companyName: text("company_name").notNull(),
-  companyNumber: text("company_number"),
-  website: text("website"),
-  contactName: text("contact_name"),
-  contactEmail: text("contact_email"),
-  source: text("source"),
-  status: leadStatusEnum("status").notNull().default("new"),
-  notesSummary: text("notes_summary"),
-  vericaseWorkspaceId: text("vericase_workspace_id"),
-  createdBy: text("created_by").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
-});
+export const documentScopeEnum = pgEnum("document_scope", ["pursuit", "library"]);
 
-export const notes = pgTable("notes", {
-  id: text("id").primaryKey(),
-  leadId: text("lead_id")
-    .notNull()
-    .references(() => leads.id, { onDelete: "cascade" }),
-  authorId: text("author_id").notNull(),
-  body: text("body").notNull(),
-  source: noteSourceEnum("source").notNull().default("human"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+export const pursuits = pgTable(
+  "pursuits",
+  {
+    id: text("id").primaryKey(),
+    firm: text("firm").notNull(),
+    contactName: text("contact_name"),
+    contactEmail: text("contact_email"),
+    contactPhone: text("contact_phone"),
+    website: text("website"),
+    companyNumber: text("company_number"),
+    party: text("party"),
+    partyCompanyNumber: text("party_company_number"),
+    counterparty: text("counterparty"),
+    disputeNature: text("dispute_nature"),
+    approximateValue: text("approximate_value"),
+    forum: text("forum"),
+    summary: text("summary"),
+    source: pursuitSourceEnum("source").notNull(),
+    sourceDetail: text("source_detail"),
+    ownerId: text("owner_id"),
+    stage: pursuitStageEnum("stage").notNull().default("enquiry"),
+    stageChangedAt: timestamp("stage_changed_at", { withTimezone: true }).notNull().defaultNow(),
+    nextAction: text("next_action"),
+    nextActionDue: date("next_action_due"),
+    createdBy: text("created_by").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("pursuits_stage_owner_idx").on(t.stage, t.ownerId),
+    index("pursuits_contact_email_idx").on(t.contactEmail),
+    index("pursuits_updated_at_idx").on(t.updatedAt),
+  ]
+);
+
+export const activity = pgTable(
+  "activity",
+  {
+    id: text("id").primaryKey(),
+    pursuitId: text("pursuit_id")
+      .notNull()
+      .references(() => pursuits.id, { onDelete: "cascade" }),
+    kind: activityKindEnum("kind").notNull(),
+    actorId: text("actor_id").notNull(),
+    body: text("body"),
+    meta: jsonb("meta").$type<ActivityMeta>(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("activity_pursuit_created_idx").on(t.pursuitId, t.createdAt)]
+);
 
 export const documents = pgTable("documents", {
   id: text("id").primaryKey(),
   scope: documentScopeEnum("scope").notNull(),
-  leadId: text("lead_id").references(() => leads.id, { onDelete: "cascade" }),
+  pursuitId: text("pursuit_id").references(() => pursuits.id, { onDelete: "cascade" }),
   title: text("title").notNull(),
   blobUrl: text("blob_url").notNull(),
   blobPathname: text("blob_pathname").notNull(),
@@ -68,64 +113,130 @@ export const documents = pgTable("documents", {
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
-export const researchRuns = pgTable("research_runs", {
-  id: text("id").primaryKey(),
-  leadId: text("lead_id")
-    .notNull()
-    .references(() => leads.id, { onDelete: "cascade" }),
-  status: researchStatusEnum("status").notNull().default("running"),
-  dossierJson: jsonb("dossier_json").$type<ResearchDossier>(),
-  error: text("error"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+export const briefs = pgTable(
+  "briefs",
+  {
+    id: text("id").primaryKey(),
+    pursuitId: text("pursuit_id")
+      .notNull()
+      .references(() => pursuits.id, { onDelete: "cascade" }),
+    status: briefStatusEnum("status").notNull().default("running"),
+    facts: jsonb("facts").$type<BriefFacts>(),
+    analysis: jsonb("analysis").$type<BriefAnalysisLine[]>(),
+    summary: text("summary"),
+    sources: jsonb("sources").$type<string[]>(),
+    error: text("error"),
+    createdBy: text("created_by").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("briefs_pursuit_created_idx").on(t.pursuitId, t.createdAt)]
+);
+
+export const questions = pgTable(
+  "questions",
+  {
+    id: text("id").primaryKey(),
+    pursuitId: text("pursuit_id")
+      .notNull()
+      .references(() => pursuits.id, { onDelete: "cascade" }),
+    role: text("role").notNull(),
+    content: text("content").notNull(),
+    sources: jsonb("sources").$type<QuestionSource[]>(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("questions_pursuit_created_idx").on(t.pursuitId, t.createdAt)]
+);
+
+/** Submission counters for the public form. Keys are hashed ("email:<sha256>", "ip:<sha256>", "global"). */
+export const enquiryThrottle = pgTable("enquiry_throttle", {
+  key: text("key").primaryKey(),
+  count: integer("count").notNull(),
+  windowStart: timestamp("window_start", { withTimezone: true }).notNull(),
 });
 
-export const chatThreads = pgTable("chat_threads", {
-  id: text("id").primaryKey(),
-  leadId: text("lead_id")
-    .notNull()
-    .references(() => leads.id, { onDelete: "cascade" }),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export const chatMessages = pgTable("chat_messages", {
-  id: text("id").primaryKey(),
-  threadId: text("thread_id")
-    .notNull()
-    .references(() => chatThreads.id, { onDelete: "cascade" }),
-  role: text("role").notNull(),
-  content: text("content").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export type LeadStatus = (typeof leadStatusEnum.enumValues)[number];
-export type NoteSource = (typeof noteSourceEnum.enumValues)[number];
+export type PursuitStage = (typeof PURSUIT_STAGES)[number];
+export type PursuitSource = (typeof PURSUIT_SOURCES)[number];
+export type ActivityKind = (typeof ACTIVITY_KINDS)[number];
+export type BriefStatus = (typeof briefStatusEnum.enumValues)[number];
 export type DocumentScope = (typeof documentScopeEnum.enumValues)[number];
-export type ResearchStatus = (typeof researchStatusEnum.enumValues)[number];
 
-export type Lead = typeof leads.$inferSelect;
-export type NewLead = typeof leads.$inferInsert;
-export type Note = typeof notes.$inferSelect;
+export type Pursuit = typeof pursuits.$inferSelect;
+export type NewPursuit = typeof pursuits.$inferInsert;
+export type Activity = typeof activity.$inferSelect;
+export type NewActivity = typeof activity.$inferInsert;
 export type DocumentRow = typeof documents.$inferSelect;
-export type ResearchRun = typeof researchRuns.$inferSelect;
-export type ChatThread = typeof chatThreads.$inferSelect;
-export type ChatMessage = typeof chatMessages.$inferSelect;
+export type Brief = typeof briefs.$inferSelect;
+export type Question = typeof questions.$inferSelect;
 
-export type ResearchDossier = {
-  company: {
-    name: string;
-    number?: string;
-    status?: string;
-    incorporatedOn?: string;
-    address?: string;
-    sicCodes?: string[];
-  };
-  officers: Array<{
-    name: string;
-    role?: string;
-    appointedOn?: string;
-  }>;
-  filingsHint: string;
-  newsAndRisks: string[];
-  sources: string[];
-  summary: string;
+/** The public form submission exactly as received, stored on the enquiry_received activity. */
+export type EnquirySubmission = {
+  name: string;
+  firm: string;
+  email: string;
+  disputeNature: string;
+  approximateValue?: string | null;
+  forum?: string | null;
+  description?: string | null;
+  receivedAt: string;
 };
+
+export type AlertOutcome =
+  | { sentAt: string; recipients: number }
+  | { error: string }
+  | { skipped: "not_configured" };
+
+export type ActivityMeta = {
+  from?: PursuitStage;
+  to?: PursuitStage;
+  reason?: string | null;
+  documentId?: string;
+  title?: string;
+  submission?: EnquirySubmission;
+  /** Other pursuits with the same contact email or firm at the time the enquiry arrived. */
+  relatedPursuitIds?: string[];
+  alert?: AlertOutcome;
+  briefId?: string;
+  nextAction?: string | null;
+  nextActionDue?: string | null;
+  ownerId?: string | null;
+};
+
+export type BriefOfficer = { name: string; role?: string | null; appointedOn?: string | null };
+
+export type CompanyCandidate = {
+  number: string;
+  title: string;
+  status?: string | null;
+  address?: string | null;
+};
+
+export type BriefFacts = {
+  /** Which organisation the brief is about: the party when set, otherwise the firm. */
+  subject: string;
+  /** "confirmed" when the number was supplied or matched exactly; "unconfirmed" when only candidates exist. */
+  match: "confirmed" | "unconfirmed" | "none";
+  candidates?: CompanyCandidate[];
+  companyName?: string | null;
+  companyNumber?: string | null;
+  status?: string | null;
+  incorporatedOn?: string | null;
+  registeredAddress?: string | null;
+  sicCodes: string[];
+  officers: BriefOfficer[];
+  chargesCount?: number | null;
+  accountsOverdue?: boolean | null;
+  fetchedAt: string;
+  source: "Companies House";
+};
+
+export const ANALYSIS_SOURCES = ["companies_house", "enquiry", "web", "reasoning"] as const;
+export type AnalysisSource = (typeof ANALYSIS_SOURCES)[number];
+
+export type BriefAnalysisLine = {
+  text: string;
+  kind: "fact" | "inference";
+  source: AnalysisSource;
+  url: string | null;
+};
+
+export type QuestionSource = { label: string; url?: string | null };

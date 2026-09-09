@@ -1,6 +1,6 @@
 import { put } from "@vercel/blob";
-import { requireDb } from "@/lib/db";
-import { documents, type DocumentScope } from "@/lib/db/schema";
+import { insertDocument } from "@/lib/db/documents";
+import type { DocumentScope } from "@/lib/db/schema";
 import { isBlobConfigured } from "@/lib/env";
 import { extractUploadText } from "@/lib/research/extract-text";
 import { isAllowedUpload, MAX_UPLOAD_BYTES, sanitizeFileName } from "./files";
@@ -8,7 +8,7 @@ import { isAllowedUpload, MAX_UPLOAD_BYTES, sanitizeFileName } from "./files";
 export async function storePortalDocument(input: {
   file: File;
   scope: DocumentScope;
-  leadId?: string | null;
+  pursuitId?: string | null;
   uploadedBy: string;
   title?: string;
 }) {
@@ -21,26 +21,23 @@ export async function storePortalDocument(input: {
   if (!isAllowedUpload(input.file.name, input.file.type || "application/octet-stream")) {
     throw new Error("File type not allowed");
   }
-  if (input.scope === "lead" && !input.leadId) {
-    throw new Error("Lead is required for lead documents");
+  if (input.scope === "pursuit" && !input.pursuitId) {
+    throw new Error("A pursuit is required for pursuit documents");
   }
 
   const id = crypto.randomUUID();
   const fileName = sanitizeFileName(input.file.name);
-  const pathname = `portal/${input.scope}/${input.leadId ?? "firm"}/${id}-${fileName}`;
+  const pathname = `portal/${input.scope}/${input.pursuitId ?? "firm"}/${id}-${fileName}`;
   const blob = await put(pathname, input.file, {
     access: "private",
     addRandomSuffix: false,
   });
   const extractedText = await extractUploadText(input.file);
 
-  const db = requireDb();
-  const [row] = await db
-    .insert(documents)
-    .values({
+  const row = await insertDocument({
       id,
       scope: input.scope,
-      leadId: input.scope === "lead" ? input.leadId ?? null : null,
+      pursuitId: input.scope === "pursuit" ? input.pursuitId ?? null : null,
       title: input.title?.trim() || fileName,
       blobUrl: blob.url,
       blobPathname: blob.pathname,
@@ -49,8 +46,7 @@ export async function storePortalDocument(input: {
       size: input.file.size,
       extractedText,
       uploadedBy: input.uploadedBy,
-    })
-    .returning();
+  });
 
   return row;
 }

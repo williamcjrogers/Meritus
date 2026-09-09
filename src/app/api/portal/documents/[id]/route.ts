@@ -1,9 +1,7 @@
 import { del, get } from "@vercel/blob";
-import { eq } from "drizzle-orm";
 import { NextResponse } from "next/server";
-import { requireDb } from "@/lib/db";
-import { documents } from "@/lib/db/schema";
-import { getDocument } from "@/lib/db/queries";
+import { deleteDocumentRow, getDocument } from "@/lib/db/documents";
+import { addActivity } from "@/lib/db/activity";
 import { requireDatabaseOr503, requirePortalUser, setupResponse } from "@/lib/portal/auth";
 import { isBlobConfigured } from "@/lib/env";
 
@@ -50,7 +48,20 @@ export async function DELETE(
   const document = await getDocument(id);
   if (!document) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  await del(document.blobUrl);
-  await requireDb().delete(documents).where(eq(documents.id, id));
+  try {
+    await del(document.blobUrl);
+  } catch (error) {
+    console.warn("blob delete failed", document.blobPathname, error);
+  }
+  await deleteDocumentRow(id);
+  if (document.pursuitId) {
+    await addActivity({
+      pursuitId: document.pursuitId,
+      kind: "file_removed",
+      actorId: gate.userId,
+      body: `Removed ${document.title}`,
+      meta: { documentId: document.id, title: document.title },
+    });
+  }
   return NextResponse.json({ ok: true });
 }
