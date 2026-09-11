@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { startTransition, useEffect, useMemo, useOptimistic, useRef, useState } from "react";
 import type { Activity, Pursuit, PursuitStage } from "@/lib/db/schema";
 import type { DocumentSummary } from "@/lib/portal/files";
+import type { ProgrammeListItem } from "@/lib/programme/view";
 import { fullDate, isOverdue, shortDate } from "@/lib/portal/dates";
 import type { Director } from "@/lib/portal/director-helpers";
 import {
@@ -27,6 +28,7 @@ import { BriefPanel, type BriefState, type BriefSubject } from "./BriefPanel";
 import { ConfirmDialog } from "./ConfirmDialog";
 import { Eyebrow } from "./Eyebrow";
 import { FileList } from "./FileList";
+import { ProgrammePanel } from "./ProgrammePanel";
 import { MoveToMenu } from "./MoveToMenu";
 import { NextActionField } from "./NextActionField";
 import { NoteBox } from "./NoteBox";
@@ -86,6 +88,7 @@ export function PursuitShell({
   documents,
   briefState,
   questions,
+  programmes,
   now,
 }: {
   pursuit: Pursuit;
@@ -97,6 +100,7 @@ export function PursuitShell({
   documents: DocumentSummary[];
   briefState: BriefState;
   questions: AskMessage[];
+  programmes: ProgrammeListItem[];
   now: string;
 }) {
   const router = useRouter();
@@ -352,6 +356,9 @@ export function PursuitShell({
             onPick={(number) => setCompanyNumber(pursuit.id, number, subject.target)}
             onComplete={() => router.refresh()}
           />
+          <div className="mt-6">
+            <ProgrammePanel pursuitId={pursuit.id} programmes={programmes} />
+          </div>
         </div>
 
         <aside className="order-2 space-y-6 lg:order-none lg:col-span-4 lg:row-span-2">
