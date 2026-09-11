@@ -154,14 +154,75 @@ export const enquiryThrottle = pgTable("enquiry_throttle", {
   windowStart: timestamp("window_start", { withTimezone: true }).notNull(),
 });
 
+export const PROSPECT_CONFLICTS = [
+  "hard_conflict",
+  "latent_conflict",
+  "competitor",
+  "related_party",
+  "excluded",
+  "other",
+] as const;
+export const prospectConflictEnum = pgEnum("prospect_conflict", PROSPECT_CONFLICTS);
+
+export const PROSPECT_EVIDENCE = ["researched", "tracker", "sector_profile"] as const;
+export const prospectEvidenceEnum = pgEnum("prospect_evidence", PROSPECT_EVIDENCE);
+
+export const PROSPECT_OUTREACH = [
+  "unworked",
+  "approaching",
+  "contacted",
+  "parked",
+  "converted",
+  "do_not_approach",
+] as const;
+export const prospectOutreachEnum = pgEnum("prospect_outreach", PROSPECT_OUTREACH);
+
+export const PROSPECT_SOURCE_LISTS = ["ranked", "excluded"] as const;
+export const prospectSourceEnum = pgEnum("prospect_source_list", PROSPECT_SOURCE_LISTS);
+
+/** Outbound target firms. Separate from inbound pursuits and from the public enquiry inbox. */
+export const prospects = pgTable(
+  "prospects",
+  {
+    id: text("id").primaryKey(),
+    organisation: text("organisation").notNull().unique(),
+    organisationType: text("organisation_type"),
+    conflictTier: prospectConflictEnum("conflict_tier").notNull(),
+    rank: integer("rank"),
+    need: integer("need"),
+    gap: integer("gap"),
+    capacity: integer("capacity"),
+    access: integer("access"),
+    valueScore: integer("value_score"),
+    evidence: prospectEvidenceEnum("evidence"),
+    whyTheyNeedYou: text("why_they_need_you"),
+    routeInNote: text("route_in_note"),
+    sourceList: prospectSourceEnum("source_list").notNull(),
+    outreachStatus: prospectOutreachEnum("outreach_status").notNull().default("unworked"),
+    partnerNotes: text("partner_notes"),
+    convertedPursuitId: text("converted_pursuit_id").references(() => pursuits.id, {
+      onDelete: "set null",
+    }),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("prospects_conflict_rank_idx").on(t.conflictTier, t.rank)]
+);
+
 export type PursuitStage = (typeof PURSUIT_STAGES)[number];
 export type PursuitSource = (typeof PURSUIT_SOURCES)[number];
 export type ActivityKind = (typeof ACTIVITY_KINDS)[number];
 export type BriefStatus = (typeof briefStatusEnum.enumValues)[number];
 export type DocumentScope = (typeof documentScopeEnum.enumValues)[number];
+export type ProspectConflict = (typeof PROSPECT_CONFLICTS)[number];
+export type ProspectEvidence = (typeof PROSPECT_EVIDENCE)[number];
+export type ProspectOutreach = (typeof PROSPECT_OUTREACH)[number];
+export type ProspectSourceList = (typeof PROSPECT_SOURCE_LISTS)[number];
 
 export type Pursuit = typeof pursuits.$inferSelect;
 export type NewPursuit = typeof pursuits.$inferInsert;
+export type Prospect = typeof prospects.$inferSelect;
+export type NewProspect = typeof prospects.$inferInsert;
 export type Activity = typeof activity.$inferSelect;
 export type NewActivity = typeof activity.$inferInsert;
 export type DocumentRow = typeof documents.$inferSelect;

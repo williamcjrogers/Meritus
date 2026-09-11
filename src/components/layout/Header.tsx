@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import { NAV_ITEMS, NAV_PANEL_INFO, INSIGHT_ARTICLES } from "@/lib/constants";
+import { ENQUIRY_CTA, NAV_ITEMS, NAV_PANEL_INFO, INSIGHT_ARTICLES } from "@/lib/constants";
 import { smoothScrollToId } from "@/lib/smooth-scroll";
 import { HallmarkLogo } from "@/components/icons/HallmarkLogo";
 import { MobileNav } from "./MobileNav";
@@ -250,7 +250,7 @@ export function Header() {
                 href="/contact"
                 className="group inline-flex items-center gap-2 px-4 py-2 rounded-md border-2 border-brass bg-brass text-[12px] font-medium tracking-wide text-green transition-all duration-300 hover:bg-brass-light hover:border-brass-light hover:-translate-y-px hover:shadow-[0_4px_14px_rgba(181,151,90,0.15)]"
               >
-                Request Conflict Check
+                {ENQUIRY_CTA}
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
                   <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>

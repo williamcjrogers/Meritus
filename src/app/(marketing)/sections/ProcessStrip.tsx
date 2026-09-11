@@ -5,7 +5,7 @@ import { useInView } from "framer-motion";
 import { SequencerTimeline } from "@/components/animations/SequencerTimeline";
 
 const STEPS = [
-  { num: "01", label: "Conflict Check*", desc: "Independence confirmed", disciplines: "all disciplines" },
+  { num: "01", label: "Independence review*", desc: "Conflicts confirmed where required", disciplines: "all disciplines" },
   { num: "02", label: "Scoping", desc: "Strategy and resourcing", disciplines: "delay \u00b7 quantum \u00b7 technical \u00b7 advisory \u00b7 technology" },
   { num: "03", label: "Analysis", desc: "Forensic investigation", disciplines: "programme \u00b7 cost \u00b7 engineering \u00b7 strategy" },
   { num: "04", label: "Delivery", desc: "Opinion and testimony", disciplines: "report \u00b7 model \u00b7 opinion \u00b7 evidence" },
@@ -53,7 +53,7 @@ export function ProcessStrip() {
 
           <div className="mt-20 flex items-center justify-center gap-4 opacity-0 animate-[fadeUp_0.6s_ease_forwards_3.5s]">
             <div className="text-[10px] md:text-[11px] text-cream/30 italic tracking-[0.05em] font-light">
-              *Conflict check is only where required
+              *Independence and conflict review only where required
             </div>
           </div>
 

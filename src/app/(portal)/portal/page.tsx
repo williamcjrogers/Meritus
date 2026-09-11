@@ -10,7 +10,9 @@ import { SCOPE_COOKIE } from "@/components/portal/MineAllToggle";
 import type { DeskExtras, RelatedRef } from "@/components/portal/desk-types";
 import type { Pursuit, PursuitStage } from "@/lib/db/schema";
 import { latestEnquiryActivity, latestStageChanges } from "@/lib/db/activity";
+import { countApproachableProspects } from "@/lib/db/prospects";
 import { countByStage, getPursuit, listByStage, listDeskPursuits } from "@/lib/db/pursuits";
+import { ensureProspectsSeeded } from "@/lib/prospects/seed";
 import { isClerkConfigured, isDatabaseConfigured, missingRequiredSetup } from "@/lib/env";
 import { longDayDate, shortDate } from "@/lib/portal/dates";
 import { listDirectors } from "@/lib/portal/directors";
@@ -77,8 +79,14 @@ export default async function PursuitDeskPage({
 
   let pursuits: Pursuit[];
   let counts: Record<PursuitStage, number>;
+  let approachableProspects = 0;
   try {
-    [pursuits, counts] = await Promise.all([listDeskPursuits(), countByStage()]);
+    await ensureProspectsSeeded();
+    [pursuits, counts, approachableProspects] = await Promise.all([
+      listDeskPursuits(),
+      countByStage(),
+      countApproachableProspects(),
+    ]);
   } catch {
     return <SetupNotice title="Database is configured but not migrated" />;
   }
@@ -90,7 +98,15 @@ export default async function PursuitDeskPage({
         <Eyebrow rule={false}>Pursuit desk</Eyebrow>
         <h1 className="mt-1 font-serif text-3xl text-green sm:text-4xl">{longDayDate(now)}</h1>
       </div>
-      <NewPursuitButton />
+      <div className="flex flex-wrap items-center gap-3">
+        <Link
+          href="/portal/prospects"
+          className="font-mono text-[11px] uppercase tracking-[0.12em] text-ink/70 hover:text-brass"
+        >
+          Prospects <span className="text-green">{approachableProspects}</span>
+        </Link>
+        <NewPursuitButton />
+      </div>
     </div>
   );
 

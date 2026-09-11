@@ -1,3 +1,5 @@
+export const ENQUIRY_CTA = "Make an Enquiry";
+
 export const SITE_CONFIG = {
   name: "Meritus Via",
   tagline: "Expertise. Evolved.",

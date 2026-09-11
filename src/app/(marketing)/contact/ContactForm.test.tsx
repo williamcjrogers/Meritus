@@ -14,7 +14,7 @@ async function fillRequired() {
 }
 
 function submit() {
-  return userEvent.click(screen.getByRole("button", { name: /request conflict check/i }));
+  return userEvent.click(screen.getByRole("button", { name: /send enquiry/i }));
 }
 
 describe("ContactForm", () => {
@@ -52,7 +52,7 @@ describe("ContactForm", () => {
     expect(gtagMock).toHaveBeenCalledTimes(1);
     const [command, , params] = gtagMock.mock.calls[0];
     expect(command).toBe("event");
-    expect(params).toEqual({ form: "conflict_check", dispute_nature: "Technical / defects dispute" });
+    expect(params).toEqual({ form: "enquiry", dispute_nature: "Technical / defects dispute" });
   });
 
   it("does not fire the GA4 event when the server rejects the enquiry", async () => {

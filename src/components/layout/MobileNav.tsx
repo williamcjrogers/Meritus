@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { NAV_ITEMS } from "@/lib/constants";
+import { ENQUIRY_CTA, NAV_ITEMS } from "@/lib/constants";
 import { MobileAuth } from "./MobileAuth";
 
 interface MobileNavProps {
@@ -72,7 +72,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
                 onClick={onClose}
                 className="mt-4 group inline-flex items-center gap-2 px-5 py-2.5 rounded-md border-2 border-brass bg-brass text-sm text-green tracking-wide transition-all duration-200 hover:bg-brass-light hover:border-brass-light hover:-translate-y-px hover:shadow-[0_4px_14px_rgba(181,151,90,0.15)]"
               >
-                Request Conflict Check
+                {ENQUIRY_CTA}
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
                   <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>

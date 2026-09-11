@@ -64,11 +64,11 @@ h1, h2, h3, h4 {
   outline-offset: 2px;
 }
 
-/* Conflict-check form fields signal focus with their brass underline,
+/* Enquiry form fields signal focus with their brass underline,
    so the global focus-ring box is suppressed on them. */
-.conflict-form input:focus-visible,
-.conflict-form select:focus-visible,
-.conflict-form textarea:focus-visible {
+.enquiry-form input:focus-visible,
+.enquiry-form select:focus-visible,
+.enquiry-form textarea:focus-visible {
   outline: none;
 }
 
@@ -375,9 +375,11 @@ h1, h2, h3, h4 {
 .portal-eyebrow {
   font-family: var(--font-mono);
   font-size: 11px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
   text-transform: uppercase;
   color: var(--color-green);
+  font-feature-settings: "calt" 0, "liga" 0;
 }
 
 /* Corner brackets, as on the marketing cards. */

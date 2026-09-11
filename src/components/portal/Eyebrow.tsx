@@ -17,7 +17,7 @@ export function Eyebrow({
 }) {
   if (tone === "brass") {
     return (
-      <p className={`font-mono text-[10px] tracking-[0.25em] uppercase text-brass/80 ${className}`}>
+      <p className={`font-mono text-[10px] leading-5 tracking-[0.12em] uppercase text-brass/80 ${className}`}>
         {children}
       </p>
     );

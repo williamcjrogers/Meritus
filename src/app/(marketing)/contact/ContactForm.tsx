@@ -25,7 +25,7 @@ export function ContactForm() {
       if (res.ok) {
         // Ad-platform conversion signal; category only, no personal data.
         const gtag = (window as unknown as { gtag?: (...args: unknown[]) => void }).gtag;
-        gtag?.("event", "generate_lead", { form: "conflict_check", dispute_nature: data.disputeNature });
+        gtag?.("event", "generate_lead", { form: "enquiry", dispute_nature: data.disputeNature });
         setStatus("sent");
       } else {
         setStatus(res.status === 429 ? "throttled" : "failed");
@@ -51,7 +51,7 @@ export function ContactForm() {
   const err = "text-[11px] text-oxblood mt-1";
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="conflict-form space-y-8" noValidate>
+    <form onSubmit={handleSubmit(onSubmit)} className="enquiry-form space-y-8" noValidate>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         <div><label htmlFor="name" className={lbl}>Name</label><input id="name" type="text" className={inp} {...register("name", { required: "Required" })} />{errors.name && <p className={err}>{errors.name.message}</p>}</div>
         <div><label htmlFor="firm" className={lbl}>Firm</label><input id="firm" type="text" className={inp} {...register("firm", { required: "Required" })} />{errors.firm && <p className={err}>{errors.firm.message}</p>}</div>
@@ -72,7 +72,7 @@ export function ContactForm() {
         <p role="alert" className="text-[13px] text-oxblood">{STATUS_COPY[status]}</p>
       )}
       <button type="submit" disabled={isSubmitting} className="btn-outline text-[13px] disabled:opacity-40 disabled:pointer-events-none">
-        {isSubmitting ? "Submitting\u2026" : "Request Conflict Check"}
+        {isSubmitting ? "Submitting\u2026" : "Send enquiry"}
       </button>
     </form>
   );
