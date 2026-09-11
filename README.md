@@ -1,6 +1,6 @@
 # Meritus Via website
 
-Next.js 15 site for Meritus Via at meritusvia.com, with the directors' pursuit desk at `/portal`.
+Next.js 15 site for Meritus Via at meritusvia.com. Directors use the pursuit desk at `/portal`. Clients sign in on the same host at `/client/sign-in` and land on `/client`.
 
 ## Develop
 
@@ -18,20 +18,33 @@ Copy `.env.example` to `.env.local` and fill in what you need. Without Clerk, da
 
 The desk is the directors' private area: enquiries from the public form land in an inbox, pursuits move across a board (Enquiry, Scoping, Proposal, Instructed, with Declined and Dormant on the side), and each pursuit has a dossier with a research brief and a questions drawer. Design: `docs/superpowers/specs/2026-09-09-pursuit-desk-design.md`. Plan: `docs/superpowers/plans/2026-09-09-pursuit-desk.md`.
 
+### Client login
+
+Company domains are the membership list. Directors add `@bree.co.uk` / `bree.co.uk` on `/portal/clients`. Anyone who authenticates with that host is a client, lands on `/client`, and cannot open `/portal`. They dump files into the VeriCase WR2.0 archive (the same AWS settings as that tenant). Clerk stays invite-only: first-time users still need a Clerk invite (redirect to `https://www.meritusvia.com/client/sign-up`) or a domain allowlist until that is enabled.
+
 ### Database
 
 Schema lives in `src/lib/db/schema.ts`; migrations in `drizzle/`. Generate a migration after a schema change with `npx drizzle-kit generate --name <change>`, and apply with `npm run db:migrate` (or let the build apply it). The build script applies pending migrations before `next build`, so Vercel migrates the connected Neon database on every deployment.
 
 ### One-off manual steps
 
-1. **Clerk**: invite the three directors; keep access mode Invite-only. First sign-in is the invitation email (it lands on `/sign-up` with a ticket). Do not type the address on Login before that.
-2. **Resend**: add the Resend Marketplace integration, verify the sending domain for `enquiries@meritusvia.com` in the EU region, set data retention to the minimum, set `RESEND_API_KEY` and (optionally) `ENQUIRY_ALERT_FROM`, then submit a test enquiry and confirm the alert arrives.
-3. **Vercel firewall**: add a rate-limit rule for `POST /api/contact`.
-4. **Companies House**: set `COMPANIES_HOUSE_API_KEY` so briefs carry register facts.
+1. **Clerk**: invite the three directors; keep access mode Invite-only. Director invitations land on `https://www.meritusvia.com/sign-up`. Client invitations land on `https://www.meritusvia.com/client/sign-up`. Do not type the address on Login before accepting the invite. First-time client users still need a Clerk invite or a domain allowlist until that is enabled.
+2. **Client domains**: on `/portal/clients`, add the company host. `meritusvia.com` and public mailboxes are refused.
+3. **Resend**: add the Resend Marketplace integration, verify the sending domain for `enquiries@meritusvia.com` in the EU region, set data retention to the minimum, set `RESEND_API_KEY` and (optionally) `ENQUIRY_ALERT_FROM`, then submit a test enquiry and confirm the alert arrives.
+4. **Vercel firewall**: add a rate-limit rule for `POST /api/contact`.
+5. **Companies House**: set `COMPANIES_HOUSE_API_KEY` so briefs carry register facts.
 
 ### Uploads
 
 Files on a pursuit or in the library are capped at 4 MB because Vercel functions refuse larger request bodies. Allowed types: pdf, docx, xlsx, jpg, png, webp, txt, eml, msg; text is extracted from pdf, docx, eml and txt for the questions drawer.
+
+### Client desk
+
+The public header has Partner and Client login. Directors add a company domain under `/portal/clients`. Anyone who authenticates with that email domain is sent to `/client` and can dump files into the VeriCase WR2.0 archive (the same AWS settings as that tenant). They never see `/portal`. Public mailbox domains and `meritusvia.com` cannot be added.
+
+Clerk stays invite-only: adding a domain routes people who can already sign in; first-time users still need an invitation to `/client/sign-up`.
+
+Client dumps go straight to that archive (up to 100 MB). The site stores only file metadata. The bucket must allow PUT from `https://www.meritusvia.com`. Portal uploads stay on Vercel Blob.
 
 ### Environment
 

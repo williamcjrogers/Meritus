@@ -128,9 +128,7 @@ export default function RootLayout({
             signInUrl="/sign-in"
             signUpUrl="/sign-up"
             signInFallbackRedirectUrl="/portal"
-            signInForceRedirectUrl="/portal"
             signUpFallbackRedirectUrl="/portal"
-            signUpForceRedirectUrl="/portal"
           >
             {children}
           </ClerkProvider>

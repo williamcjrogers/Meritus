@@ -180,6 +180,23 @@ export const prospectOutreachEnum = pgEnum("prospect_outreach", PROSPECT_OUTREAC
 export const PROSPECT_SOURCE_LISTS = ["ranked", "excluded"] as const;
 export const prospectSourceEnum = pgEnum("prospect_source_list", PROSPECT_SOURCE_LISTS);
 
+/**
+ * Company email domains that may use /client. Matter files stay in VeriCase
+ * WR2.0 S3; the optional workspace fields are a label for later wiring, not a file store.
+ */
+export const clientDomains = pgTable(
+  "client_domains",
+  {
+    id: text("id").primaryKey(),
+    domain: text("domain").notNull().unique(),
+    vericaseWorkspaceId: text("vericase_workspace_id"),
+    vericaseWorkspaceName: text("vericase_workspace_name"),
+    createdBy: text("created_by").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("client_domains_domain_idx").on(t.domain)]
+);
+
 /** Outbound target firms. Separate from inbound pursuits and from the public enquiry inbox. */
 export const prospects = pgTable(
   "prospects",
@@ -223,6 +240,8 @@ export type Pursuit = typeof pursuits.$inferSelect;
 export type NewPursuit = typeof pursuits.$inferInsert;
 export type Prospect = typeof prospects.$inferSelect;
 export type NewProspect = typeof prospects.$inferInsert;
+export type ClientDomain = typeof clientDomains.$inferSelect;
+export type NewClientDomain = typeof clientDomains.$inferInsert;
 export type Activity = typeof activity.$inferSelect;
 export type NewActivity = typeof activity.$inferInsert;
 export type DocumentRow = typeof documents.$inferSelect;

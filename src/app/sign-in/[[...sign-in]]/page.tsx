@@ -16,8 +16,11 @@ export default function SignInPage() {
         <HallmarkLogo size="standalone" variant="light" showDescriptor />
       </Link>
       <p className="mb-6 max-w-sm text-center text-[13px] leading-relaxed text-cream/70">
-        First-time access is by invitation email. Use Login only after you have accepted
-        that invite.
+        Directors only. First-time access is by invitation email. Clients should use{" "}
+        <Link href="/client/sign-in" className="text-brass hover:text-brass-light">
+          Client login
+        </Link>
+        .
       </p>
       {isClerkConfigured() ? (
         <SignIn

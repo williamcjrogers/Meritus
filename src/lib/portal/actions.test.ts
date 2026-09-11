@@ -17,7 +17,7 @@ import {
 } from "@/lib/db/pursuits";
 import { clearQuestions as deleteQuestions } from "@/lib/db/questions";
 import type { Activity, DocumentRow, Pursuit, PursuitStage } from "@/lib/db/schema";
-import { listDirectors } from "@/lib/portal/directors";
+import { getActorKind, listDirectors } from "@/lib/portal/directors";
 import * as actions from "./actions";
 import type { PursuitFormInput } from "./actions";
 
@@ -37,7 +37,7 @@ vi.mock("@/lib/db/pursuits", () => ({
 vi.mock("@/lib/db/activity", () => ({ addActivity: vi.fn(), listActivity: vi.fn() }));
 vi.mock("@/lib/db/documents", () => ({ listDocuments: vi.fn() }));
 vi.mock("@/lib/db/questions", () => ({ clearQuestions: vi.fn() }));
-vi.mock("@/lib/portal/directors", () => ({ listDirectors: vi.fn() }));
+vi.mock("@/lib/portal/directors", () => ({ listDirectors: vi.fn(), getActorKind: vi.fn() }));
 
 const NOW = new Date("2026-09-09T09:00:00Z");
 
@@ -125,6 +125,7 @@ beforeEach(() => {
   process.env.CLERK_SECRET_KEY = "sk_test";
   process.env.DATABASE_URL = "postgres://test";
   vi.mocked(auth).mockResolvedValue({ userId: "user_wr" } as never);
+  vi.mocked(getActorKind).mockResolvedValue("director");
   vi.mocked(listDirectors).mockResolvedValue([
     { id: "user_wr", name: "William Rogers", email: "wr@meritusvia.com", initials: "WR" },
     { id: "user_md", name: "Mateo Diaz", email: "md@meritusvia.com", initials: "MD" },
@@ -156,6 +157,14 @@ function expectRevalidated() {
 }
 
 describe("the action guard", () => {
+  it("rejects a client without touching the desk", async () => {
+    vi.mocked(getActorKind).mockResolvedValue("client");
+    const result = await actions.addNote("p1", "Spoke to Jane.");
+    expect(result).toEqual({ ok: false, error: "This area is for directors only" });
+    expect(addActivity).not.toHaveBeenCalled();
+    expectRevalidated();
+  });
+
   it("asks the director to sign in again when there is no session and touches nothing", async () => {
     vi.mocked(auth).mockResolvedValue({ userId: null } as never);
     const result = await actions.addNote("p1", "Spoke to Jane.");

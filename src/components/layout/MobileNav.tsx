@@ -4,14 +4,16 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ENQUIRY_CTA, NAV_ITEMS } from "@/lib/constants";
+import type { ActorKind } from "@/lib/portal/roles";
 import { MobileAuth } from "./MobileAuth";
 
 interface MobileNavProps {
   isOpen: boolean;
   onClose: () => void;
+  actorKind?: ActorKind | null;
 }
 
-export function MobileNav({ isOpen, onClose }: MobileNavProps) {
+export function MobileNav({ isOpen, onClose, actorKind = null }: MobileNavProps) {
   // While the full-screen menu is open: close on Escape and lock body scroll so
   // the page behind the overlay cannot scroll (notably on iOS).
   useEffect(() => {
@@ -60,7 +62,7 @@ export function MobileNav({ isOpen, onClose }: MobileNavProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: NAV_ITEMS.length * 0.06 }}
             >
-              <MobileAuth onNavigate={onClose} />
+              <MobileAuth onNavigate={onClose} actorKind={actorKind} />
             </motion.div>
             <motion.div
               initial={{ opacity: 0, y: 16 }}

@@ -1,6 +1,20 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { isClerkConfigured, isDatabaseConfigured } from "@/lib/env";
+import { getActorKind } from "./directors";
+import { allowPortalAccess, type ActorKind } from "./roles";
+
+export async function currentActorKind(): Promise<ActorKind | null> {
+  if (!isClerkConfigured()) return null;
+  try {
+    const { userId } = await auth();
+    return getActorKind(userId);
+  } catch {
+    return null;
+  }
+}
+
+const DIRECTORS_ONLY = "This area is for directors only";
 
 export async function requirePortalUser(): Promise<
   { userId: string; error?: undefined } | { userId?: undefined; error: NextResponse }
@@ -18,6 +32,13 @@ export async function requirePortalUser(): Promise<
   if (!userId) {
     return {
       error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }),
+    };
+  }
+
+  const kind = await getActorKind(userId);
+  if (!allowPortalAccess(kind)) {
+    return {
+      error: NextResponse.json({ error: DIRECTORS_ONLY }, { status: 403 }),
     };
   }
 
@@ -51,6 +72,10 @@ export async function requireActionUser(): Promise<ActionUser> {
   const { userId } = await auth();
   if (!userId) {
     return { ok: false, error: "Sign in again" };
+  }
+  const kind = await getActorKind(userId);
+  if (!allowPortalAccess(kind)) {
+    return { ok: false, error: DIRECTORS_ONLY };
   }
   return { ok: true, userId };
 }

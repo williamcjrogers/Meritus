@@ -3,33 +3,62 @@
 import Link from "next/link";
 import { Show, UserButton } from "@clerk/nextjs";
 import { isClerkPublishable } from "@/lib/env";
+import type { ActorKind } from "@/lib/portal/roles";
 
-export function MobileAuth({ onNavigate }: { onNavigate: () => void }) {
-  const className = "text-xl text-cream/70 tracking-wide hover:text-brass transition-colors duration-200";
+const className = "text-xl text-cream/70 tracking-wide hover:text-brass transition-colors duration-200";
 
-  if (!isClerkPublishable()) {
-    return (
+function SignedOutLinks({ onNavigate }: { onNavigate: () => void }) {
+  return (
+    <div className="flex flex-col items-center gap-6">
       <Link href="/sign-in" onClick={onNavigate} className={className}>
-        Login
+        Partner
       </Link>
-    );
-  }
+      <Link href="/client/sign-in" onClick={onNavigate} className={className}>
+        Client login
+      </Link>
+    </div>
+  );
+}
+
+function SignedInLinks({
+  onNavigate,
+  actorKind,
+}: {
+  onNavigate: () => void;
+  actorKind: ActorKind | null;
+}) {
+  const client = actorKind === "client";
 
   return (
     <div className="flex flex-col items-center gap-6">
-      <Show
-        when="signed-in"
-        fallback={
-          <Link href="/sign-in" onClick={onNavigate} className={className}>
-            Login
-          </Link>
-        }
-      >
+      {client ? (
+        <Link href="/client" onClick={onNavigate} className={className}>
+          Client desk
+        </Link>
+      ) : (
         <Link href="/portal" onClick={onNavigate} className={className}>
           Portal
         </Link>
-        <UserButton />
-      </Show>
+      )}
+      <UserButton />
     </div>
+  );
+}
+
+export function MobileAuth({
+  onNavigate,
+  actorKind = null,
+}: {
+  onNavigate: () => void;
+  actorKind?: ActorKind | null;
+}) {
+  if (!isClerkPublishable()) {
+    return <SignedOutLinks onNavigate={onNavigate} />;
+  }
+
+  return (
+    <Show when="signed-in" fallback={<SignedOutLinks onNavigate={onNavigate} />}>
+      <SignedInLinks onNavigate={onNavigate} actorKind={actorKind} />
+    </Show>
   );
 }

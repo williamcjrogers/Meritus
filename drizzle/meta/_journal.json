@@ -15,6 +15,13 @@
       "when": 1789145000000,
       "tag": "0001_prospects",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1789152000000,
+      "tag": "0002_client_domains",
+      "breakpoints": true
     }
   ]
 }

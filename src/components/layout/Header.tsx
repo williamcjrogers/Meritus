@@ -7,13 +7,14 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ENQUIRY_CTA, NAV_ITEMS, NAV_PANEL_INFO, INSIGHT_ARTICLES } from "@/lib/constants";
 import { smoothScrollToId } from "@/lib/smooth-scroll";
 import { HallmarkLogo } from "@/components/icons/HallmarkLogo";
+import type { ActorKind } from "@/lib/portal/roles";
 import { MobileNav } from "./MobileNav";
 import { HeaderAuth } from "./HeaderAuth";
 
 // Pages whose hash links are long scrolling sections (not tabs)
 const SMOOTH_HASH_PATHS = ["/services", "/method"];
 
-export function Header() {
+export function Header({ actorKind = null }: { actorKind?: ActorKind | null }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
@@ -245,7 +246,7 @@ export function Header() {
 
             {/* Right Action Links */}
             <div className="hidden lg:flex items-center gap-6">
-              <HeaderAuth darkChrome={darkChrome} />
+              <HeaderAuth darkChrome={darkChrome} actorKind={actorKind} />
               <Link
                 href="/contact"
                 className="group inline-flex items-center gap-2 px-4 py-2 rounded-md border-2 border-brass bg-brass text-[12px] font-medium tracking-wide text-green transition-all duration-300 hover:bg-brass-light hover:border-brass-light hover:-translate-y-px hover:shadow-[0_4px_14px_rgba(181,151,90,0.15)]"
@@ -496,7 +497,7 @@ export function Header() {
         </AnimatePresence>
       </header>
 
-      <MobileNav isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
+      <MobileNav isOpen={mobileOpen} onClose={() => setMobileOpen(false)} actorKind={actorKind} />
     </>
   );
 }
