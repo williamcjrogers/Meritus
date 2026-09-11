@@ -1,10 +1,10 @@
-import { put } from "@vercel/blob";
 import { addActivity } from "@/lib/db/activity";
 import { insertDocument } from "@/lib/db/documents";
 import type { DocumentScope } from "@/lib/db/schema";
-import { isBlobConfigured } from "@/lib/env";
+import { isStorageConfigured } from "@/lib/env";
 import { extractUploadText } from "@/lib/research/extract-text";
 import { isAllowedUpload, MAX_UPLOAD_BYTES, MAX_UPLOAD_LABEL, sanitizeFileName } from "./files";
+import { putObject } from "./s3";
 
 export async function storePortalDocument(input: {
   file: File;
@@ -13,8 +13,8 @@ export async function storePortalDocument(input: {
   uploadedBy: string;
   title?: string;
 }) {
-  if (!isBlobConfigured()) {
-    throw new Error("BLOB_READ_WRITE_TOKEN is not configured");
+  if (!isStorageConfigured()) {
+    throw new Error("VeriCase S3 is not configured");
   }
   if (input.file.size > MAX_UPLOAD_BYTES) {
     throw new Error(`File exceeds ${MAX_UPLOAD_LABEL}`);
@@ -29,20 +29,18 @@ export async function storePortalDocument(input: {
   const id = crypto.randomUUID();
   const fileName = sanitizeFileName(input.file.name);
   const pathname = `portal/${input.scope}/${input.pursuitId ?? "firm"}/${id}-${fileName}`;
-  // Extract before writing the blob so a failure here leaves nothing behind in the store.
+  // Extract before writing to S3 so a failure here leaves nothing behind in the store.
   const extractedText = await extractUploadText(input.file);
-  const blob = await put(pathname, input.file, {
-    access: "private",
-    addRandomSuffix: false,
-  });
+  const body = Buffer.from(await input.file.arrayBuffer());
+  const stored = await putObject(pathname, body, input.file.type || "application/octet-stream");
 
   const row = await insertDocument({
       id,
       scope: input.scope,
       pursuitId: input.scope === "pursuit" ? input.pursuitId ?? null : null,
       title: input.title?.trim() || fileName,
-      blobUrl: blob.url,
-      blobPathname: blob.pathname,
+      blobUrl: stored.url,
+      blobPathname: stored.key,
       fileName,
       mime: input.file.type || "application/octet-stream",
       size: input.file.size,

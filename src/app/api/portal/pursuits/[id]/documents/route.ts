@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getPursuit } from "@/lib/db/pursuits";
-import { isBlobConfigured } from "@/lib/env";
+import { isStorageConfigured } from "@/lib/env";
 import { requireDatabaseOr503, requirePortalUser, setupResponse } from "@/lib/portal/auth";
 import { storePortalDocument } from "@/lib/portal/upload";
 
@@ -12,7 +12,7 @@ async function handlePost(request: Request, context: { params: Promise<{ id: str
   if (gate.error) return gate.error;
   const dbError = requireDatabaseOr503();
   if (dbError) return dbError;
-  if (!isBlobConfigured()) return setupResponse("BLOB_READ_WRITE_TOKEN is not configured");
+  if (!isStorageConfigured()) return setupResponse("VeriCase S3 is not configured");
 
   const { id } = await context.params;
   const pursuit = await getPursuit(id);

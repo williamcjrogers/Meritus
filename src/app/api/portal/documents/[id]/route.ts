@@ -1,9 +1,9 @@
-import { del, get } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { deleteDocumentRow, getDocument } from "@/lib/db/documents";
 import { addActivity } from "@/lib/db/activity";
 import { requireDatabaseOr503, requirePortalUser, setupResponse } from "@/lib/portal/auth";
-import { isBlobConfigured } from "@/lib/env";
+import { isStorageConfigured } from "@/lib/env";
+import { deleteObjects, getObject } from "@/lib/portal/s3";
 
 export const dynamic = "force-dynamic";
 
@@ -15,18 +15,18 @@ export async function GET(
   if (gate.error) return gate.error;
   const dbError = requireDatabaseOr503();
   if (dbError) return dbError;
-  if (!isBlobConfigured()) return setupResponse("BLOB_READ_WRITE_TOKEN is not configured");
+  if (!isStorageConfigured()) return setupResponse("VeriCase S3 is not configured");
 
   const { id } = await context.params;
   const document = await getDocument(id);
   if (!document) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const blob = await get(document.blobUrl, { access: "private" });
-  if (!blob || blob.statusCode !== 200 || !blob.stream) {
+  const body = await getObject(document.blobPathname);
+  if (!body) {
     return NextResponse.json({ error: "File missing" }, { status: 404 });
   }
 
-  return new Response(blob.stream, {
+  return new Response(Buffer.from(body), {
     headers: {
       "Content-Type": document.mime,
       "Content-Disposition": `attachment; filename="${document.fileName}"`,
@@ -42,13 +42,13 @@ export async function DELETE(
   if (gate.error) return gate.error;
   const dbError = requireDatabaseOr503();
   if (dbError) return dbError;
-  if (!isBlobConfigured()) return setupResponse("BLOB_READ_WRITE_TOKEN is not configured");
+  if (!isStorageConfigured()) return setupResponse("VeriCase S3 is not configured");
 
   const { id } = await context.params;
   const document = await getDocument(id);
   if (!document) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  // The database is authoritative: remove the row first so a listed file can never point at a missing blob.
+  // The database is authoritative: remove the row first so a listed file can never point at a missing object.
   await deleteDocumentRow(id);
   if (document.pursuitId) {
     await addActivity({
@@ -60,9 +60,9 @@ export async function DELETE(
     });
   }
   try {
-    await del(document.blobUrl);
+    await deleteObjects([document.blobPathname]);
   } catch (error) {
-    console.warn("blob delete failed", document.blobPathname, error);
+    console.warn("S3 delete failed", document.blobPathname, error);
   }
   return NextResponse.json({ ok: true });
 }

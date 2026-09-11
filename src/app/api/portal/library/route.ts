@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { requireDatabaseOr503, requirePortalUser, setupResponse } from "@/lib/portal/auth";
 import { listDocuments } from "@/lib/db/documents";
 import { storePortalDocument } from "@/lib/portal/upload";
-import { isBlobConfigured } from "@/lib/env";
+import { isStorageConfigured } from "@/lib/env";
 
 export const dynamic = "force-dynamic";
 
@@ -19,7 +19,7 @@ async function handlePost(request: Request) {
   if (gate.error) return gate.error;
   const dbError = requireDatabaseOr503();
   if (dbError) return dbError;
-  if (!isBlobConfigured()) return setupResponse("BLOB_READ_WRITE_TOKEN is not configured");
+  if (!isStorageConfigured()) return setupResponse("VeriCase S3 is not configured");
 
   const form = await request.formData();
   const file = form.get("file");

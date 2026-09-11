@@ -12,7 +12,7 @@ npm run lint && npx tsc --noEmit
 npm run build      # runs pending database migrations first when DATABASE_URL is set
 ```
 
-Copy `.env.example` to `.env.local` and fill in what you need. Without Clerk, database, blob and AI Gateway variables the portal renders a setup notice and the public site works as normal.
+Copy `.env.example` to `.env.local` and fill in what you need. Without Clerk, database, VeriCase S3 and AI Gateway variables the portal renders a setup notice and the public site works as normal.
 
 ## Pursuit desk
 
@@ -35,7 +35,7 @@ Schema lives in `src/lib/db/schema.ts`; migrations in `drizzle/`. Generate a mig
 
 ### Uploads
 
-Files on a pursuit or in the library are capped at 4 MB because Vercel functions refuse larger request bodies. Allowed types: pdf, docx, xlsx, jpg, png, webp, txt, eml, msg; text is extracted from pdf, docx, eml and txt for the questions drawer. Programme ingest is a separate path (`/portal/programmes`) and additionally accepts `.pp`, `.xml`, `.xer`, `.csv` and `.json`.
+Files on a pursuit or in the library go to the VeriCase AWS S3 bucket under `meritus/`. They are capped at 4 MB because Vercel functions refuse larger request bodies. Allowed types: pdf, docx, xlsx, jpg, png, webp, txt, eml, msg; text is extracted from pdf, docx, eml and txt for the questions drawer. Programme ingest is a separate path (`/portal/programmes`) and additionally accepts `.pp`, `.xml`, `.xer`, `.csv` and `.json`.
 
 ### Environment
 

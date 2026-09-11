@@ -1,7 +1,6 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { auth } from "@clerk/nextjs/server";
-import { del } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import { addActivity, listActivity } from "@/lib/db/activity";
 import { listDocuments } from "@/lib/db/documents";
@@ -18,12 +17,13 @@ import {
 import { clearQuestions as deleteQuestions } from "@/lib/db/questions";
 import type { Activity, DocumentRow, Pursuit, PursuitStage } from "@/lib/db/schema";
 import { listDirectors } from "@/lib/portal/directors";
+import { deleteObjects } from "./s3";
 import * as actions from "./actions";
 import type { PursuitFormInput } from "./actions";
 
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("@clerk/nextjs/server", () => ({ auth: vi.fn() }));
-vi.mock("@vercel/blob", () => ({ del: vi.fn() }));
+vi.mock("./s3", () => ({ deleteObjects: vi.fn() }));
 vi.mock("@/lib/db/pursuits", () => ({
   getPursuit: vi.fn(),
   createPursuitWithEnquiry: vi.fn(),
@@ -89,8 +89,8 @@ function makeDocument(overrides: Partial<DocumentRow> = {}): DocumentRow {
     scope: "pursuit",
     pursuitId: "p1",
     title: "Letter of claim.pdf",
-    blobUrl: "https://blob.example/letter.pdf",
-    blobPathname: "portal/pursuit/p1/letter.pdf",
+    blobUrl: "s3://vericase-docs/meritus/portal/pursuit/p1/letter.pdf",
+    blobPathname: "meritus/portal/pursuit/p1/letter.pdf",
     fileName: "letter.pdf",
     mime: "application/pdf",
     size: 1024,
@@ -144,7 +144,7 @@ beforeEach(() => {
   vi.mocked(listActivity).mockResolvedValue([]);
   vi.mocked(listDocuments).mockResolvedValue([]);
   vi.mocked(deleteQuestions).mockResolvedValue(undefined);
-  vi.mocked(del).mockResolvedValue(undefined);
+  vi.mocked(deleteObjects).mockResolvedValue(undefined);
 });
 
 afterEach(() => {
@@ -772,33 +772,36 @@ describe("updatePursuit", () => {
 });
 
 describe("deletePursuit", () => {
-  it("removes the blobs and then the row", async () => {
+  it("removes the S3 objects and then the row", async () => {
     vi.mocked(listDocuments).mockResolvedValue([
-      makeDocument({ id: "d1", blobUrl: "https://blob.example/a.pdf" }),
-      makeDocument({ id: "d2", blobUrl: "https://blob.example/b.docx" }),
+      makeDocument({ id: "d1", blobPathname: "meritus/portal/pursuit/p1/a.pdf" }),
+      makeDocument({ id: "d2", blobPathname: "meritus/portal/pursuit/p1/b.docx" }),
     ]);
     const result = await actions.deletePursuit("p1");
     expect(result).toEqual({ ok: true });
     expect(listDocuments).toHaveBeenCalledWith({ scope: "pursuit", pursuitId: "p1" });
-    expect(del).toHaveBeenCalledWith(["https://blob.example/a.pdf", "https://blob.example/b.docx"]);
+    expect(deleteObjects).toHaveBeenCalledWith([
+      "meritus/portal/pursuit/p1/a.pdf",
+      "meritus/portal/pursuit/p1/b.docx",
+    ]);
     expect(removePursuit).toHaveBeenCalledWith("p1");
     expectRevalidated();
   });
 
-  it("still deletes the row when the blob delete fails", async () => {
+  it("still deletes the row when the S3 delete fails", async () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     vi.mocked(listDocuments).mockResolvedValue([makeDocument()]);
-    vi.mocked(del).mockRejectedValue(new Error("blob down"));
+    vi.mocked(deleteObjects).mockRejectedValue(new Error("S3 down"));
     const result = await actions.deletePursuit("p1");
     expect(result).toEqual({ ok: true });
     expect(removePursuit).toHaveBeenCalledWith("p1");
     expect(warn).toHaveBeenCalled();
   });
 
-  it("skips the blob call when there are no documents", async () => {
+  it("skips the S3 call when there are no documents", async () => {
     const result = await actions.deletePursuit("p1");
     expect(result).toEqual({ ok: true });
-    expect(del).not.toHaveBeenCalled();
+    expect(deleteObjects).not.toHaveBeenCalled();
     expect(removePursuit).toHaveBeenCalledWith("p1");
   });
 

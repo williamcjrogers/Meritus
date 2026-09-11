@@ -8,17 +8,20 @@ const mocks = vi.hoisted(() => ({
   extractUploadText: vi.fn(),
 }));
 
-vi.mock("@vercel/blob", () => ({ put: mocks.put }));
+vi.mock("./s3", () => ({ putObject: mocks.put }));
 vi.mock("@/lib/db/documents", () => ({ insertDocument: mocks.insertDocument }));
 vi.mock("@/lib/db/activity", () => ({ addActivity: mocks.addActivity }));
-vi.mock("@/lib/env", () => ({ isBlobConfigured: () => true }));
+vi.mock("@/lib/env", () => ({ isStorageConfigured: () => true }));
 vi.mock("@/lib/research/extract-text", () => ({ extractUploadText: mocks.extractUploadText }));
 
 import { storePortalDocument } from "./upload";
 
 beforeEach(() => {
   vi.clearAllMocks();
-  mocks.put.mockResolvedValue({ url: "https://blob/x", pathname: "portal/x" });
+  mocks.put.mockResolvedValue({
+    url: "s3://vericase-docs/meritus/portal/x",
+    key: "meritus/portal/x",
+  });
   mocks.extractUploadText.mockResolvedValue("Letter text");
   mocks.insertDocument.mockImplementation(async (values: Record<string, unknown>) => ({
     ...values,
@@ -57,11 +60,21 @@ describe("storePortalDocument", () => {
     const file = new File(["From: a@b.c\r\n\r\nHi"], "chain.eml", { type: "message/rfc822" });
     await storePortalDocument({ file, scope: "pursuit", pursuitId: "p1", uploadedBy: "user_wr" });
     expect(mocks.insertDocument).toHaveBeenCalledWith(
-      expect.objectContaining({ fileName: "chain.eml", extractedText: "Letter text" })
+      expect.objectContaining({
+        fileName: "chain.eml",
+        extractedText: "Letter text",
+        blobUrl: "s3://vericase-docs/meritus/portal/x",
+        blobPathname: "meritus/portal/x",
+      })
+    );
+    expect(mocks.put).toHaveBeenCalledWith(
+      expect.stringContaining("portal/pursuit/p1/"),
+      expect.any(Buffer),
+      "message/rfc822"
     );
   });
 
-  it("extracts text before writing the blob so a failed extraction leaves nothing behind", async () => {
+  it("extracts text before writing to S3 so a failed extraction leaves nothing behind", async () => {
     mocks.extractUploadText.mockRejectedValue(new Error("file unreadable"));
     const file = new File(["%PDF"], "Letter of claim.pdf", { type: "application/pdf" });
     await expect(
@@ -71,7 +84,7 @@ describe("storePortalDocument", () => {
     expect(mocks.insertDocument).not.toHaveBeenCalled();
   });
 
-  it("rejects a type outside the allow-list before touching the blob store", async () => {
+  it("rejects a type outside the allow-list before touching S3", async () => {
     const file = new File(["MZ"], "setup.exe", { type: "application/octet-stream" });
     await expect(
       storePortalDocument({ file, scope: "pursuit", pursuitId: "p1", uploadedBy: "user_wr" })

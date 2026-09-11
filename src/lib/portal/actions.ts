@@ -1,6 +1,5 @@
 "use server";
 
-import { del } from "@vercel/blob";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { CONTACT_FORM_OPTIONS } from "@/lib/constants";
@@ -21,6 +20,7 @@ import type { NewPursuit, PursuitStage } from "@/lib/db/schema";
 import { normalizeWebsite } from "@/lib/research/urls";
 import { requireActionUser } from "./auth";
 import { listDirectors } from "./directors";
+import { deleteObjects } from "./s3";
 import { isPursuitStage, resolveReopenStage, stageLabel, validateMove } from "./stages";
 import type { ActionResult, CreateResult, PursuitFormInput } from "./types";
 
@@ -251,7 +251,7 @@ export async function updatePursuit(id: string, input: PursuitFormInput): Promis
   });
 }
 
-/** Deletes the pursuit and everything under it. Blobs go first, best effort; the row cascades. */
+/** Deletes the pursuit and everything under it. S3 objects go first, best effort; the row cascades. */
 export async function deletePursuit(id: string): Promise<ActionResult> {
   return guarded<ActionResult>("deletePursuit", async () => {
     if (!isId(id)) return notFound();
@@ -260,9 +260,9 @@ export async function deletePursuit(id: string): Promise<ActionResult> {
     const docs = await listDocuments({ scope: "pursuit", pursuitId: id });
     if (docs.length > 0) {
       try {
-        await del(docs.map((doc) => doc.blobUrl));
+        await deleteObjects(docs.map((doc) => doc.blobPathname));
       } catch (error) {
-        console.warn(`[portal] blob delete failed for pursuit ${id}`, error);
+        console.warn(`[portal] S3 delete failed for pursuit ${id}`, error);
       }
     }
     await removePursuit(id);

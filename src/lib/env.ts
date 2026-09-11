@@ -12,8 +12,13 @@ export function isDatabaseConfigured(): boolean {
   return Boolean(process.env.DATABASE_URL);
 }
 
-export function isBlobConfigured(): boolean {
-  return Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+export function isStorageConfigured(): boolean {
+  return Boolean(
+    (process.env.S3_BUCKET || process.env.MINIO_BUCKET) &&
+      (process.env.S3_REGION || process.env.AWS_REGION) &&
+      (process.env.AWS_ACCESS_KEY_ID || process.env.S3_ACCESS_KEY) &&
+      (process.env.AWS_SECRET_ACCESS_KEY || process.env.S3_SECRET_KEY)
+  );
 }
 
 export function isAiConfigured(): boolean {
@@ -44,7 +49,7 @@ export function getSetupFlags(): SetupFlag[] {
   return [
     { key: "Clerk", ready: isClerkConfigured(), required: true },
     { key: "Postgres (DATABASE_URL)", ready: isDatabaseConfigured(), required: true },
-    { key: "Vercel Blob", ready: isBlobConfigured(), required: true },
+    { key: "VeriCase S3", ready: isStorageConfigured(), required: true },
     { key: "Vercel AI Gateway", ready: isAiConfigured(), required: true },
     { key: "Companies House", ready: isCompaniesHouseConfigured(), required: false },
     { key: "Resend", ready: isResendConfigured(), required: false },

@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
   requirePortalUser: vi.fn(),
   requireDatabaseOr503: vi.fn(),
-  isBlobConfigured: vi.fn(),
+  isStorageConfigured: vi.fn(),
   getPursuit: vi.fn(),
   storePortalDocument: vi.fn(),
 }));
@@ -17,7 +17,7 @@ vi.mock("@/lib/portal/auth", async () => {
     requireDatabaseOr503: mocks.requireDatabaseOr503,
   };
 });
-vi.mock("@/lib/env", () => ({ isBlobConfigured: mocks.isBlobConfigured }));
+vi.mock("@/lib/env", () => ({ isStorageConfigured: mocks.isStorageConfigured }));
 vi.mock("@/lib/db/pursuits", () => ({ getPursuit: mocks.getPursuit }));
 vi.mock("@/lib/portal/upload", () => ({ storePortalDocument: mocks.storePortalDocument }));
 
@@ -38,7 +38,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   mocks.requirePortalUser.mockResolvedValue({ userId: "user_wr" });
   mocks.requireDatabaseOr503.mockReturnValue(null);
-  mocks.isBlobConfigured.mockReturnValue(true);
+  mocks.isStorageConfigured.mockReturnValue(true);
   mocks.getPursuit.mockResolvedValue({ id: "p1", firm: "Brewster Bye Architects" });
   mocks.storePortalDocument.mockResolvedValue({ id: "d1", title: "Letter of claim.pdf" });
 });

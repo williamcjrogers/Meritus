@@ -16,9 +16,9 @@
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.96",
+    "@aws-sdk/client-s3": "^3.1131.0",
     "@clerk/nextjs": "^7.9.1",
     "@neondatabase/serverless": "^1.1.0",
-    "@vercel/blob": "^2.8.0",
     "ai": "^7.0.93",
     "drizzle-orm": "^0.45.2",
     "framer-motion": "^11.18.0",
