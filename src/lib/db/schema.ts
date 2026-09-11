@@ -180,6 +180,49 @@ export const prospectOutreachEnum = pgEnum("prospect_outreach", PROSPECT_OUTREAC
 export const PROSPECT_SOURCE_LISTS = ["ranked", "excluded"] as const;
 export const prospectSourceEnum = pgEnum("prospect_source_list", PROSPECT_SOURCE_LISTS);
 
+/**
+ * Company email domains that may use /client. Optional workspace fields are a
+ * label only. Dumps go to the VeriCase WR2.0 archive under this domain.
+ */
+export const clientDomains = pgTable(
+  "client_domains",
+  {
+    id: text("id").primaryKey(),
+    domain: text("domain").notNull().unique(),
+    vericaseWorkspaceId: text("vericase_workspace_id"),
+    vericaseWorkspaceName: text("vericase_workspace_name"),
+    createdBy: text("created_by").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("client_domains_domain_idx").on(t.domain)]
+);
+
+export const CLIENT_FILE_STATUSES = ["pending", "ready"] as const;
+export type ClientFileStatus = (typeof CLIENT_FILE_STATUSES)[number];
+
+/** Metadata for a file dumped into the VeriCase WR2.0 archive. The object lives in that tenant's S3. */
+export const clientFiles = pgTable(
+  "client_files",
+  {
+    id: text("id").primaryKey(),
+    domain: text("domain").notNull(),
+    clerkUserId: text("clerk_user_id").notNull(),
+    email: text("email").notNull(),
+    title: text("title").notNull(),
+    fileName: text("file_name").notNull(),
+    mime: text("mime").notNull(),
+    size: integer("size").notNull(),
+    storageKey: text("storage_key").notNull(),
+    status: text("status").$type<ClientFileStatus>().notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+  },
+  (t) => [
+    index("client_files_domain_created_idx").on(t.domain, t.createdAt),
+    index("client_files_clerk_user_idx").on(t.clerkUserId),
+  ]
+);
+
 /** Outbound target firms. Separate from inbound pursuits and from the public enquiry inbox. */
 export const prospects = pgTable(
   "prospects",
@@ -223,6 +266,10 @@ export type Pursuit = typeof pursuits.$inferSelect;
 export type NewPursuit = typeof pursuits.$inferInsert;
 export type Prospect = typeof prospects.$inferSelect;
 export type NewProspect = typeof prospects.$inferInsert;
+export type ClientDomain = typeof clientDomains.$inferSelect;
+export type NewClientDomain = typeof clientDomains.$inferInsert;
+export type ClientFile = typeof clientFiles.$inferSelect;
+export type NewClientFile = typeof clientFiles.$inferInsert;
 export type Activity = typeof activity.$inferSelect;
 export type NewActivity = typeof activity.$inferInsert;
 export type DocumentRow = typeof documents.$inferSelect;

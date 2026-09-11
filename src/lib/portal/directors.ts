@@ -12,8 +12,10 @@
  */
 
 import { clerkClient } from "@clerk/nextjs/server";
+import { listClientDomainNames } from "@/lib/db/client-domains";
 import { isClerkConfigured } from "@/lib/env";
 import { initialsFor, type Director } from "./director-helpers";
+import { actorKindFromSignals, type ActorKind } from "./roles";
 
 export {
   UNASSIGNED_INITIALS,
@@ -34,9 +36,10 @@ type ClerkUserLike = {
   lastName: string | null;
   primaryEmailAddressId: string | null;
   emailAddresses: ReadonlyArray<{ id: string; emailAddress: string }>;
+  publicMetadata?: Record<string, unknown> | null;
 };
 
-type CacheEntry = { directors: Director[]; expiresAt: number };
+type CacheEntry = { directors: Director[]; clientIds: string[]; expiresAt: number };
 
 const TIMED_OUT = Symbol("directors timed out");
 
@@ -67,10 +70,38 @@ function byName(a: Director, b: Director): number {
   return a.name.localeCompare(b.name, "en-GB", { sensitivity: "base" });
 }
 
-async function fetchDirectors(): Promise<Director[]> {
+async function loadClientDomains(): Promise<string[]> {
+  try {
+    return await listClientDomainNames();
+  } catch {
+    return [];
+  }
+}
+
+function kindForUser(user: ClerkUserLike, clientDomains: readonly string[]): ActorKind {
+  return actorKindFromSignals({
+    role: user.publicMetadata?.role,
+    email: primaryEmail(user),
+    clientDomains,
+  });
+}
+
+async function fetchActors(): Promise<{ directors: Director[]; clientIds: string[] }> {
   const client = await clerkClient();
-  const { data } = await client.users.getUserList({ limit: PAGE_LIMIT });
-  return data.map((user) => toDirector(user)).sort(byName);
+  const [{ data }, clientDomains] = await Promise.all([
+    client.users.getUserList({ limit: PAGE_LIMIT }),
+    loadClientDomains(),
+  ]);
+  const directors: Director[] = [];
+  const clientIds: string[] = [];
+  for (const user of data) {
+    if (kindForUser(user, clientDomains) === "client") {
+      clientIds.push(user.id);
+      continue;
+    }
+    directors.push(toDirector(user));
+  }
+  return { directors: directors.sort(byName), clientIds };
 }
 
 function withTimeout<T>(work: Promise<T>, ms: number): Promise<T | typeof TIMED_OUT> {
@@ -83,13 +114,13 @@ function withTimeout<T>(work: Promise<T>, ms: number): Promise<T | typeof TIMED_
 
 async function loadDirectors(): Promise<Director[]> {
   try {
-    const result = await withTimeout(fetchDirectors(), FETCH_TIMEOUT_MS);
+    const result = await withTimeout(fetchActors(), FETCH_TIMEOUT_MS);
     if (result === TIMED_OUT) {
       console.warn(`Directors: Clerk user list took longer than ${FETCH_TIMEOUT_MS} ms`);
       return [];
     }
-    cache = { directors: result, expiresAt: Date.now() + CACHE_TTL_MS };
-    return result;
+    cache = { ...result, expiresAt: Date.now() + CACHE_TTL_MS };
+    return result.directors;
   } catch (error) {
     console.warn("Directors: Clerk user list unavailable", error);
     return [];
@@ -115,6 +146,39 @@ export async function getDirector(id: string | null | undefined): Promise<Direct
   if (!id) return null;
   const directors = await listDirectors();
   return directors.find((director) => director.id === id) ?? null;
+}
+
+async function fetchSingleActorKind(id: string): Promise<ActorKind | null> {
+  try {
+    const client = await clerkClient();
+    const result = await withTimeout(client.users.getUser(id), FETCH_TIMEOUT_MS);
+    if (result === TIMED_OUT) return null;
+    return kindForUser(result, await loadClientDomains());
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Director or client from Clerk metadata plus client_domains.
+ * Null when the user is unknown or Clerk is down — callers must not lock
+ * directors out of /portal in that case.
+ */
+export async function getActorKind(id: string | null | undefined): Promise<ActorKind | null> {
+  if (!id) return null;
+  if (cache && cache.expiresAt > Date.now()) {
+    if (cache.clientIds.includes(id)) return "client";
+    const director = cache.directors.find((entry) => entry.id === id);
+    if (director) {
+      return actorKindFromSignals({
+        role: undefined,
+        email: director.email,
+        clientDomains: await loadClientDomains(),
+      });
+    }
+  }
+  if (!isClerkConfigured()) return null;
+  return fetchSingleActorKind(id);
 }
 
 /** Test hook: forget the cached list and any request in flight. */

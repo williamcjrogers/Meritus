@@ -3,13 +3,19 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { getUserList, clerkClient } = vi.hoisted(() => {
+const { getUserList, getUser, clerkClient, listClientDomainNames } = vi.hoisted(() => {
   const getUserList = vi.fn();
-  const clerkClient = vi.fn(async () => ({ users: { getUserList } }));
-  return { getUserList, clerkClient };
+  const getUser = vi.fn();
+  const listClientDomainNames = vi.fn(async () => [] as string[]);
+  const clerkClient = vi.fn(async () => ({ users: { getUserList, getUser } }));
+  return { getUserList, getUser, clerkClient, listClientDomainNames };
 });
 
 vi.mock("@clerk/nextjs/server", () => ({ clerkClient }));
+vi.mock("@/lib/db/client-domains", () => ({
+  listClientDomainNames,
+  listClientDomainHosts: listClientDomainNames,
+}));
 
 import {
   UNASSIGNED_INITIALS,
@@ -17,6 +23,7 @@ import {
   __resetDirectorsCache,
   directorInitials,
   directorName,
+  getActorKind,
   getDirector,
   initialsFor,
   listDirectors,
@@ -32,12 +39,14 @@ function clerkUser(overrides: {
   lastName?: string | null;
   primaryEmailAddressId?: string | null;
   emailAddresses?: ClerkEmail[];
+  publicMetadata?: Record<string, unknown> | null;
 }) {
   return {
     firstName: null,
     lastName: null,
     primaryEmailAddressId: null,
     emailAddresses: [],
+    publicMetadata: null,
     ...overrides,
   };
 }
@@ -91,6 +100,10 @@ beforeEach(() => {
   __resetDirectorsCache();
   clerkClient.mockClear();
   getUserList.mockReset();
+  getUser.mockReset();
+  listClientDomainNames.mockReset();
+  listClientDomainNames.mockResolvedValue([]);
+  getUser.mockRejectedValue(new Error("not found"));
   getUserList.mockResolvedValue({ data: [william, mateo], totalCount: 2 });
 });
 
@@ -129,6 +142,43 @@ describe("listDirectors", () => {
   it("maps Clerk users to directors using the primary email, sorted by name", async () => {
     await expect(listDirectors()).resolves.toEqual([expectedMateo, expectedWilliam]);
     expect(getUserList).toHaveBeenCalledWith({ limit: 50 });
+  });
+
+  it("omits Clerk users invited as clients", async () => {
+    const client = clerkUser({
+      id: "user_client",
+      firstName: "Jane",
+      lastName: "Counsel",
+      publicMetadata: { role: "client" },
+      emailAddresses: [{ id: "em_c", emailAddress: "jane@firm.com" }],
+      primaryEmailAddressId: "em_c",
+    });
+    getUserList.mockResolvedValue({ data: [william, client], totalCount: 2 });
+    await expect(listDirectors()).resolves.toEqual([expectedWilliam]);
+    await expect(getActorKind("user_client")).resolves.toBe("client");
+    await expect(getActorKind("user_wr")).resolves.toBe("director");
+  });
+
+  it("omits Clerk users whose email domain is a listed client domain", async () => {
+    const jane = clerkUser({
+      id: "user_jane",
+      firstName: "Jane",
+      lastName: "Bree",
+      emailAddresses: [{ id: "em_j", emailAddress: "jane@bree.co.uk" }],
+      primaryEmailAddressId: "em_j",
+    });
+    listClientDomainNames.mockResolvedValue(["bree.co.uk"]);
+    getUserList.mockResolvedValue({ data: [william, jane], totalCount: 2 });
+    await expect(listDirectors()).resolves.toEqual([expectedWilliam]);
+    await expect(getActorKind("user_jane")).resolves.toBe("client");
+    await expect(getActorKind("user_wr")).resolves.toBe("director");
+  });
+
+  it("never treats meritusvia.com as a client domain", async () => {
+    listClientDomainNames.mockResolvedValue(["meritusvia.com"]);
+    getUserList.mockResolvedValue({ data: [william], totalCount: 1 });
+    await expect(listDirectors()).resolves.toEqual([expectedWilliam]);
+    await expect(getActorKind("user_wr")).resolves.toBe("director");
   });
 
   it("serves the cached list on the second call", async () => {
@@ -228,6 +278,51 @@ describe("listDirectors", () => {
     await expect(listDirectors()).resolves.toEqual([
       { id: "user_np", name: "np@x.com", email: "np@x.com", initials: "NP" },
     ]);
+  });
+});
+
+describe("getActorKind", () => {
+  it("is null for a missing id without calling Clerk", async () => {
+    await expect(getActorKind(null)).resolves.toBeNull();
+    await expect(getActorKind(undefined)).resolves.toBeNull();
+    expect(clerkClient).not.toHaveBeenCalled();
+  });
+
+  it("is null for a user who is not in the cached list", async () => {
+    await listDirectors();
+    await expect(getActorKind("user_zz")).resolves.toBeNull();
+  });
+
+  it("classifies an unknown user from Clerk when they are not in the cache yet", async () => {
+    await listDirectors();
+    getUser.mockResolvedValue(
+      clerkUser({
+        id: "user_jane",
+        emailAddresses: [{ id: "em_j", emailAddress: "jane@bree.co.uk" }],
+        primaryEmailAddressId: "em_j",
+      })
+    );
+    listClientDomainNames.mockResolvedValue(["bree.co.uk"]);
+    await expect(getActorKind("user_jane")).resolves.toBe("client");
+  });
+
+  it("is null when Clerk is down so directors are not locked out", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    getUser.mockRejectedValue(new Error("Clerk is down"));
+    await expect(getActorKind("user_wr")).resolves.toBeNull();
+  });
+
+  it("classifies by email domain when the directors cache is empty", async () => {
+    listClientDomainNames.mockResolvedValue(["bree.co.uk"]);
+    getUser.mockResolvedValue(
+      clerkUser({
+        id: "user_jane",
+        emailAddresses: [{ id: "em_j", emailAddress: "jane@bree.co.uk" }],
+        primaryEmailAddressId: "em_j",
+      })
+    );
+    await expect(getActorKind("user_jane")).resolves.toBe("client");
+    expect(getUserList).not.toHaveBeenCalled();
   });
 });
 
