@@ -8,6 +8,7 @@ import {
   text,
   timestamp,
 } from "drizzle-orm/pg-core";
+import type { ProgrammeIssue, ProgrammeReport, Schedule } from "@/lib/programme/types";
 
 // Stages a pursuit passes through. There is no conflict-check stage.
 export const PURSUIT_STAGES = [
@@ -209,6 +210,56 @@ export const prospects = pgTable(
   (t) => [index("prospects_conflict_rank_idx").on(t.conflictTier, t.rank)]
 );
 
+export const PROGRAMME_PARSE_STATUSES = ["parsed", "partial", "failed", "empty"] as const;
+export const programmeParseStatusEnum = pgEnum("programme_parse_status", PROGRAMME_PARSE_STATUSES);
+
+export const PROGRAMME_REPORT_STATUSES = ["running", "complete", "failed"] as const;
+export const programmeReportStatusEnum = pgEnum("programme_report_status", PROGRAMME_REPORT_STATUSES);
+
+export const programmes = pgTable(
+  "programmes",
+  {
+    id: text("id").primaryKey(),
+    pursuitId: text("pursuit_id").references(() => pursuits.id, { onDelete: "cascade" }),
+    fileName: text("file_name").notNull(),
+    format: text("format").notNull(),
+    contentHash: text("content_hash").notNull(),
+    parseStatus: programmeParseStatusEnum("parse_status").notNull(),
+    parseEngine: text("parse_engine").notNull(),
+    parseConfidence: integer("parse_confidence").notNull(),
+    schedule: jsonb("schedule").$type<Schedule | null>(),
+    issues: jsonb("issues").$type<ProgrammeIssue[]>().notNull(),
+    createdBy: text("created_by").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("programmes_pursuit_created_idx").on(t.pursuitId, t.createdAt),
+    index("programmes_content_hash_idx").on(t.contentHash),
+  ]
+);
+
+export const programmeReports = pgTable(
+  "programme_reports",
+  {
+    id: text("id").primaryKey(),
+    programmeId: text("programme_id")
+      .notNull()
+      .references(() => programmes.id, { onDelete: "cascade" }),
+    status: programmeReportStatusEnum("status").notNull().default("running"),
+    cacheKey: text("cache_key").notNull(),
+    progress: jsonb("progress").$type<{ stage: string; percent: number }>(),
+    report: jsonb("report").$type<ProgrammeReport | null>(),
+    error: text("error"),
+    createdBy: text("created_by").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+  },
+  (t) => [
+    index("programme_reports_programme_created_idx").on(t.programmeId, t.createdAt),
+    index("programme_reports_cache_key_idx").on(t.cacheKey),
+  ]
+);
+
 export type PursuitStage = (typeof PURSUIT_STAGES)[number];
 export type PursuitSource = (typeof PURSUIT_SOURCES)[number];
 export type ActivityKind = (typeof ACTIVITY_KINDS)[number];
@@ -228,6 +279,10 @@ export type NewActivity = typeof activity.$inferInsert;
 export type DocumentRow = typeof documents.$inferSelect;
 export type Brief = typeof briefs.$inferSelect;
 export type Question = typeof questions.$inferSelect;
+export type ProgrammeRow = typeof programmes.$inferSelect;
+export type ProgrammeReportRow = typeof programmeReports.$inferSelect;
+export type ProgrammeParseStatus = (typeof PROGRAMME_PARSE_STATUSES)[number];
+export type ProgrammeReportStatus = (typeof PROGRAMME_REPORT_STATUSES)[number];
 
 /** The public form submission exactly as received, stored on the enquiry_received activity. */
 export type EnquirySubmission = {

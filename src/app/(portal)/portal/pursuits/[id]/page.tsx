@@ -7,6 +7,7 @@ import { SetupNotice } from "@/components/portal/SetupNotice";
 import type { RelatedRef } from "@/components/portal/desk-types";
 import { latestStageChanges, listActivity } from "@/lib/db/activity";
 import { latestBrief, latestCompleteBrief } from "@/lib/db/briefs";
+import { expireStaleProgrammeReports, latestReport, listProgrammes } from "@/lib/db/programmes";
 import { listDocuments } from "@/lib/db/documents";
 import { findRelatedPursuits, getPursuit } from "@/lib/db/pursuits";
 import { listQuestions } from "@/lib/db/questions";
@@ -14,6 +15,7 @@ import { isClerkConfigured, isDatabaseConfigured, missingRequiredSetup } from "@
 import { shortDate } from "@/lib/portal/dates";
 import { listDirectors } from "@/lib/portal/directors";
 import { summariseDocument } from "@/lib/portal/files";
+import { summariseProgramme, type ProgrammeListItem } from "@/lib/programme/view";
 import { normaliseFirm } from "@/lib/portal/intake";
 
 export const dynamic = "force-dynamic";
@@ -37,6 +39,19 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
     return <SetupNotice title="Database is configured but not migrated" />;
   }
   if (!pursuit) notFound();
+
+  let programmeItems: ProgrammeListItem[] = [];
+  try {
+    const rows = await listProgrammes(id);
+    programmeItems = await Promise.all(
+      rows.map(async (row) => {
+        await expireStaleProgrammeReports(row.id);
+        return summariseProgramme(row, await latestReport(row.id));
+      })
+    );
+  } catch {
+    programmeItems = [];
+  }
 
   const [directors, activity, documents, run, brief, questions, changes, relatedRows, userId] = await Promise.all([
     listDirectors(),
@@ -73,6 +88,7 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
       documents={documents.map(summariseDocument)}
       briefState={briefState}
       questions={thread}
+      programmes={programmeItems}
       now={new Date().toISOString()}
     />
   );

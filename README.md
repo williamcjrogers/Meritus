@@ -16,7 +16,11 @@ Copy `.env.example` to `.env.local` and fill in what you need. Without Clerk, da
 
 ## Pursuit desk
 
-The desk is the directors' private area: enquiries from the public form land in an inbox, pursuits move across a board (Enquiry, Scoping, Proposal, Instructed, with Declined and Dormant on the side), and each pursuit has a dossier with a research brief and a questions drawer. Design: `docs/superpowers/specs/2026-09-09-pursuit-desk-design.md`. Plan: `docs/superpowers/plans/2026-09-09-pursuit-desk.md`.
+The desk is the directors' private area: enquiries from the public form land in an inbox, pursuits move across a board (Enquiry, Scoping, Proposal, Instructed, with Declined and Dormant on the side), and each pursuit has a dossier with a research brief, programme intelligence, and a questions drawer. Design: `docs/superpowers/specs/2026-09-09-pursuit-desk-design.md`. Plan: `docs/superpowers/plans/2026-09-09-pursuit-desk.md`.
+
+### Programme intelligence
+
+`/portal/programmes` ingests Asta Powerproject (`.pp` SQLite inspect, plus XML/CSV exports), P6 XER, MSP XML, JSON snapshots and programme PDFs. The block engine (`meritus_block_v1`) selects a delay method from the records that are present (SCL Protocol 2nd Ed: no single preferred method), refuses to invent float or a critical path from PDF mark-up, and cites every figure back to an analysis block. EOT days are not converted into money. Reports are cached by schedule hash; recompute is explicit. Native `.pp` files are validated and described; activity-level CPM needs an XML or CSV export (VeriCase native ingest remains `asta_pp_sqlite_v1`).
 
 ### Database
 
@@ -31,7 +35,7 @@ Schema lives in `src/lib/db/schema.ts`; migrations in `drizzle/`. Generate a mig
 
 ### Uploads
 
-Files on a pursuit or in the library are capped at 4 MB because Vercel functions refuse larger request bodies. Allowed types: pdf, docx, xlsx, jpg, png, webp, txt, eml, msg; text is extracted from pdf, docx, eml and txt for the questions drawer.
+Files on a pursuit or in the library are capped at 4 MB because Vercel functions refuse larger request bodies. Allowed types: pdf, docx, xlsx, jpg, png, webp, txt, eml, msg; text is extracted from pdf, docx, eml and txt for the questions drawer. Programme ingest is a separate path (`/portal/programmes`) and additionally accepts `.pp`, `.xml`, `.xer`, `.csv` and `.json`.
 
 ### Environment
 
