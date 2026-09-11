@@ -74,6 +74,23 @@ describe("addClientDomainAction", () => {
     expect(revalidatePath).toHaveBeenCalledWith("/portal/clients");
   });
 
+  it("stores optional VeriCase workspace labels", async () => {
+    await addClientDomainAction(
+      null,
+      form({
+        domain: "bree.co.uk",
+        vericaseWorkspaceId: " ws_verbier ",
+        vericaseWorkspaceName: " Verbier ",
+      })
+    );
+    expect(createClientDomain).toHaveBeenCalledWith({
+      domain: "bree.co.uk",
+      createdBy: "user_wr",
+      vericaseWorkspaceId: "ws_verbier",
+      vericaseWorkspaceName: "Verbier",
+    });
+  });
+
   it("refuses public mailbox and meritusvia.com domains", async () => {
     await expect(addClientDomainAction(null, form({ domain: "gmail.com" }))).resolves.toEqual({
       ok: false,

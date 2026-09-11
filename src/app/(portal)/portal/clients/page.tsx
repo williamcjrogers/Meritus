@@ -28,15 +28,16 @@ export default async function ClientsPage() {
         <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-ink/70">
           Company domains are the membership list. Anyone who signs in with{" "}
           <span className="whitespace-nowrap">@bree.co.uk</span> (or another listed host) lands on
-          /client, can dump files into the VeriCase WR2.0 archive, and cannot open the
-          pursuit desk.
+          /client and cannot open the pursuit desk. Matter files stay in VeriCase WR2.0 S3 —
+          this page does not create a second archive or stream objects here.
         </p>
       </div>
 
       <p className="max-w-2xl text-[13px] leading-relaxed text-ink/70">
-        Clerk stays invite-only. Adding a domain here routes those emails after they can
-        authenticate. First-time users still need a Clerk invite or an allowlist identifier
-        until that is enabled. Partner invite-only is unchanged.
+        Clerk stays invite-only. Adding a domain tries a Clerk allowlist identifier for that
+        host. First-time users still need a Clerk invite or an allowlist until that is enabled.
+        Partner invite-only is unchanged. Invitation redirect stays{" "}
+        <span className="text-green">https://www.meritusvia.com/client/sign-up</span>.
       </p>
 
       <section className="panel-brackets max-w-xl border border-green/10 bg-parchment p-6">

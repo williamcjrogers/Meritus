@@ -20,7 +20,7 @@ The desk is the directors' private area: enquiries from the public form land in 
 
 ### Client login
 
-Company domains are the membership list. Directors add `@bree.co.uk` / `bree.co.uk` on `/portal/clients`. Anyone who authenticates with that host is a client, lands on `/client`, and cannot open `/portal`. They dump files into the VeriCase WR2.0 archive (the same AWS settings as that tenant). Clerk stays invite-only: first-time users still need a Clerk invite (redirect to `https://www.meritusvia.com/client/sign-up`) or a domain allowlist until that is enabled.
+Company domains are the membership list. Directors add `@bree.co.uk` / `bree.co.uk` on `/portal/clients`. Anyone who authenticates with that host is a client, lands on `/client`, and cannot open `/portal`. Matter files stay in VeriCase WR2.0 S3 — this login does not create a second archive or stream objects. Clerk stays invite-only: first-time users still need a Clerk invite (redirect to `https://www.meritusvia.com/client/sign-up`) or a domain allowlist until that is enabled.
 
 ### Database
 
@@ -40,11 +40,9 @@ Files on a pursuit or in the library are capped at 4 MB because Vercel functions
 
 ### Client desk
 
-The public header has Partner and Client login. Directors add a company domain under `/portal/clients`. Anyone who authenticates with that email domain is sent to `/client` and can dump files into the VeriCase WR2.0 archive (the same AWS settings as that tenant). They never see `/portal`. Public mailbox domains and `meritusvia.com` cannot be added.
+The public header has Partner and Client login. Directors add a company domain under `/portal/clients`. Anyone who authenticates with that email domain is sent to `/client` They never see `/portal`. Public mailbox domains and `meritusvia.com` cannot be added.
 
 Clerk stays invite-only: adding a domain routes people who can already sign in; first-time users still need an invitation to `/client/sign-up`.
-
-Client dumps go straight to that archive (up to 100 MB). The site stores only file metadata. The bucket must allow PUT from `https://www.meritusvia.com`. Portal uploads stay on Vercel Blob.
 
 ### Environment
 

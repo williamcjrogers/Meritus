@@ -7,7 +7,7 @@ import { shouldSendClientToDesk } from "@/lib/portal/gate";
 
 const isPortalRoute = createRouteMatcher(["/portal(.*)", "/api/portal(.*)"]);
 const isClientAuthRoute = createRouteMatcher(["/client/sign-in(.*)", "/client/sign-up(.*)"]);
-const isClientAppRoute = createRouteMatcher(["/client(.*)", "/api/client(.*)"]);
+const isClientDeskRoute = createRouteMatcher(["/client(.*)"]);
 
 const clerkHandler = clerkMiddleware(async (auth, req) => {
   const pathname = req.nextUrl.pathname;
@@ -26,7 +26,7 @@ const clerkHandler = clerkMiddleware(async (auth, req) => {
     return;
   }
 
-  if (isClientAppRoute(req) && !isClientAuthRoute(req)) {
+  if (isClientDeskRoute(req) && !isClientAuthRoute(req)) {
     await auth.protect({
       unauthenticatedUrl: new URL("/client/sign-in", req.url).toString(),
     });

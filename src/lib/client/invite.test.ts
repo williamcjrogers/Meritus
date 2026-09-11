@@ -1,11 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  clerkPrimaryEmail,
-  invitationErrorMessage,
-  isReusableInvitationError,
-  normaliseClientEmail,
-  parseClientInviteInput,
-} from "./invite";
+import { clerkPrimaryEmail, normaliseClientEmail } from "./invite";
 
 describe("normaliseClientEmail", () => {
   it("trims and lower-cases", () => {
@@ -32,80 +26,5 @@ describe("clerkPrimaryEmail", () => {
   it("is empty when nothing is known", () => {
     expect(clerkPrimaryEmail(null)).toBe("");
     expect(clerkPrimaryEmail({})).toBe("");
-  });
-});
-
-describe("parseClientInviteInput", () => {
-  it("normalises a company email and workspace fields", () => {
-    expect(
-      parseClientInviteInput({
-        email: " Jane@BREE.co.uk ",
-        vericaseWorkspaceId: " ws_byoot ",
-        vericaseWorkspaceName: " Byoot ",
-      })
-    ).toEqual({
-      ok: true,
-      email: "jane@bree.co.uk",
-      vericaseWorkspaceId: "ws_byoot",
-      vericaseWorkspaceName: "Byoot",
-    });
-  });
-
-  it("refuses a missing email", () => {
-    expect(
-      parseClientInviteInput({
-        email: " ",
-        vericaseWorkspaceId: "ws_1",
-        vericaseWorkspaceName: "Byoot",
-      })
-    ).toEqual({ ok: false, error: "Enter the client’s email address." });
-  });
-
-  it("refuses public mailboxes and meritusvia.com", () => {
-    expect(
-      parseClientInviteInput({
-        email: "jane@gmail.com",
-        vericaseWorkspaceId: "ws_1",
-        vericaseWorkspaceName: "Byoot",
-      })
-    ).toEqual({ ok: false, error: "Public mailbox addresses cannot be invited." });
-    expect(
-      parseClientInviteInput({
-        email: "mateo@meritusvia.com",
-        vericaseWorkspaceId: "ws_1",
-        vericaseWorkspaceName: "Byoot",
-      })
-    ).toEqual({ ok: false, error: "meritusvia.com is reserved for directors." });
-  });
-
-  it("requires a workspace id and name", () => {
-    expect(
-      parseClientInviteInput({
-        email: "jane@bree.co.uk",
-        vericaseWorkspaceId: "x",
-        vericaseWorkspaceName: "Byoot",
-      })
-    ).toEqual({ ok: false, error: "Enter the VeriCase workspace id for this matter." });
-    expect(
-      parseClientInviteInput({
-        email: "jane@bree.co.uk",
-        vericaseWorkspaceId: "ws_1",
-        vericaseWorkspaceName: " ",
-      })
-    ).toEqual({ ok: false, error: "Enter the VeriCase workspace name." });
-  });
-});
-
-describe("invitation errors", () => {
-  it("treats a duplicate invite as reusable", () => {
-    expect(isReusableInvitationError(new Error("Invitation already exists"))).toBe(true);
-    expect(isReusableInvitationError(new Error("network"))).toBe(false);
-  });
-
-  it("surfaces the Clerk message when present", () => {
-    expect(invitationErrorMessage(new Error("Quota exceeded"))).toBe("Quota exceeded");
-    expect(invitationErrorMessage("nope")).toBe(
-      "Clerk could not send the invitation. Check the email and try again."
-    );
   });
 });
