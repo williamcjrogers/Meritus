@@ -1149,7 +1149,7 @@ export default async function InsightArticlePage({ params }: { params: Promise<{
                       href="/contact"
                       className="inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.15em] uppercase text-brass hover:text-brass-light transition-colors duration-200"
                     >
-                      Request Conflict Check
+                      Make an Enquiry
                       <span aria-hidden="true">→</span>
                     </Link>
                   </div>

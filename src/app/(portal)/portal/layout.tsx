@@ -46,6 +46,9 @@ export default async function PortalLayout({ children }: { children: React.React
           <NavLink href="/portal" match="desk">
             Home
           </NavLink>
+          <NavLink href="/portal/prospects">
+            Prospects
+          </NavLink>
           <NavLink href="/portal/library">
             Library
           </NavLink>
@@ -66,6 +69,9 @@ export default async function PortalLayout({ children }: { children: React.React
           <nav className="flex items-center gap-4" aria-label="Portal">
             <NavLink href="/portal" match="desk" variant="bar">
               Home
+            </NavLink>
+            <NavLink href="/portal/prospects" variant="bar">
+              Prospects
             </NavLink>
             <NavLink href="/portal/library" variant="bar">
               Library

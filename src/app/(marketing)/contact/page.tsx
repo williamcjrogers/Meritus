@@ -7,13 +7,13 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata = pageMetadata({
   title: "Contact",
-  description: "Request a conflict check with Meritus Via. Direct access to a senior construction disputes practitioner within 24 hours.",
+  description: "Make an enquiry with Meritus Via. Direct access to a senior construction disputes practitioner within 24 hours.",
   path: "/contact",
   keywords: [
     "construction disputes contact",
     "instruct construction expert witness",
     "adjudication referral support",
-    "conflict check construction dispute",
+    "construction dispute enquiry",
   ],
 });
 
@@ -37,7 +37,7 @@ export default function ContactPage() {
               
               <FadeIn delay={0.2}>
                 <h1 className="font-serif text-4xl lg:text-[56px] text-cream leading-[1.1] mb-8">
-                  Request <span className="text-cream/70 italic">conflict check.</span>
+                  Make an <span className="text-cream/70 italic">enquiry.</span>
                 </h1>
               </FadeIn>
               
@@ -45,7 +45,7 @@ export default function ContactPage() {
                 <div className="flex gap-6 max-w-2xl">
                   <div className="w-[1px] bg-brass/30 shrink-0 mt-2" />
                   <p className="text-[15px] lg:text-[16px] text-cream/70 leading-[1.8] font-light tracking-[0.02em]">
-                    Submit the initial details of your matter below. A partner will review for commercial and legal conflicts and respond directly within 24 hours. All submissions are strictly confidential.
+                    Send the initial details of your matter below. A partner will review the enquiry, including any commercial or legal conflicts, and respond directly within 24 hours. All submissions are strictly confidential.
                   </p>
                 </div>
               </FadeIn>
