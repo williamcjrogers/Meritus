@@ -4,12 +4,7 @@ import type {
   ProspectOutreach,
 } from "@/lib/db/schema";
 
-export const PROSPECT_VIEWS = [
-  "approachable",
-  "conflicted",
-  "all",
-  "excluded",
-] as const;
+export const PROSPECT_VIEWS = ["approachable", "all", "excluded"] as const;
 
 export type ProspectView = (typeof PROSPECT_VIEWS)[number];
 
@@ -29,6 +24,17 @@ export const SCORE_WEIGHTS = {
   access: 0.15,
 } as const;
 
+/** Firms worth targeting. Legacy tracker-category tiers stay in the enum but rank here. */
+export const APPROACHABLE_TIERS: readonly ProspectConflict[] = [
+  "latent_conflict",
+  "hard_conflict",
+  "related_party",
+  "other",
+];
+
+/** True non-clients: competitors/advisers and dissolved, insolvent, or generic rows. */
+export const EXCLUDED_TIERS: readonly ProspectConflict[] = ["excluded", "competitor"];
+
 export function isProspectView(value: string): value is ProspectView {
   return (PROSPECT_VIEWS as readonly string[]).includes(value);
 }
@@ -37,15 +43,19 @@ export function isProspectOutreach(value: string): value is ProspectOutreach {
   return (PROSPECT_OUTREACH_STATUSES as readonly string[]).includes(value);
 }
 
+export function isApproachableTier(tier: ProspectConflict): boolean {
+  return (APPROACHABLE_TIERS as readonly string[]).includes(tier);
+}
+
 export function defaultOutreach(tier: ProspectConflict): ProspectOutreach {
   switch (tier) {
     case "latent_conflict":
-      return "unworked";
     case "hard_conflict":
-    case "competitor":
     case "related_party":
-    case "excluded":
     case "other":
+      return "unworked";
+    case "competitor":
+    case "excluded":
       return "do_not_approach";
     default: {
       const exhaustive: never = tier;
@@ -57,13 +67,11 @@ export function defaultOutreach(tier: ProspectConflict): ProspectOutreach {
 export function conflictTierLabel(tier: ProspectConflict): string {
   switch (tier) {
     case "hard_conflict":
-      return "Hard conflict";
     case "latent_conflict":
-      return "Latent conflict";
+    case "related_party":
+      return "Ranked";
     case "competitor":
       return "Competitor / adviser";
-    case "related_party":
-      return "Related party";
     case "excluded":
       return "Excluded";
     case "other":
@@ -78,13 +86,11 @@ export function conflictTierLabel(tier: ProspectConflict): string {
 export function conflictTierHint(tier: ProspectConflict): string {
   switch (tier) {
     case "hard_conflict":
-      return "BREE is adverse on a live tracker matter. Do not approach while that matter is live.";
     case "latent_conflict":
-      return "No live adverse matter, but a BREE-lineage relationship exists. A conflict check is still required before any approach.";
-    case "competitor":
-      return "Sells forensic or dispute services, or is already instructed on the BREE side.";
     case "related_party":
-      return "Inside the BREE group or lineage. Internal work, not business development.";
+      return "Ranked by need, gap, capacity and access. A firm worth targeting.";
+    case "competitor":
+      return "Sells forensic or dispute services, or already acts as an adviser. Not a client.";
     case "excluded":
       return "Dissolved, insolvent, generic, or too small to treat as a prospect.";
     case "other":
@@ -137,8 +143,6 @@ export function prospectViewLabel(view: ProspectView): string {
   switch (view) {
     case "approachable":
       return "Approachable";
-    case "conflicted":
-      return "Conflicted";
     case "all":
       return "All ranked";
     case "excluded":
@@ -153,13 +157,11 @@ export function prospectViewLabel(view: ProspectView): string {
 export function prospectViewDescription(view: ProspectView): string {
   switch (view) {
     case "approachable":
-      return "Latent conflict only. These are the firms to target, subject to a conflict check and informed consent.";
-    case "conflicted":
-      return "Hard conflicts, competitors, and related parties. High value, but not approachable as clients today.";
+      return "Firms worth targeting, ranked by need, gap, capacity and access.";
     case "all":
-      return "The full ranked list, including conflicted counterparties.";
+      return "The full list, including firms that are not clients.";
     case "excluded":
-      return "Dissolved, insolvent, generic, or composite tracker entries. Kept so they are not approached by mistake.";
+      return "Competitors, advisers, dissolved, insolvent, generic, or composite tracker entries. Kept so they are not approached by mistake.";
     default: {
       const exhaustive: never = view;
       return exhaustive;

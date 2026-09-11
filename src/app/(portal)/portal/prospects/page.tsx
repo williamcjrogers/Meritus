@@ -14,7 +14,7 @@ import { ensureProspectsSeeded } from "@/lib/prospects/seed";
 
 export const dynamic = "force-dynamic";
 
-const VIEWS: ProspectView[] = ["approachable", "conflicted", "all", "excluded"];
+const VIEWS: ProspectView[] = ["approachable", "all", "excluded"];
 
 export default async function ProspectsPage({
   searchParams,
@@ -49,8 +49,8 @@ export default async function ProspectsPage({
         <h1 className="mt-1 font-serif text-3xl text-green sm:text-4xl">Prospects</h1>
         <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-ink/70">
           Outbound organisations ranked by the value Meritus would bring — not inbound
-          pursuits, and not the public enquiry inbox. Seeded from the BREE prospect ranking
-          of 10 September 2026.
+          pursuits, and not the public enquiry inbox. Ranked on 10 September 2026 by need,
+          gap, capacity and access.
         </p>
       </div>
 
@@ -82,8 +82,8 @@ export default async function ProspectsPage({
 
       <p className="max-w-3xl text-[12px] leading-relaxed text-ink/70">
         {totalSeeded} organisations in the ranking file. Need, gap, capacity and access are
-        judgement scores, not measured quantities. Conflict tiers reflect the BREE tracker
-        only — they are not an independent conflict check.
+        judgement scores, not measured quantities. Rank is by those weights — not by assumed
+        adversity or any other firm&apos;s book.
       </p>
     </div>
   );

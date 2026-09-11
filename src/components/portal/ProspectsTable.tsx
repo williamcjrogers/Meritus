@@ -9,16 +9,15 @@ import {
   outreachLabel,
 } from "@/lib/prospects/model";
 
-function conflictClass(tier: Prospect["conflictTier"]): string {
+function categoryClass(tier: Prospect["conflictTier"]): string {
   switch (tier) {
     case "hard_conflict":
-      return "text-oxblood";
     case "latent_conflict":
-      return "text-brass";
-    case "competitor":
     case "related_party":
-    case "excluded":
     case "other":
+      return "text-green";
+    case "competitor":
+    case "excluded":
       return "text-ink/70";
     default: {
       const exhaustive: never = tier;
@@ -68,7 +67,7 @@ export function ProspectsTable({ rows }: { rows: Prospect[] }) {
               <th className="px-4 py-3 font-medium">Rank</th>
               <th className="px-4 py-3 font-medium">Organisation</th>
               <th className="px-4 py-3 font-medium">Type</th>
-              <th className="px-4 py-3 font-medium">Conflict</th>
+              <th className="px-4 py-3 font-medium">Category</th>
               <th className="px-4 py-3 font-medium">Score</th>
               <th className="px-4 py-3 font-medium">Evidence</th>
               <th className="px-4 py-3 font-medium">Outreach</th>
@@ -93,7 +92,7 @@ export function ProspectsTable({ rows }: { rows: Prospect[] }) {
                   <td className="max-w-[16rem] px-4 py-3 text-ink/70">
                     <span className="line-clamp-2">{row.organisationType ?? "—"}</span>
                   </td>
-                  <td className={`px-4 py-3 ${conflictClass(row.conflictTier)}`}>
+                  <td className={`px-4 py-3 ${categoryClass(row.conflictTier)}`}>
                     {conflictTierLabel(row.conflictTier)}
                   </td>
                   <td className="px-4 py-3 font-mono text-[12px] text-green">

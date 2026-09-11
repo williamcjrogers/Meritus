@@ -63,7 +63,7 @@ export default async function ProspectPage({ params }: { params: Promise<{ id: s
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
         <aside className="space-y-5 border border-green/10 bg-parchment p-6 lg:col-span-4">
           <div>
-            <Eyebrow rule={false}>Conflict</Eyebrow>
+            <Eyebrow rule={false}>Category</Eyebrow>
             <p className="mt-2 text-[16px] text-green">{conflictTierLabel(prospect.conflictTier)}</p>
             <p className="mt-2 text-[13px] leading-relaxed text-ink/70">
               {conflictTierHint(prospect.conflictTier)}
@@ -84,7 +84,7 @@ export default async function ProspectPage({ params }: { params: Promise<{ id: s
             </p>
           </Panel>
 
-          <Panel title="Route in and conflict note">
+          <Panel title="Route in">
             <p className="text-[14px] leading-relaxed text-ink/70">
               {prospect.routeInNote ?? "No route-in note on file."}
             </p>

@@ -1,5 +1,10 @@
 import type { NewProspect, ProspectConflict, ProspectEvidence, ProspectSourceList } from "@/lib/db/schema";
-import { countProspects, upsertProspects } from "@/lib/db/prospects";
+import {
+  countProspects,
+  countProspectsWithTiers,
+  resetUnconvertedApproachableOutreach,
+  upsertProspects,
+} from "@/lib/db/prospects";
 import { defaultOutreach } from "./model";
 import seed from "./bree-seed.json";
 
@@ -42,7 +47,12 @@ export function seedProspectValues(): NewProspect[] {
 
 export async function ensureProspectsSeeded(): Promise<number> {
   const existing = await countProspects();
-  if (existing > 0) return existing;
+  const staleConflictTiers =
+    existing > 0 ? await countProspectsWithTiers(["hard_conflict", "related_party"]) : 0;
+  if (existing > 0 && staleConflictTiers === 0) return existing;
   await upsertProspects(seedProspectValues());
+  if (staleConflictTiers > 0) {
+    await resetUnconvertedApproachableOutreach();
+  }
   return countProspects();
 }

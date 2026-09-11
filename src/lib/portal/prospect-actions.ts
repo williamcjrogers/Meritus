@@ -65,7 +65,7 @@ export async function openProspectAsPursuit(id: string): Promise<CreateResult> {
       id: pursuitId,
       firm: prospect.organisation,
       source: "other",
-      sourceDetail: "Prospects · BREE ranking",
+      sourceDetail: "Prospects ranking",
       summary: summary || null,
       ownerId: userId,
       stage: "enquiry",

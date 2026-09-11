@@ -1,5 +1,9 @@
-import { asc, desc, eq, inArray, sql } from "drizzle-orm";
-import type { ProspectView } from "@/lib/prospects/model";
+import { and, asc, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import {
+  APPROACHABLE_TIERS,
+  EXCLUDED_TIERS,
+  type ProspectView,
+} from "@/lib/prospects/model";
 import { requireDb } from "./index";
 import {
   prospects,
@@ -12,11 +16,9 @@ import {
 function conflictTiersForView(view: ProspectView): ProspectConflict[] | null {
   switch (view) {
     case "approachable":
-      return ["latent_conflict"];
-    case "conflicted":
-      return ["hard_conflict", "competitor", "related_party"];
+      return [...APPROACHABLE_TIERS];
     case "excluded":
-      return ["excluded"];
+      return [...EXCLUDED_TIERS];
     case "all":
       return null;
     default: {
@@ -32,12 +34,36 @@ export async function countProspects(): Promise<number> {
   return Number(rows[0]?.count ?? 0);
 }
 
+export async function countProspectsWithTiers(tiers: ProspectConflict[]): Promise<number> {
+  if (tiers.length === 0) return 0;
+  const db = requireDb();
+  const rows = await db
+    .select({ count: sql<number>`count(*)` })
+    .from(prospects)
+    .where(inArray(prospects.conflictTier, tiers));
+  return Number(rows[0]?.count ?? 0);
+}
+
+export async function resetUnconvertedApproachableOutreach(): Promise<void> {
+  const db = requireDb();
+  await db
+    .update(prospects)
+    .set({ outreachStatus: "unworked", updatedAt: new Date() })
+    .where(
+      and(
+        inArray(prospects.conflictTier, [...APPROACHABLE_TIERS]),
+        eq(prospects.outreachStatus, "do_not_approach"),
+        isNull(prospects.convertedPursuitId)
+      )
+    );
+}
+
 export async function countApproachableProspects(): Promise<number> {
   const db = requireDb();
   const rows = await db
     .select({ count: sql<number>`count(*)` })
     .from(prospects)
-    .where(eq(prospects.conflictTier, "latent_conflict"));
+    .where(inArray(prospects.conflictTier, [...APPROACHABLE_TIERS]));
   return Number(rows[0]?.count ?? 0);
 }
 
@@ -55,11 +81,12 @@ export async function countProspectsByView(): Promise<Record<ProspectView, numbe
     Record<ProspectConflict, number>
   >;
 
+  const sumTiers = (tiers: readonly ProspectConflict[]) =>
+    tiers.reduce((sum, tier) => sum + (byTier[tier] ?? 0), 0);
+
   return {
-    approachable: byTier.latent_conflict ?? 0,
-    conflicted:
-      (byTier.hard_conflict ?? 0) + (byTier.competitor ?? 0) + (byTier.related_party ?? 0),
-    excluded: byTier.excluded ?? 0,
+    approachable: sumTiers(APPROACHABLE_TIERS),
+    excluded: sumTiers(EXCLUDED_TIERS),
     all: rows.reduce((sum, row) => sum + Number(row.count), 0),
   };
 }
