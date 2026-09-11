@@ -20,7 +20,7 @@ The desk is the directors' private area: enquiries from the public form land in 
 
 ### Client login
 
-Client login is invite-only with Clerk `publicMetadata.role=client`. A director invites an email on `/portal/clients` and names one VeriCase WR2.0 workspace. The client lands on `/client` and cannot open `/portal`. Matter files stay in that tenant’s S3 — this site is not a second archive and does not stream objects. Company domains are an optional allowlist so those mailboxes are never treated as directors.
+Company domains are the membership list. Directors add `@bree.co.uk` / `bree.co.uk` on `/portal/clients`. Anyone who authenticates with that host is a client, lands on `/client`, and cannot open `/portal`. They dump files into the VeriCase WR2.0 archive (the same AWS settings as that tenant). Clerk stays invite-only: first-time users still need a Clerk invite (redirect to `https://www.meritusvia.com/client/sign-up`) or a domain allowlist until that is enabled.
 
 ### Database
 
@@ -28,8 +28,8 @@ Schema lives in `src/lib/db/schema.ts`; migrations in `drizzle/`. Generate a mig
 
 ### One-off manual steps
 
-1. **Clerk**: invite the three directors; keep access mode Invite-only. Director invitations land on `https://meritusvia.com/sign-up`. Client invitations (role=client) land on `https://meritusvia.com/client/sign-up`. Do not type the address on Login before accepting the invite.
-2. **Client invite**: on `/portal/clients`, enter the client email plus the VeriCase workspace id and name. Optional: add a company domain so that host is never treated as a director. `meritusvia.com` and public mailboxes are refused.
+1. **Clerk**: invite the three directors; keep access mode Invite-only. Director invitations land on `https://www.meritusvia.com/sign-up`. Client invitations land on `https://www.meritusvia.com/client/sign-up`. Do not type the address on Login before accepting the invite. First-time client users still need a Clerk invite or a domain allowlist until that is enabled.
+2. **Client domains**: on `/portal/clients`, add the company host. `meritusvia.com` and public mailboxes are refused. Set the VeriCase WR2.0 AWS settings on the existing meritus Vercel project so clients can dump files.
 3. **Resend**: add the Resend Marketplace integration, verify the sending domain for `enquiries@meritusvia.com` in the EU region, set data retention to the minimum, set `RESEND_API_KEY` and (optionally) `ENQUIRY_ALERT_FROM`, then submit a test enquiry and confirm the alert arrives.
 4. **Vercel firewall**: add a rate-limit rule for `POST /api/contact`.
 5. **Companies House**: set `COMPANIES_HOUSE_API_KEY` so briefs carry register facts.
@@ -40,7 +40,11 @@ Files on a pursuit or in the library are capped at 4 MB because Vercel functions
 
 ### Client desk
 
-The public header has Partner (`/sign-in`) and Client login (`/client/sign-in`). Directors invite a client under `/portal/clients`. The named VeriCase workspace appears on `/client`. Clients never see `/portal`. Files remain in VeriCase WR2.0 S3.
+The public header has Partner and Client login. Directors add a company domain under `/portal/clients`. Anyone who authenticates with that email domain is sent to `/client` and can dump files into the VeriCase WR2.0 archive (the same AWS settings as that tenant). They never see `/portal`. Public mailbox domains and `meritusvia.com` cannot be added.
+
+Clerk stays invite-only: adding a domain routes people who can already sign in; first-time users still need an invitation to `/client/sign-up`.
+
+Client dumps go straight to that archive (up to 100 MB). The site stores only file metadata. The bucket must allow PUT from `https://www.meritusvia.com`. Portal uploads stay on Vercel Blob.
 
 ### Environment
 

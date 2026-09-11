@@ -1,82 +1,87 @@
+import { currentUser } from "@clerk/nextjs/server";
+import { DumpZone } from "@/components/client/DumpZone";
 import { Eyebrow } from "@/components/portal/Eyebrow";
-import { SetupNotice } from "@/components/portal/SetupNotice";
-import { requireClientUser } from "@/lib/client/auth";
-import { clerkPrimaryEmail } from "@/lib/client/invite";
 import { stampClientRoleIfNeeded } from "@/lib/client/stamp";
+import { summariseClientFile } from "@/lib/client/files";
+import { clerkPrimaryEmail } from "@/lib/client/invite";
 import { findClientDomainForEmail } from "@/lib/db/client-domains";
-import { attachClerkUserToMatters, listMattersForClient } from "@/lib/db/client-matters";
-import { isClerkConfigured, isDatabaseConfigured } from "@/lib/env";
+import { listReadyClientFiles } from "@/lib/db/client-files";
+import { isClerkConfigured, isDatabaseConfigured, isVericaseStorageConfigured } from "@/lib/env";
 
 export const dynamic = "force-dynamic";
 
 export default async function ClientDeskPage() {
   if (!isClerkConfigured() || !isDatabaseConfigured()) {
-    return <SetupNotice title="Client desk is not configured yet" />;
+    return (
+      <div className="max-w-xl border border-green/10 bg-parchment p-8">
+        <Eyebrow className="mb-3">Client desk</Eyebrow>
+        <h1 className="mb-3 font-serif text-2xl text-green">Not available yet</h1>
+        <p className="text-[14px] leading-relaxed text-ink/70">
+          Client login needs Clerk and the database. Files go to the VeriCase WR2.0 archive.
+        </p>
+      </div>
+    );
   }
 
-  const user = await requireClientUser();
-  await stampClientRoleIfNeeded(user);
+  const user = await currentUser();
+  if (user) {
+    await stampClientRoleIfNeeded(user);
+  }
   const email = clerkPrimaryEmail(user);
-  if (email) {
+
+  let match = null;
+  try {
+    match = await findClientDomainForEmail(email);
+  } catch {
+    return (
+      <div className="max-w-xl border border-green/10 bg-parchment p-8">
+        <Eyebrow className="mb-3">Client desk</Eyebrow>
+        <h1 className="mb-3 font-serif text-2xl text-green">Database is configured but not migrated</h1>
+        <p className="text-[14px] leading-relaxed text-ink/70">
+          The client desk stores dumps in the VeriCase WR2.0 archive once the database is migrated.
+        </p>
+      </div>
+    );
+  }
+
+  const label = match?.domain ? `@${match.domain}` : null;
+  const workspace = match?.vericaseWorkspaceName?.trim() || null;
+  const storageReady = isVericaseStorageConfigured();
+
+  let files: ReturnType<typeof summariseClientFile>[] = [];
+  if (match) {
     try {
-      await attachClerkUserToMatters(email, user.id);
+      files = (await listReadyClientFiles(match.domain)).map(summariseClientFile);
     } catch {
-      // Grant bind is best-effort; the desk still lists by email.
+      files = [];
     }
   }
 
-  let matters;
-  let domain;
-  try {
-    matters = email ? await listMattersForClient({ email, clerkUserId: user.id }) : [];
-    domain = email ? await findClientDomainForEmail(email) : null;
-  } catch {
-    return <SetupNotice title="Database is configured but not migrated" />;
-  }
-
   return (
-    <div className="max-w-3xl space-y-8">
-      <header>
-        <Eyebrow rule={false}>Your matters</Eyebrow>
-        <h1 className="mt-1 font-serif text-3xl text-green sm:text-4xl">Shared with you</h1>
-        <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-ink/70">
-          A director named these VeriCase WR2.0 workspaces for your login. Matter files stay in
-          that tenant’s S3. This desk does not download files, mint signed URLs, or show object
-          keys.
-        </p>
-        {domain ? (
-          <p className="mt-2 text-[13px] text-ink/70">
-            Recognised client domain: <span className="font-medium text-green">{domain.domain}</span>
-            {domain.vericaseWorkspaceName ? ` · ${domain.vericaseWorkspaceName}` : ""}
-          </p>
-        ) : null}
-      </header>
+    <div className="max-w-3xl">
+      <Eyebrow rule={false}>Client desk</Eyebrow>
+      <h1 className="mt-1 font-serif text-3xl text-green sm:text-4xl">
+        {workspace || label || "Your files"}
+      </h1>
+      {label ? (
+        <p className="mt-2 font-mono text-[12px] tracking-[0.08em] text-ink/70">{label}</p>
+      ) : null}
+      <p className="mt-3 max-w-xl text-[14px] leading-relaxed text-ink/70">
+        Dump files here. They are stored in the VeriCase WR2.0 archive, not on this site.
+        {match ? " Anyone at this company domain who signs in can see this drop box." : ""}
+      </p>
 
-      {matters.length === 0 ? (
-        <div className="panel-brackets border border-green/10 bg-parchment px-6 py-10">
-          <p className="font-serif text-2xl text-green">No matters shared yet</p>
-          <p className="mt-2 max-w-xl text-[14px] leading-relaxed text-ink/70">
-            When counsel invites you, the named workspace will appear here. Files remain in
-            VeriCase S3 — this site is not a second archive.
-          </p>
+      {match ? (
+        <div className="mt-8">
+          <DumpZone files={files} storageReady={storageReady} />
         </div>
       ) : (
-        <ul className="divide-y divide-green/10 border border-green/10 bg-parchment">
-          {matters.map((matter) => (
-            <li key={matter.id} className="px-4 py-4">
-              <p className="font-serif text-xl text-green">
-                {matter.vericaseWorkspaceName || "Named workspace"}
-              </p>
-              <p className="mt-1 font-mono text-[11px] text-ink/55">
-                Workspace {matter.vericaseWorkspaceId}
-              </p>
-              <p className="mt-2 text-[13px] text-ink/70">
-                Files remain in VeriCase WR2.0 S3. Ask your solicitor if you need a document from
-                the file.
-              </p>
-            </li>
-          ))}
-        </ul>
+        <div className="panel-brackets mt-8 border border-green/10 bg-parchment px-6 py-10 text-center">
+          <p className="font-serif text-2xl text-green">No company domain is linked to this login yet.</p>
+          <p className="mt-2 text-[14px] text-ink/70">
+            A director adds the company domain on the pursuit desk. After that you can dump files here.
+          </p>
+        </div>
       )}
     </div>
   );

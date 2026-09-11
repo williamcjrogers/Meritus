@@ -181,29 +181,8 @@ export const PROSPECT_SOURCE_LISTS = ["ranked", "excluded"] as const;
 export const prospectSourceEnum = pgEnum("prospect_source_list", PROSPECT_SOURCE_LISTS);
 
 /**
- * A client login granted access to one VeriCase WR2.0 workspace.
- * Matter files stay in that workspace's S3; this row is only the grant.
- */
-export const clientMatters = pgTable(
-  "client_matters",
-  {
-    id: text("id").primaryKey(),
-    email: text("email").notNull(),
-    clerkUserId: text("clerk_user_id"),
-    vericaseWorkspaceId: text("vericase_workspace_id").notNull(),
-    vericaseWorkspaceName: text("vericase_workspace_name"),
-    createdBy: text("created_by").notNull(),
-    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  },
-  (t) => [
-    index("client_matters_email_idx").on(t.email),
-    index("client_matters_clerk_user_idx").on(t.clerkUserId),
-  ]
-);
-
-/**
- * Company email domains that may use /client. Matter files stay in VeriCase
- * WR2.0 S3; the optional workspace fields are a label for later wiring, not a file store.
+ * Company email domains that may use /client. Optional workspace fields are a
+ * label only. Dumps go to the VeriCase WR2.0 archive under this domain.
  */
 export const clientDomains = pgTable(
   "client_domains",
@@ -216,6 +195,32 @@ export const clientDomains = pgTable(
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (t) => [index("client_domains_domain_idx").on(t.domain)]
+);
+
+export const CLIENT_FILE_STATUSES = ["pending", "ready"] as const;
+export type ClientFileStatus = (typeof CLIENT_FILE_STATUSES)[number];
+
+/** Metadata for a file dumped into the VeriCase WR2.0 archive. The object lives in that tenant's S3. */
+export const clientFiles = pgTable(
+  "client_files",
+  {
+    id: text("id").primaryKey(),
+    domain: text("domain").notNull(),
+    clerkUserId: text("clerk_user_id").notNull(),
+    email: text("email").notNull(),
+    title: text("title").notNull(),
+    fileName: text("file_name").notNull(),
+    mime: text("mime").notNull(),
+    size: integer("size").notNull(),
+    storageKey: text("storage_key").notNull(),
+    status: text("status").$type<ClientFileStatus>().notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    completedAt: timestamp("completed_at", { withTimezone: true }),
+  },
+  (t) => [
+    index("client_files_domain_created_idx").on(t.domain, t.createdAt),
+    index("client_files_clerk_user_idx").on(t.clerkUserId),
+  ]
 );
 
 /** Outbound target firms. Separate from inbound pursuits and from the public enquiry inbox. */
@@ -263,8 +268,8 @@ export type Prospect = typeof prospects.$inferSelect;
 export type NewProspect = typeof prospects.$inferInsert;
 export type ClientDomain = typeof clientDomains.$inferSelect;
 export type NewClientDomain = typeof clientDomains.$inferInsert;
-export type ClientMatter = typeof clientMatters.$inferSelect;
-export type NewClientMatter = typeof clientMatters.$inferInsert;
+export type ClientFile = typeof clientFiles.$inferSelect;
+export type NewClientFile = typeof clientFiles.$inferInsert;
 export type Activity = typeof activity.$inferSelect;
 export type NewActivity = typeof activity.$inferInsert;
 export type DocumentRow = typeof documents.$inferSelect;

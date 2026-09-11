@@ -24,39 +24,13 @@ export function InviteClientForm() {
           autoComplete="off"
         />
       </label>
-      <label className="block">
-        <span className="portal-label">
-          VeriCase workspace id<span className="text-brass"> *</span>
-        </span>
-        <input
-          name="vericaseWorkspaceId"
-          type="text"
-          required
-          className="portal-field"
-          placeholder="Workspace id from WR2.0"
-          autoComplete="off"
-        />
-      </label>
-      <label className="block">
-        <span className="portal-label">
-          VeriCase workspace name<span className="text-brass"> *</span>
-        </span>
-        <input
-          name="vericaseWorkspaceName"
-          type="text"
-          required
-          className="portal-field"
-          placeholder="Byoot"
-          autoComplete="off"
-        />
-      </label>
       <button type="submit" className="btn-brass text-[12px]" disabled={pending}>
         {pending ? "Sending invitation…" : "Invite client"}
       </button>
       {state?.ok ? (
         <p className="text-[12px] text-ink/70">
-          Invitation sent. Files stay in that VeriCase WR2.0 workspace — this desk does not upload
-          or download them.
+          Invitation sent. They sign in at /client/sign-in and dump files into the VeriCase WR2.0
+          archive once their company domain is listed.
         </p>
       ) : null}
       {state && !state.ok ? <p className="text-[12px] text-oxblood">{state.error}</p> : null}

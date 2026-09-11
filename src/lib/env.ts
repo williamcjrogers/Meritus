@@ -34,6 +34,16 @@ export function isResendConfigured(): boolean {
   return Boolean(process.env.RESEND_API_KEY);
 }
 
+/** Same AWS settings as the VeriCase WR2.0 tenant. Optional until a director connects them. */
+export function isVericaseStorageConfigured(): boolean {
+  return Boolean(
+    process.env.VERICASE_AWS_ACCESS_KEY_ID &&
+      process.env.VERICASE_AWS_SECRET_ACCESS_KEY &&
+      process.env.VERICASE_AWS_REGION &&
+      process.env.VERICASE_S3_BUCKET
+  );
+}
+
 export type SetupFlag = {
   key: string;
   ready: boolean;
@@ -48,6 +58,7 @@ export function getSetupFlags(): SetupFlag[] {
     { key: "Vercel AI Gateway", ready: isAiConfigured(), required: true },
     { key: "Companies House", ready: isCompaniesHouseConfigured(), required: false },
     { key: "Resend", ready: isResendConfigured(), required: false },
+    { key: "VeriCase WR2.0 storage", ready: isVericaseStorageConfigured(), required: false },
   ];
 }
 

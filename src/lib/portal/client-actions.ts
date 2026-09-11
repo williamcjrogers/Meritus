@@ -8,7 +8,6 @@ import {
   parseClientInviteInput,
 } from "@/lib/client/invite";
 import { createClientDomain, deleteClientDomain, findClientDomain } from "@/lib/db/client-domains";
-import { createClientMatter, findClientMatter } from "@/lib/db/client-matters";
 import { allowlistPageNote, tryAllowlistClientDomain, type AllowlistOutcome } from "./clerk-allowlist";
 import { requireActionUser } from "./auth";
 import { clientDomainErrorMessage, parseClientDomain } from "./domains";
@@ -96,21 +95,12 @@ export async function removeClientDomain(id: string): Promise<Failure | { ok: tr
   return removeClientDomainAction(data);
 }
 
-export async function inviteClient(input: {
-  email: string;
-  vericaseWorkspaceId: string;
-  vericaseWorkspaceName: string;
-}): Promise<{ ok: true } | Failure> {
+export async function inviteClient(input: { email: string }): Promise<{ ok: true } | Failure> {
   const user = await requireActionUser();
   if (!user.ok) return user;
 
   const parsed = parseClientInviteInput(input);
   if (!parsed.ok) return parsed;
-
-  const existing = await findClientMatter(parsed.email, parsed.vericaseWorkspaceId);
-  if (existing) {
-    return { ok: false, error: "That workspace is already granted to this email." };
-  }
 
   try {
     const client = await clerkClient();
@@ -127,18 +117,6 @@ export async function inviteClient(input: {
     }
   }
 
-  try {
-    await createClientMatter({
-      email: parsed.email,
-      vericaseWorkspaceId: parsed.vericaseWorkspaceId,
-      vericaseWorkspaceName: parsed.vericaseWorkspaceName,
-      createdBy: user.userId,
-    });
-  } catch (error) {
-    console.error("[portal] inviteClient grant failed", error);
-    return { ok: false, error: "The invitation was sent but the matter grant could not be saved." };
-  }
-
   refresh();
   return { ok: true };
 }
@@ -149,7 +127,5 @@ export async function inviteClientAction(
 ): Promise<InviteClientState> {
   return inviteClient({
     email: String(formData.get("email") ?? ""),
-    vericaseWorkspaceId: String(formData.get("vericaseWorkspaceId") ?? ""),
-    vericaseWorkspaceName: String(formData.get("vericaseWorkspaceName") ?? ""),
   });
 }

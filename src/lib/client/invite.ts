@@ -4,15 +4,9 @@ export function normaliseClientEmail(value: string): string {
   return value.trim().toLowerCase();
 }
 
-export type ClientInviteParseResult =
-  | { ok: true; email: string; vericaseWorkspaceId: string; vericaseWorkspaceName: string }
-  | { ok: false; error: string };
+export type ClientInviteParseResult = { ok: true; email: string } | { ok: false; error: string };
 
-export function parseClientInviteInput(input: {
-  email: string;
-  vericaseWorkspaceId: string;
-  vericaseWorkspaceName: string;
-}): ClientInviteParseResult {
+export function parseClientInviteInput(input: { email: string }): ClientInviteParseResult {
   const email = normaliseClientEmail(input.email);
   if (!email || !email.includes("@")) {
     return { ok: false, error: "Enter the client’s email address." };
@@ -34,17 +28,7 @@ export function parseClientInviteInput(input: {
     }
   }
 
-  const vericaseWorkspaceId = input.vericaseWorkspaceId.trim();
-  if (vericaseWorkspaceId.length < 2) {
-    return { ok: false, error: "Enter the VeriCase workspace id for this matter." };
-  }
-
-  const vericaseWorkspaceName = input.vericaseWorkspaceName.trim();
-  if (vericaseWorkspaceName.length < 2) {
-    return { ok: false, error: "Enter the VeriCase workspace name." };
-  }
-
-  return { ok: true, email, vericaseWorkspaceId, vericaseWorkspaceName };
+  return { ok: true, email };
 }
 
 type ClerkEmail = { emailAddress: string; id?: string };

@@ -9,8 +9,6 @@ const {
   tryAllowlistClientDomain,
   resetDirectors,
   createInvitation,
-  findClientMatter,
-  createClientMatter,
 } = vi.hoisted(() => ({
   requireActionUser: vi.fn(),
   findClientDomain: vi.fn(),
@@ -19,8 +17,6 @@ const {
   tryAllowlistClientDomain: vi.fn(),
   resetDirectors: vi.fn(),
   createInvitation: vi.fn(),
-  findClientMatter: vi.fn(),
-  createClientMatter: vi.fn(),
 }));
 
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
@@ -37,10 +33,6 @@ vi.mock("@/lib/db/client-domains", () => ({
   findClientDomain,
   createClientDomain,
   deleteClientDomain,
-}));
-vi.mock("@/lib/db/client-matters", () => ({
-  findClientMatter,
-  createClientMatter,
 }));
 
 import { revalidatePath } from "next/cache";
@@ -65,14 +57,10 @@ beforeEach(() => {
   tryAllowlistClientDomain.mockReset();
   resetDirectors.mockReset();
   createInvitation.mockReset();
-  findClientMatter.mockReset();
-  createClientMatter.mockReset();
   requireActionUser.mockResolvedValue({ ok: true, userId: "user_wr" });
   findClientDomain.mockResolvedValue(null);
   createClientDomain.mockResolvedValue({ id: "cd_1", domain: "bree.co.uk" });
   tryAllowlistClientDomain.mockResolvedValue({ status: "unavailable", reason: "402" });
-  findClientMatter.mockResolvedValue(null);
-  createClientMatter.mockResolvedValue({ id: "cm_1" });
   createInvitation.mockResolvedValue({ id: "inv_1" });
 });
 
@@ -154,60 +142,35 @@ describe("removeClientDomain", () => {
 });
 
 describe("inviteClient", () => {
-  it("sends a Clerk invitation with role=client and stores the grant", async () => {
-    await expect(
-      inviteClient({
-        email: " Jane@BREE.co.uk ",
-        vericaseWorkspaceId: " ws_byoot ",
-        vericaseWorkspaceName: " Byoot ",
-      })
-    ).resolves.toEqual({ ok: true });
+  it("sends a Clerk invitation with role=client", async () => {
+    await expect(inviteClient({ email: " Jane@BREE.co.uk " })).resolves.toEqual({ ok: true });
     expect(createInvitation).toHaveBeenCalledWith({
       emailAddress: "jane@bree.co.uk",
       publicMetadata: { role: "client" },
       notify: true,
       redirectUrl: "https://meritusvia.com/client/sign-up",
     });
-    expect(createClientMatter).toHaveBeenCalledWith({
-      email: "jane@bree.co.uk",
-      vericaseWorkspaceId: "ws_byoot",
-      vericaseWorkspaceName: "Byoot",
-      createdBy: "user_wr",
-    });
     expect(revalidatePath).toHaveBeenCalledWith("/portal/clients");
   });
 
-  it("still grants the matter when Clerk says the invite already exists", async () => {
+  it("treats a duplicate Clerk invite as success", async () => {
     createInvitation.mockRejectedValue(new Error("Invitation already exists"));
-    await expect(
-      inviteClient({
-        email: "jane@bree.co.uk",
-        vericaseWorkspaceId: "ws_byoot",
-        vericaseWorkspaceName: "Byoot",
-      })
-    ).resolves.toEqual({ ok: true });
-    expect(createClientMatter).toHaveBeenCalled();
+    await expect(inviteClient({ email: "jane@bree.co.uk" })).resolves.toEqual({ ok: true });
   });
 
   it("is a director-only action", async () => {
     requireActionUser.mockResolvedValue({ ok: false, error: "This area is for directors only" });
-    await expect(
-      inviteClient({
-        email: "jane@bree.co.uk",
-        vericaseWorkspaceId: "ws_byoot",
-        vericaseWorkspaceName: "Byoot",
-      })
-    ).resolves.toEqual({ ok: false, error: "This area is for directors only" });
+    await expect(inviteClient({ email: "jane@bree.co.uk" })).resolves.toEqual({
+      ok: false,
+      error: "This area is for directors only",
+    });
     expect(createInvitation).not.toHaveBeenCalled();
   });
 
   it("refuses a public mailbox", async () => {
-    await expect(
-      inviteClient({
-        email: "jane@gmail.com",
-        vericaseWorkspaceId: "ws_byoot",
-        vericaseWorkspaceName: "Byoot",
-      })
-    ).resolves.toEqual({ ok: false, error: "Public mailbox addresses cannot be invited." });
+    await expect(inviteClient({ email: "jane@gmail.com" })).resolves.toEqual({
+      ok: false,
+      error: "Public mailbox addresses cannot be invited.",
+    });
   });
 });

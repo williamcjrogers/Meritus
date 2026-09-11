@@ -36,63 +36,29 @@ describe("clerkPrimaryEmail", () => {
 });
 
 describe("parseClientInviteInput", () => {
-  it("normalises a company email and workspace fields", () => {
-    expect(
-      parseClientInviteInput({
-        email: " Jane@BREE.co.uk ",
-        vericaseWorkspaceId: " ws_byoot ",
-        vericaseWorkspaceName: " Byoot ",
-      })
-    ).toEqual({
+  it("normalises a company email", () => {
+    expect(parseClientInviteInput({ email: " Jane@BREE.co.uk " })).toEqual({
       ok: true,
       email: "jane@bree.co.uk",
-      vericaseWorkspaceId: "ws_byoot",
-      vericaseWorkspaceName: "Byoot",
     });
   });
 
   it("refuses a missing email", () => {
-    expect(
-      parseClientInviteInput({
-        email: " ",
-        vericaseWorkspaceId: "ws_1",
-        vericaseWorkspaceName: "Byoot",
-      })
-    ).toEqual({ ok: false, error: "Enter the client’s email address." });
+    expect(parseClientInviteInput({ email: " " })).toEqual({
+      ok: false,
+      error: "Enter the client’s email address.",
+    });
   });
 
   it("refuses public mailboxes and meritusvia.com", () => {
-    expect(
-      parseClientInviteInput({
-        email: "jane@gmail.com",
-        vericaseWorkspaceId: "ws_1",
-        vericaseWorkspaceName: "Byoot",
-      })
-    ).toEqual({ ok: false, error: "Public mailbox addresses cannot be invited." });
-    expect(
-      parseClientInviteInput({
-        email: "mateo@meritusvia.com",
-        vericaseWorkspaceId: "ws_1",
-        vericaseWorkspaceName: "Byoot",
-      })
-    ).toEqual({ ok: false, error: "meritusvia.com is reserved for directors." });
-  });
-
-  it("requires a workspace id and name", () => {
-    expect(
-      parseClientInviteInput({
-        email: "jane@bree.co.uk",
-        vericaseWorkspaceId: "x",
-        vericaseWorkspaceName: "Byoot",
-      })
-    ).toEqual({ ok: false, error: "Enter the VeriCase workspace id for this matter." });
-    expect(
-      parseClientInviteInput({
-        email: "jane@bree.co.uk",
-        vericaseWorkspaceId: "ws_1",
-        vericaseWorkspaceName: " ",
-      })
-    ).toEqual({ ok: false, error: "Enter the VeriCase workspace name." });
+    expect(parseClientInviteInput({ email: "jane@gmail.com" })).toEqual({
+      ok: false,
+      error: "Public mailbox addresses cannot be invited.",
+    });
+    expect(parseClientInviteInput({ email: "mateo@meritusvia.com" })).toEqual({
+      ok: false,
+      error: "meritusvia.com is reserved for directors.",
+    });
   });
 });
 
