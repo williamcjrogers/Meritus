@@ -7,7 +7,7 @@ import { shouldSendClientToDesk } from "@/lib/portal/gate";
 
 const isPortalRoute = createRouteMatcher(["/portal(.*)", "/api/portal(.*)"]);
 const isClientAuthRoute = createRouteMatcher(["/client/sign-in(.*)", "/client/sign-up(.*)"]);
-const isClientDeskRoute = createRouteMatcher(["/client(.*)"]);
+const isClientDeskRoute = createRouteMatcher(["/client(.*)", "/api/client(.*)"]);
 
 const clerkHandler = clerkMiddleware(async (auth, req) => {
   const pathname = req.nextUrl.pathname;
