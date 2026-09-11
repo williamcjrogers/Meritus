@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Show, UserButton } from "@clerk/nextjs";
+import { Show, UserButton, useUser } from "@clerk/nextjs";
 import { isClerkPublishable } from "@/lib/env";
 import type { ActorKind } from "@/lib/portal/roles";
 
@@ -27,7 +27,8 @@ function SignedInLinks({
   onNavigate: () => void;
   actorKind: ActorKind | null;
 }) {
-  const client = actorKind === "client";
+  const { user } = useUser();
+  const client = user?.publicMetadata?.role === "client" || actorKind === "client";
 
   return (
     <div className="flex flex-col items-center gap-6">
