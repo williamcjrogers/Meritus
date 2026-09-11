@@ -181,6 +181,27 @@ export const PROSPECT_SOURCE_LISTS = ["ranked", "excluded"] as const;
 export const prospectSourceEnum = pgEnum("prospect_source_list", PROSPECT_SOURCE_LISTS);
 
 /**
+ * A client login granted access to one VeriCase WR2.0 workspace.
+ * Matter files stay in that workspace's S3; this row is only the grant.
+ */
+export const clientMatters = pgTable(
+  "client_matters",
+  {
+    id: text("id").primaryKey(),
+    email: text("email").notNull(),
+    clerkUserId: text("clerk_user_id"),
+    vericaseWorkspaceId: text("vericase_workspace_id").notNull(),
+    vericaseWorkspaceName: text("vericase_workspace_name"),
+    createdBy: text("created_by").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    index("client_matters_email_idx").on(t.email),
+    index("client_matters_clerk_user_idx").on(t.clerkUserId),
+  ]
+);
+
+/**
  * Company email domains that may use /client. Matter files stay in VeriCase
  * WR2.0 S3; the optional workspace fields are a label for later wiring, not a file store.
  */
@@ -242,6 +263,8 @@ export type Prospect = typeof prospects.$inferSelect;
 export type NewProspect = typeof prospects.$inferInsert;
 export type ClientDomain = typeof clientDomains.$inferSelect;
 export type NewClientDomain = typeof clientDomains.$inferInsert;
+export type ClientMatter = typeof clientMatters.$inferSelect;
+export type NewClientMatter = typeof clientMatters.$inferInsert;
 export type Activity = typeof activity.$inferSelect;
 export type NewActivity = typeof activity.$inferInsert;
 export type DocumentRow = typeof documents.$inferSelect;

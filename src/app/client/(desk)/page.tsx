@@ -1,11 +1,11 @@
-import { currentUser } from "@clerk/nextjs/server";
 import { Eyebrow } from "@/components/portal/Eyebrow";
 import { SetupNotice } from "@/components/portal/SetupNotice";
+import { requireClientUser } from "@/lib/client/auth";
 import { clerkPrimaryEmail } from "@/lib/client/invite";
 import { stampClientRoleIfNeeded } from "@/lib/client/stamp";
 import { findClientDomainForEmail } from "@/lib/db/client-domains";
+import { attachClerkUserToMatters, listMattersForClient } from "@/lib/db/client-matters";
 import { isClerkConfigured, isDatabaseConfigured } from "@/lib/env";
-import { currentActorKind } from "@/lib/portal/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -14,70 +14,70 @@ export default async function ClientDeskPage() {
     return <SetupNotice title="Client desk is not configured yet" />;
   }
 
-  const [user, kind] = await Promise.all([currentUser(), currentActorKind()]);
-  if (user) {
-    await stampClientRoleIfNeeded(user);
+  const user = await requireClientUser();
+  await stampClientRoleIfNeeded(user);
+  const email = clerkPrimaryEmail(user);
+  if (email) {
+    try {
+      await attachClerkUserToMatters(email, user.id);
+    } catch {
+      // Grant bind is best-effort; the desk still lists by email.
+    }
   }
 
-  const email = clerkPrimaryEmail(user);
-  let membership = null;
+  let matters;
+  let domain;
   try {
-    membership = email ? await findClientDomainForEmail(email) : null;
+    matters = email ? await listMattersForClient({ email, clerkUserId: user.id }) : [];
+    domain = email ? await findClientDomainForEmail(email) : null;
   } catch {
     return <SetupNotice title="Database is configured but not migrated" />;
   }
 
-  const workspaceName = membership?.vericaseWorkspaceName?.trim() || null;
-
   return (
     <div className="max-w-3xl space-y-8">
-      <div>
-        <Eyebrow rule={false}>Client</Eyebrow>
-        <h1 className="mt-1 font-serif text-3xl text-green sm:text-4xl">Your desk</h1>
+      <header>
+        <Eyebrow rule={false}>Your matters</Eyebrow>
+        <h1 className="mt-1 font-serif text-3xl text-green sm:text-4xl">Shared with you</h1>
         <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-ink/70">
-          You are signed in
-          {email ? (
-            <>
-              {" "}
-              as <span className="text-green">{email}</span>
-            </>
-          ) : null}
-          {kind === "client" ? " as a client of Meritus Via." : "."} This is not the pursuit
-          desk.
+          A director named these VeriCase WR2.0 workspaces for your login. Matter files stay in
+          that tenant’s S3. This desk does not download files, mint signed URLs, or show object
+          keys.
         </p>
-      </div>
+        {domain ? (
+          <p className="mt-2 text-[13px] text-ink/70">
+            Recognised client domain: <span className="font-medium text-green">{domain.domain}</span>
+            {domain.vericaseWorkspaceName ? ` · ${domain.vericaseWorkspaceName}` : ""}
+          </p>
+        ) : null}
+      </header>
 
-      <section className="panel-brackets border border-green/10 bg-parchment p-6">
-        <Eyebrow className="mb-3">Your matter</Eyebrow>
-        {membership ? (
-          <p className="text-[14px] leading-relaxed text-ink/70">
-            Your company domain is{" "}
-            <span className="text-green">@{membership.domain}</span>
-            {workspaceName ? (
-              <>
-                . The linked VeriCase workspace is{" "}
-                <span className="text-green">{workspaceName}</span>
-                {membership.vericaseWorkspaceId
-                  ? ` (${membership.vericaseWorkspaceId})`
-                  : null}
-                .
-              </>
-            ) : (
-              "."
-            )}
+      {matters.length === 0 ? (
+        <div className="panel-brackets border border-green/10 bg-parchment px-6 py-10">
+          <p className="font-serif text-2xl text-green">No matters shared yet</p>
+          <p className="mt-2 max-w-xl text-[14px] leading-relaxed text-ink/70">
+            When counsel invites you, the named workspace will appear here. Files remain in
+            VeriCase S3 — this site is not a second archive.
           </p>
-        ) : (
-          <p className="text-[14px] leading-relaxed text-ink/70">
-            Your director has not yet attached a company domain to this login. Ask them to add
-            it on the portal Clients page.
-          </p>
-        )}
-        <p className="mt-4 text-[14px] leading-relaxed text-ink/70">
-          Matter files remain in the VeriCase WR2.0 S3 archive. This login does not create a
-          second file store, and it does not upload, download, or stream those objects from
-          here.
-        </p>
-      </section>
+        </div>
+      ) : (
+        <ul className="divide-y divide-green/10 border border-green/10 bg-parchment">
+          {matters.map((matter) => (
+            <li key={matter.id} className="px-4 py-4">
+              <p className="font-serif text-xl text-green">
+                {matter.vericaseWorkspaceName || "Named workspace"}
+              </p>
+              <p className="mt-1 font-mono text-[11px] text-ink/55">
+                Workspace {matter.vericaseWorkspaceId}
+              </p>
+              <p className="mt-2 text-[13px] text-ink/70">
+                Files remain in VeriCase WR2.0 S3. Ask your solicitor if you need a document from
+                the file.
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

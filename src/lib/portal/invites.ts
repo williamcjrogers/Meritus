@@ -1,8 +1,9 @@
+import { SITE_CONFIG } from "@/lib/constants";
 import type { ActorKind } from "./roles";
 
 /** Invitation landing pages on this site. Do not send people to another hostname. */
-export const CLIENT_INVITE_REDIRECT_URL = "https://www.meritusvia.com/client/sign-up";
-export const DIRECTOR_INVITE_REDIRECT_URL = "https://www.meritusvia.com/sign-up";
+export const CLIENT_INVITE_REDIRECT_URL = `${SITE_CONFIG.url}/client/sign-up`;
+export const DIRECTOR_INVITE_REDIRECT_URL = `${SITE_CONFIG.url}/sign-up`;
 
 export function inviteRedirectUrl(kind: ActorKind): string {
   switch (kind) {

@@ -6,10 +6,10 @@ import {
 } from "./invites";
 
 describe("inviteRedirectUrl", () => {
-  it("keeps invitations on www.meritusvia.com", () => {
+  it("keeps invitations on meritusvia.com", () => {
     expect(inviteRedirectUrl("client")).toBe(CLIENT_INVITE_REDIRECT_URL);
     expect(inviteRedirectUrl("director")).toBe(DIRECTOR_INVITE_REDIRECT_URL);
-    expect(CLIENT_INVITE_REDIRECT_URL).toBe("https://www.meritusvia.com/client/sign-up");
-    expect(DIRECTOR_INVITE_REDIRECT_URL).toBe("https://www.meritusvia.com/sign-up");
+    expect(CLIENT_INVITE_REDIRECT_URL).toBe("https://meritusvia.com/client/sign-up");
+    expect(DIRECTOR_INVITE_REDIRECT_URL).toBe("https://meritusvia.com/sign-up");
   });
 });
