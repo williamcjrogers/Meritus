@@ -33,6 +33,13 @@ const SOURCE_LABELS: Record<BriefAnalysisLine["source"], string> = {
   reasoning: "reasoning",
 };
 
+/** Register dates arrive as ISO strings; show them as day month year. */
+function registerDate(iso: string | null | undefined): string | null {
+  if (!iso) return null;
+  const parsed = new Date(`${iso}T00:00:00Z`);
+  return Number.isNaN(parsed.getTime()) ? iso : fullDate(parsed);
+}
+
 function registerLink(number: string): string {
   return `${REGISTER_BASE}${encodeURIComponent(number.replace(/\s+/g, "").toUpperCase())}`;
 }
@@ -342,7 +349,7 @@ function Facts({
     const rows: Array<[string, string | null]> = [
       ["Number", facts.companyNumber],
       ["Status", facts.status ?? null],
-      ["Incorporated", facts.incorporatedOn ?? null],
+      ["Incorporated", registerDate(facts.incorporatedOn)],
       ["Registered office", facts.registeredAddress ?? null],
       ["SIC codes", facts.sicCodes.length ? facts.sicCodes.join(", ") : null],
       [

@@ -14,6 +14,7 @@ export type CompaniesHouseOfficer = {
   name?: string;
   officer_role?: string;
   appointed_on?: string;
+  resigned_on?: string;
 };
 
 export type CompaniesHouseSnapshot = {
@@ -198,8 +199,19 @@ export async function fetchCompany(number: string): Promise<CompanyRecord | null
 
 export async function fetchOfficers(number: string): Promise<BriefOfficer[]> {
   const id = encodeURIComponent(normaliseCompanyNumber(number));
-  const page = await chGet<{ items?: CompaniesHouseOfficer[] }>(`/company/${id}/officers?items_per_page=12`);
-  return (page?.items ?? []).map(toOfficer).filter((officer) => officer.name);
+  const page = await chGet<{ items?: CompaniesHouseOfficer[] }>(`/company/${id}/officers?items_per_page=20`);
+  // Current appointments only, once each: the register keeps resigned and re-appointed entries side by side.
+  const seen = new Set<string>();
+  return (page?.items ?? [])
+    .filter((officer) => !officer.resigned_on)
+    .map(toOfficer)
+    .filter((officer) => {
+      if (!officer.name) return false;
+      const key = `${officer.name}|${officer.role ?? ""}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
 }
 
 export async function searchCompanies(name: string, limit = 5): Promise<CompanyCandidate[]> {
