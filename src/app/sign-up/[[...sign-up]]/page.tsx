@@ -1,27 +1,27 @@
-import { SignIn } from "@clerk/nextjs";
+import { SignUp } from "@clerk/nextjs";
 import Link from "next/link";
 import { HallmarkLogo } from "@/components/icons/HallmarkLogo";
 import { SetupNotice } from "@/components/portal/SetupNotice";
 import { isClerkConfigured } from "@/lib/env";
 
 export const metadata = {
-  title: "Partner sign in",
+  title: "Partner invitation",
   robots: { index: false, follow: false },
 };
 
-export default function SignInPage() {
+export default function SignUpPage() {
   return (
     <main id="main-content" className="min-h-screen bg-green grain flex flex-col items-center justify-center px-6 py-20">
       <Link href="/" className="mb-10">
         <HallmarkLogo size="standalone" variant="light" showDescriptor />
       </Link>
       <p className="mb-6 max-w-sm text-center text-[13px] leading-relaxed text-cream/70">
-        First-time access is by invitation email. Use Login only after you have accepted
-        that invite.
+        This page completes a director invitation. If you opened Login and typed your
+        address, go back to the invitation email and use Accept invitation.
       </p>
       {isClerkConfigured() ? (
-        <SignIn
-          signUpUrl="/sign-up"
+        <SignUp
+          signInUrl="/sign-in"
           fallbackRedirectUrl="/portal"
           forceRedirectUrl="/portal"
           appearance={{
@@ -35,7 +35,7 @@ export default function SignInPage() {
         />
       ) : (
         <div className="w-full max-w-lg">
-          <SetupNotice title="Sign-in is not configured yet" />
+          <SetupNotice title="Sign-up is not configured yet" />
         </div>
       )}
     </main>

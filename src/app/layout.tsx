@@ -124,7 +124,14 @@ export default function RootLayout({
           Skip to content
         </a>
         {isClerkConfigured() ? (
-          <ClerkProvider signInFallbackRedirectUrl="/portal" signInForceRedirectUrl="/portal">
+          <ClerkProvider
+            signInUrl="/sign-in"
+            signUpUrl="/sign-up"
+            signInFallbackRedirectUrl="/portal"
+            signInForceRedirectUrl="/portal"
+            signUpFallbackRedirectUrl="/portal"
+            signUpForceRedirectUrl="/portal"
+          >
             {children}
           </ClerkProvider>
         ) : (

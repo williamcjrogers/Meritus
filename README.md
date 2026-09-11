@@ -24,7 +24,7 @@ Schema lives in `src/lib/db/schema.ts`; migrations in `drizzle/`. Generate a mig
 
 ### One-off manual steps
 
-1. **Clerk**: invite the three directors; keep public sign-up off.
+1. **Clerk**: invite the three directors; keep access mode Invite-only. First sign-in is the invitation email (it lands on `/sign-up` with a ticket). Do not type the address on Login before that.
 2. **Resend**: add the Resend Marketplace integration, verify the sending domain for `enquiries@meritusvia.com` in the EU region, set data retention to the minimum, set `RESEND_API_KEY` and (optionally) `ENQUIRY_ALERT_FROM`, then submit a test enquiry and confirm the alert arrives.
 3. **Vercel firewall**: add a rate-limit rule for `POST /api/contact`.
 4. **Companies House**: set `COMPANIES_HOUSE_API_KEY` so briefs carry register facts.
