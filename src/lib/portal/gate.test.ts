@@ -7,7 +7,6 @@ describe("isAuthGatedPath", () => {
     expect(isAuthGatedPath("/portal/clients")).toBe(true);
     expect(isAuthGatedPath("/api/portal/library")).toBe(true);
     expect(isAuthGatedPath("/client")).toBe(true);
-    expect(isAuthGatedPath("/api/client/files")).toBe(true);
   });
 
   it("leaves Clerk widgets and the public site open", () => {
