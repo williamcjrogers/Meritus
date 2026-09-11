@@ -17,8 +17,8 @@ export default function ClientSignUpPage() {
       </Link>
       <p className="mb-6 max-w-sm text-center text-[13px] leading-relaxed text-cream/70">
         This page completes a client invitation. Open Accept invitation from the email a
-        director sent you. After that you can dump files into the VeriCase WR2.0 archive.
-        This is not Partner login.
+        director sent you. Matter files stay in VeriCase WR2.0 S3 — this login does not
+        create a second archive. This is not Partner login.
       </p>
       {isClerkConfigured() ? (
         <SignUp

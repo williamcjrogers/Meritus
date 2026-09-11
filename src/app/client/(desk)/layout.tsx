@@ -4,6 +4,7 @@ import { currentUser } from "@clerk/nextjs/server";
 import { HallmarkLogo } from "@/components/icons/HallmarkLogo";
 import { DirectorMenu } from "@/components/portal/DirectorMenu";
 import { Eyebrow } from "@/components/portal/Eyebrow";
+import { NavLink } from "@/components/portal/NavLink";
 import { clerkPrimaryEmail } from "@/lib/client/invite";
 import { isClerkConfigured } from "@/lib/env";
 import { initialsFor } from "@/lib/portal/director-helpers";
@@ -50,9 +51,9 @@ export default async function ClientDeskLayout({ children }: { children: React.R
           </Eyebrow>
         </div>
         <nav className="flex-1 space-y-1 py-5" aria-label="Client desk">
-          <span className="block border-l-2 border-brass bg-white/5 px-4 py-2 text-[14px] text-cream">
-            Files
-          </span>
+          <NavLink href="/client" match="exact">
+            Home
+          </NavLink>
         </nav>
         <div className="space-y-4 border-t border-brass/15 px-4 py-5">
           {clerk && <DirectorMenu name={client?.name ?? null} initials={client?.initials ?? null} />}

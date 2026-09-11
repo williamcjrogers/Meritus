@@ -16,8 +16,8 @@ export default function ClientSignInPage() {
         <HallmarkLogo size="standalone" variant="light" showDescriptor />
       </Link>
       <p className="mb-6 max-w-sm text-center text-[13px] leading-relaxed text-cream/70">
-        Use your company email. First-time access is the invitation a director sent you.
-        Dump files here; they are stored in the VeriCase WR2.0 archive. This is not{" "}
+        Use your company email. First-time access is the invitation a director sent you, or
+        a company domain they have listed. Matter files stay in VeriCase. This is not{" "}
         <Link href="/sign-in" className="text-brass hover:text-brass-light">
           Partner
         </Link>{" "}
