@@ -4,6 +4,7 @@ import type { ActorKind } from "./roles";
 export function isAuthGatedPath(pathname: string): boolean {
   if (pathname === "/portal" || pathname.startsWith("/portal/")) return true;
   if (pathname.startsWith("/api/portal")) return true;
+  if (pathname.startsWith("/api/client")) return true;
   if (pathname === "/client" || pathname.startsWith("/client/")) {
     return !pathname.startsWith("/client/sign-in") && !pathname.startsWith("/client/sign-up");
   }
