@@ -1,413 +1,168 @@
-import { FadeIn, ProjectPulse } from "@/components/animations";
-import {
-  TerminalBox,
-  DelayTIATerminal,
-  DelayWindowsTerminal,
-  QuantumMeasuredMileTerminal,
-  QuantumOverheadTerminal,
-  AdvisoryStrategyTerminal,
-  TechnicalDefectTerminal,
-  TechnicalBSATerminal,
-  PlatformTerminal,
-} from "@/components/animations/terminal-patterns";
-import { CTABand, TerminalToggle } from "@/components/ui";
+import { Button } from "@/components/ui/Button";
+import { PublicIntro } from "@/components/ui/PublicIntro";
+import { CTABand } from "@/components/ui/CTABand";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { pageMetadata } from "@/lib/seo";
 import { SITE_CONFIG } from "@/lib/constants";
 
 export const metadata = pageMetadata({
-  title: "Services",
-  description: "Delay, quantum, technical, and advisory services, supported by platforms we engineer in-house. Forensic construction disputes expertise from senior practitioners.",
+  title: "Expertise",
+  description:
+    "Delay, quantum, technical and advisory expertise for construction disputes, supported by traceable project evidence.",
   path: "/services",
-  keywords: [
-    "construction disputes services",
-    "forensic delay analysis",
-    "quantum expert construction",
-    "technical expert witness",
-    "adjudication advisory",
-    "construction disputes technology",
-    "evidence intelligence platform",
-    "AI document review construction",
-  ],
 });
-
-const SERVICES_SCHEMA = {
-  "@context": "https://schema.org",
-  "@type": "ItemList",
-  name: "Meritus Via — Construction Disputes Services",
-  itemListElement: [
-    { name: "Delay", anchor: "delay" },
-    { name: "Quantum & Valuation", anchor: "quantum" },
-    { name: "Technical", anchor: "technical" },
-    { name: "Advisory", anchor: "advisory" },
-    { name: "Technology", anchor: "technology" },
-  ].map((s, i) => ({
-    "@type": "ListItem",
-    position: i + 1,
-    item: {
-      "@type": "Service",
-      name: s.name,
-      serviceType: `Construction disputes — ${s.name}`,
-      provider: { "@type": "Organization", name: SITE_CONFIG.name, url: SITE_CONFIG.url },
-      areaServed: { "@type": "Country", name: "United Kingdom" },
-      url: `${SITE_CONFIG.url}/services#${s.anchor}`,
-    },
-  })),
-};
-
-interface Service {
-  id: string;
-  number: string;
-  title: string;
-  intro?: string;
-  outputs: string[];
-  context: string;
-  tools: string;
-  terminal: "delay" | "quantum" | "technical" | "advisory" | "technology";
-}
-
-const services: Service[] = [
+const services = [
   {
-    id: "delay", number: "01", title: "Delay",
-    outputs: ["Forensic retrospective delay analysis", "Time Impact Analysis (TIA)", "Windows analysis and As-Planned vs As-Built", "Critical path interrogation and narrative", "NEC3/NEC4 compensation event assessment", "Narratives that survive cross-examination"],
-    context: "The data indicates the critical path shifted at event 47. The contractor\u2019s narrative fails to account for concurrent delay between weeks 38 and 52. Our analysis identifies the point of divergence.",
-    tools: "Primavera P6, Asta Powerproject, Microsoft Project plus proprietary schedule interrogation tools.",
-    terminal: "delay" as const,
-  },
-  {
-    id: "quantum", number: "02", title: "Quantum",
-    outputs: ["Commercial valuation and damages assessment", "Prolongation cost analysis (site and head office overheads)", "Disruption and loss of productivity quantification", "Final account preparation and defence", "Forensic cost modelling", "Critique of opposing quantum positions"],
-    context: "The claimed prolongation of \u00a312.4m includes \u00a33.1m of costs that pre-date the delay event. The head office overhead calculation applies Hudson where Emden is the appropriate formula. The true exposure is \u00a37.8m.",
-    tools: "Forensic cost models built in Microsoft Excel with full audit trails. BCIS rates, measured mile, Hudson and Emden applied to instruction. Every figure traceable to source.",
-    terminal: "quantum" as const,
-  },
-  {
-    id: "technical", number: "03", title: "Technical",
-    outputs: ["Root cause and failure mode analysis", "Defect investigation and causation", "Design liability assessment", "Building Safety Act remediation claims", "Fire safety and cladding disputes", "Specification compliance review"],
-    context: "The water ingress at Level 14 is attributable to a design deficiency at the curtain wall interface, not workmanship. The specification was ambiguous at clause 4.3.2. The contractor relied on the design intent drawing, which omitted the secondary seal detail.",
-    tools: "Intrusive survey coordination, thermal imaging, and laboratory testing supported by proprietary defect mapping tools that cross-reference as-built records against specification requirements.",
-    terminal: "technical" as const,
-  },
-  {
-    id: "advisory", number: "04", title: "Advisory",
-    outputs: ["Strategy, merits assessment, adjudication support", "Rapid evidence structuring", "Evidence architecture and document control", "Referral and response structuring", "Expert reports (CPR Part 35 compliant)", "Cross-examination readiness and testimony"],
-    context: "Opponent’s £14.2m claim and 12,000 unstructured project records ingested. Evidence structuring isolates a systemic failure to serve condition precedent notices under Clause 61.3. Merits pivot confirmed within 72 hours.",
-    tools: "Proprietary document ingestion compresses weeks of review into days.",
-    terminal: "advisory" as const,
-  },
-  {
-    id: "technology", number: "05", title: "Technology",
-    intro:
-      "The fifth discipline is the one most advisory firms rent: our own engineering team, building the platforms our experts work on. Their systems turn 100GB of raw project records into structured, source-linked evidence within hours of instruction. Preparation automated, judgment kept human. We build these systems because our matters demand them.",
+    id: "delay",
+    title: "Delay",
+    question: "What changed the path to completion?",
+    description:
+      "Reconstruct the works from programmes and contemporary records. Test the asserted cause of delay against the sequence actually delivered.",
     outputs: [
-      "Evidence intelligence: complete project records structured, classified, and cross-referenced in hours",
-      "Sourced chronologies: every event linked back to the document that proves it",
-      "Claims Intelligence: our proprietary research layer, with dashboard access for clients and instructing solicitors",
-      "Live contract deadline tracking across the major standard forms",
-      "Early-warning review of live projects: correspondence, programme movement, and contract risk flagged while there is still time to act",
-      "AI-assisted review with every output traceable to source and fully disclosable",
-      "Secure infrastructure designed, built, and run entirely by our own team",
+      "Forensic retrospective delay analysis",
+      "Time impact and windows analysis",
+      "Critical path interrogation",
+      "Extension of time and compensation event assessment",
     ],
-    context: "Every figure, flag, and chronology entry resolves to a source document in one click. When the methodology is challenged, in disclosure, in the hot tub, or under cross-examination, the audit trail answers. That is the difference between technology that supports an opinion and technology that undermines one.",
-    tools: "Designed, built, and hosted in-house on UK/EU cloud infrastructure, with security and auditability engineered in from the start. Nothing off the shelf. Nothing outsourced.",
-    terminal: "technology" as const,
+    records:
+      "Programmes, progress updates, instructions, site diaries and correspondence.",
+  },
+  {
+    id: "quantum",
+    title: "Quantum",
+    question: "What value does the evidence support?",
+    description:
+      "Prepare or challenge the valuation with a clear account of entitlement, measurement and cost. Keep each element of the assessment traceable.",
+    outputs: [
+      "Final account preparation and defence",
+      "Prolongation and disruption assessment",
+      "Commercial valuation and damages",
+      "Review of opposing quantum positions",
+    ],
+    records:
+      "Cost ledgers, applications, valuations, subcontract accounts and resource records.",
+  },
+  {
+    id: "technical",
+    title: "Technical",
+    question: "What failed, and why?",
+    description:
+      "Connect the physical condition with design, workmanship and contractual requirements. Define the causal questions before drawing conclusions.",
+    outputs: [
+      "Defect investigation and causation",
+      "Root cause and failure mode analysis",
+      "Design responsibility assessment",
+      "Building safety and remediation support",
+    ],
+    records:
+      "Drawings, specifications, inspection records, test results and as-built information.",
+  },
+  {
+    id: "advisory",
+    title: "Advisory",
+    question: "What is the right next step?",
+    description:
+      "Understand the strength of the position, the evidence still needed and the practical choices ahead. Match the analysis to the stage and forum of the dispute.",
+    outputs: [
+      "Merits and exposure assessment",
+      "Adjudication referral and response support",
+      "Expert appointment scoping",
+      "Negotiation and dispute strategy",
+    ],
+    records:
+      "Contract terms, notices, submissions, correspondence and the supporting evidence.",
+  },
+  {
+    id: "technology",
+    title: "Technology",
+    question: "How do the records fit together?",
+    description:
+      "Use structured evidence and source-linked analysis to make complex records manageable. Technology supports the examination; practitioners remain responsible for the conclusions.",
+    outputs: [
+      "Document classification and chronology",
+      "Source-linked evidence review",
+      "Programme and cost interrogation",
+      "Structured exhibits and audit trails",
+    ],
+    records:
+      "The project record, organised around the questions the instruction needs to answer.",
   },
 ];
-
-function ServiceTerminal({ type }: { type: Service["terminal"] }) {
-  if (type === "technology") {
-    return (
-      <div className="relative h-full">
-        {/* Outer HUD Borders for Technology */}
-        <div className="absolute -inset-2 sm:-inset-4 pointer-events-none z-20">
-          {/* Corner Brackets */}
-          <div className="absolute top-0 left-0 w-3 h-3 sm:w-5 sm:h-5 border-t border-l border-[#c1a679]/60" />
-          <div className="absolute top-0 right-0 w-3 h-3 sm:w-5 sm:h-5 border-t border-r border-[#c1a679]/60" />
-          <div className="absolute bottom-0 left-0 w-3 h-3 sm:w-5 sm:h-5 border-b border-l border-[#c1a679]/60" />
-          <div className="absolute bottom-0 right-0 w-3 h-3 sm:w-5 sm:h-5 border-b border-r border-[#c1a679]/60" />
-
-          {/* Corner Markers */}
-          <div className="absolute -top-4 left-0 text-[#c1a679]/50 font-mono text-[7px] sm:text-[8px] tracking-widest hidden sm:block">SYS.ENG.05</div>
-          <div className="absolute -bottom-4 right-0 text-[#c1a679]/50 font-mono text-[7px] sm:text-[8px] tracking-widest hidden sm:block">IN_HOUSE</div>
-        </div>
-
-        <div className="flex flex-col h-full bg-green p-6 lg:p-8 relative overflow-hidden">
-          <div className="absolute inset-x-0 bottom-0 h-[200px] bg-gradient-to-t from-stone/10 to-transparent pointer-events-none z-0" />
-
-          <div className="relative z-10 mb-8 min-h-[100px] animate-in fade-in duration-500">
-            <div className="font-mono text-[10px] tracking-[0.15em] text-brass/60 mb-2 mt-2">
-              Illustrative run: Overnight matter mobilisation
-            </div>
-            <p className="font-mono text-[13px] text-cream/70 leading-[1.8]">
-              Instruction received 17:40. By 08:00 the following morning: the complete project record ingested, classified, and linked to source, with the contractual deadlines already tracking. Partner review begins from a structured evidence base, not an inbox. The platform prepared. The expert decides.
-            </p>
-          </div>
-
-          <div className="relative z-10 flex-1 w-full min-h-[300px]">
-            <TerminalBox className="" hideBorders>
-              <PlatformTerminal />
-            </TerminalBox>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (type === "technical") {
-    return (
-      <TerminalToggle
-        labels={["Defect Causation", "BSA Compliance Scan"]}
-        texts={[
-          "Water ingress at Level 14 isolated. Forensic dissection of the curtain wall interface reveals the secondary seal detail was omitted from the Tier 2 contractor's shop drawings. The specification at clause 4.3.2 was ambiguous, but RFI logs confirm the Architect approved the omission. Primary causation: Design liability, not site workmanship.",
-          "Elevation West as-built data cross-referenced with procurement logs and BS 8414 criteria. The specified Class A1 mineral wool was secretly substituted with combustible PIR board on floors 06–12. Intrusive core sampling confirms the absence of horizontal cavity barriers. Remediation liability isolated to the D&B contractor."
-        ]}
-      >
-        {[
-          <TerminalBox key="defect" className="" hideBorders>
-            <TechnicalDefectTerminal />
-          </TerminalBox>,
-          <TerminalBox key="bsa" className="" hideBorders>
-            <TechnicalBSATerminal />
-          </TerminalBox>,
-        ]}
-      </TerminalToggle>
-    );
-  }
-
-  if (type === "advisory") {
-    return (
-      <div className="relative h-full">
-        {/* Outer HUD Borders for Advisory */}
-        <div className="absolute -inset-2 sm:-inset-4 pointer-events-none z-20">
-          {/* Corner Brackets */}
-          <div className="absolute top-0 left-0 w-3 h-3 sm:w-5 sm:h-5 border-t border-l border-[#c1a679]/60" />
-          <div className="absolute top-0 right-0 w-3 h-3 sm:w-5 sm:h-5 border-t border-r border-[#c1a679]/60" />
-          <div className="absolute bottom-0 left-0 w-3 h-3 sm:w-5 sm:h-5 border-b border-l border-[#c1a679]/60" />
-          <div className="absolute bottom-0 right-0 w-3 h-3 sm:w-5 sm:h-5 border-b border-r border-[#c1a679]/60" />
-          
-          {/* Corner Markers */}
-          <div className="absolute -top-4 left-0 text-[#c1a679]/50 font-mono text-[7px] sm:text-[8px] tracking-widest hidden sm:block">SYS.OP.01</div>
-          <div className="absolute -bottom-4 right-0 text-[#c1a679]/50 font-mono text-[7px] sm:text-[8px] tracking-widest hidden sm:block">AXIS_LOCK</div>
-        </div>
-
-        <div className="flex flex-col h-full bg-green p-6 lg:p-8 relative overflow-hidden">
-          <div className="absolute inset-x-0 bottom-0 h-[200px] bg-gradient-to-t from-stone/10 to-transparent pointer-events-none z-0" />
-
-          <div className="relative z-10 mb-8 min-h-[100px] animate-in fade-in duration-500">
-            <div className="font-mono text-[10px] tracking-[0.15em] text-brass/60 mb-2 mt-2">
-              Illustrative analysis: Claim Strategy & Merits
-            </div>
-            <p className="font-mono text-[13px] text-cream/70 leading-[1.8]">
-              Opponent’s £14.2m claim and 12,000 unstructured project records ingested. Rapid evidence structuring isolates a systemic failure by the contractor to serve condition precedent notices under Clause 61.3. Merits assessment confirms 82% of the claim is procedurally barred. Strategy pivot: Reject commercial settlement. Offensive adjudication triggered to strike out the defective heads of claim.
-            </p>
-          </div>
-
-          <div className="relative z-10 flex-1 w-full min-h-[300px]">
-            <TerminalBox className="" hideBorders>
-              <AdvisoryStrategyTerminal />
-            </TerminalBox>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (type === "delay") {
-    return (
-      <TerminalToggle
-        labels={["TIA", "Windows & As-Built"]}
-        texts={[
-          "Fragnets inserted for Employer Risk Events 14-19 demonstrate that while 22 days of project float were consumed, the critical path remained completely unbreached. The contractor’s theoretical 3-week Extension of Time (EoT) claim fails against native schedule logic.",
-          "Window 4 (Weeks 12-16) isolated. Opponent claims a 42-day critical delay. However, as-built data cross-referenced with daily site logs confirms the contractor mitigated 18 days through concurrent steel fabrication. Net compensable delay mathematically reduced to 24 days."
-        ]}
-      >
-        {[
-          <TerminalBox key="tia" className="" hideBorders>
-            <DelayTIATerminal />
-          </TerminalBox>,
-          <TerminalBox key="windows" className="" hideBorders>
-            <DelayWindowsTerminal />
-          </TerminalBox>,
-        ]}
-      </TerminalToggle>
-    );
-  }
-
-  return (
-    <TerminalToggle
-      labels={["Measured Mile", "Overhead Audit"]}
-      texts={[
-        "The £4.2m disruption claim relies on theoretical industry indices. By ingesting turnstile data and daily allocation sheets, we established an unimpacted 'measured mile' of 0.85 hrs/unit. Applying actual achieved site productivity rates reduces the substantiated quantum to £1.1m.",
-        "Audit of claimed site overheads (£85k/week) initiated. Interrogation of timesheets and gate records reveals 35% of listed resources were secretly diverted to other active projects during the prolongation period. Recalculated weekly exposure: £55.2k. Overstatement detected: £1.8m."
-      ]}
-    >
-      {[
-        <TerminalBox key="mile" className="" hideBorders>
-          <QuantumMeasuredMileTerminal />
-        </TerminalBox>,
-        <TerminalBox key="overhead" className="" hideBorders>
-          <QuantumOverheadTerminal />
-        </TerminalBox>,
-      ]}
-    </TerminalToggle>
-  );
-}
-
 export default function ServicesPage() {
   return (
     <>
-      <JsonLd data={SERVICES_SCHEMA} />
-      <section className="bg-green pt-[clamp(8rem,16vh,12rem)] pb-[clamp(4rem,10vh,6rem)] relative overflow-hidden border-b border-brass/10">
-        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
-        <ProjectPulse className="z-0 opacity-20" />
-        
-        {/* Abstract Technical Background Grid */}
-        <div className="absolute inset-0 pointer-events-none opacity-30">
-          <div className="absolute top-0 left-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
-          <div className="absolute top-0 right-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
-          <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brass/10 to-transparent" />
-        </div>
-
-        <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
-          <FadeIn delay={0.1}>
-            <div className="flex items-center gap-4 mb-8">
-              <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-brass/80">
-                Services
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          name: "Meritus Via construction disputes expertise",
+          itemListElement: services.map((s, i) => ({
+            "@type": "ListItem",
+            position: i + 1,
+            item: {
+              "@type": "Service",
+              name: s.title,
+              provider: { "@type": "Organization", name: SITE_CONFIG.name },
+              url: `${SITE_CONFIG.url}/services#${s.id}`,
+            },
+          })),
+        }}
+      />
+      <PublicIntro
+        label="Expertise"
+        title="The issue defines the analysis."
+        description="Specialist disciplines, brought together around the facts of your construction dispute."
+      >
+        <nav className="public-anchor-nav" aria-label="Areas of expertise">
+          {services.map((service) => (
+            <a key={service.id} href={`#${service.id}`}>
+              {service.title}
+            </a>
+          ))}
+        </nav>
+      </PublicIntro>
+      <div className="public-container">
+        {services.map((service) => (
+          <section
+            key={service.id}
+            id={service.id}
+            className="public-service-detail"
+          >
+            <div>
+              <p className="public-page-label">{service.title}</p>
+              <h2>{service.question}</h2>
+              <p>{service.description}</p>
+            </div>
+            <div className="public-deliverables">
+              <h3>How we can help</h3>
+              <ul>
+                {service.outputs.map((output) => (
+                  <li key={output}>{output}</li>
+                ))}
+              </ul>
+              <div className="public-record-note">
+                <h3>The supporting record</h3>
+                <p>{service.records}</p>
               </div>
             </div>
-          </FadeIn>
-            
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-            <div className="lg:col-span-8">
-              <FadeIn delay={0.2}>
-                <h1 className="font-serif text-4xl lg:text-[56px] text-cream leading-[1.1] mb-8">
-                  Five disciplines. One team.<br />
-                  <span className="text-cream/70 italic">Outputs, not hours.</span>
-                </h1>
-              </FadeIn>
-              
-              <FadeIn delay={0.3}>
-                <div className="flex gap-6 max-w-2xl">
-                  <div className="w-[1px] bg-brass/30 shrink-0 mt-2" />
-                  <p className="text-[15px] lg:text-[16px] text-cream/70 leading-[1.8] font-light tracking-[0.02em]">
-                    We deploy highly integrated teams across delay, quantum, technical, advisory, and technology disciplines.
-                    No siloed departments. Just coordinated forensic expertise engineered to resolve your dispute.
-                  </p>
-                </div>
-              </FadeIn>
-            </div>
-            
-            <div className="lg:col-span-4 hidden lg:flex flex-col items-end text-right pt-4">
-              <FadeIn delay={0.4}>
-                <div className="inline-flex flex-col gap-3 p-6 border border-brass/10 bg-black/10 backdrop-blur-md rounded-sm relative">
-                  {/* Decorative corner markers */}
-                  <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/40" />
-                  <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/40" />
-                  
-                  <div className="font-mono text-[9px] tracking-[0.2em] text-cream/40 uppercase mb-2">Practice Areas</div>
-                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">01_DELAY_ANALYSIS</div>
-                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">02_QUANTUM_VALUATION</div>
-                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">03_TECHNICAL_CAUSATION</div>
-                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">04_ADVISORY_STRATEGY</div>
-                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">05_TECHNOLOGY_PLATFORMS</div>
-                </div>
-              </FadeIn>
-            </div>
+          </section>
+        ))}
+      </div>
+      <section className="public-section public-approach-summary">
+        <div className="public-container public-section-topline">
+          <div>
+            <h2>Expertise in context.</h2>
+            <p>
+              Buildings, infrastructure and energy each bring different delivery
+              and contractual conditions.
+            </p>
           </div>
+          <Button href="/sectors" variant="secondary">
+            Explore sectors
+          </Button>
         </div>
       </section>
-
-      {/* Services List */}
-      <section className="flex flex-col">
-        {services.map((service, i) => {
-          const bgClass = i % 2 === 0 ? "bg-stone" : "bg-parchment";
-
-          return (
-            <div key={service.id} id={service.id} className={`${bgClass} relative scroll-mt-16 lg:scroll-mt-20`}>
-              {/* Huge watermark number in the background */}
-              <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[40vw] font-serif leading-none text-green/[0.02] select-none">
-                  {service.number}
-                </div>
-              </div>
-
-              <div className="py-[clamp(4.5rem,8vw,8rem)] relative z-10">
-                <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
-                  <div className={`grid grid-cols-1 gap-12 lg:gap-20 ${i % 2 === 0 ? "lg:grid-cols-[1fr_minmax(450px,550px)] 2xl:grid-cols-[1fr_600px]" : "lg:grid-cols-[minmax(450px,550px)_1fr] 2xl:grid-cols-[600px_1fr]"}`}>
-                    {/* Content Side */}
-                    <div className={i % 2 !== 0 ? "order-1 lg:order-2" : "order-1 lg:order-1"}>
-                      <FadeIn delay={0.1}>
-                        <div className="flex items-center gap-4 mb-6">
-                          <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80">
-                            SRV.{service.number}
-                          </div>
-                        </div>
-                      </FadeIn>
-
-                      <FadeIn delay={0.2}>
-                        <h2 className="font-serif text-3xl lg:text-4xl text-green leading-tight mb-6">
-                          {service.title}
-                        </h2>
-                      </FadeIn>
-
-                      {service.intro && (
-                        <FadeIn delay={0.25}>
-                          <p className="text-[15px] text-slate/90 leading-[1.8] mb-8 max-w-xl">
-                            {service.intro}
-                          </p>
-                        </FadeIn>
-                      )}
-
-                      <FadeIn delay={0.3}>
-                        <div className="space-y-8">
-                          <div>
-                            <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate/50 mb-4">
-                              Core Outputs
-                            </div>
-                            <ul className="space-y-3.5">
-                              {service.outputs.map((output, j) => (
-                                <li key={j} className="text-[15px] text-slate leading-[1.6] flex items-start gap-3">
-                                  <span className="text-brass/70 text-[16px] leading-none mt-[2px] shrink-0">&bull;</span>
-                                  {output}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                          
-                          <div className="pt-6 border-t border-green/5">
-                            <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate/50 mb-4">
-                              Context & Toolkit
-                            </div>
-                            <p className="text-[15px] text-slate/80 leading-[1.6] mb-4">
-                              <span className="italic">{service.context}</span>
-                            </p>
-                            <p className="text-[12px] text-slate/60 bg-green/5 p-3 rounded-sm border border-green/10">
-                              <span className="font-mono text-[9px] tracking-[0.1em] uppercase text-brass mr-2">Tools:</span>
-                              {service.tools}
-                            </p>
-                          </div>
-                        </div>
-                      </FadeIn>
-                    </div>
-
-                    {/* Terminal Graphic Side */}
-                    <div className={`relative w-full lg:h-full ${i % 2 !== 0 ? "order-2 lg:order-1" : "order-2 lg:order-2"}`}>
-                      {/* 42px = eyebrow row height + margin, so the box top sits level with the section title */}
-                      <div className="lg:sticky lg:top-[20vh] lg:mt-[42px] w-full h-auto">
-                        <FadeIn delay={0.4} className="w-full">
-                          <ServiceTerminal type={service.terminal} />
-                        </FadeIn>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </section>
-
-      <CTABand heading="Discuss your position" subtext="Direct access to a partner. No intermediaries." />
+      <CTABand />
     </>
   );
 }

@@ -1,64 +1,45 @@
-"use client";
-
-import { useRef } from "react";
-import { useInView } from "framer-motion";
-import { SequencerTimeline } from "@/components/animations/SequencerTimeline";
-
-const STEPS = [
-  { num: "01", label: "Independence review*", desc: "Conflicts confirmed where required", disciplines: "all disciplines" },
-  { num: "02", label: "Scoping", desc: "Strategy and resourcing", disciplines: "delay \u00b7 quantum \u00b7 technical \u00b7 advisory \u00b7 technology" },
-  { num: "03", label: "Analysis", desc: "Forensic investigation", disciplines: "programme \u00b7 cost \u00b7 engineering \u00b7 strategy" },
-  { num: "04", label: "Delivery", desc: "Opinion and testimony", disciplines: "report \u00b7 model \u00b7 opinion \u00b7 evidence" },
-];
-
+import Link from "next/link";
 export function ProcessStrip() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { once: true, margin: "-10%" });
-
   return (
-    <section className="bg-green-dark py-[clamp(4rem,8vw,8rem)] relative overflow-hidden">
-      {/* Background elements for premium feel */}
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
-
-      <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10 text-center">
-
-        <div className="flex items-center justify-center gap-4 mb-16 lg:mb-20">
-          <div className="font-mono text-brass/80 text-[11px] tracking-[0.25em] uppercase">
-            How we engage
-          </div>
+    <section className="public-section public-approach-summary">
+      <div className="public-container public-approach-layout">
+        <div>
+          <h2>
+            Start with the question.
+            <br />
+            Follow the evidence.
+          </h2>
+          <p>
+            Our approach brings project records, analytical discipline and
+            professional judgement into one line of reasoning.
+          </p>
+          <Link className="public-text-link" href="/method">
+            How we work
+          </Link>
         </div>
-
-        <div ref={containerRef} className={`relative w-full ${isInView ? "animate-sequencer" : ""}`}>
-
-          <SequencerTimeline />
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 lg:gap-10 mt-10 lg:mt-12 relative z-10">
-            {STEPS.map((step, index) => (
-              <div key={step.num} className={`step-block step-${index + 1} flex flex-col items-center text-center group`}>
-                <div className="font-mono text-brass/70 text-[10px] md:text-[11px] tracking-[0.2em] mb-3 group-hover:text-brass transition-colors duration-500">
-                  {step.num}
-                </div>
-                <div className="font-serif text-cream text-xl md:text-2xl mb-3">
-                  {step.label}
-                </div>
-                <div className="font-sans font-light text-[13px] md:text-[14px] text-cream/60 tracking-[0.02em] mb-2 lowercase">
-                  {step.desc}
-                </div>
-                <div className="font-mono text-[9px] tracking-[0.15em] text-brass/40 lowercase group-hover:text-brass/60 transition-colors duration-500">
-                  {step.disciplines}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-20 flex items-center justify-center gap-4 opacity-0 animate-[fadeUp_0.6s_ease_forwards_3.5s]">
-            <div className="text-[10px] md:text-[11px] text-cream/30 italic tracking-[0.05em] font-light">
-              *Independence and conflict review only where required
-            </div>
-          </div>
-
-        </div>
-
+        <ol className="public-process">
+          <li>
+            <h3>Establish the record</h3>
+            <p>
+              Identify the relevant contract, programme and contemporary
+              evidence, including the gaps.
+            </p>
+          </li>
+          <li>
+            <h3>Test the position</h3>
+            <p>
+              Examine cause, effect and value. Challenge assumptions and
+              consider the evidence that cuts against the case.
+            </p>
+          </li>
+          <li>
+            <h3>Explain the conclusion</h3>
+            <p>
+              Set out the analysis, its sources and its limits so the next
+              decision is properly informed.
+            </p>
+          </li>
+        </ol>
       </div>
     </section>
   );

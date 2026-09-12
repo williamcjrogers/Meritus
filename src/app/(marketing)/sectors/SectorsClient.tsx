@@ -1,26 +1,6 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { ComponentType } from "react";
-import {
-  FadeIn,
-  ProjectPulse,
-  TerminalBox,
-  MurphyTerminal,
-  BeaufortTerminal,
-  TeesEskTerminal,
-  URSTerminal,
-  BalfourDLRTerminal,
-  HochtiefTerminal,
-  CostainTerminal,
-  ChannelTunnelTerminal,
-  HenryBootTerminal,
-  HojgaardTerminal,
-  SabicTerminal,
-} from "@/components/animations";
-import { CTABand } from "@/components/ui";
-import { smoothScrollToId } from "@/lib/smooth-scroll";
+import { PublicIntro } from "@/components/ui/PublicIntro";
+import { CTABand } from "@/components/ui/CTABand";
 
 interface SubSector {
   id: string;
@@ -35,7 +15,6 @@ interface SubSector {
   disputes: string[];
   contracts: string[];
   disciplines: { label: string; href: string }[];
-  terminal: ComponentType<{ className?: string }>;
 }
 
 interface Sector {
@@ -77,7 +56,6 @@ const SECTORS: Sector[] = [
           { label: "Technical", href: "/services#technical" },
           { label: "Advisory", href: "/services#advisory" },
         ],
-        terminal: MurphyTerminal,
       },
       {
         id: "commercial",
@@ -102,7 +80,6 @@ const SECTORS: Sector[] = [
           { label: "Quantum", href: "/services#quantum" },
           { label: "Technical", href: "/services#technical" },
         ],
-        terminal: BeaufortTerminal,
       },
       {
         id: "healthcare",
@@ -127,7 +104,6 @@ const SECTORS: Sector[] = [
           { label: "Technical", href: "/services#technical" },
           { label: "Advisory", href: "/services#advisory" },
         ],
-        terminal: TeesEskTerminal,
       },
       {
         id: "bsa",
@@ -152,7 +128,6 @@ const SECTORS: Sector[] = [
           { label: "Quantum", href: "/services#quantum" },
           { label: "Advisory", href: "/services#advisory" },
         ],
-        terminal: URSTerminal,
       },
     ],
   },
@@ -186,7 +161,6 @@ const SECTORS: Sector[] = [
           { label: "Quantum", href: "/services#quantum" },
           { label: "Advisory", href: "/services#advisory" },
         ],
-        terminal: BalfourDLRTerminal,
       },
       {
         id: "highways",
@@ -211,7 +185,6 @@ const SECTORS: Sector[] = [
           { label: "Quantum", href: "/services#quantum" },
           { label: "Technical", href: "/services#technical" },
         ],
-        terminal: HochtiefTerminal,
       },
       {
         id: "water",
@@ -237,7 +210,6 @@ const SECTORS: Sector[] = [
           { label: "Quantum", href: "/services#quantum" },
           { label: "Delay", href: "/services#delay" },
         ],
-        terminal: CostainTerminal,
       },
       {
         id: "tunnelling",
@@ -262,7 +234,6 @@ const SECTORS: Sector[] = [
           { label: "Technical", href: "/services#technical" },
           { label: "Advisory", href: "/services#advisory" },
         ],
-        terminal: ChannelTunnelTerminal,
       },
     ],
   },
@@ -296,7 +267,6 @@ const SECTORS: Sector[] = [
           { label: "Quantum", href: "/services#quantum" },
           { label: "Technical", href: "/services#technical" },
         ],
-        terminal: HenryBootTerminal,
       },
       {
         id: "renewables",
@@ -321,7 +291,6 @@ const SECTORS: Sector[] = [
           { label: "Delay", href: "/services#delay" },
           { label: "Quantum", href: "/services#quantum" },
         ],
-        terminal: HojgaardTerminal,
       },
       {
         id: "process",
@@ -346,279 +315,85 @@ const SECTORS: Sector[] = [
           { label: "Delay", href: "/services#delay" },
           { label: "Advisory", href: "/services#advisory" },
         ],
-        terminal: SabicTerminal,
       },
     ],
   },
 ];
 
-const SECTOR_HASHES = ["buildings", "infrastructure", "energy"];
-
+const sectorIds = ["buildings", "infrastructure", "energy"];
 export function SectorsClient() {
-  const [activeTab, setActiveTab] = useState(0);
-
-  // Allow /sectors#buildings, #infrastructure, #energy to select a tab and
-  // bring that sector into view (used by the header Sectors dropdown).
-  useEffect(() => {
-    const applyHash = () => {
-      const idx = SECTOR_HASHES.indexOf(window.location.hash.replace("#", "").toLowerCase());
-      if (idx < 0) return;
-      setActiveTab(idx);
-      // Defer so the tab content commits before we scroll the tabs into view.
-      window.setTimeout(() => smoothScrollToId("sector-top"), 60);
-    };
-    applyHash();
-    window.addEventListener("hashchange", applyHash);
-    return () => window.removeEventListener("hashchange", applyHash);
-  }, []);
-
   return (
     <>
-      {/* Hero */}
-      <section className="bg-green pt-[clamp(8rem,16vh,12rem)] pb-[clamp(4rem,10vh,6rem)] relative overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
-        <ProjectPulse className="z-0 opacity-20" />
-
-        <div className="absolute inset-0 pointer-events-none opacity-30">
-          <div className="absolute top-0 left-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
-          <div className="absolute top-0 right-[15%] w-[1px] h-full bg-gradient-to-b from-transparent via-brass/20 to-transparent" />
-          <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-brass/10 to-transparent" />
-        </div>
-
-        <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10">
-          <FadeIn delay={0.1}>
-            <div className="flex items-center gap-4 mb-8">
-              <div className="font-mono text-[10px] tracking-[0.3em] uppercase text-brass/80">
-                Sector Experience
+      <PublicIntro
+        title="The same discipline. Different project realities."
+        label="Sectors"
+        description="Construction records make sense in context: how a project was procured, what it had to deliver and the conditions in which it was built."
+      >
+        <nav
+          id="sector-tabs"
+          className="public-anchor-nav"
+          aria-label="Sectors"
+        >
+          {SECTORS.map((sector, index) => (
+            <a href={`#${sectorIds[index]}`} key={sector.title}>
+              {sector.title}
+            </a>
+          ))}
+        </nav>
+      </PublicIntro>
+      <div id="sector-top" className="public-container">
+        {SECTORS.map((sector, index) => (
+          <section
+            key={sector.title}
+            id={sectorIds[index]}
+            className="public-sector"
+          >
+            <div className="public-sector-heading">
+              <h2>{sector.title}</h2>
+              <div>
+                <p>{sector.description}</p>
+                <p className="public-meta">
+                  Contract context: {sector.contractContext}
+                </p>
               </div>
             </div>
-          </FadeIn>
-
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-start">
-            <div className="lg:col-span-8">
-              <FadeIn delay={0.2}>
-                <h1 className="font-serif text-4xl lg:text-[56px] text-cream leading-[1.1] mb-8">
-                  Three sectors.<br />
-                  <span className="text-cream/70 italic">One forensic standard.</span>
-                </h1>
-              </FadeIn>
-
-              <FadeIn delay={0.3}>
-                <div className="flex gap-6 max-w-2xl">
-                  <div className="w-[1px] bg-brass/30 shrink-0 mt-2" />
-                  <p className="text-[15px] lg:text-[16px] text-cream/70 leading-[1.8] font-light tracking-[0.02em]">
-                    The UK construction disputes landscape splits into three distinct
-                    contractual ecosystems: buildings, infrastructure, and energy. Each
-                    has different procurement routes, standard forms, and dispute
-                    dynamics. Our forensic methodology is consistent. Its application is
-                    tailored to each.
-                  </p>
-                </div>
-              </FadeIn>
+            <div className="public-sector-grid">
+              {sector.subSectors.map((sub) => (
+                <article
+                  id={sub.id}
+                  key={sub.id}
+                  className="public-sector-item"
+                >
+                  <h3>{sub.title}</h3>
+                  <ul>
+                    {sub.disputes.map((dispute) => (
+                      <li key={dispute}>{dispute}</li>
+                    ))}
+                  </ul>
+                  <div className="public-related-links">
+                    {sub.disciplines.map((discipline) => (
+                      <Link key={discipline.href} href={discipline.href}>
+                        {discipline.label}
+                      </Link>
+                    ))}
+                  </div>
+                  <details className="public-authority-disclosure">
+                    <summary>Relevant authority</summary>
+                    <div>
+                      <h4>{sub.landmarkCase.name}</h4>
+                      <p className="public-meta">
+                        {sub.landmarkCase.citation}, {sub.landmarkCase.court}
+                      </p>
+                      <p>{sub.landmarkCase.summary}</p>
+                    </div>
+                  </details>
+                </article>
+              ))}
             </div>
-
-            <div className="lg:col-span-4 hidden lg:flex flex-col items-end text-right pt-4">
-              <FadeIn delay={0.4}>
-                <div className="inline-flex flex-col gap-3 p-6 border border-brass/10 bg-black/10 backdrop-blur-md rounded-sm relative">
-                  <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/40" />
-                  <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/40" />
-
-                  <div className="font-mono text-[9px] tracking-[0.2em] text-cream/40 uppercase mb-2">Taxonomy</div>
-                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">01_BUILDINGS</div>
-                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">02_INFRASTRUCTURE</div>
-                  <div className="font-mono text-[11px] tracking-[0.15em] text-brass/80">03_ENERGY</div>
-                  <div className="h-[1px] w-full bg-brass/10 my-1" />
-                  <div className="font-mono text-[9px] tracking-[0.15em] text-cream/30">11_SUB_SECTORS</div>
-                  <div className="font-mono text-[9px] tracking-[0.15em] text-cream/30">11_LANDMARK_CASES</div>
-                </div>
-              </FadeIn>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Non-sticky anchor: marks the tabs' natural position. The sticky bar's own
-          rect reads as its stuck offset once pinned, which breaks scroll targeting. */}
-      <div id="sector-top" aria-hidden="true" />
-
-      {/* Sticky Tabs */}
-      <div id="sector-tabs" className="bg-[#0b1f13] border-y border-brass/10 sticky top-[64px] lg:top-[80px] z-30 shadow-xl shadow-black/20">
-        <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-2 lg:px-6 xl:px-[8%]">
-          <div className="grid grid-cols-3 lg:flex lg:overflow-x-auto lg:hide-scrollbar">
-            {SECTORS.map((sector, idx) => (
-              <button
-                key={sector.num}
-                onClick={() => {
-                  setActiveTab(idx);
-                  // Return to the top of the sector content so the reader starts fresh
-                  window.setTimeout(() => smoothScrollToId("sector-top"), 60);
-                }}
-                className={`flex flex-col lg:flex-row items-center justify-center gap-1 lg:gap-3 py-3 lg:py-5 px-1 lg:px-8 whitespace-nowrap border-b-2 transition-all duration-300 ${
-                  activeTab === idx 
-                    ? "border-brass text-cream bg-white/5" 
-                    : "border-transparent text-cream/40 hover:text-cream/80 hover:bg-white/[0.02]"
-                }`}
-              >
-                <span className={`font-mono text-[9px] lg:text-[10px] tracking-[0.2em] transition-colors ${activeTab === idx ? "text-brass" : "text-brass/40"}`}>
-                  SEC.{sector.num}
-                </span>
-                <span className="font-serif text-[14px] lg:text-lg tracking-wide">{sector.title}</span>
-              </button>
-            ))}
-          </div>
-        </div>
+          </section>
+        ))}
       </div>
-
-      {/* Active Sector Content */}
-      <div className="min-h-[80vh]">
-        <div key={activeTab}>
-          {/* Sector Header */}
-            <section className="bg-green relative overflow-hidden border-b border-brass/5">
-              <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
-
-              <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%] relative z-10 py-[clamp(3rem,6vw,5rem)]">
-                <FadeIn delay={0.1}>
-                  <div className="flex items-center gap-4 mb-6">
-                    <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80">
-                      SEC.{SECTORS[activeTab].num}
-                    </div>
-                    <div className="font-mono text-[9px] tracking-[0.15em] text-cream/30 uppercase">
-                      {SECTORS[activeTab].contractContext}
-                    </div>
-                  </div>
-
-                  <h2 className="font-serif text-3xl lg:text-[48px] text-cream leading-[1.1] mb-6">
-                    {SECTORS[activeTab].title}
-                  </h2>
-
-                  <div className="flex gap-6 max-w-3xl">
-                    <div className="w-[1px] bg-brass/20 shrink-0 mt-2" />
-                    <p className="text-[15px] lg:text-[16px] text-cream/60 leading-[1.8] font-light tracking-[0.02em]">
-                      {SECTORS[activeTab].description}
-                    </p>
-                  </div>
-                </FadeIn>
-              </div>
-            </section>
-
-            {/* Sub-Sectors */}
-            {SECTORS[activeTab].subSectors.map((sub, subIdx) => {
-              const Terminal = sub.terminal;
-              const bgClass = subIdx % 2 === 0 ? "bg-stone" : "bg-parchment";
-              const isReversed = subIdx % 2 !== 0;
-
-              return (
-                <div key={sub.id} id={sub.id} className={`${bgClass} relative`}>
-                  <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[30vw] font-serif leading-none text-green/[0.015] select-none">
-                      {SECTORS[activeTab].num}.{subIdx + 1}
-                    </div>
-                  </div>
-
-                  <div className="py-[clamp(4.5rem,8vw,8rem)] relative z-10">
-                    <div className="max-w-[1200px] 2xl:max-w-[1400px] 3xl:max-w-[1600px] mx-auto px-6 lg:px-[8%]">
-                      <div className={`grid grid-cols-1 gap-12 lg:gap-20 ${isReversed ? "lg:grid-cols-[minmax(400px,500px)_1fr] 2xl:grid-cols-[550px_1fr]" : "lg:grid-cols-[1fr_minmax(400px,500px)] 2xl:grid-cols-[1fr_550px]"}`}>
-                        {/* Content */}
-                        <div className={isReversed ? "order-1 lg:order-2" : "order-1 lg:order-1"}>
-                          <FadeIn delay={0.1}>
-                            <div className="flex items-center gap-4 mb-6">
-                              <div className="font-mono text-[11px] tracking-[0.25em] text-brass/80">
-                                SEC.{SECTORS[activeTab].num}.{subIdx + 1}
-                              </div>
-                            </div>
-
-                            <h3 className="font-serif text-2xl lg:text-3xl text-green leading-tight mb-4">
-                              {sub.title}
-                            </h3>
-
-                            {/* Landmark Case */}
-                            <div className="mb-8 p-5 border border-green/10 bg-green/[0.03] relative group">
-                              <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-brass/30 transition-colors group-hover:border-brass/60" />
-                              <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-brass/30 transition-colors group-hover:border-brass/60" />
-                              <div className="font-mono text-[9px] tracking-[0.2em] text-brass/60 uppercase mb-2">
-                                Landmark Authority
-                              </div>
-                              <div className="font-serif text-[15px] text-green italic leading-snug mb-1">
-                                {sub.landmarkCase.name}
-                              </div>
-                              <div className="font-mono text-[10px] text-slate/60 tracking-wide mb-3">
-                                {sub.landmarkCase.citation} <span className="mx-1 text-brass/30">|</span> {sub.landmarkCase.court}
-                              </div>
-                              <p className="text-[13px] text-ink/65 leading-[1.7] font-light">
-                                {sub.landmarkCase.summary}
-                              </p>
-                            </div>
-
-                            {/* Disputes */}
-                            <div className="space-y-8">
-                              <div>
-                                <div className="font-mono text-[10px] tracking-[0.25em] uppercase text-slate/50 mb-4">
-                                  Typical disputes
-                                </div>
-                                <ul className="space-y-3.5">
-                                  {sub.disputes.map((dispute, j) => (
-                                    <li key={j} className="flex items-start gap-3 text-[14px] text-ink/75 leading-relaxed">
-                                      <span className="text-brass/70 text-[16px] leading-none mt-[2px] shrink-0">&bull;</span>
-                                      {dispute}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-
-                              <div className="flex flex-wrap items-center gap-x-8 gap-y-6 pt-4 border-t border-green/5">
-                                <div>
-                                  <div className="font-mono text-[9px] tracking-[0.15em] uppercase text-slate/40 mb-2.5">
-                                    Forms:
-                                  </div>
-                                  <div className="flex flex-wrap gap-2">
-                                    {sub.contracts.map((c) => (
-                                      <span key={c} className="font-mono text-[9px] tracking-[0.1em] text-green/60 bg-green/5 px-2.5 py-1 rounded-sm">
-                                        {c}
-                                      </span>
-                                    ))}
-                                  </div>
-                                </div>
-
-                                <div>
-                                  <div className="font-mono text-[9px] tracking-[0.15em] uppercase text-slate/40 mb-2.5">
-                                    Disciplines:
-                                  </div>
-                                  <div className="flex flex-wrap gap-3">
-                                    {sub.disciplines.map((d) => (
-                                      <Link key={d.label} href={d.href} className="font-mono text-[10px] tracking-[0.1em] text-brass hover:text-brass-dark transition-colors duration-200">
-                                        {d.label} &rarr;
-                                      </Link>
-                                    ))}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </FadeIn>
-                        </div>
-
-                        {/* Terminal Graphic */}
-                        <div className={`relative w-full aspect-[16/10] lg:aspect-auto lg:h-full ${isReversed ? "order-2 lg:order-1" : "order-2 lg:order-2"}`}>
-                          <div className="lg:sticky lg:top-[30vh] w-full h-auto aspect-[16/10]">
-                            <FadeIn delay={0.2} className="w-full h-full">
-                              <TerminalBox className="w-full h-full">
-                                <Terminal />
-                              </TerminalBox>
-                            </FadeIn>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-        </div>
-      </div>
-
-      <CTABand
-        heading="Discuss your position"
-        subtext="Direct access to a partner. No intermediaries."
-      />
+      <CTABand />
     </>
   );
 }

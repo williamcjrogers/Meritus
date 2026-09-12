@@ -1,86 +1,83 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
-import { ENQUIRY_CTA, NAV_ITEMS } from "@/lib/constants";
+import { usePathname } from "next/navigation";
 import { MobileAuth } from "./MobileAuth";
 
 interface MobileNavProps {
   isOpen: boolean;
   onClose: () => void;
 }
+const links = [
+  { label: "Expertise", href: "/services" },
+  { label: "Approach", href: "/method" },
+  { label: "Insights", href: "/insights" },
+  { label: "Contact", href: "/contact" },
+];
 
 export function MobileNav({ isOpen, onClose }: MobileNavProps) {
-  // While the full-screen menu is open: close on Escape and lock body scroll so
-  // the page behind the overlay cannot scroll (notably on iOS).
+  const panel = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  useEffect(() => {
+    if (isOpen) panel.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+  }, [isOpen]);
   useEffect(() => {
     if (!isOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+    const dismiss = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        onClose();
+      }
     };
-    window.addEventListener("keydown", onKey);
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const resize = () => {
+      if (window.matchMedia("(min-width: 1100px)").matches) onClose();
+    };
+    document.addEventListener("keydown", dismiss);
+    window.addEventListener("resize", resize);
     return () => {
-      window.removeEventListener("keydown", onKey);
-      document.body.style.overflow = prevOverflow;
+      document.removeEventListener("keydown", dismiss);
+      window.removeEventListener("resize", resize);
     };
   }, [isOpen, onClose]);
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <motion.div
-          className="fixed inset-0 z-40 bg-green lg:hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <nav className="flex flex-col items-center justify-center h-full gap-10" aria-label="Mobile navigation">
-            {NAV_ITEMS.map((item, index) => (
-              <motion.div
-                key={item.href}
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.06 }}
-              >
-                <Link
-                  href={item.href}
-                  onClick={onClose}
-                  className="text-xl text-cream/70 tracking-wide hover:text-brass transition-colors duration-200"
-                >
-                  {item.label}
-                </Link>
-              </motion.div>
-            ))}
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: NAV_ITEMS.length * 0.06 }}
-            >
-              <MobileAuth onNavigate={onClose} />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: NAV_ITEMS.length * 0.08 }}
-            >
-              <Link
-                href="/contact"
-                onClick={onClose}
-                className="mt-4 group inline-flex items-center gap-2 px-5 py-2.5 rounded-md border-2 border-brass bg-brass text-sm text-green tracking-wide transition-all duration-200 hover:bg-brass-light hover:border-brass-light hover:-translate-y-px hover:shadow-[0_4px_14px_rgba(181,151,90,0.15)]"
-              >
-                {ENQUIRY_CTA}
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">
-                  <path d="M1 7h12M8 2l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </Link>
-            </motion.div>
-          </nav>
-        </motion.div>
-      )}
-    </AnimatePresence>
+    <div
+      ref={panel}
+      id="public-mobile-navigation"
+      className="public-mobile-nav"
+      hidden={!isOpen}
+    >
+      <nav aria-label="Mobile navigation">
+        {links.map(({ label, href }) => (
+          <Link
+            key={href}
+            href={href}
+            onClick={onClose}
+            aria-current={
+              pathname === href || pathname.startsWith(`${href}/`)
+                ? "page"
+                : undefined
+            }
+          >
+            {label}
+          </Link>
+        ))}
+      </nav>
+      <div className="public-mobile-secondary">
+        <Link href="/sectors" onClick={onClose}>
+          Sectors
+        </Link>
+        <Link href="/credentials" onClick={onClose}>
+          Credentials
+        </Link>
+      </div>
+      <div className="public-mobile-account">
+        <Link href="/access" onClick={onClose} className="public-client-access">
+          Client access
+        </Link>
+        <MobileAuth onNavigate={onClose} />
+      </div>
+    </div>
   );
 }
