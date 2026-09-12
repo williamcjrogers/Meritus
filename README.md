@@ -42,7 +42,7 @@ Directors list a client firm's email domain at `/portal/clients` and can link it
 
 Files go straight from the browser to the VeriCase bucket by S3 multipart upload, up to 50 GB each, under `meritus/clients/<domain>/`. Nothing is extracted or analysed: the backend is a static document hold and VeriCase reads the bucket and the `documents` table. A linked domain's files appear on the pursuit's dossier; unlinked ones sit under the domain at `/portal/clients`.
 
-Roles: every Clerk user carries `publicMetadata.role`, `director` or `client`. The middleware and every guard deny anything else. Set the three directors' metadata to `{"role": "director"}` in the Clerk dashboard before deploying this, or nobody can sign in. Optionally add the session claim `{"metadata": "{{user.public_metadata}}"}` under Sessions so the role rides in the token.
+Roles: every Clerk user carries `publicMetadata.role`, `director` or `client`. The middleware and every guard deny anything else. A role change made in Clerk reaches the research pages at once and the rest of the desk within five minutes (the role is cached that long), so allow that window when revoking access. Set the three directors' metadata to `{"role": "director"}` in the Clerk dashboard before deploying this, or nobody can sign in. Optionally add the session claim `{"metadata": "{{user.public_metadata}}"}` under Sessions so the role rides in the token.
 
 ### Uploads on the desk
 
