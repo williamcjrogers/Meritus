@@ -50,3 +50,9 @@ Interior routes use the same design language with appropriate structures: servic
 - Independent controller browser review found and prompted fixes for an inherited link-colour rule overriding shared buttons and missing whitespace where the mobile headline hid a line break. Both fixes are applied. The controller owns final responsive, contrast, keyboard, reduced-motion and screenshot acceptance.
 
 No production environment, build, deployment, external account action or email was used by this worker. The controller owns full-suite integration, static audit and deployment checks. DESIGN.md was not yet present during this worker's initial implementation; the approved complete spec and shared token contract governed the public work while the workspace owner prepared it.
+
+## Independent review correction
+
+The reviewer and controller confirmed that the general public link reset overrode the intended underlines on article references, article contents and legal links. Both the normal and hover reset now put the anchor selection inside `:where()`, reducing reset specificity to `0,1,0`. The reading selectors retain their higher `0,1,1` specificity. Both reset rules still exclude `.app-button`, preserving the earlier primary CTA contrast fix.
+
+Verification: `corepack pnpm exec node -` parsed the final stylesheet with PostCSS and checked that all three reading selectors retain their underline declarations, both low-specificity reset selectors exist and both original stronger selectors are absent. `git diff --check -- src/styles/marketing.css` passed. No article or legal source text changed. The controller owns the final browser confirmation.
