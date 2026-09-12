@@ -126,6 +126,10 @@ describe("POST /api/access", () => {
     expect((await post({ email: "jane@example-firm.co.uk" })).status).toBe(200);
     await settle();
     expect(warn).toHaveBeenCalledWith("Access: link not sent", { domainId: "cd_1", error: "boom" });
+    vi.mocked(sendAccessLink).mockResolvedValue({ error: "validation_error: jane@example-firm.co.uk is invalid" });
+    expect((await post({ email: "jane@example-firm.co.uk" })).status).toBe(200);
+    await settle();
+    expect(warn).toHaveBeenLastCalledWith("Access: link not sent", { domainId: "cd_1", error: "validation_error" });
     expect(JSON.stringify(warn.mock.calls)).not.toContain("jane@");
   });
 });

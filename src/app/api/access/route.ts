@@ -52,7 +52,9 @@ export async function POST(request: Request) {
       return;
     }
     const mail = await sendAccessLink({ to: email, url: issued.url });
-    if ("error" in mail) console.warn("Access: link not sent", { domainId: domain.id, error: mail.error });
+    if ("error" in mail) {
+      console.warn("Access: link not sent", { domainId: domain.id, error: mail.error.split(":")[0].slice(0, 60) });
+    }
   });
   return generic();
 }
