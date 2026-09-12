@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { HallmarkLogo } from "@/components/icons/HallmarkLogo";
 import { DirectorMenu } from "@/components/portal/DirectorMenu";
@@ -7,6 +8,7 @@ import { Eyebrow } from "@/components/portal/Eyebrow";
 import { NavLink } from "@/components/portal/NavLink";
 import { isClerkConfigured } from "@/lib/env";
 import { getDirector } from "@/lib/portal/directors";
+import { resolveIdentity } from "@/lib/portal/roles";
 
 export const metadata: Metadata = {
   title: "Pursuit desk",
@@ -27,7 +29,17 @@ async function signedInDirector(): Promise<{ name: string; initials: string } | 
   }
 }
 
+/** The middleware already keeps non-directors out; this is the page-level check the spec asks for. */
+async function redirectUnlessDirector(): Promise<void> {
+  if (!isClerkConfigured()) return;
+  const { userId, sessionClaims } = await auth();
+  if (!userId) redirect("/sign-in");
+  const identity = await resolveIdentity(userId, sessionClaims);
+  if (identity.role !== "director") redirect(identity.role === "client" ? "/client" : "/access/denied");
+}
+
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
+  await redirectUnlessDirector();
   const director = await signedInDirector();
   const clerk = isClerkConfigured();
 

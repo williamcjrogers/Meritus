@@ -18,12 +18,14 @@ import { clearQuestions as deleteQuestions } from "@/lib/db/questions";
 import type { Activity, DocumentRow, Pursuit, PursuitStage } from "@/lib/db/schema";
 import { listDirectors } from "@/lib/portal/directors";
 import { deleteObjects } from "./s3";
+import { resolveIdentity } from "./roles";
 import * as actions from "./actions";
 import type { PursuitFormInput } from "./actions";
 
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("@clerk/nextjs/server", () => ({ auth: vi.fn() }));
 vi.mock("./s3", () => ({ deleteObjects: vi.fn() }));
+vi.mock("./roles", () => ({ resolveIdentity: vi.fn() }));
 vi.mock("@/lib/db/pursuits", () => ({
   getPursuit: vi.fn(),
   createPursuitWithEnquiry: vi.fn(),
@@ -127,6 +129,7 @@ beforeEach(() => {
   process.env.CLERK_SECRET_KEY = "sk_test";
   process.env.DATABASE_URL = "postgres://test";
   vi.mocked(auth).mockResolvedValue({ userId: "user_wr" } as never);
+  vi.mocked(resolveIdentity).mockResolvedValue({ userId: "user_wr", role: "director", domain: null, email: null });
   vi.mocked(listDirectors).mockResolvedValue([
     { id: "user_wr", name: "William Rogers", email: "wr@meritusvia.com", initials: "WR" },
     { id: "user_md", name: "Mateo Diaz", email: "md@meritusvia.com", initials: "MD" },
