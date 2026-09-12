@@ -1,574 +1,141 @@
 "use client";
-import { useEffect, useState, type FormEvent } from "react";
-import {
-  ActionForm,
-  DataTable,
-  Panel,
-  api,
-  value,
-  numeric,
-  dateTime,
-  date,
-  type Row,
-  type Field,
-} from "./ResearchControls";
+
+import { useEffect, useState } from "react";
 import type { SourceSettings } from "@/lib/db/research-workflow";
-import { SourceHealth } from "./SourceHealth";
+import { ActionForm, api, date, dateTime, value, type Field, type Row } from "./ResearchControls";
+import { SourceOverview } from "./SourceOverview";
+import { SourceImportForm } from "./SourceImportForm";
+import { SourceRegistrationForm } from "./SourceRegistrationForm";
+
 const base = "/api/portal/research";
-const field = (
-  name: string,
-  label: string,
-  type: Field["type"] = "text",
-  required = true,
-  initial?: string | number,
-): Field => ({ name, label, type, required, value: initial });
-const select = (
-  name: string,
-  label: string,
-  options: { value: string; label: string }[],
-  required = true,
-): Field => ({ name, label, type: "select", options, required });
-export function SourceSettingsForms({
-  sources,
-  reload,
-}: {
+type View = "overview" | "import" | "add" | "licences" | "documents";
+const field = (name: string, label: string, type: Field["type"] = "text", required = true, initial?: string): Field => ({ name, label, type, required, value: initial });
+
+export function SourceSettingsForms({ sources, reload }: {
   sources: SourceSettings[];
   reload: () => Promise<void>;
 }) {
-  const [rights, setRights] = useState<Row[]>([]),
-    [documents, setDocuments] = useState<Row[]>([]),
-    [error, setError] = useState("");
-  const load = async () => {
-    try {
-      const [r, d] = await Promise.all([
-        api<Row[]>(base + "/rights"),
-        api<Row[]>(base + "/documents"),
-      ]);
-      setRights(r);
-      setDocuments(d);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Source records unavailable");
-    }
-  };
+  const [view, setView] = useState<View>("overview");
+  const [opened, setOpened] = useState<Partial<Record<View, boolean>>>({ overview: true });
+  const [rightsReady, setRightsReady] = useState(false);
+  const [pending, setPending] = useState(false);
+  const [refreshError, setRefreshError] = useState("");
+  const [registrationSaved, setRegistrationSaved] = useState(false);
+  const [rights, setRights] = useState<Row[]>([]);
+  const [documents, setDocuments] = useState<Row[]>([]);
+  const [recordsLoading, setRecordsLoading] = useState(true);
+  const [recordsError, setRecordsError] = useState("");
+  const [revision, setRevision] = useState(0);
+  const [showAllDocuments, setShowAllDocuments] = useState(false);
+  const needsRecords = view === "add" || view === "licences" || view === "documents";
+
   useEffect(() => {
-    void load();
-  }, []);
+    if (!needsRecords) return;
+    let active = true;
+    setRecordsLoading(true);
+    setRecordsError("");
+    api<Row[]>(`${base}/${view === "documents" ? "documents" : "rights"}`)
+      .then(rows => {
+        if (!active) return;
+        if (view === "documents") setDocuments(rows);
+        else { setRights(rows); setRightsReady(true); }
+      })
+      .catch(error => { if (active) setRecordsError(error instanceof Error ? error.message : "These records could not be loaded."); })
+      .finally(() => { if (active) setRecordsLoading(false); });
+    return () => { active = false; };
+  }, [view, needsRecords, revision]);
+
   const save = async (path: string, body: unknown, method = "POST") => {
-    const result = await api(base + "/" + path, body, method);
-    await reload();
-    await load();
-    return result;
-  };
-  return (
-    <div className="space-y-8">
-      {error && <p role="alert">{error}</p>}
-      <Panel title="Source health and limits">
-        {sources.map((s) => (
-          <details
-            key={s.id}
-            className="rounded border border-ink/15 bg-white/50 p-5"
-          >
-            <summary className="cursor-pointer font-medium">
-              {s.label} · {s.status}
-            </summary>
-            <div className="space-y-4 pt-4">
-              <SourceHealth source={s} />
-              <p className="text-sm">{s.attribution}</p>
-              <a
-                className="text-sm underline"
-                href={s.termsUrl}
-                target="_blank"
-                rel="noreferrer"
-              >
-                Recorded source terms ({s.termsVersion})
-              </a>
-              <p className="text-xs">
-                Credential reference{" "}
-                {s.credentialConfigured
-                  ? "recorded"
-                  : "not required or not recorded"}
-                . Secret values are configured in the server environment.
-              </p>
-              <ActionForm
-                title="Source controls"
-                fields={[
-                  select(
-                    "status",
-                    "Status",
-                    ["ready", "paused", "unavailable"].map((v) => ({
-                      value: v,
-                      label: v,
-                    })),
-                  ),
-                  field(
-                    "dailyRequests",
-                    "Daily requests",
-                    "number",
-                    true,
-                    s.dailyRequests,
-                  ),
-                  field(
-                    "dailyTokens",
-                    "Daily model tokens",
-                    "number",
-                    true,
-                    s.dailyTokens,
-                  ),
-                  field(
-                    "dailyPence",
-                    "Daily model budget (pence)",
-                    "number",
-                    true,
-                    s.dailyPence,
-                  ),
-                  field(
-                    "companyNumber",
-                    "Companies House number (Companies House only)",
-                    "text",
-                    false,
-                    String(s.selection.companyNumber ?? ""),
-                  ),
-                  field(
-                    "noticeTypes",
-                    "Gazette notice type codes, comma separated",
-                    "text",
-                    false,
-                    Array.isArray(s.selection.noticeTypes)
-                      ? s.selection.noticeTypes.join(",")
-                      : "",
-                  ),
-                ]}
-                submit={(v) =>
-                  save(
-                    "sources/" + s.id,
-                    {
-                      status: value(v, "status"),
-                      dailyRequests: numeric(v, "dailyRequests"),
-                      dailyTokens: numeric(v, "dailyTokens"),
-                      dailyPence: numeric(v, "dailyPence"),
-                      ...(s.provider === "companies-house"
-                        ? {
-                            selection: {
-                              companyNumber: value(v, "companyNumber")
-                                .trim()
-                                .toUpperCase()
-                                .padStart(8, "0"),
-                            },
-                          }
-                        : s.provider === "gazette"
-                          ? {
-                              selection: {
-                                noticeTypes: value(v, "noticeTypes")
-                                  .split(",")
-                                  .map((x) => x.trim())
-                                  .filter(Boolean),
-                              },
-                            }
-                          : {}),
-                    },
-                    "PATCH",
-                  )
-                }
-              />
-            </div>
-          </details>
-        ))}
-      </Panel>
-      <Panel title="Rights register">
-        <DataTable
-          rows={rights}
-          columns={[
-            { key: "holder", title: "Holder" },
-            { key: "material", title: "Material" },
-            { key: "purpose", title: "Authorised purpose" },
-            { key: "agreement_ref", title: "Agreement reference" },
-            {
-              key: "effective_at",
-              title: "Effective",
-              render: (r) => date(r.effective_at),
-            },
-            {
-              key: "expires_at",
-              title: "Expires",
-              render: (r) => date(r.expires_at),
-            },
-          ]}
-        />
-        <ActionForm
-          title="Record a source licence or reuse assessment"
-          fields={[
-            field(
-              "holder",
-              "Rights holder",
-              "text",
-              true,
-              "Quantum Commercial Solutions Limited",
-            ),
-            field("material", "Material covered"),
-            field("purpose", "Authorised purpose", "textarea"),
-            field("agreementRef", "Agreement or terms reference"),
-            field(
-              "agreementText",
-              "Agreement text used for integrity hash",
-              "textarea",
-            ),
-            field("effectiveAt", "Effective date and time", "datetime-local"),
-            field("expiresAt", "Expiry date and time", "datetime-local", false),
-            field(
-              "transferConditions",
-              "Transfer conditions",
-              "textarea",
-              false,
-            ),
-            field(
-              "retentionInstructions",
-              "Retention instructions",
-              "textarea",
-              false,
-            ),
-            field(
-              "withdrawalInstructions",
-              "Withdrawal instructions",
-              "textarea",
-              false,
-            ),
-            field("useAssessment", "Assessment of intended use", "textarea"),
-          ]}
-          submit={(v) =>
-            save("rights", {
-              ...v,
-              effectiveAt: dateTime(v, "effectiveAt"),
-              expiresAt: dateTime(v, "expiresAt"),
-            })
-          }
-        />
-      </Panel>
-      <ActionForm
-        title="Register a publication or licensed import source"
-        fields={[
-          field("label", "Source name"),
-          select(
-            "provider",
-            "Retrieval method",
-            [
-              "research-import",
-              "commercial-import",
-              "court-listings",
-              "bailii",
-              "publications",
-              "building-safety",
-            ].map((v) => ({ value: v, label: v.replaceAll("-", " ") })),
-          ),
-          field("host", "Publisher hostname"),
-          field(
-            "url",
-            "Publication HTTPS URL (publication sources only)",
-            "text",
-            false,
-          ),
-          select(
-            "publicationKind",
-            "Publication category",
-            ["programme", "accounts", "rns", "news", "recruitment"].map(
-              (v) => ({ value: v, label: v }),
-            ),
-            false,
-          ),
-          field(
-            "subjectId",
-            "Public subject reference (publication sources only)",
-            "text",
-            false,
-          ),
-          field("termsUrl", "Terms HTTPS URL"),
-          field(
-            "termsVersion",
-            "Terms version",
-            "text",
-            true,
-            "Reviewed " + new Date().toISOString().slice(0, 10),
-          ),
-          field("attribution", "Attribution", "textarea"),
-          field("purpose", "Research purpose", "textarea"),
-          select(
-            "rightsId",
-            "Recorded rights",
-            rights.map((r) => ({
-              value: String(r.id),
-              label: String(r.holder) + " · " + r.material,
-            })),
-          ),
-          field("backfillStart", "Earliest retrieval date", "date"),
-          field(
-            "cadenceSeconds",
-            "Refresh interval (seconds)",
-            "number",
-            true,
-            86400,
-          ),
-          field("dailyRequests", "Daily request cap", "number", true, 100),
-          field("dailyTokens", "Daily model token cap", "number", true, 100000),
-          field(
-            "dailyPence",
-            "Daily model cost cap (pence)",
-            "number",
-            true,
-            1000,
-          ),
-        ]}
-        submit={(v) => {
-          const provider = value(v, "provider"),
-            selection =
-              provider === "publications"
-                ? {
-                    url: value(v, "url"),
-                    kind: value(v, "publicationKind"),
-                    subjectId: value(v, "subjectId"),
-                  }
-                : provider === "building-safety"
-                  ? { publicationUrl: value(v, "url") }
-                  : {};
-          return save("sources", {
-            label: value(v, "label"),
-            provider,
-            hosts: [value(v, "host").trim().toLowerCase()],
-            accessMethod:
-              provider.includes("import") ||
-              ["court-listings", "bailii"].includes(provider)
-                ? "licensed_import"
-                : "public_https",
-            termsUrl: value(v, "termsUrl"),
-            termsVersion: value(v, "termsVersion"),
-            termsReviewedAt: new Date().toISOString(),
-            attribution: value(v, "attribution"),
-            operator: "QCS",
-            purpose: value(v, "purpose"),
-            rightsId: value(v, "rightsId"),
-            credentialRef: null,
-            status: "paused",
-            selection,
-            backfillStart: dateTime(v, "backfillStart"),
-            cadenceSeconds: numeric(v, "cadenceSeconds"),
-            freshnessSeconds: numeric(v, "cadenceSeconds") * 2,
-            requestLimit: 10,
-            windowSeconds: 60,
-            dailyRequests: numeric(v, "dailyRequests"),
-            dailyTokens: numeric(v, "dailyTokens"),
-            dailyPence: numeric(v, "dailyPence"),
-          });
-        }}
-      />
-      <ImportForm sources={sources} reload={reload} />
-      <Panel title="Document availability">
-        <p className="text-sm">
-          Reinstatement authorises a fresh publisher check. Previously withdrawn
-          text remains unavailable until a new version is retrieved.
-        </p>
-        {documents.map((d) => (
-          <article
-            key={String(d.id)}
-            className="rounded border border-ink/15 p-4 space-y-2"
-          >
-            <p>
-              {String(d.source)} · {String(d.provider_id)}
-            </p>
-            <p className="text-sm">
-              {String(d.status)}
-              {d.withdrawal_reason ? ": " + String(d.withdrawal_reason) : ""}
-            </p>
-            {d.status !== "available" && (
-              <ActionForm
-                title="Review reinstatement"
-                button="Authorise fresh retrieval"
-                fields={[
-                  field(
-                    "reason",
-                    "Evidence and reason for reinstatement",
-                    "textarea",
-                  ),
-                ]}
-                submit={(v) =>
-                  save("documents/" + d.id + "/reinstate", {
-                    reason: value(v, "reason"),
-                  })
-                }
-              />
-            )}
-          </article>
-        ))}
-      </Panel>
-    </div>
-  );
-}
-function ImportForm({
-  sources,
-  reload,
-}: {
-  sources: SourceSettings[];
-  reload: () => Promise<void>;
-}) {
-  const [requestId] = useState(() => crypto.randomUUID()),
-    [preview, setPreview] = useState<Row | null>(null),
-    [message, setMessage] = useState(""),
-    [busy, setBusy] = useState(false);
-  async function submit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setBusy(true);
-    setMessage("");
-    const form = new FormData(e.currentTarget),
-      button = (e.nativeEvent as SubmitEvent)
-        .submitter as HTMLButtonElement | null;
-    form.set("action", button?.value ?? "preview");
-    form.set("requestId", requestId);
+    setPending(true);
+    setRefreshError("");
     try {
-      const response = await fetch(base + "/imports", {
-        method: "POST",
-        body: form,
-      });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.error ?? "Import failed");
-      if (result.investigationId)
-        window.location.assign(
-          "/portal/research/investigations/" + result.investigationId,
-        );
-      else setPreview(result);
-      await reload();
-    } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Import failed");
-    } finally {
-      setBusy(false);
-    }
-  }
+      const result = await api(`${base}/${path}`, body, method);
+      if (path === "sources") setRegistrationSaved(true);
+      try {
+        await reload();
+        if (view === "licences" || view === "add") setRights(await api<Row[]>(`${base}/rights`));
+        if (view === "documents") setDocuments(await api<Row[]>(`${base}/documents`));
+      } catch {
+        setRefreshError("Your change was saved, but the latest records could not be refreshed. Reopen this section to load them again.");
+      }
+      return result;
+    } finally { setPending(false); }
+  };
+  const choose = (next: View) => {
+    if (next === view || pending) return;
+    setRecordsLoading(true);
+    setRecordsError("");
+    setView(next);
+    setOpened(previous => ({ ...previous, ...(view === "add" && registrationSaved ? { add: false } : {}), [next]: true }));
+    if (view === "add" && registrationSaved) setRegistrationSaved(false);
+  };
+  const taskButton = (target: View, text: string) => (
+    <button type="button" disabled={pending} aria-pressed={view === target} onClick={() => choose(target)} className={`min-h-11 rounded px-4 py-2.5 text-sm font-medium disabled:opacity-50 ${view === target ? "bg-green text-cream" : "border border-ink/20 bg-white/50 hover:bg-white"}`}>{text}</button>
+  );
+
   return (
-    <Panel title="Preview and import research material">
-      <p className="text-sm">
-        Add a licensed CSV or JSON file up to 4 MiB. Larger CSV files must be split into complete-record parts before portal upload. Map the source column names
-        below. This creates a separate research investigation. Split parts remain
-        partial coverage pending complete manifest verification. Uploading one file
-        does not establish coverage of the publisher's full population.
-      </p>
-      <form
-        onSubmit={submit}
-        className="rounded border border-ink/15 bg-white/50 p-5 space-y-4"
-      >
-        <div className="grid gap-4 md:grid-cols-2">
-          <label className="space-y-1">
-            Registered source
-            <select
-              name="sourceId"
-              required
-              className="block w-full border p-2"
-            >
-              <option value="">Choose</option>
-              {sources
-                .filter((s) =>
-                  [
-                    "research-import",
-                    "commercial-import",
-                    "court-listings",
-                    "bailii",
-                  ].includes(s.provider),
-                )
-                .map((s) => (
-                  <option key={s.id} value={s.id}>
-                    {s.label} ({s.status})
-                  </option>
-                ))}
-            </select>
-          </label>
-          <label>
-            File format
-            <select name="format" className="block w-full border p-2">
-              <option value="csv">CSV</option>
-              <option value="json">JSON</option>
-            </select>
-          </label>
-          <label>
-            Research file
-            <input
-              type="file"
-              name="file"
-              accept=".csv,.json"
-              required
-              className="block w-full border p-2"
-            />
-          </label>
-          <label>
-            Total number of parts
-            <input name="partCount" type="number" min="1" max="10000" defaultValue="1" required className="block w-full border p-2" />
-          </label>
-          <label>
-            Part number (starts at 1)
-            <input name="partIndex" type="number" min="1" max="10000" defaultValue="1" required className="block w-full border p-2" />
-          </label>
-          <label className="md:col-span-2">
-            Original snapshot hash (required for split parts)
-            <input name="snapshotHash" pattern="[a-fA-F0-9]{64}" minLength={64} maxLength={64} className="block w-full border p-2" aria-describedby="research-import-snapshot-help" />
-            <span id="research-import-snapshot-help" className="mt-1 block text-xs text-ink/65">Use the 64-character hash of the original file from the splitter's manifest, shared by every part.</span>
-          </label>
-          {[
-            ["question", "Research question"],
-            ["subject", "Public subject"],
-            ["id", "Record ID column"],
-            ["title", "Title column"],
-            ["text", "Text column"],
-            ["companyNumber", "Company number column"],
-            ["eventAt", "Event date column"],
-            ["url", "Source URL column"],
-          ].map(([name, text]) => (
-            <label key={name}>
-              {text}
-              <input
-                name={name}
-                required={["question", "subject", "id", "text"].includes(name)}
-                className="block w-full border p-2"
-              />
-            </label>
-          ))}
-        </div>
-        <div className="flex gap-4">
-          <button
-            disabled={busy}
-            name="action"
-            value="preview"
-            className="rounded border border-green px-4 py-2"
-          >
-            Preview mapping
-          </button>
-          <button
-            disabled={busy}
-            name="action"
-            value="import"
-            className="rounded bg-green text-cream px-4 py-2"
-          >
-            Validate and start import
-          </button>
-        </div>
-        <p role="alert">{message}</p>
-      </form>
-      {preview && (
-        <>
-          <p>
-            {(preview.errors as Row[]).length} mapping errors. Preview shows up
-            to 250 rows.
-          </p>
-          <DataTable
-            rows={preview.errors as Row[]}
-            columns={[
-              { key: "row", title: "Row" },
-              { key: "field", title: "Field" },
-              { key: "message", title: "Correction required" },
-            ]}
-            empty="No mapping errors found."
-          />
-          <DataTable
-            rows={preview.rows as Row[]}
-            columns={Object.keys((preview.rows as Row[])[0] ?? {}).map(
-              (key) => ({ key, title: key }),
-            )}
-          />
-        </>
-      )}
-    </Panel>
+    <div className="space-y-7">
+      <div aria-label="Source tasks" className="flex flex-wrap items-start gap-2">
+        {taskButton("overview", "Source overview")}
+        {taskButton("import", "Import a file")}
+        {taskButton("add", "Add a source")}
+        <details className="group relative sm:ml-auto">
+          <summary className={`min-h-11 cursor-pointer rounded px-4 py-2.5 text-sm ${view === "licences" || view === "documents" ? "bg-green/10 font-medium" : "text-ink/75"}`}>Administration</summary>
+          <div className="absolute right-0 z-10 mt-2 w-64 space-y-1 rounded border border-ink/20 bg-cream p-2 shadow-lg">
+            <button type="button" onClick={event => { choose("licences"); event.currentTarget.closest("details")?.removeAttribute("open"); }} className="block w-full rounded p-3 text-left text-sm hover:bg-green/5">Licences and permissions</button>
+            <button type="button" onClick={event => { choose("documents"); event.currentTarget.closest("details")?.removeAttribute("open"); }} className="block w-full rounded p-3 text-left text-sm hover:bg-green/5">Document checks</button>
+          </div>
+        </details>
+      </div>
+
+      {refreshError && <p role="status" className="rounded border border-amber-200 bg-amber-50 p-4 text-sm">{refreshError}</p>}
+      <div hidden={view !== "overview"}><SourceOverview sources={sources} save={save} busy={pending} /></div>
+      <div hidden={view !== "import"}>{opened.import && <SourceImportForm sources={sources} reload={reload} onAddSource={() => choose("add")} onBusyChange={setPending} />}</div>
+      <div hidden={view !== "add"}>{opened.add && rightsReady && <SourceRegistrationForm rights={rights} save={save} onRecordLicence={() => choose("licences")} onComplete={() => choose("overview")} />}</div>
+      {needsRecords && recordsLoading && <p role="status">Loading {view === "documents" ? "document records" : "licences and permissions"}…</p>}
+      {needsRecords && recordsError && <div role="alert" className="rounded border border-amber-200 bg-amber-50 p-4"><p>{recordsError}</p><button type="button" className="mt-2 underline" onClick={() => setRevision(revision + 1)}>Try again</button></div>}
+      <div hidden={view !== "licences"}>
+        {opened.licences && rightsReady && <section className="space-y-5" aria-labelledby="source-licences-title">
+          <div><h2 id="source-licences-title" className="font-serif text-2xl">Licences and permissions</h2><p className="mt-2 max-w-3xl text-sm text-ink/75">The permissions already recorded for your sources. Add a record only when using material covered by a new licence or set of terms.</p></div>
+          {!rights.length && <p className="rounded border border-dashed border-ink/25 p-5">No permissions have been recorded yet. Add the relevant licence or reuse terms below before registering a source.</p>}
+          {rights.map(right => <details key={String(right.id)} className="rounded border border-ink/15 bg-white/60 p-5">
+            <summary className="cursor-pointer"><span className="font-medium text-green">{String(right.holder)}</span><span className="mt-1 block text-sm text-ink/75">{String(right.material)}</span></summary>
+            <dl className="mt-5 grid gap-4 text-sm sm:grid-cols-2">
+              <div className="sm:col-span-2"><dt className="font-medium">Permitted use</dt><dd className="mt-1 text-ink/75">{String(right.purpose)}</dd></div>
+              <div className="sm:col-span-2"><dt className="font-medium">Agreement or terms</dt><dd className="mt-1 break-words text-ink/75">{String(right.agreement_ref)}</dd></div>
+              <div><dt className="font-medium">Effective from</dt><dd>{date(right.effective_at)}</dd></div><div><dt className="font-medium">Expires</dt><dd>{date(right.expires_at)}</dd></div>
+            </dl>
+          </details>)}
+          <details className="rounded border border-ink/20 p-5">
+            <summary className="cursor-pointer font-medium">Add a licence or permission</summary>
+            <div className="mt-5"><ActionForm title="Record permission to use a source" button="Save permission" fields={[
+              field("holder", "Licence holder", "text", true, "Quantum Commercial Solutions Limited"),
+              field("material", "What material does it cover?"),
+              field("purpose", "What use is permitted?", "textarea"),
+              field("agreementRef", "Agreement name or terms reference"),
+              { ...field("agreementText", "Agreement or terms text", "textarea"), hint: "Paste the relevant text so this record can be checked against the agreement later." },
+              field("effectiveAt", "Effective from", "datetime-local"),
+              field("expiresAt", "Expiry, if applicable", "datetime-local", false),
+              field("transferConditions", "Conditions on sharing or transfer", "textarea", false),
+              field("retentionInstructions", "How long may the material be kept?", "textarea", false),
+              field("withdrawalInstructions", "What must happen if material is withdrawn?", "textarea", false),
+              field("useAssessment", "How the intended research fits this permission", "textarea"),
+            ]} submit={values => save("rights", { ...values, effectiveAt: dateTime(values, "effectiveAt"), expiresAt: dateTime(values, "expiresAt") })} /></div>
+          </details>
+        </section>}
+      </div>
+        {view === "documents" && !recordsLoading && !recordsError && <section aria-labelledby="source-documents-title" className="space-y-5">
+          <div><h2 id="source-documents-title" className="font-serif text-2xl">Document checks</h2><p className="mt-2 max-w-3xl text-sm text-ink/75">Review documents that are unavailable. Authorising a new check does not restore withdrawn text; the publisher must provide a fresh version first.</p></div>
+          <p className="text-sm text-ink/70">Showing up to 200 recently updated document records. This is not a count of the full research collection.</p>
+          <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={showAllDocuments} onChange={event => setShowAllDocuments(event.target.checked)} />Include available documents</label>
+          {!documents.some(document => showAllDocuments || document.status !== "available") && <p className="rounded border border-green/20 bg-white/60 p-5">No unavailable documents in the records shown.</p>}
+          {documents.filter(document => showAllDocuments || document.status !== "available").map(document => <article key={String(document.id)} className="space-y-3 rounded border border-ink/15 bg-white/60 p-5">
+            <p className="font-medium">{String(document.source)}</p>
+            <p className="break-all text-sm text-ink/75">{String(document.canonical_url || document.provider_id)}</p>
+            <p className="text-sm">{String(document.status).replaceAll("_", " ")}{document.withdrawal_reason ? `: ${String(document.withdrawal_reason)}` : ""}</p>
+            {document.status !== "available" && <details><summary className="cursor-pointer text-sm font-medium underline">Request a fresh publisher check</summary><div className="mt-4"><ActionForm title="Reason for a new check" button="Authorise fresh retrieval" fields={[{ ...field("reason", "Evidence and reason for checking again", "textarea"), hint: "Explain what has changed and give supporting evidence (at least 20 characters)." }]} submit={values => save(`documents/${document.id}/reinstate`, { reason: value(values, "reason") })} /></div></details>}
+          </article>)}
+        </section>}
+    </div>
   );
 }

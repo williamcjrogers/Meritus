@@ -64,6 +64,13 @@
       "when": 1789228800005,
       "tag": "0008_qcs_research_watchlists",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1789228800006,
+      "tag": "0009_qcs_research_quick",
+      "breakpoints": true
     }
   ]
 }

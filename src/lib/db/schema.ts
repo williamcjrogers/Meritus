@@ -368,3 +368,5 @@ export * from "./research-intelligence-schema";
 export * from "./research-entities-schema";
 
 export * from "./research-watchlist-schema";
+
+export * from "./research-quick-schema";

@@ -24,6 +24,16 @@ Acquisition details such as snapshot hashes, row positions and scan order are re
 
 The same authenticated GET can be called by an external scheduler. Keep the token in that scheduler's secret store; do not paste it into source code, logs or shell history. Verify successful invocations and the returned health counts in the deployed scheduler before calling monitoring operational.
 
+## Automatic research answers
+
+The everyday desk searches current permitted evidence already collected. It does not perform a complete internet search or automatically verify a commercial lead. The opportunity feed uses published construction context and links each displayed field to its exact source passage.
+
+`/api/internal/research-answers` runs every minute with the same `CRON_SECRET`, independently of source ingestion. Each invocation leases one saved question, retains its cycle budget across crash recovery and uses an 80-second work budget inside the 120-second route limit. A generated answer reserves at most 30,000 tokens and £2 against existing source and run budgets. Empty searches do not call the model. Daily monitoring checks the current passage/version set and reuses the answer when that set is unchanged. At most 20 daily questions and 50 pending questions are allowed across the workspace.
+
+Question owners must still be directors when the worker runs. Confirmed loss of that role stops the monitor and releases its slot. Cancellation fences active work. Answers remain linked to existing conversation and withdrawal records, so unavailable evidence is hidden at read time. Pausing daily updates does not remove an already completed answer.
+
+For an application rollback, retain the additive `0009` schema and stored questions. Restore the previous application deployment and its scheduler configuration; do not drop research data. Investigate a failed migration, repeated worker failures or a failing director research flow before promoting a replacement deployment.
+
 ## Supervised worker
 
 Transfers exceeding the hosted acquisition budget use the same queue, fencing tokens and checkpoints:

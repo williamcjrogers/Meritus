@@ -33,6 +33,7 @@ import {
 import { EntitiesReview } from './EntitiesReview';
 import { ResearchDecisions } from './ResearchDecisions';
 import { SourceSettingsForms } from "./SourceSettingsForms";
+import { ResearchDesk } from "./ResearchDesk";
 const base = "/api/portal/research";
 const kinds = ["organisation", "project", "legal_issue", "sector", "referral"];
 const options = (items: string[]) =>
@@ -68,7 +69,7 @@ const refField = (evidence: EvidencePassage[]): Field => ({
   })),
 });
 const navigation = [
-  ["", "Investigations"],
+  ["", "Research desk"],
   ["signals", "Signals"],
   ["watchlists", "Watchlists"],
   ["case-law", "Case law"],
@@ -96,7 +97,11 @@ type Mode =
   | "report"
   | "evidence"
   | "authority";
-export function ResearchWorkspace({ mode, id }: { mode: Mode; id?: string }) {
+export function ResearchWorkspace({ mode, id, advanced = false }: { mode: Mode; id?: string; advanced?: boolean }) {
+  return mode === "investigations" && !advanced ? <ResearchDesk /> : <DetailedResearchWorkspace mode={mode} id={id} />;
+}
+
+function DetailedResearchWorkspace({ mode, id }: { mode: Mode; id?: string }) {
   const router = useRouter(),
     [data, setData] = useState<unknown>(null),
     [sources, setSources] = useState<SourceSettings[]>([]),
@@ -120,12 +125,12 @@ export function ResearchWorkspace({ mode, id }: { mode: Mode; id?: string }) {
     try {
       const [body, s, e, d] = await Promise.all([
         api(`${base}/${endpoint}`),
-        api<SourceSettings[]>(`${base}/sources`),
-        api<Row[]>(`${base}/entities`),
-        api<Row[]>(`${base}/directory`),
+        mode === "sources" ? Promise.resolve([]) : api<SourceSettings[]>(`${base}/sources`),
+        mode === "sources" ? Promise.resolve([]) : api<Row[]>(`${base}/entities`),
+        mode === "sources" ? Promise.resolve([]) : api<Row[]>(`${base}/directory`),
       ]);
       setData(body);
-      setSources(s);
+      setSources(mode === "sources" ? body as SourceSettings[] : s);
       setEntities(e);
       setDirectors(d);
       setError("");
@@ -134,7 +139,7 @@ export function ResearchWorkspace({ mode, id }: { mode: Mode; id?: string }) {
     } finally {
       setBusy(false);
     }
-  }, [endpoint]);
+  }, [endpoint, mode]);
   useEffect(() => {
     setRequestId(crypto.randomUUID());
     void reload();
@@ -173,6 +178,8 @@ export function ResearchWorkspace({ mode, id }: { mode: Mode; id?: string }) {
                 ? "Research report"
                 : mode === "evidence"
                   ? "Source evidence"
+                  : mode === "sources"
+                    ? "Research sources"
                   : mode === "case-law"
                     ? "Case law"
                     : mode.charAt(0).toUpperCase() + mode.slice(1)}
@@ -182,27 +189,36 @@ export function ResearchWorkspace({ mode, id }: { mode: Mode; id?: string }) {
             onClick={() => void reload()}
             disabled={busy}
           >
-            {busy ? "Refreshing…" : "Refresh"}
+            {busy ? "Refreshing…" : mode === "sources" ? "Refresh status" : "Refresh"}
           </button>
         </div>
         <p className="max-w-3xl text-ink/65">
-          Trace public and licensed evidence, review proposed findings and
-          record commercial decisions. Coverage and director review remain
-          visible throughout.
+          {mode === "sources"
+            ? "See where your research comes from, what is available and what needs attention."
+            : "Trace public and licensed evidence, review proposed findings and record commercial decisions. Coverage and director review remain visible throughout."}
         </p>
         <nav
           aria-label="Research"
           className="flex flex-wrap gap-x-5 gap-y-3 border-b border-ink/15 py-3"
         >
-          {navigation.map(([path, text]) => (
+          {navigation.filter(([path]) => ["", "signals", "watchlists", "case-law", "reports", "sources"].includes(path)).map(([path, text]) => (
             <Link
               key={path}
               href={"/portal/research" + (path ? "/" + path : "")}
-              className="text-sm underline-offset-4 hover:underline"
+              aria-current={(path || "investigations") === mode ? "page" : undefined}
+              className={`text-sm underline-offset-8 hover:underline ${(path || "investigations") === mode ? "font-semibold text-green underline decoration-2" : ""}`}
             >
               {text}
             </Link>
           ))}
+          <details className="relative">
+            <summary className="cursor-pointer text-sm">More tools</summary>
+            <div className="absolute right-0 z-20 mt-3 min-w-48 rounded border border-ink/20 bg-cream p-2 shadow-lg">
+              {navigation.filter(([path]) => !["", "signals", "watchlists", "case-law", "reports", "sources"].includes(path)).map(([path, text]) => (
+                <Link key={path} href={"/portal/research/" + path} aria-current={path === mode ? "page" : undefined} className={`block rounded px-3 py-2 text-sm hover:bg-green/5 ${path === mode ? "font-semibold text-green" : ""}`}>{text}</Link>
+              ))}
+            </div>
+          </details>
         </nav>
       </header>
       {error && (
@@ -213,7 +229,7 @@ export function ResearchWorkspace({ mode, id }: { mode: Mode; id?: string }) {
           {error}
         </p>
       )}
-      {!data && !error && <p role="status">Loading research…</p>}
+      {!data && !error && <p role="status">{mode === "sources" ? "Loading sources…" : "Loading research…"}</p>}
       {mode === "investigations" && (
         <>
           <ActionForm
@@ -459,7 +475,7 @@ export function ResearchWorkspace({ mode, id }: { mode: Mode; id?: string }) {
           ))}
         </>
       )}
-      {mode === "sources" && (
+      {mode === "sources" && data !== null && (
         <SourceSettingsForms sources={sources} reload={reload} />
       )}
       {mode === "case-law" && <CaseLawSearch initial={rows} />}

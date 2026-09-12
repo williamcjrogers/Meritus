@@ -8,7 +8,7 @@ it('retains one investigation request ID across a network failure and navigates 
  const posted:Record<string,unknown>[]=[];
  const source={id:'00000000-0000-4000-8000-000000000001',label:'Find Case Law',provider:'find-case-law',status:'ready'};
  vi.stubGlobal('fetch',vi.fn(async(path:string,init?:RequestInit)=>{if(init?.method==='POST'){posted.push(JSON.parse(String(init.body)));if(posted.length===1)throw new Error('Network interrupted');return Response.json({investigationId:'00000000-0000-4000-8000-000000000009'});}return Response.json(path.endsWith('/sources')?[source]:[]);}));
- render(<ResearchWorkspace mode="investigations"/>);
+ render(<ResearchWorkspace mode="investigations" advanced/>);
  await screen.findByRole('checkbox',{name:'Find Case Law (ready)'});
  fireEvent.change(screen.getByLabelText('Research question'),{target:{value:'Which authorities address this issue?'}});
  fireEvent.change(screen.getByLabelText('Public subject'),{target:{value:'Construction payment disputes'}});
