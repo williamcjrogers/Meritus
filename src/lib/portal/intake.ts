@@ -170,8 +170,8 @@ export function sanitiseSubject(firm: string): string {
     .trim();
 }
 
-/** Throttle keys never hold an address: "email:<sha256>" or "ip:<sha256>" of the lower-cased, trimmed value. */
-export function hashKey(prefix: "email" | "ip", value: string): string {
+/** Throttle keys never hold an address: "<prefix>:<sha256>" of the lower-cased, trimmed value. */
+export function hashKey(prefix: "email" | "ip" | "access-email" | "access-ip", value: string): string {
   const digest = createHash("sha256").update(value.trim().toLowerCase()).digest("hex");
   return `${prefix}:${digest}`;
 }
