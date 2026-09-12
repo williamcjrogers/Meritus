@@ -65,7 +65,7 @@ describe("recorded commitments", () => {
     ).toBe("Reopen the action before changing it");
   });
 
-  it("allows a pure repeated completion and an explicit reopen", () => {
+  it("allows a pure repeated completion and a pure completed-action reopen", () => {
     const current = actionFixture({
       state: "completed",
       ownerId: "director-1",
@@ -80,6 +80,68 @@ describe("recorded commitments", () => {
     });
     expect(actionIssue(unchanged, current)).toBeNull();
     expect(actionIssue({ ...unchanged, state: "todo" }, current)).toBeNull();
+  });
+
+  it.each([
+    ["title", { title: "Changed title" }],
+    ["description", { description: "Changed description" }],
+    ["owner", { ownerId: "director-2" }],
+    ["due date", { dueDate: "2026-09-13", changeReason: "Rescheduled" }],
+    ["state reason", { stateReason: "Changed reason" }],
+  ])("rejects a completed-action reopen combined with a %s edit", (_label, edit) => {
+    const current = actionFixture({
+      state: "completed",
+      ownerId: "director-1",
+      dueDate: "2026-09-12",
+      completedAt: "2026-09-12T10:00:00.000Z",
+      completedBy: "director-1",
+    });
+    expect(
+      actionIssue(
+        draftFixture({
+          state: "todo",
+          ownerId: "director-1",
+          dueDate: "2026-09-12",
+          ...edit,
+        }),
+        current,
+      ),
+    ).toBe("Reopen the action before changing it");
+  });
+
+  it("allows a pure cancelled-action reopen which clears its closed-state reason", () => {
+    const current = actionFixture({
+      state: "cancelled",
+      stateReason: "Superseded by client instruction",
+      ownerId: "director-1",
+      dueDate: "2026-09-12",
+    });
+    expect(
+      actionIssue(
+        draftFixture({ state: "todo", ownerId: "director-1", dueDate: "2026-09-12" }),
+        current,
+      ),
+    ).toBeNull();
+  });
+
+  it("rejects a cancelled-action reopen combined with an edit", () => {
+    const current = actionFixture({
+      state: "cancelled",
+      stateReason: "Superseded by client instruction",
+      ownerId: "director-1",
+      dueDate: "2026-09-12",
+    });
+    expect(
+      actionIssue(
+        draftFixture({
+          title: "Replacement commitment",
+          state: "todo",
+          ownerId: "director-1",
+          dueDate: "2026-09-12",
+        }),
+        current,
+      ),
+    ).toBe("Reopen the action before changing it");
   });
 
   it("ignores a completed nomination and selects the earliest open action", () => {

@@ -65,6 +65,19 @@ function isPureRepeatedCompletion(draft: ActionDraft, current: DeskAction): bool
   );
 }
 
+function isPureReopen(draft: ActionDraft, current: DeskAction): boolean {
+  const submittedReason = nullableText(draft.stateReason);
+  return (
+    !isOpenAction(current) &&
+    isOpenAction(draft) &&
+    draft.title.trim() === current.title &&
+    nullableText(draft.description) === current.description &&
+    draft.ownerId === current.ownerId &&
+    draft.dueDate === current.dueDate &&
+    (submittedReason === current.stateReason || submittedReason === null)
+  );
+}
+
 export function actionIssue(draft: ActionDraft, current: DeskAction | null): string | null {
   if (!ACTION_STATES.includes(draft.state)) return "Choose a valid status";
   if (!draft.title.trim()) return "Give the action a title";
@@ -78,8 +91,8 @@ export function actionIssue(draft: ActionDraft, current: DeskAction | null): str
   if (
     current &&
     !isOpenAction(current) &&
-    !isOpenAction(draft) &&
-    !isPureRepeatedCompletion(draft, current)
+    !isPureRepeatedCompletion(draft, current) &&
+    !isPureReopen(draft, current)
   ) {
     return "Reopen the action before changing it";
   }
