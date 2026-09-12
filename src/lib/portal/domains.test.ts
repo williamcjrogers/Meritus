@@ -36,6 +36,9 @@ describe("parseClientDomain", () => {
       expect(parseClientDomain(host)).toEqual({ ok: false, error: "public_mailbox" });
     }
   });
+  it("refuses a subdomain of a public mailbox provider", () => {
+    expect(parseClientDomain("mail.gmail.com")).toEqual({ ok: false, error: "public_mailbox" });
+  });
   it("refuses the firm's own domain and its subdomains", () => {
     expect(parseClientDomain("meritusvia.com")).toEqual({ ok: false, error: "firm_domain" });
     expect(parseClientDomain("mail.meritusvia.com")).toEqual({ ok: false, error: "firm_domain" });

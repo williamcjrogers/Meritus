@@ -51,7 +51,10 @@ export function normaliseDomain(input: string): string {
 }
 
 export function isPublicMailboxDomain(domain: string): boolean {
-  return (PUBLIC_MAILBOX_DOMAINS as readonly string[]).includes(normaliseDomain(domain));
+  const normalised = normaliseDomain(domain);
+  return (PUBLIC_MAILBOX_DOMAINS as readonly string[]).some(
+    (provider) => normalised === provider || normalised.endsWith(`.${provider}`)
+  );
 }
 
 /** meritusvia.com and its subdomains belong to the directors and can never be a client domain. */
