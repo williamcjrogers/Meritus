@@ -1,0 +1,27 @@
+{
+  "profile": "product-admin",
+  "sourceRoots": ["web/src"],
+  "locale": "en-GB",
+  "canonicalMap": "UX-CONTRACT.md",
+  "requiredCapabilities": ["Select/Listbox", "Date", "Form", "Scrollbar", "Toast", "CRUD"],
+  "ownership": {
+    "Select/Listbox": "native",
+    "Date": "typed",
+    "Form": "shared",
+    "Scrollbar": "global-css",
+    "Toast": "shared",
+    "CRUD": "shared-route-api"
+  },
+  "requiredCommands": ["unit", "typecheck", "build", "e2e"],
+  "commands": {
+    "unit": "corepack pnpm --dir web test",
+    "typecheck": "corepack pnpm --dir web typecheck",
+    "build": "corepack pnpm --dir web build",
+    "e2e": "corepack pnpm --dir web test:e2e"
+  },
+  "evidence": {
+    "crudFullFlow": "web/src/test/App.test.tsx",
+    "failurePaths": "web/src/test/App.test.tsx",
+    "browserFlow": "web/e2e/analyst-desk.spec.ts"
+  }
+}

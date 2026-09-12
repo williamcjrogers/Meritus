@@ -14,6 +14,7 @@ out/
 .DS_Store
 *.pem
 *.pdf
+!services/analyst/tests/fixtures/government/*.pdf
 *.docx
 
 # debug

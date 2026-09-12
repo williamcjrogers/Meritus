@@ -28,6 +28,15 @@ beforeEach(() => {
 });
 
 describe("PortalNavigation", () => {
+  it("offers Intelligence in the Work group and selects its nested pages", () => {
+    pathnameMock.mockReturnValue("/portal/intelligence/sources");
+    render(<PortalNavigation />);
+    const intelligence = screen.getByRole("link", { name: "Intelligence" });
+    expect(intelligence).toHaveAttribute("href", "/portal/intelligence");
+    expect(intelligence).toHaveAttribute("aria-current", "page");
+    expect(intelligence.closest(".workspace-nav-group")).toHaveTextContent("Work");
+  });
+
   it("selects only Home at the portal root", () => {
     render(<PortalNavigation />);
     expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");

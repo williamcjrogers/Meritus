@@ -17,6 +17,15 @@ Copy `.env.example` to `.env.local` and fill in what you need. Without Clerk, da
 
 ## Pursuit desk
 
+### Intelligence
+
+`/portal/intelligence` contains the analyst desk entrance. Its source, tests and Docker
+release are in `services/analyst`. The workspace gateway checks the current director
+role on every operation and signs requests to a separately hosted persistent engine.
+See [Intelligence deployment and data migration](docs/analyst-directors-operations.md).
+Without that service connection, the page reports that it has not been connected;
+the local evidence database is not published by a Git push.
+
 The desk is the directors' private area: enquiries from the public form land in an inbox, pursuits move across a board (Enquiry, Scoping, Proposal, Instructed, with Declined and Dormant on the side), and each pursuit has a dossier with a research brief, programme intelligence, and a questions drawer. Design: `docs/superpowers/specs/2026-09-09-pursuit-desk-design.md`. Plan: `docs/superpowers/plans/2026-09-09-pursuit-desk.md`.
 
 ### Programme intelligence

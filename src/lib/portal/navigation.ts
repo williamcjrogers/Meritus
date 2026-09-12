@@ -5,6 +5,7 @@ export const PORTAL_NAV = [
   { href: "/portal/pursuits", label: "Pursuits", exact: false, group: "Commercial" },
   { href: "/portal/prospects", label: "Prospects", exact: false, group: "Commercial" },
   { href: "/portal/research", label: "Research", exact: false, group: "Work" },
+  { href: "/portal/intelligence", label: "Intelligence", exact: false, group: "Work" },
   { href: "/portal/programmes", label: "Programmes", exact: false, group: "Resources" },
   { href: "/portal/library", label: "Library", exact: false, group: "Resources" },
   { href: "/portal/clients", label: "Client documents", exact: false, group: "Resources" },

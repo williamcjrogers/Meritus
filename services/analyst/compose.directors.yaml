@@ -1,0 +1,26 @@
+# Deploy with: docker compose -f compose.yaml -f compose.directors.yaml up --build -d
+# Place an HTTPS reverse proxy in front of 127.0.0.1:8098 on the selected service host.
+name: meritus-intelligence
+services:
+  app:
+    image: meritus-intelligence:0.1.0
+    build:
+      args:
+        VITE_MERITUS_BASE_PATH: /api/portal/intelligence/desk/
+        VITE_MERITUS_EMBEDDED: 'true'
+    ports: !override
+      - '127.0.0.1:8098:8088'
+    environment:
+      MERITUS_PORTAL_BRIDGE_REQUIRED: 'true'
+      MERITUS_PORTAL_BRIDGE_SECRET: ${MERITUS_PORTAL_BRIDGE_SECRET:?Configure a private bridge secret of at least 32 characters}
+      MERITUS_API_ALLOWED_HOSTS: ${MERITUS_API_ALLOWED_HOSTS:?Set the HTTPS service hostname and localhost/127.0.0.1 as a JSON list}
+      MERITUS_API_ALLOWED_ORIGINS: '[]'
+      MERITUS_API_SETUP_TRUSTED_PROXIES: '[]'
+  worker:
+    image: meritus-intelligence:0.1.0
+networks:
+  default:
+    ipam:
+      config: !override
+        - subnet: 172.30.89.0/24
+          gateway: 172.30.89.1

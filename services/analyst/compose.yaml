@@ -1,0 +1,84 @@
+name: meritus
+x-app-environment: &app-environment
+  MERITUS_DATABASE_URL: postgresql+psycopg://meritus:${POSTGRES_PASSWORD:?Run make configure first}@postgres:5432/meritus
+  MERITUS_OPENSEARCH_URL: http://opensearch:9200
+  MERITUS_DATA_DIR: /app/data
+  MERITUS_API_STATIC_DIR: /app/web/dist
+  MERITUS_API_SETUP_TRUSTED_PROXIES: '["172.30.88.1"]'
+  MERITUS_API_ALLOWED_HOSTS: '["localhost","127.0.0.1"]'
+  MERITUS_API_ALLOWED_ORIGINS: '["http://localhost:8088","http://127.0.0.1:8088"]'
+services:
+  postgres:
+    image: postgres:17.11@sha256:67f41722b7a8cbdb868a44a4995c846eddfdc2973bccb291ce937dce88ad5675
+    environment:
+      POSTGRES_USER: meritus
+      POSTGRES_DB: meritus
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Run make configure first}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U meritus -d meritus"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+    mem_limit: 2g
+  opensearch:
+    image: opensearchproject/opensearch:3.8.0@sha256:bcc1797519726ceb6d651d4a3e60b7c30da91793914a8dfe75fd441d4f641509
+    environment:
+      discovery.type: single-node
+      DISABLE_SECURITY_PLUGIN: 'true'
+      DISABLE_INSTALL_DEMO_CONFIG: 'true'
+      OPENSEARCH_JAVA_OPTS: '-Xms512m -Xmx512m'
+    volumes:
+      - search_data:/usr/share/opensearch/data
+    healthcheck:
+      test: ["CMD-SHELL", "curl --fail --silent http://localhost:9200/_cluster/health >/dev/null"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+    mem_limit: 2g
+  app:
+    build: .
+    image: meritus-local:0.1.0
+    env_file: .env
+    environment: *app-environment
+    ports:
+      - '127.0.0.1:8088:8088'
+    volumes:
+      - managed_data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      opensearch:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8088/api/health', timeout=4)"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+    restart: unless-stopped
+    mem_limit: 4g
+  worker:
+    image: meritus-local:0.1.0
+    command: ["meritus", "worker"]
+    env_file: .env
+    environment: *app-environment
+    volumes:
+      - managed_data:/app/data
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+    mem_limit: 4g
+volumes:
+  postgres_data:
+  search_data:
+  managed_data:
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: 172.30.88.0/24
+          gateway: 172.30.88.1

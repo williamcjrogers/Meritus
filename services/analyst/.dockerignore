@@ -1,0 +1,14 @@
+.git
+.worktrees
+.superpowers
+.venv
+.env
+.env.*
+data
+**/__pycache__
+**/node_modules
+**/dist
+**/.pytest_cache
+**/.ruff_cache
+**/test-results
+**/playwright-report

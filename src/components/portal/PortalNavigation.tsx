@@ -12,6 +12,7 @@ const iconPaths: Record<string, string> = {
   Pursuits: "M3 7h18v13H3V7Zm5 0V4h8v3M3 12h18M10 12v3h4v-3",
   Prospects: "M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M13 4a4 4 0 0 1 0 8M22 21v-2a4 4 0 0 0-3-3.87M13 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z",
   Research: "m21 21-5-5M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z",
+  Intelligence: "M3 12h4l3-8 4 16 3-8h4",
   Programmes: "M4 4v16h17M8 8h6M11 12h8M15 16h6",
   Library: "M4 3h5v18H4V3Zm5 0h5v18H9V3Zm8 0 5 1-3 17-5-1 3-17Z",
   "Client documents": "M14 2H4v20h16V8l-6-6ZM14 2v6h6M8 13h8M8 17h5",

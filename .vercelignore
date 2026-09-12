@@ -1,0 +1,4 @@
+# The persistent Python service has its own Docker release. It is not a Next function.
+services/analyst/
+.worktrees/
+.git/

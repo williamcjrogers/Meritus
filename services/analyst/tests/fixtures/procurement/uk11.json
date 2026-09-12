@@ -1,0 +1,79 @@
+{
+  "id": "033574-2025",
+  "tag": [
+    "contractTermination"
+  ],
+  "date": "2025-06-19T10:16:28+01:00",
+  "initiationType": "tender",
+  "ocid": "ocds-h6vhtk-04fd5c",
+  "parties": [
+    {
+      "name": "Nuclear Decommissioning Authority",
+      "id": "GB-PPON-PVDH-2346-PXDL",
+      "identifier": {
+        "scheme": "GB-PPON",
+        "id": "PVDH-2346-PXDL"
+      },
+      "address": {
+        "streetAddress": "Herdus House,  Westlakes Science & Technology Park",
+        "locality": "Moor Row",
+        "postalCode": "CA24 3HU",
+        "country": "GB",
+        "countryName": "United Kingdom",
+        "region": "UKD11"
+      },
+      "roles": [
+        "buyer"
+      ],
+      "details": {
+        "classifications": [
+          {
+            "scheme": "UK_CA_TYPE",
+            "id": "publicAuthorityCentralGovernment",
+            "description": "Public authority - central government"
+          }
+        ]
+      }
+    }
+  ],
+  "tender": {
+    "id": "Actuarial advice in connection with Non-NDA Liabilities Assurance (NLA)",
+    "legalBasis": {
+      "id": "2023/54",
+      "scheme": "UKPGA",
+      "uri": "https://www.legislation.gov.uk/ukpga/2023/54/contents"
+    },
+    "title": "C25212"
+  },
+  "contracts": [
+    {
+      "id": "1",
+      "awardID": "1",
+      "status": "terminated",
+      "statusDetails": "Duration completed.",
+      "terminationRationaleClassification": {
+        "id": "contractCompleted"
+      },
+      "implementation": {
+        "endDate": "2025-06-11T00:00:00+01:00",
+        "finalValue": {
+          "amountGross": 14415.6,
+          "amount": 12013.0,
+          "currency": "GBP"
+        }
+      },
+      "documents": [
+        {
+          "id": "033574-2025",
+          "documentType": "contractTerminationNotice",
+          "noticeType": "UK11",
+          "description": "Contract termination notice on Find a Tender",
+          "url": "https://www.find-tender.service.gov.uk/Notice/033574-2025",
+          "datePublished": "2025-06-19T10:16:28+01:00",
+          "format": "text/html"
+        }
+      ]
+    }
+  ],
+  "language": "en"
+}

@@ -1,0 +1,124 @@
+{
+  "buyerID": [],
+  "id": "059886-2026",
+  "tag": [
+    "implementation"
+  ],
+  "date": "2026-06-25T14:18:15+01:00",
+  "initiationType": "tender",
+  "ocid": "ocds-h6vhtk-05d4a5",
+  "parties": [
+    {
+      "name": "Ministry of Defence",
+      "id": "GB-PPON-PHVX-4316-ZVGZ",
+      "identifier": {
+        "scheme": "GB-PPON",
+        "id": "PHVX-4316-ZVGZ"
+      },
+      "address": {
+        "streetAddress": "Monxton Road",
+        "locality": "Andover",
+        "postalCode": "SP11 8HJ",
+        "country": "GB",
+        "countryName": "United Kingdom",
+        "region": "UKJ36"
+      },
+      "roles": [
+        "buyer"
+      ],
+      "details": {
+        "url": "https://www.gov.uk/government/organisations/ministry-of-defence",
+        "classifications": [
+          {
+            "scheme": "UK_CA_TYPE",
+            "id": "publicAuthorityCentralGovernment",
+            "description": "Public authority - central government"
+          }
+        ]
+      }
+    }
+  ],
+  "tender": {
+    "id": "714896451A",
+    "legalBasis": {
+      "id": "2023/54",
+      "scheme": "UKPGA",
+      "uri": "https://www.legislation.gov.uk/ukpga/2023/54/contents"
+    },
+    "title": "UK4 - Tender Notice"
+  },
+  "contracts": [
+    {
+      "id": "1",
+      "awardID": "1",
+      "implementation": {
+        "metrics": [
+          {
+            "id": "1",
+            "title": "On-Time Delivery of Business-Critical Items",
+            "observations": [
+              {
+                "period": {
+                  "startDate": "2026-01-01T00:00:00+00:00",
+                  "endDate": "2026-03-31T23:59:59+01:00"
+                },
+                "measureClassification": {
+                  "id": "met",
+                  "description": "Good - performance is meeting or exceeding the KPI"
+                },
+                "id": "059886-2026"
+              }
+            ]
+          },
+          {
+            "id": "2",
+            "title": "Service Delivery",
+            "observations": [
+              {
+                "period": {
+                  "startDate": "2026-01-01T00:00:00+00:00",
+                  "endDate": "2026-03-31T23:59:59+01:00"
+                },
+                "measureClassification": {
+                  "id": "met",
+                  "description": "Good - performance is meeting or exceeding the KPI"
+                },
+                "id": "059886-2026"
+              }
+            ]
+          },
+          {
+            "id": "3",
+            "title": "N/A",
+            "observations": [
+              {
+                "period": {
+                  "startDate": "2026-01-01T00:00:00+00:00",
+                  "endDate": "2026-03-31T23:59:59+01:00"
+                },
+                "measureClassification": {
+                  "id": "other",
+                  "description": "Other - performance cannot be rated good, approaching target, requires improvement or inadequate"
+                },
+                "notes": "Only 2 KPIs have been agreed for this contract.",
+                "id": "059886-2026"
+              }
+            ]
+          }
+        ]
+      },
+      "documents": [
+        {
+          "id": "059886-2026",
+          "documentType": "implementationNotice",
+          "noticeType": "UK9",
+          "description": "Contract performance notice on Find a Tender",
+          "url": "https://www.find-tender.service.gov.uk/Notice/059886-2026",
+          "datePublished": "2026-06-25T14:18:15+01:00",
+          "format": "text/html"
+        }
+      ]
+    }
+  ],
+  "language": "en"
+}
