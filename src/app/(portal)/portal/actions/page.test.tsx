@@ -28,3 +28,17 @@ it.each(["not-a-uuid", viewFixture().id])("shows the same unavailable message fo
   expect(screen.getByRole("alert")).toHaveTextContent("Could not open this action. It may be unavailable or you may not have access.");
   if (edit === "not-a-uuid") expect(mocks.direct).not.toHaveBeenCalled();
 });
+
+vi.mock("next/headers", () => ({ headers: async () => new Headers({ "x-meritus-page-path": "/portal/actions?scope=mine&edit=selected" }) }));
+vi.mock("next/navigation", () => ({ redirect: (url: string) => { throw new Error(`redirect:${url}`); } }));
+import { ResearchAccessError } from "@/lib/research/roles";
+
+it.each([
+  ["list", 503], ["list", 401], ["list", 403],
+  ["direct", 503], ["direct", 401], ["direct", 403],
+] as const)("does not swallow the %s reader's typed %s access error after entry", async (reader, status) => {
+  mocks[reader].mockRejectedValueOnce(new ResearchAccessError(status === 503 ? "actor_unavailable" : status === 401 ? "unauthenticated" : "forbidden", status));
+  const destination = status === 503 ? "/access/unavailable?returnTo=%2Fportal%2Factions%3Fscope%3Dmine%26edit%3Dselected" : status === 401 ? "/sign-in?returnTo=%2Fportal%2Factions%3Fscope%3Dmine%26edit%3Dselected" : "/access/denied";
+  await expect(ActionsPage({ searchParams: Promise.resolve({ edit: viewFixture().id }) })).rejects.toThrow(`redirect:${destination}`);
+  expect(mocks.authorise).toHaveBeenCalledTimes(1);
+});

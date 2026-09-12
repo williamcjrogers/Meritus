@@ -2,6 +2,7 @@ export const metadata = { title: "Pursuits" };
 import { requireWorkspacePage } from "@/lib/portal/auth";
 import Link from "next/link";
 import { cookies } from "next/headers";
+import { withPageAccessRecovery } from "@/lib/portal/page-access";
 import { readLiveLeads } from "@/lib/portal/live-leads";
 import { Desk } from "@/components/portal/Desk";
 import { PageHeader } from "@/components/ui/PageHeader";
@@ -88,7 +89,7 @@ export default async function LiveLeadsPage({ searchParams }: { searchParams: Pr
     );
   }
 
-  const [extras, leads] = await Promise.all([deskExtras(pursuits), readLiveLeads(pursuits)]);
+  const [extras, leads] = await Promise.all([deskExtras(pursuits), withPageAccessRecovery(() => readLiveLeads(pursuits), "/portal/pursuits")]);
   const open = counts.enquiry + counts.scoping + counts.proposal;
 
   return (

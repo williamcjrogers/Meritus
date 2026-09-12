@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { HomeDashboard } from "@/components/portal/dashboard/HomeDashboard";
 import { SetupNotice } from "@/components/portal/SetupNotice";
+import { withPageAccessRecovery } from "@/lib/portal/page-access";
 import { readDashboard } from "@/lib/dashboard/read";
 import { isDatabaseConfigured, missingRequiredSetup } from "@/lib/env";
 import { requireWorkspacePage } from "@/lib/portal/auth";
@@ -21,5 +22,5 @@ export default async function HomePage({ searchParams }: {
   const jar = await cookies();
   const scope = params.scope === "mine" || params.scope === "team"
     ? params.scope : jar.get("home_scope")?.value === "mine" ? "mine" : "team";
-  return <HomeDashboard view={await readDashboard(scope, new Date())} />;
+  return <HomeDashboard view={await withPageAccessRecovery(() => readDashboard(scope, new Date()))} />;
 }

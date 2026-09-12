@@ -1,4 +1,5 @@
 export const metadata = { title: "Pursuit details" };
+import { withPageAccessRecovery } from "@/lib/portal/page-access";
 import { readRelatedActions } from "@/lib/db/desk-actions";
 import { chooseNextAction } from "@/lib/actions/model";
 import { requireWorkspacePage } from "@/lib/portal/auth";
@@ -63,11 +64,11 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
     listQuestions(id),
     latestStageChanges([id]),
     findRelatedPursuits(pursuit.contactEmail, normaliseFirm(pursuit.firm), id),
-    pursuitResearchLink(id),
+    withPageAccessRecovery(() => pursuitResearchLink(id), `/portal/pursuits/${encodeURIComponent(id)}`),
   ]);
 
   const directors = directory.directors;
-  const actions = await readRelatedActions({ kind: "pursuit", id });
+  const actions = await withPageAccessRecovery(() => readRelatedActions({ kind: "pursuit", id }), `/portal/pursuits/${encodeURIComponent(id)}`);
   const selected = chooseNextAction(actions, actions.find(action => action.isPrimary)?.id ?? null);
   const nextAction = actions.find(action => action.id === selected?.id) ?? null;
 

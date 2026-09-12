@@ -57,3 +57,20 @@ Verification after these fixes:
 - `git diff --check`: passed.
 
 The live provider configuration and authenticated journey limitations above remain unchanged.
+
+## Nested reader recovery correction
+
+A subsequent independent review found typed access errors raised inside protected readers after the page entry guard had succeeded. The entry guard could not translate errors it did not receive, and an asynchronously rendered child required its own recovery boundary.
+
+Added `src/lib/portal/page-access.ts`, a page-only translator for `ResearchAccessError` 401, 403 and 503. It retains the validated actual request path/query for sign-in and temporary verification failure; confirmed denial opens the deliberate account-access page. Unrelated errors retain their existing handling. Shared backend readers, APIs and workers contain no routing changes and retain their typed errors.
+
+Applied the boundary to Home's `readDashboard`, live leads' `readLiveLeads`, pursuit detail's `pursuitResearchLink` and `readRelatedActions`, investigation `getInvestigation`, and the independently rendered `RelatedActionPanel`. The related panel has a page-aware entry guard and translates later access errors before its ordinary load-error fallback. Actions register/direct-editor catches now also translate typed access errors instead of reducing them to a generic load failure.
+
+Verification:
+
+- Actual Home page plus actual `readDashboard` tests prove the page guard succeeds, then a subsequent provider failure, session expiry or role change produces the correct 503/401/403 page recovery. A direct backend-reader test confirms the typed 503 still escapes for non-page callers.
+- Async related-panel tests exercise later 503/401/403 after successful entry. Actions tests exercise both register and direct-editor readers for the same three typed errors. Existing ordinary database-failure fallback tests still pass.
+- `corepack pnpm exec vitest run src/lib/portal src/lib/research/roles.test.ts src/lib/dashboard/read.test.ts src/lib/access src/components/access src/components/client src/components/portal/actions/RelatedActionPanel.test.tsx src/app/access src/app/client src/app/account src/app/api/access src/app/api/client 'src/app/(portal)'`: 36 files, 406 tests passed. Log: `nested-access-tests.log`.
+- `corepack pnpm exec tsc --noEmit`: passed. Log: `nested-access-typecheck.log`.
+- Scoped ESLint across the new translator, changed pages and related-panel implementation/tests: passed without warnings. Log: `nested-access-lint.log`.
+- No shared backend function, API route, worker or permission policy was changed for this correction.
