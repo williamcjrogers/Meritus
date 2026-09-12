@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { SearchField } from "@/components/ui/Field";
 import type { Prospect } from "@/lib/db/schema";
 import {
   conflictTierLabel,
@@ -12,14 +13,14 @@ import {
 function conflictClass(tier: Prospect["conflictTier"]): string {
   switch (tier) {
     case "hard_conflict":
-      return "text-oxblood";
+      return "text-danger";
     case "latent_conflict":
-      return "text-brass";
+      return "text-primary";
     case "competitor":
     case "related_party":
     case "excluded":
     case "other":
-      return "text-ink/70";
+      return "text-muted";
     default: {
       const exhaustive: never = tier;
       return exhaustive;
@@ -50,20 +51,11 @@ export function ProspectsTable({ rows }: { rows: Prospect[] }) {
 
   return (
     <div className="space-y-4">
-      <label className="block max-w-md">
-        <span className="portal-eyebrow">Search this list</span>
-        <input
-          type="search"
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          placeholder="Organisation, type, or note"
-          className="mt-2 w-full border-0 border-b border-green/15 bg-transparent py-2 text-[14px] text-green placeholder:text-slate/40 focus:border-brass focus:outline-none"
-        />
-      </label>
+      <div className="max-w-md"><SearchField label="Search this list" value={query} onChange={event => setQuery(event.target.value)} onClear={() => setQuery("")} placeholder="Organisation, type, or note" /></div>
 
-      <div className="overflow-x-auto border border-green/10 bg-parchment">
+      <div className="overflow-x-auto border border-line bg-surface">
         <table className="w-full text-left text-[13px]">
-          <thead className="border-b border-green/10 font-mono text-[10px] uppercase tracking-[0.12em] text-ink/55">
+          <thead className="border-b border-line font-sans text-[13px]   text-muted">
             <tr>
               <th className="px-4 py-3 font-medium">Rank</th>
               <th className="px-4 py-3 font-medium">Organisation</th>
@@ -77,37 +69,37 @@ export function ProspectsTable({ rows }: { rows: Prospect[] }) {
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={7} className="px-4 py-8 text-ink/70">
+                <td colSpan={7} className="px-4 py-8 text-muted">
                   No matching prospects.
                 </td>
               </tr>
             ) : (
               filtered.map((row) => (
-                <tr key={row.id} className="border-t border-green/10 hover:bg-stone/40">
-                  <td className="px-4 py-3 font-mono text-[12px] text-ink/70">{row.rank ?? "—"}</td>
+                <tr key={row.id} className="border-t border-line hover:bg-mist/40">
+                  <td className="px-4 py-3 font-sans text-[13px] text-muted">{row.rank ?? "Not recorded"}</td>
                   <td className="px-4 py-3">
-                    <Link href={`/portal/prospects/${row.id}`} className="text-green hover:text-brass">
+                    <Link href={`/portal/prospects/${row.id}`} className="text-primary hover:text-primary">
                       {row.organisation}
                     </Link>
                   </td>
-                  <td className="max-w-[16rem] px-4 py-3 text-ink/70">
-                    <span className="line-clamp-2">{row.organisationType ?? "—"}</span>
+                  <td className="max-w-[16rem] px-4 py-3 text-muted">
+                    <span className="line-clamp-2">{row.organisationType ?? "Not recorded"}</span>
                   </td>
                   <td className={`px-4 py-3 ${conflictClass(row.conflictTier)}`}>
                     {conflictTierLabel(row.conflictTier)}
                   </td>
-                  <td className="px-4 py-3 font-mono text-[12px] text-green">
-                    {row.valueScore ?? "—"}
+                  <td className="px-4 py-3 font-sans text-[13px] text-primary">
+                    {row.valueScore ?? "Not recorded"}
                   </td>
-                  <td className="px-4 py-3 text-ink/70">{evidenceLabel(row.evidence)}</td>
-                  <td className="px-4 py-3 text-ink/70">{outreachLabel(row.outreachStatus)}</td>
+                  <td className="px-4 py-3 text-muted">{evidenceLabel(row.evidence)}</td>
+                  <td className="px-4 py-3 text-muted">{outreachLabel(row.outreachStatus)}</td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
       </div>
-      <p className="text-[12px] text-ink/70">
+      <p className="text-[13px] text-muted">
         {filtered.length} of {rows.length} shown.
       </p>
     </div>

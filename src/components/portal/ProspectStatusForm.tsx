@@ -18,12 +18,12 @@ export function ProspectStatusForm({ prospect }: { prospect: Prospect }) {
 
   return (
     <label className="block">
-      <span className="portal-eyebrow">Outreach</span>
+      <span className="app-context">Outreach</span>
       <select
         defaultValue={prospect.outreachStatus}
         onChange={(event) => onChange(event.target.value as ProspectOutreach)}
         disabled={pending}
-        className="mt-2 w-full border-0 border-b border-green/15 bg-transparent py-2 text-[14px] text-green focus:border-brass focus:outline-none disabled:opacity-50"
+        className="mt-2 w-full border-0 border-b border-line bg-transparent py-2 text-[15px] text-primary focus:border-primary focus:outline-none disabled:opacity-50"
       >
         {PROSPECT_OUTREACH_STATUSES.map((status) => (
           <option key={status} value={status}>
@@ -31,7 +31,7 @@ export function ProspectStatusForm({ prospect }: { prospect: Prospect }) {
           </option>
         ))}
       </select>
-      {error ? <p className="mt-2 text-[12px] text-oxblood">{error}</p> : null}
+      {error ? <p className="mt-2 text-[13px] text-danger">{error}</p> : null}
     </label>
   );
 }

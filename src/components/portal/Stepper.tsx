@@ -60,17 +60,17 @@ export function Stepper({
 
   return (
     <div>
-      <ol aria-label="Stage" onKeyDown={onKeyDown} className="flex items-center gap-2">
+      <ol aria-label="Stage" onKeyDown={onKeyDown} className="pursuit-stepper">
         {STEPPER_STAGES.map((stage, index) => {
           const label = stageLabel(stage);
           const isCurrent = stage === current;
           const reached = currentIndex >= 0 && index <= currentIndex;
           return (
-            <li key={stage} className={`flex items-center gap-2 ${index > 0 ? "flex-1" : ""}`}>
+            <li key={stage} className={`flex min-w-0 items-center gap-2 ${index > 0 ? "sm:flex-1" : ""}`}>
               {index > 0 && (
                 <span
                   aria-hidden="true"
-                  className={`h-px min-w-4 flex-1 ${reached ? "bg-brass/60" : "bg-green/15"}`}
+                  className={`hidden h-px min-w-4 flex-1 sm:inline-block ${reached ? "bg-primary/60" : "bg-primary/15"}`}
                 />
               )}
               <button
@@ -80,20 +80,20 @@ export function Stepper({
                 type="button"
                 aria-current={isCurrent ? "step" : undefined}
                 aria-label={isCurrent ? `${label}, current stage` : `Move to ${label}`}
-                aria-disabled={busy || undefined}
+                disabled={busy} aria-busy={busy || undefined}
                 onClick={() => void commit(stage)}
-                className={`group inline-flex items-center gap-2 py-1 font-mono text-[11px] tracking-[0.15em] uppercase transition-colors aria-disabled:opacity-50 ${
-                  isCurrent ? "text-green" : "text-ink/60 hover:text-green"
+                className={`group inline-flex min-h-11 items-center gap-2 py-1 font-sans text-[13px]   transition-colors aria-disabled:opacity-50 ${
+                  isCurrent ? "text-primary" : "text-muted hover:text-primary"
                 }`}
               >
                 <span
                   aria-hidden="true"
                   className={`inline-block h-2.5 w-2.5 rounded-full border ${
                     isCurrent
-                      ? "border-brass bg-brass"
+                      ? "border-primary bg-primary"
                       : reached
-                        ? "border-green bg-green"
-                        : "border-green/40 bg-transparent group-hover:border-brass"
+                        ? "border-primary bg-primary"
+                        : "border-primary/40 bg-transparent group-hover:border-primary"
                   }`}
                 />
                 {label}
@@ -104,7 +104,7 @@ export function Stepper({
       </ol>
       <p aria-live="polite" className="sr-only">{announcement}</p>
       {error && (
-        <p role="status" className="mt-2 text-[12px] text-oxblood">
+        <p role="status" className="mt-2 text-[13px] text-danger">
           {error}
         </p>
       )}

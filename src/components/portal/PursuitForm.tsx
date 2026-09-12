@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Field } from "@/components/ui/Field";
 import { CONTACT_FORM_OPTIONS } from "@/lib/constants";
 import type { ActionResult, CreateResult, PursuitFormInput } from "@/lib/portal/types";
 
@@ -34,15 +35,18 @@ export function PursuitForm({
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (pending) return;
     const form = new FormData(event.currentTarget);
     const firm = text(form, "firm");
     const disputeNature = text(form, "disputeNature");
     if (!firm) {
       setError("Give the firm a name");
+      (event.currentTarget.elements.namedItem("firm") as HTMLInputElement)?.focus();
       return;
     }
     if (!disputeNature) {
       setError("Choose the nature of the dispute");
+      (event.currentTarget.elements.namedItem("disputeNature") as HTMLSelectElement)?.focus();
       return;
     }
     const input: PursuitFormInput = {
@@ -64,15 +68,17 @@ export function PursuitForm({
     };
     setPending(true);
     setError(null);
-    const result = await onSubmit(input);
-    setPending(false);
-    if (!result.ok) setError(result.error);
+    try {
+      const result = await onSubmit(input);
+      if (!result.ok) setError(result.error);
+    } catch { setError("The pursuit could not be saved. Your details are still here; try again."); }
+    finally { setPending(false); }
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6" noValidate>
       <fieldset className="space-y-4">
-        <legend className="portal-eyebrow mb-2">Enquirer</legend>
+        <legend className="app-context mb-2">Enquirer</legend>
         <Field label="Firm" name="firm" defaultValue={initial.firm} required />
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Contact" name="contactName" defaultValue={initial.contactName} />
@@ -84,7 +90,7 @@ export function PursuitForm({
       </fieldset>
 
       <fieldset className="space-y-4">
-        <legend className="portal-eyebrow mb-2">Matter</legend>
+        <legend className="app-context mb-2">Matter</legend>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="Party we would advise" name="party" placeholder="If not the firm" defaultValue={initial.party} />
           <Field label="Party company number" name="partyCompanyNumber" defaultValue={initial.partyCompanyNumber} />
@@ -96,17 +102,17 @@ export function PursuitForm({
           <Select label="Forum" name="forum" options={CONTACT_FORM_OPTIONS.forum} defaultValue={initial.forum} />
         </div>
         <label className="block">
-          <span className="portal-label">Summary</span>
-          <textarea name="summary" rows={4} defaultValue={initial.summary} className="portal-field resize-y" placeholder="What the matter is about" />
+          <span className="app-label">Summary</span>
+          <textarea name="summary" rows={4} defaultValue={initial.summary} className="app-field resize-none" placeholder="What the matter is about" />
         </label>
       </fieldset>
 
       <fieldset className="space-y-4">
-        <legend className="portal-eyebrow mb-2">Source</legend>
+        <legend className="app-context mb-2">Source</legend>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <label className="block">
-            <span className="portal-label">Source</span>
-            <select name="source" defaultValue={initial.source ?? "referral"} className="portal-field">
+            <span className="app-label">Source</span>
+            <select name="source" defaultValue={initial.source ?? "referral"} className="app-field">
               {initial.source === "site_form" && <option value="site_form">Site form</option>}
               {SOURCES.map((source) => (
                 <option key={source.value} value={source.value}>
@@ -119,42 +125,16 @@ export function PursuitForm({
         </div>
       </fieldset>
 
-      {error && <p className="text-[12px] text-oxblood">{error}</p>}
-      <div className="flex items-center justify-end gap-3 border-t border-green/10 pt-5">
-        <button type="button" className="btn-quiet" onClick={onCancel} disabled={pending}>
+      {error && <p role="alert" className="text-[13px] text-danger">{error}</p>}
+      <div className="flex items-center justify-end gap-3 border-t border-line pt-5">
+        <button type="button" className="app-button app-button--ghost" onClick={onCancel} disabled={pending}>
           Cancel
         </button>
-        <button type="submit" className="btn-brass text-[12px]" disabled={pending}>
+        <button type="submit" className="app-button text-[13px]" disabled={pending}>
           {pending ? "Saving…" : mode === "create" ? "Create live lead" : "Save changes"}
         </button>
       </div>
     </form>
-  );
-}
-
-function Field({
-  label,
-  name,
-  type = "text",
-  defaultValue,
-  placeholder,
-  required,
-}: {
-  label: string;
-  name: string;
-  type?: string;
-  defaultValue?: string;
-  placeholder?: string;
-  required?: boolean;
-}) {
-  return (
-    <label className="block">
-      <span className="portal-label">
-        {label}
-        {required && <span className="text-brass"> *</span>}
-      </span>
-      <input name={name} type={type} defaultValue={defaultValue} placeholder={placeholder} required={required} className="portal-field" />
-    </label>
   );
 }
 
@@ -173,11 +153,11 @@ function Select({
 }) {
   return (
     <label className="block">
-      <span className="portal-label">
+      <span className="app-label">
         {label}
-        {required && <span className="text-brass"> *</span>}
+        {required && <span className="text-primary"> *</span>}
       </span>
-      <select name={name} defaultValue={defaultValue ?? ""} required={required} className="portal-field">
+      <select name={name} defaultValue={defaultValue ?? ""} required={required} className="app-field">
         <option value="">Select</option>
         {options.map((option) => (
           <option key={option} value={option}>

@@ -21,7 +21,7 @@ export function MoveToMenu({
   align = "right",
   label = "Move to",
   className = "",
-  buttonClassName = "btn-secondary",
+  buttonClassName = "app-button app-button--secondary",
 }: {
   current: PursuitStage;
   onMove: MoveHandler;
@@ -132,7 +132,7 @@ export function MoveToMenu({
         onClick={() => (open ? close() : setOpen(true))}
       >
         {label}
-        <span aria-hidden="true" className="text-[10px]">
+        <span aria-hidden="true" className="text-[13px]">
           ▾
         </span>
       </button>
@@ -142,7 +142,7 @@ export function MoveToMenu({
           role={pending ? "dialog" : "menu"}
           aria-label={pending ? `Move to ${stageLabel(pending)}` : label}
           onKeyDown={onMenuKeyDown}
-          className={`absolute z-30 mt-1 min-w-[220px] border border-green/15 bg-parchment p-1 shadow-[0_8px_24px_rgba(11,59,36,0.16)] ${
+          className={`absolute z-30 mt-1 min-w-[220px] border border-line bg-surface p-1 shadow-lg ${
             align === "right" ? "right-0" : "left-0"
           }`}
         >
@@ -158,56 +158,56 @@ export function MoveToMenu({
                 tabIndex={-1}
                 disabled={busy}
                 onClick={() => choose(stage)}
-                className="block w-full px-3 py-2 text-left text-[13px] text-green hover:bg-stone/60 focus:bg-stone/60 focus:outline-none disabled:opacity-40"
+                className="block w-full px-3 py-2 text-left text-[13px] text-primary hover:bg-mist/60 focus:bg-mist/60 focus:outline-none disabled:opacity-40"
               >
                 {stageLabel(stage)}
-                {requiresReason(stage) && <span className="ml-2 font-mono text-[9px] tracking-[0.15em] uppercase text-ink/60">reason</span>}
+                {requiresReason(stage) && <span className="ml-2 font-sans text-[13px]   text-muted">reason</span>}
               </button>
             ))
           ) : (
-            <form
+            <form noValidate
               className="space-y-3 p-2"
               onSubmit={(event) => {
                 event.preventDefault();
                 if (reasonOk) void commit(pending, reason.trim(), revisitDue);
               }}
             >
-              <p className="font-serif text-lg text-green">Move to {stageLabel(pending)}</p>
+              <p className="font-sans text-lg text-primary">Move to {stageLabel(pending)}</p>
               <label className="block">
-                <span className="portal-label">Reason</span>
+                <span className="app-label">Reason</span>
                 <input
                   autoFocus
                   value={reason}
                   onChange={(event) => setReason(event.target.value)}
-                  className="portal-field"
+                  className="app-field"
                   placeholder="At least three characters"
                   aria-label="Reason"
                 />
               </label>
               {pending === "dormant" && (
                 <label className="block">
-                  <span className="portal-label">Revisit on (optional)</span>
+                  <span className="app-label">Revisit on (optional)</span>
                   <input
                     type="date"
                     value={revisitDue}
                     onChange={(event) => setRevisitDue(event.target.value)}
-                    className="portal-field"
+                    className="app-field"
                     aria-label="Revisit date"
                   />
                 </label>
               )}
-              {error && <p className="text-[12px] text-oxblood">{error}</p>}
+              {error && <p className="text-[13px] text-danger">{error}</p>}
               <div className="flex justify-end gap-2">
-                <button type="button" className="btn-quiet" onClick={() => setPending(null)} disabled={busy}>
+                <button type="button" className="app-button app-button--ghost" onClick={() => setPending(null)} disabled={busy}>
                   Back
                 </button>
-                <button type="submit" className="btn-secondary" disabled={!reasonOk || busy}>
+                <button type="submit" className="app-button app-button--secondary" disabled={!reasonOk || busy}>
                   {busy ? "Moving…" : "Confirm"}
                 </button>
               </div>
             </form>
           )}
-          {!pending && error && <p className="px-3 py-2 text-[12px] text-oxblood">{error}</p>}
+          {!pending && error && <p className="px-3 py-2 text-[13px] text-danger">{error}</p>}
         </div>
       )}
     </div>

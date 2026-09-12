@@ -1,5 +1,6 @@
 "use client";
 
+import { ConfirmDialog } from "./ConfirmDialog";
 import { useState, useTransition } from "react";
 import type { ClientDomain } from "@/lib/db/schema";
 import { linkClientDomainAction, removeClientDomainAction } from "@/lib/portal/client-actions";
@@ -18,37 +19,42 @@ export function ClientDomainList({
   pursuits: PursuitOption[];
   files: Record<string, ClientFileSummary[]>;
 }) {
+  const [removing, setRemoving] = useState<ClientDomain | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
   if (domains.length === 0) {
-    return <p className="text-[14px] text-ink/70">No client domains yet. Add one above and the firm can start sending files.</p>;
+    return <p className="text-[15px] text-muted">No client domains yet. Add one above and the firm can start sending files.</p>;
   }
 
   function act(work: () => Promise<{ ok: boolean; error?: string }>) {
     startTransition(async () => {
-      const result = await work();
-      setError(result.ok ? null : (result.error ?? "Something went wrong"));
+      try {
+        const result = await work();
+        setError(result.ok ? null : (result.error ?? "The change could not be saved. Try again."));
+        if (result.ok) setRemoving(null);
+      } catch { setError("The change could not be saved. Try again."); }
     });
   }
 
   return (
     <div className="space-y-6">
-      {error ? <p className="text-[12px] text-oxblood">{error}</p> : null}
+      {error ? <p role="alert" className="app-status app-status--error">{error}</p> : null}
+      <ConfirmDialog open={removing !== null} title={`Remove access for ${removing?.firm ?? "this organisation"}?`} body={<><p>People at @{removing?.domain} will no longer be able to request access links. Documents already received will remain.</p>{error && <p role="alert" className="mt-3 text-danger">{error}</p>}</>} confirmLabel="Remove access" danger pending={pending} onCancel={() => setRemoving(null)} onConfirm={() => { if (removing) act(() => removeClientDomainAction(removing.id)); }} />
       {domains.map((row) => {
         const rowFiles = files[row.id] ?? [];
         return (
-          <article key={row.id} className="border border-green/10 bg-parchment p-5">
+          <article key={row.id} className="border border-line bg-surface p-5">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>
-                <h3 className="font-serif text-xl text-green">{row.firm}</h3>
-                <p className="font-mono text-[10px] tracking-[0.12em] text-ink/70">@{row.domain} · added {fullDate(row.createdAt)}</p>
+                <h3 className="font-sans text-xl text-primary">{row.firm}</h3>
+                <p className="font-sans text-[13px]  text-muted">@{row.domain} · added {fullDate(row.createdAt)}</p>
               </div>
               <div className="flex items-center gap-4">
-                <label className="text-[12px] text-ink/70">
-                  <span className="portal-label">Pursuit</span>
+                <label className="text-[13px] text-muted">
+                  <span className="app-label">Pursuit</span>
                   <select
-                    className="portal-field"
+                    className="app-field"
                     value={row.pursuitId ?? ""}
                     disabled={pending}
                     onChange={(event) => {
@@ -66,28 +72,24 @@ export function ClientDomainList({
                 </label>
                 <button
                   type="button"
-                  className="btn-quiet text-[12px] hover:text-oxblood"
+                  className="app-button app-button--ghost text-[13px] hover:text-danger"
                   disabled={pending}
-                  onClick={() => {
-                    if (window.confirm(`Remove @${row.domain}? People there can no longer request links. Files already sent stay.`)) {
-                      act(() => removeClientDomainAction(row.id));
-                    }
-                  }}
+                  onClick={() => { setError(null); setRemoving(row); }}
                 >
                   Remove
                 </button>
               </div>
             </div>
             {rowFiles.length === 0 ? (
-              <p className="mt-4 text-[13px] text-ink/70">Nothing sent yet.</p>
+              <p className="mt-4 text-[13px] text-muted">Nothing sent yet.</p>
             ) : (
-              <ul className="mt-4 divide-y divide-green/10">
+              <ul className="mt-4 divide-y divide-line">
                 {rowFiles.map((file) => (
-                  <li key={file.id} className="flex items-center justify-between gap-4 py-2 text-[13px]">
-                    <a href={`/api/portal/documents/${file.id}`} className="min-w-0 truncate text-green hover:text-brass">
+                  <li key={file.id} className="flex flex-wrap items-center justify-between gap-3 py-3 text-[15px]">
+                    <a href={`/api/portal/documents/${file.id}`} className="min-w-0 truncate text-primary hover:text-primary">
                       {file.title}
                     </a>
-                    <span className="font-mono text-[10px] tracking-[0.12em] text-ink/70">
+                    <span className="font-sans text-[13px]  text-muted">
                       {formatBytes(file.size)} · {shortDate(file.createdAt)}
                       {file.uploaderEmail ? ` · ${file.uploaderEmail}` : ""}
                     </span>

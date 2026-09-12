@@ -48,20 +48,20 @@ export function ActionEditor({ action, link, directory, onClose, onSaved }: { ac
   const closed = base && !isOpenAction(base);
   const missingOwner = draft.ownerId && !directory.directors.some(person => person.id === draft.ownerId);
   return <SlideOver open title={action ? "Action details" : "Add action"} onClose={() => { if (!busy) onClose(); }} width={580}>
-    <form className="action-editor" onSubmit={event => { event.preventDefault(); void save(); }}>
+    <form noValidate className="action-editor" onSubmit={event => { event.preventDefault(); void save(); }}>
       <p>{base?.relatedLabel ?? (link.kind === "general" ? "Standalone action" : `Linked to ${link.kind}`)}</p>
       {base?.retainedContext && <p>Retained context: {base.retainedContext}</p>}
       {closed ? <><h3>{base.title}</h3><p>{actionStateLabels[base.state]}</p><p>{base.description}</p><button type="button" disabled={busy} onClick={() => save({ ...draftFor(base), state: "todo", stateReason: "", saveUnassigned: !base.ownerId }, base, true)}>Reopen action</button></> : <fieldset disabled={busy}>
         <label>Action<input value={draft.title} onChange={event => update({ title: event.target.value })} maxLength={240} /></label>
         <label>Assignee<select value={draft.ownerId ?? ""} disabled={!directory.available} onChange={event => update({ ownerId: event.target.value || null })}><option value="">Unassigned</option>{missingOwner && <option value={draft.ownerId!}>Assigned, name unavailable</option>}{directory.directors.map(person => <option key={person.id} value={person.id}>{person.name}</option>)}</select></label>
-        {!directory.available && <p>Director directory unavailable. Existing assignment is retained.</p>}
+        {!directory.available && <p>Team directory unavailable. Existing assignment is retained.</p>}
         {base?.suggestedOwnerId && !base.ownerId && <p>Imported action: confirm the suggested assignee. {directory.directors.find(person => person.id === base.suggestedOwnerId)?.name ?? "Suggested name unavailable"}{directory.available && directory.directors.some(person => person.id === base.suggestedOwnerId) && <button type="button" onClick={() => update({ ownerId: base.suggestedOwnerId })}>Use suggested assignee</button>}</p>}
         <label>Due date<input type="date" value={draft.dueDate ?? ""} onChange={event => update({ dueDate: event.target.value || null })} /></label>
         {base && <p>Original due date: {base.originalDueDate ? displayDate(base.originalDueDate) : "No due date"}</p>}
         <label>Status<select value={draft.state} onChange={event => update({ state: event.target.value as ActionState })}>{Object.entries(actionStateLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
-        {(draft.state === "waiting" || draft.state === "cancelled") && <label>Reason<textarea value={draft.stateReason} onChange={event => update({ stateReason: event.target.value })} maxLength={1000} /></label>}
-        {base && (base.dueDate !== draft.dueDate || (reviewed && conflict && conflict.dueDate !== draft.dueDate)) && <label>Reason for changing the due date<textarea value={draft.changeReason} onChange={event => update({ changeReason: event.target.value })} maxLength={1000} /></label>}
-        <label>Description<textarea value={draft.description} onChange={event => update({ description: event.target.value })} maxLength={4000} /></label>
+        {(draft.state === "waiting" || draft.state === "cancelled") && <label>Reason<textarea className="app-field resize-none" value={draft.stateReason} onChange={event => update({ stateReason: event.target.value })} maxLength={1000} /></label>}
+        {base && (base.dueDate !== draft.dueDate || (reviewed && conflict && conflict.dueDate !== draft.dueDate)) && <label>Reason for changing the due date<textarea className="app-field resize-none" value={draft.changeReason} onChange={event => update({ changeReason: event.target.value })} maxLength={1000} /></label>}
+        <label>Description<textarea className="app-field resize-none" value={draft.description} onChange={event => update({ description: event.target.value })} maxLength={4000} /></label>
         <div className="action-editor-buttons"><button type="submit">{busy ? "Saving action" : "Save action"}</button>{!draft.ownerId && <button type="button" onClick={() => save({ ...draft, saveUnassigned: true })}>Save as unassigned</button>}</div>
       </fieldset>}
       {error && <p role="alert" className="action-error">{error}</p>}

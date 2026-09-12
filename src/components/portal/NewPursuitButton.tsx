@@ -7,7 +7,7 @@ import type { PursuitFormInput } from "@/lib/portal/types";
 import { PursuitForm } from "./PursuitForm";
 import { SlideOver } from "./SlideOver";
 
-export function NewPursuitButton({ className = "btn-brass text-[12px]" }: { className?: string }) {
+export function NewPursuitButton({ className = "app-button text-[13px]" }: { className?: string }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [formKey, setFormKey] = useState(0);

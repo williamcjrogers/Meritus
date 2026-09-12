@@ -27,14 +27,14 @@ export function NoteBox({ onSave }: { onSave: (body: string) => Promise<ActionRe
   }
 
   function onKeyDown(event: KeyboardEvent<HTMLTextAreaElement>) {
-    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+    if ((event.metaKey || event.ctrlKey) && event.key === "Enter" && !event.nativeEvent.isComposing) {
       event.preventDefault();
       void save();
     }
   }
 
   return (
-    <form
+    <form noValidate
       onSubmit={(event) => {
         event.preventDefault();
         void save();
@@ -49,12 +49,12 @@ export function NoteBox({ onSave }: { onSave: (body: string) => Promise<ActionRe
         maxLength={NOTE_MAX}
         aria-label="Add a note"
         placeholder="Add a note. Cmd or Ctrl and Enter saves."
-        className="portal-field resize-y border border-green/15 px-3 py-2"
+        className="app-field resize-none border border-line px-3 py-2"
         disabled={busy}
       />
       <div className="flex items-center justify-between gap-3">
-        {error ? <p className="text-[12px] text-oxblood">{error}</p> : <span className="font-mono text-[10px] text-ink/60">{body.length}/{NOTE_MAX}</span>}
-        <button type="submit" className="btn-secondary" disabled={busy || !body.trim()}>
+        {error ? <p role="alert" className="text-[13px] text-danger">{error}</p> : <span className="font-sans text-[13px] text-muted">{body.length}/{NOTE_MAX}</span>}
+        <button type="submit" className="app-button app-button--secondary" disabled={busy || !body.trim()}>
           {busy ? "Saving…" : "Add note"}
         </button>
       </div>

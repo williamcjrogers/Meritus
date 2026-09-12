@@ -12,15 +12,15 @@ const sourceTypes = [
   { value: "bailii", label: "BAILII material approved for reuse" },
 ];
 
-const inputClass = "w-full rounded border border-ink/25 bg-white p-2";
+const inputClass = "app-field";
 
 function Input({ label, hint, ...props }: ComponentProps<"input"> & { label: string; hint?: string }) {
   const id = useId();
   return (
     <div>
-      <label htmlFor={id} className="mb-1 block text-sm font-medium">{label}</label>
+      <label htmlFor={id} className="mb-1 block text-[15px] font-medium">{label}</label>
       <input id={id} {...props} aria-describedby={hint ? `${id}-hint` : undefined} className={inputClass} />
-      {hint && <p id={`${id}-hint`} className="mt-1 text-xs text-ink/65">{hint}</p>}
+      {hint && <p id={`${id}-hint`} className="mt-1 text-[13px] text-muted">{hint}</p>}
     </div>
   );
 }
@@ -99,28 +99,28 @@ export function SourceRegistrationForm({ rights, save, onRecordLicence, onComple
   }
 
   if (saved) return (
-    <section className="space-y-4 rounded border border-green/25 bg-green/5 p-6">
-      <h2 className="font-serif text-2xl">Source added</h2>
+    <section className="space-y-4 rounded border border-line bg-primary/5 p-6">
+      <h2 className="font-sans text-2xl">Source added</h2>
       <p role="status">Your source is paused. Open its settings in the source overview and enable it when you are ready to use it.</p>
-      {onComplete && <button type="button" onClick={onComplete} className="rounded bg-green px-4 py-2 text-sm text-cream">View source overview</button>}
+      {onComplete && <button type="button" onClick={onComplete} className="rounded bg-primary px-4 py-2 text-[15px] text-surface">View source overview</button>}
     </section>
   );
 
   return (
-    <form onSubmit={submit} className="space-y-6 rounded border border-ink/15 bg-white/60 p-5 md:p-6" aria-label="Add a research source">
+    <form noValidate onSubmit={submit} className="space-y-6 rounded border border-text/15 bg-white/60 p-5 md:p-6" aria-label="Add a research source">
       <div className="space-y-2">
-        <h2 className="font-serif text-2xl">Add a research source</h2>
-        <p className="text-sm text-ink/65">Register a publication or a provider whose files you can use for research. New sources stay paused until you enable them.</p>
+        <h2 className="font-sans text-2xl">Add a research source</h2>
+        <p className="text-[15px] text-muted">Register a publication or a provider whose files you can use for research. New sources stay paused until you enable them.</p>
       </div>
       <label className="block">
-        <span className="mb-1 block text-sm font-medium">What are you adding?</span>
+        <span className="mb-1 block text-[15px] font-medium">What are you adding?</span>
         <select name="provider" value={provider} onChange={(event) => setProvider(event.target.value)} required className={inputClass}>
           <option value="">Choose a source type</option>
           {sourceTypes.map((type) => <option key={type.value} value={type.value}>{type.label}</option>)}
         </select>
       </label>
       {provider && <>
-        {!hasPublicationUrl && <p className="rounded bg-green/5 p-3 text-sm">This registers the file provider. Once the source is enabled, use Upload a file to preview the data and start an investigation.</p>}
+        {!hasPublicationUrl && <p className="rounded bg-primary/5 p-3 text-[15px]">This registers the file provider. Once the source is enabled, use Upload a file to preview the data and start an investigation.</p>}
         <fieldset className="grid gap-4 md:grid-cols-2">
           <legend className="mb-4 text-base font-medium">Source details</legend>
           <Input label="Source name" name="label" required maxLength={200} placeholder="For example, Example plc annual accounts" />
@@ -128,7 +128,7 @@ export function SourceRegistrationForm({ rights, save, onRecordLicence, onComple
           {hasPublicationUrl && <div className="md:col-span-2"><Input label="Publication web address" name="url" type="url" required pattern="https://.*" placeholder="https://www.example.com/publication" hint={provider === "building-safety" ? "Use the HTTPS address of the Building Safety Regulator publication or collection." : "Paste the HTTPS address of the page or document to retrieve."} /></div>}
           {isPublication && <>
             <label className="block">
-              <span className="mb-1 block text-sm font-medium">Publication category</span>
+              <span className="mb-1 block text-[15px] font-medium">Publication category</span>
               <select name="publicationKind" required defaultValue="" className={inputClass}>
                 <option value="">Choose a category</option>
                 <option value="programme">Programme</option>
@@ -143,20 +143,20 @@ export function SourceRegistrationForm({ rights, save, onRecordLicence, onComple
           <div className="md:col-span-2"><Input label="Research purpose" name="purpose" required hint="For example, review the company's published financial performance." /></div>
           <Input label="Earliest records to retrieve" name="backfillStart" type="date" required hint="This bounds the first retrieval. Choose the earliest date relevant to your research." />
         </fieldset>
-        <fieldset className="space-y-4 border-t border-ink/10 pt-5">
+        <fieldset className="space-y-4 border-t border-text/10 pt-5">
           <legend className="text-base font-medium">Permission to use this source</legend>
-          {rights.length === 0 ? <div className="space-y-2 rounded border border-amber-700/25 bg-amber-50 p-4">
-            <p className="text-sm">No licences or permissions have been recorded yet. Record one before adding the source.</p>
-            <button type="button" onClick={onRecordLicence} className="text-sm font-medium text-green underline underline-offset-4">Record a licence or permission</button>
+          {rights.length === 0 ? <div className="space-y-2 rounded border border-danger bg-[var(--danger-surface)] p-4">
+            <p className="text-[15px]">No licences or permissions have been recorded yet. Record one before adding the source.</p>
+            <button type="button" onClick={onRecordLicence} className="text-[15px] font-medium text-primary underline underline-offset-4">Record a licence or permission</button>
           </div> : <>
             <label className="block">
-              <span className="mb-1 block text-sm font-medium">Recorded licence or permission</span>
+              <span className="mb-1 block text-[15px] font-medium">Recorded licence or permission</span>
               <select name="rightsId" required defaultValue="" className={inputClass}>
                 <option value="">Choose the permission covering this source</option>
                 {rights.map((right) => <option key={String(right.id)} value={String(right.id)}>{String(right.holder)} · {String(right.material)}</option>)}
               </select>
             </label>
-            <button type="button" onClick={onRecordLicence} className="text-sm text-green underline underline-offset-4">Record another licence or permission</button>
+            <button type="button" onClick={onRecordLicence} className="text-[15px] text-primary underline underline-offset-4">Record another licence or permission</button>
           </>}
           <div className="grid gap-4 md:grid-cols-2">
             <Input label="Source terms web address" name="termsUrl" type="url" required pattern="https://.*" placeholder="https://www.example.com/terms" />
@@ -164,9 +164,9 @@ export function SourceRegistrationForm({ rights, save, onRecordLicence, onComple
             <div className="md:col-span-2"><Input label="Required credit to the publisher" name="attribution" required hint="Enter the acknowledgement required by the source's terms." /></div>
           </div>
         </fieldset>
-        <details className="rounded border border-ink/15 p-4">
-          <summary className="cursor-pointer text-sm font-medium">Advanced: refresh frequency and daily limits</summary>
-          <p className="my-4 text-sm text-ink/65">Defaults are once a day, up to 100 requests and £10 of AI processing. These are ceilings, not automatic charges.</p>
+        <details className="rounded border border-text/15 p-4">
+          <summary className="cursor-pointer text-[15px] font-medium">Advanced: refresh frequency and daily limits</summary>
+          <p className="my-4 text-[15px] text-muted">Defaults are once a day, up to 100 requests and £10 of AI processing. These are ceilings, not automatic charges.</p>
           <div className="grid gap-4 md:grid-cols-2">
             <Input label="Refresh every (hours)" name="cadenceHours" type="number" min={1 / 3600} step="any" required defaultValue={24} />
             <Input label="Maximum requests per day" name="dailyRequests" type="number" min={0} step="1" required defaultValue={100} />
@@ -174,8 +174,8 @@ export function SourceRegistrationForm({ rights, save, onRecordLicence, onComple
             <Input label="Maximum AI cost per day (£)" name="dailyPounds" type="number" min={0} step="0.01" required defaultValue={10} />
           </div>
         </details>
-        {error && <p role="alert" className="text-sm text-red-800">{error}</p>}
-        <button type="submit" disabled={busy || rights.length === 0} className="rounded bg-green px-4 py-2 text-sm text-cream disabled:opacity-50">{busy ? "Adding source…" : "Add source"}</button>
+        {error && <p role="alert" className="text-[15px] text-danger">{error}</p>}
+        <button type="submit" disabled={busy || rights.length === 0} className="app-button">{busy ? "Adding source…" : "Add source"}</button>
       </>}
     </form>
   );

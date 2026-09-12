@@ -54,3 +54,12 @@ it("shows missing configuration and never claims an untested source succeeded", 
     screen.getByText(/Last successful retrieval: Not recorded/),
   ).toBeInTheDocument();
 });
+it("focuses a missing required field and does not dispatch an invalid research review", async () => {
+  const submit = vi.fn();
+  render(<ActionForm title="Review" fields={[{ name: "reason", label: "Reason", required: true }]} submit={submit} />);
+  fireEvent.click(screen.getByRole("button", { name: "Save" }));
+  expect(submit).not.toHaveBeenCalled();
+  expect(screen.getByLabelText("Reason")).toHaveFocus();
+  expect(screen.getByLabelText("Reason")).toHaveAttribute("aria-invalid", "true");
+  expect(screen.getByRole("alert")).toHaveTextContent("Complete Reason.");
+});

@@ -13,6 +13,6 @@ export async function RelatedActionPanel({ link }: { link: WorkLink }) {
     const [rows, directory] = await Promise.all([readRelatedActions(link), readDirectorDirectory()]);
     return <RelatedActions link={link} rows={rows} directory={directory} />;
   } catch {
-    return <section className="action-register mt-8" aria-label="Related actions"><h2>Actions</h2><p role="status">Could not load actions for this record.</p><Link className="btn-quiet" href={actionQueryHref({ scope: "team", filter: "all", link, page: 1, pageSize: 50 })}>Open related actions</Link></section>;
+    return <section className="action-register mt-8" aria-label="Related actions"><h2>Actions</h2><p role="status">Could not load actions for this record.</p><Link className="app-button app-button--ghost" href={actionQueryHref({ scope: "team", filter: "all", link, page: 1, pageSize: 50 })}>Open related actions</Link></section>;
   }
 }

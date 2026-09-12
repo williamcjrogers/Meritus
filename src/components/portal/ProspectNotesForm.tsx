@@ -20,9 +20,9 @@ export function ProspectNotesForm({ prospect }: { prospect: Prospect }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="space-y-3">
+    <form noValidate onSubmit={onSubmit} className="space-y-3">
       <label className="block">
-        <span className="portal-eyebrow">Director notes</span>
+        <span className="app-context">Notes</span>
         <textarea
           value={value}
           onChange={(event) => {
@@ -30,14 +30,14 @@ export function ProspectNotesForm({ prospect }: { prospect: Prospect }) {
             setSaved(false);
           }}
           rows={5}
-          className="mt-2 w-full border border-green/15 bg-transparent px-3 py-2 text-[14px] text-green focus:border-brass focus:outline-none"
+          className="app-field resize-none mt-2"
         />
       </label>
       <button type="submit" disabled={pending} className="btn-outline text-[13px] disabled:opacity-40">
         {pending ? "Saving…" : "Save notes"}
       </button>
-      {saved ? <p className="text-[12px] text-ink/70">Saved.</p> : null}
-      {error ? <p className="text-[12px] text-oxblood">{error}</p> : null}
+      {saved ? <p className="text-[13px] text-muted">Saved.</p> : null}
+      {error ? <p className="text-[13px] text-danger">{error}</p> : null}
     </form>
   );
 }

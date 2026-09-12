@@ -16,13 +16,13 @@ export function OwnerSelect({
   const known = value && directors.some((d) => d.id === value);
   return (
     <label className="block">
-      <span className="portal-label">Owner</span>
+      <span className="app-label">Owner</span>
       <select
         value={value ?? ""}
         onChange={(event) => onChange(event.target.value || null)}
         disabled={disabled}
         aria-label="Owner"
-        className="portal-field min-w-[180px]"
+        className="app-field min-w-[180px]"
       >
         <option value="">{UNASSIGNED_NAME}</option>
         {directors.map((director) => (
@@ -30,7 +30,7 @@ export function OwnerSelect({
             {director.name}
           </option>
         ))}
-        {value && !known && <option value={value}>Another director</option>}
+        {value && !known && <option value={value}>Assigned owner unavailable</option>}
       </select>
     </label>
   );

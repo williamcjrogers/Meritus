@@ -55,7 +55,7 @@ function isResearchNotice(line: BriefAnalysisLine): boolean {
 }
 
 function generatedBy(directors: Director[], createdBy: string): string {
-  return directors.find((director) => director.id === createdBy)?.initials ?? "a director";
+  return directors.find((director) => director.id === createdBy)?.initials ?? "a team member";
 }
 
 /**
@@ -180,9 +180,9 @@ export function BriefPanel({
 
   const buildLabel = starting ? "Starting…" : brief || failed ? (failed ? "Retry" : "Regenerate") : "Build the brief";
   const askButton = (
-    <button type="button" className="btn-secondary" onClick={onAsk}>
+    <button type="button" className="app-button app-button--secondary" onClick={onAsk}>
       Ask
-      <span aria-hidden="true" className="text-[10px]">
+      <span aria-hidden="true" className="text-[13px]">
         ▸
       </span>
     </button>
@@ -192,17 +192,17 @@ export function BriefPanel({
     <Panel
       eyebrow="Brief"
       title={subject.name}
-      actions={brief ? <span className="font-mono text-[11px] tracking-[0.05em] text-ink/70">{shortDate(brief.createdAt)}</span> : undefined}
+      actions={brief ? <span className="font-sans text-[13px]  text-muted">{shortDate(brief.createdAt)}</span> : undefined}
     >
       {brief && running && (
-        <p className="mb-4 border-b border-green/10 pb-3 text-[12px] text-ink/70">
+        <p className="mb-4 border-b border-line pb-3 text-[13px] text-muted">
           Rebuilding the brief<span aria-hidden="true">…</span> the last one stays until it is done.
         </p>
       )}
       {brief && failed && (
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-green/10 pb-3">
-          <p className="text-[12px] text-oxblood">{run?.error ?? "The brief failed"}</p>
-          <button type="button" className="btn-quiet" onClick={() => void build()} disabled={starting}>
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-line pb-3">
+          <p className="text-[13px] text-danger">{run?.error ?? "The brief failed"}</p>
+          <button type="button" className="app-button app-button--ghost" onClick={() => void build()} disabled={starting}>
             {starting ? "Starting…" : "Retry"}
           </button>
         </div>
@@ -219,20 +219,20 @@ export function BriefPanel({
         />
       ) : running ? (
         <div className="space-y-2">
-          <p className="font-serif text-xl text-green">Building the brief…</p>
-          <p className="text-[13px] text-ink/70">
+          <p className="font-sans text-xl text-primary">Building the brief…</p>
+          <p className="text-[13px] text-muted">
             Checking Companies House, researching the web and writing the analysis. This takes up to two minutes.
           </p>
         </div>
       ) : failed ? (
         <div className="space-y-2">
-          <p className="font-serif text-xl text-green">The brief failed.</p>
-          <p className="text-[12px] text-oxblood">{run?.error ?? "Try again"}</p>
+          <p className="font-sans text-xl text-primary">The brief failed.</p>
+          <p className="text-[13px] text-danger">{run?.error ?? "Try again"}</p>
         </div>
       ) : (
         <div className="space-y-2">
-          <p className="font-serif text-xl text-green">No brief yet.</p>
-          <p className="text-[13px] text-ink/70">
+          <p className="font-sans text-xl text-primary">No brief yet.</p>
+          <p className="text-[13px] text-muted">
             {subject.number
               ? `Register facts for ${subject.number}, web research and a short analysis.`
               : "Without a company number the brief carries no Companies House facts. Find the company first, or build without one."}
@@ -241,25 +241,25 @@ export function BriefPanel({
       )}
 
       {!brief && !running && !subject.number && (
-        <div className="mt-5 border-t border-green/10 pt-5">
+        <div className="mt-5 border-t border-line pt-5">
           <CompanyPicker query={subject.name} onPick={onPick} endpoint={candidatesEndpoint} />
         </div>
       )}
 
-      {startError && <p className="mt-4 text-[12px] text-oxblood">{startError}</p>}
+      {startError && <p className="mt-4 text-[13px] text-danger">{startError}</p>}
 
-      <div className="mt-6 flex flex-wrap items-center justify-end gap-3 border-t border-green/10 pt-4">
+      <div className="mt-6 flex flex-wrap items-center justify-end gap-3 border-t border-line pt-4">
         {brief && (
-          <p className="mr-auto font-mono text-[10px] tracking-[0.12em] uppercase text-ink/70">
+          <p className="mr-auto font-sans text-[13px]   text-muted">
             Generated {fullDate(brief.createdAt)} by {generatedBy(directors, brief.createdBy)}
           </p>
         )}
         {!(brief && failed) && (
           <button
             type="button"
-            className={brief || failed ? "btn-secondary" : "btn-brass text-[12px]"}
+            className={brief || failed ? "app-button app-button--secondary" : "app-button text-[13px]"}
             onClick={() => void build()}
-            aria-disabled={starting || running || undefined}
+            disabled={starting || running} aria-busy={starting || running || undefined}
           >
             {running ? "Building…" : buildLabel}
           </button>
@@ -294,25 +294,25 @@ function CompleteBrief({
       <Facts facts={brief.facts} subject={subject} picking={picking} pickError={pickError} onPick={onPick} />
 
       {analysis.length > 0 && (
-        <ul aria-label="Analysis" className="space-y-2 border-t border-green/10 pt-4">
+        <ul aria-label="Analysis" className="space-y-2 border-t border-line pt-4">
           {analysis.map((line, index) => (
-            <li key={index} className="flex items-start gap-3 text-[14px] leading-relaxed text-ink">
+            <li key={index} className="flex items-start gap-3 text-[15px] leading-relaxed text-text">
               <span
-                className={`mt-[3px] w-11 shrink-0 font-mono text-[9px] tracking-[0.15em] ${
-                  line.kind === "fact" ? "text-green" : "text-ink/70"
+                className={`mt-[3px] w-24 shrink-0 font-sans text-[13px]  ${
+                  line.kind === "fact" ? "text-primary" : "text-muted"
                 }`}
               >
-                {line.kind === "fact" ? "FACT" : "INFER"}
+                {line.kind === "fact" ? "Fact" : "Interpretation"}
               </span>
               <span className="min-w-0 flex-1">{line.text}</span>
-              <span className="shrink-0 font-mono text-[10px] tracking-[0.08em] text-ink/60">
+              <span className="shrink-0 font-sans text-[13px]  text-muted">
                 {line.url ? (
                   <a
                     href={line.url}
                     target="_blank"
                     rel="noreferrer"
                     aria-label={`Source: ${SOURCE_LABELS[line.source]}`}
-                    className="hover:text-brass"
+                    className="hover:text-primary"
                   >
                     {SOURCE_LABELS[line.source]} <span aria-hidden="true">↗</span>
                   </a>
@@ -325,9 +325,9 @@ function CompleteBrief({
         </ul>
       )}
 
-      {researchNotice && <p className="text-[12px] text-ink/70">{researchNotice}</p>}
+      {researchNotice && <p className="text-[13px] text-muted">{researchNotice}</p>}
 
-      {brief.summary && <p className="border-t border-green/10 pt-4 text-[14px] leading-relaxed text-ink">{brief.summary}</p>}
+      {brief.summary && <p className="border-t border-line pt-4 text-[15px] leading-relaxed text-text">{brief.summary}</p>}
     </div>
   );
 }
@@ -364,12 +364,12 @@ function Facts({
     return (
       <div>
         <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <p className="font-serif text-lg text-green">{facts.companyName ?? subject.name}</p>
+          <p className="font-sans text-lg text-primary">{facts.companyName ?? subject.name}</p>
           <a
             href={registerLink(facts.companyNumber)}
             target="_blank"
             rel="noreferrer"
-            className="font-mono text-[10px] tracking-[0.15em] uppercase text-green hover:text-brass"
+            className="font-sans text-[13px]   text-primary hover:text-primary"
           >
             Companies House <span aria-hidden="true">↗</span>
           </a>
@@ -379,8 +379,8 @@ function Facts({
             .filter((row): row is [string, string] => Boolean(row[1]))
             .map(([label, value]) => (
               <div key={label} className="contents">
-                <dt className="font-mono text-[10px] tracking-[0.12em] uppercase text-ink/70 sm:pt-[3px]">{label}</dt>
-                <dd className="text-ink">{value}</dd>
+                <dt className="font-sans text-[13px]   text-muted sm:pt-[3px]">{label}</dt>
+                <dd className="text-text">{value}</dd>
               </div>
             ))}
         </dl>
@@ -391,17 +391,17 @@ function Facts({
   if (facts?.match === "unconfirmed" && facts.candidates?.length) {
     return (
       <div className="space-y-2">
-        <p className="text-[13px] text-ink/70">
+        <p className="text-[13px] text-muted">
           No exact match on Companies House for {facts.subject}. Pick the right company and regenerate.
         </p>
         <CandidateList candidates={facts.candidates} picking={picking} onPick={onPick} />
-        {pickError && <p className="text-[12px] text-oxblood">{pickError}</p>}
+        {pickError && <p className="text-[13px] text-danger">{pickError}</p>}
       </div>
     );
   }
 
   return (
-    <p className="text-[12px] text-ink/60">
+    <p className="text-[13px] text-muted">
       {facts ? `No Companies House record found for ${facts.subject}.` : "No Companies House facts."}
     </p>
   );

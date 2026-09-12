@@ -212,16 +212,15 @@ export function PursuitShell({
   }
 
   async function confirmDelete() {
+    if (deleting) return;
     setDeleting(true);
-    const result = await deletePursuit(pursuit.id);
-    setDeleting(false);
-    if (result.ok) {
-      setDeleteOpen(false);
-      router.push("/portal/pursuits");
-    } else {
-      setHeaderError(result.error);
-      setDeleteOpen(false);
-    }
+    setHeaderError(null);
+    try {
+      const result = await deletePursuit(pursuit.id);
+      if (result.ok) { setDeleteOpen(false); router.push("/portal/pursuits"); }
+      else setHeaderError(result.error);
+    } catch { setHeaderError("The live lead could not be deleted. Check your connection and try again."); }
+    finally { setDeleting(false); }
   }
 
   const subject: BriefSubject = pursuit.party
@@ -241,7 +240,7 @@ export function PursuitShell({
   return (
     <div className="max-w-6xl">
       <div className="mb-6 flex items-center justify-between gap-4">
-        <Link href="/portal/pursuits" className="btn-quiet">
+        <Link href="/portal/pursuits" className="app-button app-button--ghost">
           <span aria-hidden="true">←</span> Live leads
         </Link>
         <div className="flex items-center gap-2">
@@ -257,7 +256,7 @@ export function PursuitShell({
             <button
               ref={moreButtonRef}
               type="button"
-              className="btn-quiet"
+              className="app-button app-button--ghost"
               aria-haspopup="menu"
               aria-expanded={moreOpen}
               aria-label="More actions"
@@ -266,7 +265,7 @@ export function PursuitShell({
               ···
             </button>
             {moreOpen && (
-              <div role="menu" aria-label="More actions" className="absolute right-0 z-30 mt-1 min-w-[180px] border border-green/15 bg-parchment p-1 shadow-[0_8px_24px_rgba(11,59,36,0.16)]">
+              <div role="menu" aria-label="More actions" className="absolute right-0 z-30 mt-1 min-w-[180px] border border-line bg-surface p-1 shadow-lg">
                 <button
                   ref={(el) => {
                     moreItemsRef.current[0] = el;
@@ -274,7 +273,7 @@ export function PursuitShell({
                   type="button"
                   role="menuitem"
                   tabIndex={-1}
-                  className="block w-full px-3 py-2 text-left text-[13px] text-green hover:bg-stone/60 focus:bg-stone/60 focus:outline-none"
+                  className="block w-full px-3 py-2 text-left text-[13px] text-primary hover:bg-mist/60 focus:bg-mist/60 focus:outline-none"
                   onClick={() => {
                     closeMore(false);
                     setEditKey((key) => key + 1);
@@ -290,7 +289,7 @@ export function PursuitShell({
                   type="button"
                   role="menuitem"
                   tabIndex={-1}
-                  className="block w-full px-3 py-2 text-left text-[13px] text-oxblood hover:bg-stone/60 focus:bg-stone/60 focus:outline-none"
+                  className="block w-full px-3 py-2 text-left text-[13px] text-danger hover:bg-mist/60 focus:bg-mist/60 focus:outline-none"
                   onClick={() => {
                     closeMore(false);
                     setDeleteOpen(true);
@@ -307,16 +306,16 @@ export function PursuitShell({
       <header className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0">
           <Eyebrow rule={false}>Live lead</Eyebrow>
-          <h1 className="mt-1 font-serif text-3xl leading-tight text-green sm:text-4xl">{pursuit.firm}</h1>
-          {partyLine && <p className="mt-1 font-serif text-xl italic text-green/80">{partyLine}</p>}
-          <p className="mt-2 text-[13px] text-ink/70">{meta.join(" · ")}</p>
+          <h1 className="mt-1 font-sans text-3xl leading-tight text-primary sm:text-4xl">{pursuit.firm}</h1>
+          {partyLine && <p className="mt-1 font-sans text-xl italic text-muted">{partyLine}</p>}
+          <p className="mt-2 text-[13px] text-muted">{meta.join(" · ")}</p>
           {related.length > 0 && (
-            <p className="mt-1 text-[12px] text-ink/70">
+            <p className="mt-1 text-[13px] text-muted">
               Previously:{" "}
               {related.map((ref, index) => (
                 <span key={ref.id}>
                   {index > 0 && ", "}
-                  <Link href={`/portal/pursuits/${ref.id}`} className="text-green underline decoration-brass/40 underline-offset-2 hover:decoration-brass">
+                  <Link href={`/portal/pursuits/${ref.id}`} className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary">
                     {ref.firm}
                   </Link>
                   {` (${stageLabel(ref.stage).toLowerCase()}, ${ref.date})`}
@@ -324,31 +323,31 @@ export function PursuitShell({
               ))}
             </p>
           )}
-          {headerError && <p className="mt-2 text-[12px] text-oxblood">{headerError}</p>}
+          {headerError && <p className="mt-2 text-[13px] text-danger">{headerError}</p>}
         </div>
         <div className="shrink-0 lg:w-56">
           <OwnerSelect value={pursuit.ownerId} directors={directors} onChange={(ownerId) => void changeOwner(ownerId)} />
         </div>
       </header>
 
-      <div className="panel-brackets mt-6 border border-green/10 bg-parchment px-5 py-4">
+      <div className="app-panel mt-6 border border-line bg-surface px-5 py-4">
         {active || pursuit.stage === "instructed" ? (
           <Stepper current={pursuit.stage} onMove={(to) => move(to)} />
         ) : (
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-3">
               <StagePill stage={pursuit.stage} />
-              <span className="text-[13px] text-ink/70">
+              <span className="text-[13px] text-muted">
                 since {shortDate(pursuit.stageChangedAt)}
                 {latestChange?.meta?.reason ? ` · ${latestChange.meta.reason}` : ""}
               </span>
             </div>
-            <button type="button" className="btn-secondary" onClick={() => void reopen()} aria-disabled={reopening || undefined}>
+            <button type="button" className="app-button app-button--secondary" onClick={() => void reopen()} disabled={reopening} aria-busy={reopening || undefined}>
               {reopening ? "Reopening…" : `Reopen at ${stageLabel(reopenStage)}`}
             </button>
           </div>
         )}
-        <div className="mt-4 border-t border-green/10 pt-3">
+        <div className="mt-4 border-t border-line pt-3">
           <p>Next action: {nextAction?.title ?? "No open action"}</p>
           {nextAction && <p>{actionStateLabels[nextAction.state]} · Action assignee: {nextAction.ownerName}. Action due: {nextAction.dueDate ? displayDate(nextAction.dueDate) : "Not set"}</p>}
           {pursuit.reviewDue && <p>Review due: {displayDate(pursuit.reviewDue)}</p>}
@@ -357,10 +356,10 @@ export function PursuitShell({
         </div>
       </div>
 
-      <section id="actions" className="mt-6"><RelatedActions link={{ kind: "pursuit", id: pursuit.id }} rows={actions} directory={{ available: directoryAvailable, directors }} /></section>
+      <nav className="workspace-local-nav pursuit-sections" aria-label="Pursuit sections"><a href="#brief">Brief</a><button type="button" onClick={() => setAskOpen(true)}>Questions</button><a href="#documents">Documents</a><a href="#activity">Activity</a><a href="#actions">Actions</a></nav>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
-        <div className="order-1 lg:order-none lg:col-span-8">
+        <div id="brief" className="order-1 lg:order-none lg:col-span-8">
           <BriefPanel
             pursuitId={pursuit.id}
             subject={subject}
@@ -380,25 +379,25 @@ export function PursuitShell({
             <dl className="space-y-2 text-[13px]">
               {pursuit.contactEmail && (
                 <div>
-                  <dt className="portal-label">Email</dt>
+                  <dt className="app-label">Email</dt>
                   <dd>
-                    <a href={`mailto:${pursuit.contactEmail}`} className="text-green hover:text-brass">{pursuit.contactEmail}</a>
+                    <a href={`mailto:${pursuit.contactEmail}`} className="text-primary hover:text-primary">{pursuit.contactEmail}</a>
                   </dd>
                 </div>
               )}
               {pursuit.contactPhone && (
                 <div>
-                  <dt className="portal-label">Phone</dt>
+                  <dt className="app-label">Phone</dt>
                   <dd>
-                    <a href={`tel:${pursuit.contactPhone.replace(/\s+/g, "")}`} className="text-green hover:text-brass">{pursuit.contactPhone}</a>
+                    <a href={`tel:${pursuit.contactPhone.replace(/\s+/g, "")}`} className="text-primary hover:text-primary">{pursuit.contactPhone}</a>
                   </dd>
                 </div>
               )}
               {pursuit.website && (
                 <div>
-                  <dt className="portal-label">Website</dt>
+                  <dt className="app-label">Website</dt>
                   <dd>
-                    <a href={pursuit.website} target="_blank" rel="noreferrer" className="text-green hover:text-brass">
+                    <a href={pursuit.website} target="_blank" rel="noreferrer" className="text-primary hover:text-primary">
                       {pursuit.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
                     </a>
                   </dd>
@@ -406,8 +405,8 @@ export function PursuitShell({
               )}
               {(pursuit.companyNumber || pursuit.partyCompanyNumber) && (
                 <div>
-                  <dt className="portal-label">Companies House</dt>
-                  <dd className="font-mono text-[12px] text-ink">
+                  <dt className="app-label">Companies House</dt>
+                  <dd className="font-sans text-[13px] text-text">
                     {[pursuit.companyNumber && `${pursuit.firm} ${pursuit.companyNumber}`, pursuit.partyCompanyNumber && `${pursuit.party} ${pursuit.partyCompanyNumber}`]
                       .filter(Boolean)
                       .join(" · ")}
@@ -416,26 +415,26 @@ export function PursuitShell({
               )}
               {pursuit.sourceDetail && (
                 <div>
-                  <dt className="portal-label">Source</dt>
-                  <dd className="text-ink">{pursuit.sourceDetail}</dd>
+                  <dt className="app-label">Source</dt>
+                  <dd className="text-text">{pursuit.sourceDetail}</dd>
                 </div>
               )}
             </dl>
             {pursuit.summary ? (
-              <blockquote className="mt-4 border-l border-brass/40 pl-4 text-[14px] italic leading-relaxed text-ink/80">
+              <blockquote className="mt-4 border-l border-primary/40 pl-4 text-[15px] italic leading-relaxed text-muted">
                 <p className="whitespace-pre-wrap">“{pursuit.summary}”</p>
               </blockquote>
             ) : (
-              <p className="mt-4 text-[13px] text-ink/60">No summary yet.</p>
+              <p className="mt-4 text-[13px] text-muted">No summary yet.</p>
             )}
           </Panel>
-          <Panel eyebrow="Files" title="Documents">
+          <Panel id="documents" title="Documents">
             <FileList documents={documents} uploadUrl={`/api/portal/pursuits/${pursuit.id}/documents`} />
           </Panel>
         </aside>
 
         <div className="order-3 lg:order-none lg:col-span-8">
-          <Panel eyebrow="Activity" title="Timeline">
+          <Panel id="activity" title="Activity">
             <div className="mb-5">
               <NoteBox onSave={(body) => addNote(pursuit.id, body)} />
             </div>
@@ -443,6 +442,8 @@ export function PursuitShell({
           </Panel>
         </div>
       </div>
+
+      <section id="actions" className="mt-6"><RelatedActions link={{ kind: "pursuit", id: pursuit.id }} rows={actions} directory={{ available: directoryAvailable, directors }} /></section>
 
       <AskDrawer
         pursuitId={pursuit.id}
@@ -452,20 +453,21 @@ export function PursuitShell({
         onSaveNote={(text) => saveAnswerAsNote(pursuit.id, text)}
         onClear={() => clearQuestions(pursuit.id)}
       />
-      <SlideOver open={editOpen} onClose={() => setEditOpen(false)} eyebrow="Live lead" title="Edit details">
+      <SlideOver returnFocusRef={moreButtonRef} open={editOpen} onClose={() => setEditOpen(false)} eyebrow="Live lead" title="Edit details">
         <PursuitForm key={editKey} mode="edit" initial={toFormInput(serverPursuit)} onSubmit={saveEdit} onCancel={() => setEditOpen(false)} />
       </SlideOver>
       <ConfirmDialog
+        returnFocusRef={moreButtonRef}
         open={deleteOpen}
         title={`Delete ${pursuit.firm}?`}
-        body="The live lead, its timeline, its brief, its questions and its files are removed. This cannot be undone."
+        body={<><p>The live lead, its timeline, its brief, its questions and its files are removed. This cannot be undone.</p>{headerError && <p role="alert" className="mt-3 text-danger">{headerError}</p>}</>}
         confirmLabel="Delete live lead"
         danger
         pending={deleting}
         onConfirm={() => void confirmDelete()}
         onCancel={() => setDeleteOpen(false)}
       />
-      <span className="sr-only">Signed in as {directors.find((d) => d.id === userId)?.name ?? "a director"}</span>
+      <span className="sr-only">Signed in as {directors.find((d) => d.id === userId)?.name ?? "your account"}</span>
     </div>
   );
 }

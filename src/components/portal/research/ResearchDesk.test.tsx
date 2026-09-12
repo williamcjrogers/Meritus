@@ -31,10 +31,10 @@ it("retries a failed start with the same request ID and retained question", asyn
   }));
   render(<ResearchDesk />);
   fireEvent.change(screen.getByRole("textbox"), { target: { value: "What construction payment issues need review?" } });
-  fireEvent.click(screen.getByRole("button", { name: "Research this →" }));
+  fireEvent.click(screen.getByRole("button", { name: "Research this" }));
   expect(await screen.findByRole("alert")).toHaveTextContent("Connection interrupted");
   expect(screen.getByRole("textbox")).toHaveValue("What construction payment issues need review?");
-  fireEvent.click(screen.getByRole("button", { name: "Research this →" }));
+  fireEvent.click(screen.getByRole("button", { name: "Research this" }));
   await screen.findByText(/Research started. Your answer will appear below/);
   expect(posted).toHaveLength(2); expect(posted[0]).toEqual(posted[1]);
   expect(posted[0]).toEqual({ requestId: expect.any(String), question: "What construction payment issues need review?", monitoring: false });
@@ -50,7 +50,7 @@ it("does not offer to repeat a successful paid request after its refresh fails",
   }); vi.stubGlobal("fetch", fetcher);
   render(<ResearchDesk />); await screen.findByText("Example construction award");
   fireEvent.change(screen.getByRole("textbox"), { target: { value: "What changed in construction payment?" } });
-  fireEvent.click(screen.getByRole("button", { name: "Research this →" }));
+  fireEvent.click(screen.getByRole("button", { name: "Research this" }));
   await screen.findByText(/Research started. Your answer will appear below/);
   expect(await screen.findByRole("alert")).toHaveTextContent("could not be refreshed");
   expect(screen.getByRole("textbox")).toHaveValue("");
@@ -113,7 +113,7 @@ it("pauses a failed question's existing monitor before offering its replacement"
   expect(mutations).toEqual([[`/api/portal/research/quick/${questionId}`, { monitoring: false }]]);
   expect(screen.getByRole("textbox")).toHaveValue("What has changed in payment records?");
   expect(screen.getByRole("checkbox", { name: "Keep this question updated daily" })).toBeChecked();
-  fireEvent.click(screen.getByRole("button", { name: "Research this →" }));
+  fireEvent.click(screen.getByRole("button", { name: "Research this" }));
   await screen.findByText(/Research started. This question will also be checked daily/);
   expect(mutations[1]).toEqual(["/api/portal/research/quick", { requestId: expect.any(String), question: "What has changed in payment records?", monitoring: true }]);
 });
@@ -133,7 +133,7 @@ it("explains the daily question limit and keeps the question for retry", async (
   render(<ResearchDesk />);
   fireEvent.change(screen.getByRole("textbox"), { target: { value: "Which payment changes should we review?" } });
   fireEvent.click(screen.getByRole("checkbox", { name: "Keep this question updated daily" }));
-  fireEvent.click(screen.getByRole("button", { name: "Research this →" }));
+  fireEvent.click(screen.getByRole("button", { name: "Research this" }));
   expect(await screen.findByRole("alert")).toHaveTextContent("Pause an existing daily update");
   expect(screen.getByRole("textbox")).toHaveValue("Which payment changes should we review?");
 });

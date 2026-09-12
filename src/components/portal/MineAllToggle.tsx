@@ -16,13 +16,13 @@ export function MineAllToggle({ scope }: { scope: Scope }) {
     startTransition(() => router.refresh());
   }
 
-  const base = "px-3 py-1 font-mono text-[10px] tracking-[0.2em] uppercase transition-colors";
+  const base = "px-3 py-1 font-sans text-[13px]   transition-colors";
   return (
-    <div role="group" aria-label="Show pursuits" className={`inline-flex border border-green/15 ${pending ? "opacity-60" : ""}`}>
-      <button type="button" aria-pressed={scope === "mine"} onClick={() => choose("mine")} className={`${base} ${scope === "mine" ? "bg-green text-cream" : "text-green hover:bg-stone/60"}`}>
+    <div role="group" aria-label="Show pursuits" className={`inline-flex border border-line ${pending ? "opacity-60" : ""}`}>
+      <button type="button" aria-pressed={scope === "mine"} onClick={() => choose("mine")} className={`${base} ${scope === "mine" ? "bg-primary text-surface" : "text-primary hover:bg-mist/60"}`}>
         Mine
       </button>
-      <button type="button" aria-pressed={scope === "all"} onClick={() => choose("all")} className={`${base} ${scope === "all" ? "bg-green text-cream" : "text-green hover:bg-stone/60"}`}>
+      <button type="button" aria-pressed={scope === "all"} onClick={() => choose("all")} className={`${base} ${scope === "all" ? "bg-primary text-surface" : "text-primary hover:bg-mist/60"}`}>
         All
       </button>
     </div>

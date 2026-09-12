@@ -45,3 +45,29 @@ describe("ClientDomainForm", () => {
     expect(await screen.findByText("That domain is already listed")).toBeInTheDocument();
   });
 });
+
+it("preserves a partial draft and focuses the missing field without dispatching", async () => {
+  mockedAddClientDomainAction.mockReset();
+  render(<ClientDomainForm pursuits={pursuits} />);
+  await userEvent.type(screen.getByLabelText(/company email domain/i), "example-firm.co.uk");
+  await userEvent.selectOptions(screen.getByLabelText(/pursuit/i), "p2");
+  await userEvent.click(screen.getByRole("button", { name: "Add domain" }));
+  expect(mockedAddClientDomainAction).not.toHaveBeenCalled();
+  expect(screen.getByLabelText(/^firm/i)).toHaveFocus();
+  expect(screen.getByLabelText(/^firm/i)).toHaveAttribute("aria-invalid", "true");
+  expect(screen.getByLabelText(/company email domain/i)).toHaveValue("example-firm.co.uk");
+  expect(screen.getByLabelText(/pursuit/i)).toHaveValue("p2");
+});
+it("retains all controlled values after a refused server action", async () => {
+  mockedAddClientDomainAction.mockReset().mockResolvedValue({ ok: false, error: "That domain is already listed" });
+  render(<ClientDomainForm pursuits={pursuits} />);
+  await userEvent.type(screen.getByLabelText(/company email domain/i), "example-firm.co.uk");
+  await userEvent.type(screen.getByLabelText(/^firm/i), "Example Firm LLP");
+  await userEvent.selectOptions(screen.getByLabelText(/pursuit/i), "p2");
+  await userEvent.click(screen.getByRole("button", { name: "Add domain" }));
+  expect(await screen.findByRole("alert")).toHaveTextContent("That domain is already listed");
+  expect(screen.getByLabelText(/company email domain/i)).toHaveValue("example-firm.co.uk");
+  expect(screen.getByLabelText(/^firm/i)).toHaveValue("Example Firm LLP");
+  expect(screen.getByLabelText(/pursuit/i)).toHaveValue("p2");
+  expect(screen.getByRole("button", { name: "Add domain" })).toBeEnabled();
+});

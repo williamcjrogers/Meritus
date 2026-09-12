@@ -31,13 +31,13 @@ describe("PortalNavigation", () => {
   it("selects only Home at the portal root", () => {
     render(<PortalNavigation />);
     expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
-    expect(screen.getByRole("link", { name: "Live leads" })).not.toHaveAttribute("aria-current");
+    expect(screen.getByRole("link", { name: "Pursuits" })).not.toHaveAttribute("aria-current");
   });
 
-  it.each(["/portal/pursuits", "/portal/pursuits/p1"])("selects Live leads at %s", (path) => {
+  it.each(["/portal/pursuits", "/portal/pursuits/p1"])("selects Pursuits at %s", (path) => {
     pathnameMock.mockReturnValue(path);
     render(<PortalNavigation />);
-    expect(screen.getByRole("link", { name: "Live leads" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "Pursuits" })).toHaveAttribute("aria-current", "page");
     expect(screen.getByRole("link", { name: "Home" })).not.toHaveAttribute("aria-current");
   });
 
@@ -45,7 +45,7 @@ describe("PortalNavigation", () => {
     render(<PortalNavigation />);
     await userEvent.click(screen.getByRole("button", { name: "Menu" }));
     const dialog = screen.getByRole("dialog", { name: "Navigation" });
-    await userEvent.click(within(dialog).getByRole("link", { name: "Live leads" }));
+    await userEvent.click(within(dialog).getByRole("link", { name: "Pursuits" }));
     expect(dialog).not.toHaveAttribute("open");
   });
 

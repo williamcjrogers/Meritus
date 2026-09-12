@@ -1,6 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Button } from "@/components/ui/Button";
+import { useToast } from "@/components/ui/Toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { displayDate } from "@/lib/actions/dates";
@@ -20,6 +23,7 @@ import { SectionFailure } from "./SectionFailure";
 
 export function HomeDashboard({ view }: { view: DashboardView }) {
   const router = useRouter();
+  const notify = useToast();
   const [editor, setEditor] = useState<{ action: ActionView | null; link: WorkLink } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const actionsHref = actionQueryHref({ scope: view.scope, filter: "open", page: 1, pageSize: 50 });
@@ -30,7 +34,7 @@ export function HomeDashboard({ view }: { view: DashboardView }) {
     return result;
   }
   return <div className="home-dashboard">
-    <header className="home-header"><div><p className="home-intro">Directors&apos; overview</p><h1>Home</h1><p>{displayDate(view.today)} <span aria-hidden="true">·</span> {view.scope === "team" ? "The team's commitments at a glance" : "Your assigned work at a glance"}</p></div><div className="home-header-controls"><ScopeControl scope={view.scope} /><button className="home-primary-button" type="button" onClick={() => setEditor({ action: null, link: { kind: "general" } })}>+ Add action</button></div></header>
+    <PageHeader title="Home" description={`${displayDate(view.today)}. ${view.scope === "team" ? "Your team’s commitments, upcoming dates and progress." : "Your assigned work, upcoming dates and progress."}`} actions={<><ScopeControl scope={view.scope} /><Button onClick={() => setEditor({ action: null, link: { kind: "general" } })}>Add action</Button></>} />
     <AttentionSummary result={view.actions} scope={view.scope} />
     <div className="home-work-grid">
       <section className="home-action-section" aria-labelledby="attention-heading"><div className="home-section-heading"><div><h2 id="attention-heading">Actions requiring attention</h2><p>Overdue, due today and the next 7 days</p></div><Link href={actionsHref}>View all actions <span aria-hidden="true">↗</span></Link></div>
@@ -50,6 +54,6 @@ export function HomeDashboard({ view }: { view: DashboardView }) {
     <ContextSummary view={view} />
     <ProgressFeed result={view.progress} />
     <p className="home-refreshed">Updated {new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/London" }).format(new Date(view.refreshedAt))} London time</p>
-    {editor && <ActionEditor action={editor.action} link={editor.link} directory={view.directory} onClose={() => setEditor(null)} onSaved={() => { setEditor(null); router.refresh(); }} />}
+    {editor && <ActionEditor action={editor.action} link={editor.link} directory={view.directory} onClose={() => setEditor(null)} onSaved={() => { setEditor(null); notify("Action saved"); router.refresh(); }} />}
   </div>;
 }

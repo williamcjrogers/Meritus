@@ -1,5 +1,7 @@
 "use client";
-import { useState, type FormEvent, type ReactNode } from "react";
+import { useId, useState, type FormEvent, type ReactNode } from "react";
+import { Button } from "@/components/ui/Button";
+import { useToast } from "@/components/ui/Toast";
 export type Row = Record<string, unknown>;
 export type Values = Record<string, string | string[]>;
 export const value = (v: Values, key: string) => String(v[key] ?? "");
@@ -77,11 +79,26 @@ export function ActionForm({
   button?: string;
   children?: ReactNode;
 }) {
+  const notify = useToast();
+  const formId = useId();
+  const [invalidField, setInvalidField] = useState<string | null>(null);
   const [busy, setBusy] = useState(false),
     [message, setMessage] = useState(""),
     [error, setError] = useState(false);
   async function send(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (busy) return;
+    const form = event.currentTarget;
+    const invalid = Array.from(form.elements).find((element) => (element instanceof HTMLInputElement || element instanceof HTMLTextAreaElement || element instanceof HTMLSelectElement) && !element.validity.valid) as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement | undefined;
+    if (invalid) {
+      const field = fields.find(item => item.name === invalid.name);
+      setInvalidField(invalid.name);
+      setError(true);
+      setMessage(invalid.validity.valueMissing ? `Complete ${field?.label ?? "this field"}.` : `Check ${field?.label ?? "this value"} and try again.`);
+      invalid.focus();
+      return;
+    }
+    setInvalidField(null);
     setBusy(true);
     setMessage("");
     const fd = new FormData(event.currentTarget),
@@ -95,6 +112,7 @@ export function ActionForm({
       await submit(v);
       setError(false);
       setMessage("Saved. The latest state is shown below.");
+      notify("Changes saved");
     } catch (e) {
       setError(true);
       setMessage(e instanceof Error ? e.message : "Request failed");
@@ -103,14 +121,14 @@ export function ActionForm({
     }
   }
   return (
-    <form
+    <form noValidate
       onSubmit={send}
-      className="rounded border border-ink/15 bg-white/60 p-5 space-y-4"
+      className="rounded border border-text/15 bg-white/60 p-5 space-y-4"
     >
-      <h3 className="font-serif text-xl">{title}</h3>
+      <h3 className="font-sans text-xl">{title}</h3>
       <div className="grid gap-4 md:grid-cols-2">
         {fields.map((f) => f.type==='checks'?(
-          <fieldset key={f.name} className="md:col-span-2"><legend className="mb-2 text-sm font-medium">{f.label}</legend><div className="flex flex-wrap gap-x-5 gap-y-2">{f.options?.map(o=><label key={o.value} className="flex items-center gap-2"><input type="checkbox" name={f.name} value={o.value}/>{o.label}</label>)}</div>{f.hint&&<p className="mt-1 text-xs text-ink/65">{f.hint}</p>}</fieldset>
+          <fieldset key={f.name} className="md:col-span-2"><legend className="mb-2 text-[15px] font-medium">{f.label}</legend><div className="flex flex-wrap gap-x-5 gap-y-2">{f.options?.map(o=><label key={o.value} className="flex items-center gap-2"><input type="checkbox" name={f.name} value={o.value}/>{o.label}</label>)}</div>{f.hint&&<p className="mt-1 text-[13px] text-muted">{f.hint}</p>}</fieldset>
         ):(
           <label
             key={f.name}
@@ -120,21 +138,25 @@ export function ActionForm({
                 : "block"
             }
           >
-            <span className="mb-1 block text-sm font-medium">{f.label}</span>
+            <span className="mb-1 block text-[15px] font-medium">{f.label}</span>
             {f.type === "textarea" ? (
               <textarea
                 name={f.name}
+                aria-invalid={invalidField === f.name || undefined}
+                aria-describedby={invalidField === f.name ? `${formId}-feedback` : undefined}
                 required={f.required}
                 defaultValue={f.value}
                 rows={3}
-                className="w-full rounded border border-ink/25 bg-white p-2"
+                className="app-field resize-none"
               />
             ) : f.type === "select" ? (
               <select
                 name={f.name}
+                aria-invalid={invalidField === f.name || undefined}
+                aria-describedby={invalidField === f.name ? `${formId}-feedback` : undefined}
                 required={f.required}
                 defaultValue={f.value ?? ""}
-                className="w-full rounded border border-ink/25 bg-white p-2"
+                className="app-field"
               >
                 <option value="">Choose</option>
                 {f.options?.map((o) => (
@@ -146,6 +168,8 @@ export function ActionForm({
             ) : (
               <input
                 name={f.name}
+                aria-invalid={invalidField === f.name || undefined}
+                aria-describedby={invalidField === f.name ? `${formId}-feedback` : undefined}
                 type={f.type ?? "text"}
                 required={f.required}
                 defaultValue={f.value}
@@ -155,27 +179,23 @@ export function ActionForm({
                 className={
                   f.type === "checkbox"
                     ? "size-4"
-                    : "w-full rounded border border-ink/25 bg-white p-2"
+                    : "app-field"
                 }
               />
             )}{" "}
             {f.hint && (
-              <span className="mt-1 block text-xs text-ink/65">{f.hint}</span>
+              <span className="mt-1 block text-[13px] text-muted">{f.hint}</span>
             )}
           </label>
         ))}
       </div>
       {children}
       <div className="flex flex-wrap items-center gap-4">
-        <button
-          disabled={busy}
-          className="rounded bg-green px-4 py-2 text-sm text-cream disabled:opacity-50"
-        >
-          {busy ? "Saving…" : button}
-        </button>
+        <Button type="submit" busy={busy}>{button}</Button>
         <p
+          id={`${formId}-feedback`}
           role={error ? "alert" : "status"}
-          className={error ? "text-sm text-red-800" : "text-sm"}
+          className={error ? "text-[15px] text-danger" : "text-[15px]"}
         >
           {message}
         </p>
@@ -192,16 +212,20 @@ export function DataTable({
   columns: { key: string; title: string; render?: (row: Row) => ReactNode }[];
   empty?: string;
 }) {
+  const [page, setPage] = useState(1);
+  const pageSize = 50;
+  const currentPage = Math.min(page, Math.max(1, Math.ceil(rows.length / pageSize)));
+  const visibleRows = rows.slice((currentPage - 1) * pageSize, currentPage * pageSize);
   if (!rows.length)
     return (
-      <p className="rounded border border-dashed border-ink/25 p-6 text-ink/65">
+      <p className="rounded border border-dashed border-text/25 p-6 text-muted">
         {empty}
       </p>
     );
   return (
-    <div className="overflow-x-auto rounded border border-ink/15">
-      <table className="w-full text-left text-sm">
-        <thead className="bg-green/5">
+    <div><div className="overflow-x-auto rounded border border-line">
+      <table className="w-full text-left text-[15px]">
+        <thead className="bg-primary/5">
           <tr>
             {columns.map((c) => (
               <th key={c.key} className="p-3 font-medium">
@@ -211,8 +235,8 @@ export function DataTable({
           </tr>
         </thead>
         <tbody>
-          {rows.map((r, n) => (
-            <tr key={String(r.id ?? n)} className="border-t border-ink/10">
+          {visibleRows.map((r, n) => (
+            <tr key={String(r.id ?? n)} className="border-t border-text/10">
               {columns.map((c) => (
                 <td key={c.key} className="p-3 align-top">
                   {c.render ? c.render(r) : label(r[c.key])}
@@ -222,7 +246,7 @@ export function DataTable({
           ))}
         </tbody>
       </table>
-    </div>
+    </div>{rows.length > pageSize && <nav aria-label="Table pages" className="flex items-center gap-3 py-4"><Button variant="secondary" disabled={currentPage === 1} onClick={() => setPage(currentPage - 1)}>Previous</Button><span>{(currentPage - 1) * pageSize + 1} to {Math.min(currentPage * pageSize, rows.length)} of {rows.length} loaded records</span><Button variant="secondary" disabled={currentPage * pageSize >= rows.length} onClick={() => setPage(currentPage + 1)}>Next</Button></nav>}</div>
   );
 }
 export function Panel({
@@ -234,7 +258,7 @@ export function Panel({
 }) {
   return (
     <section className="space-y-4">
-      <h2 className="font-serif text-2xl">{title}</h2>
+      <h2 className="font-sans text-2xl">{title}</h2>
       {children}
     </section>
   );

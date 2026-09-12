@@ -27,13 +27,13 @@ export function Board({
           <details open className="group">
             <summary className="cursor-pointer list-none md:pointer-events-none [&::-webkit-details-marker]:hidden">
               <Eyebrow>
-                {stageLabel(stage)} <span className="text-ink/70">({counts[stage]})</span>
-                <span aria-hidden="true" className="ml-2 inline-block text-[10px] transition-transform group-open:rotate-180 md:hidden">▾</span>
+                {stageLabel(stage)} <span className="text-muted">({counts[stage]})</span>
+                <span aria-hidden="true" className="ml-2 inline-block text-[13px] transition-transform group-open:rotate-180 md:hidden">▾</span>
               </Eyebrow>
             </summary>
             <div className="mt-4 space-y-3">
               {columns[stage].length === 0 ? (
-                <p className="border border-dashed border-green/15 px-4 py-6 text-center text-[12px] text-ink/70">Nothing at {stageLabel(stage).toLowerCase()}</p>
+                <p className="border border-dashed border-line px-4 py-6 text-center text-[13px] text-muted">Nothing at {stageLabel(stage).toLowerCase()}</p>
               ) : (
                 columns[stage].map((pursuit) => (
                   <PursuitCard key={pursuit.pursuit.id} lead={pursuit} directors={directors} now={now} onMove={onMove} />

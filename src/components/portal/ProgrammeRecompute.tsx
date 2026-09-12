@@ -36,16 +36,16 @@ export function ProgrammeRecompute({ programmeId }: { programmeId: string }) {
 
   return (
     <div>
-      <button type="button" className="btn-secondary" onClick={() => void recompute()} disabled={pending}>
+      <button type="button" className="app-button app-button--secondary" onClick={() => void recompute()} disabled={pending}>
         {pending ? "Recomputing…" : "Recompute report"}
       </button>
       {progress && (
-        <p className="mt-2 text-[12px] text-ink/70" role="status">
+        <p className="mt-2 text-[13px] text-muted" role="status">
           {progress}
         </p>
       )}
       {error && (
-        <p className="mt-2 text-[12px] text-oxblood" role="alert">
+        <p className="mt-2 text-[13px] text-danger" role="alert">
           {error}
         </p>
       )}

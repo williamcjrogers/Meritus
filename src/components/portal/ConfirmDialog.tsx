@@ -1,63 +1,18 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useId, useRef, type ReactNode, type RefObject } from "react";
+import { Button } from "@/components/ui/Button";
 
-export function ConfirmDialog({
-  open,
-  title,
-  body,
-  confirmLabel = "Confirm",
-  cancelLabel = "Cancel",
-  danger = false,
-  pending = false,
-  onConfirm,
-  onCancel,
-}: {
-  open: boolean;
-  title: ReactNode;
-  body?: ReactNode;
-  confirmLabel?: string;
-  cancelLabel?: string;
-  danger?: boolean;
-  pending?: boolean;
-  onConfirm: () => void;
-  onCancel: () => void;
-}) {
+export function ConfirmDialog({ open, title, body, confirmLabel = "Confirm", cancelLabel = "Cancel", danger = false, pending = false, onConfirm, onCancel, returnFocusRef }: { open: boolean; title: ReactNode; body?: ReactNode; confirmLabel?: string; cancelLabel?: string; danger?: boolean; pending?: boolean; onConfirm: () => void; onCancel: () => void; returnFocusRef?: RefObject<HTMLElement | null> }) {
   const ref = useRef<HTMLDialogElement>(null);
-
+  const cancelRef = useRef<HTMLButtonElement>(null);
+  const titleId = useId();
+  const bodyId = useId();
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
-    if (!open && dialog.open) dialog.close();
-  }, [open]);
-
-  return (
-    <dialog
-      ref={ref}
-      className="portal-dialog portal-confirm"
-      onCancel={(event) => {
-        event.preventDefault();
-        onCancel();
-      }}
-    >
-      <div className="panel-brackets bg-parchment border border-green/10 p-6 text-ink">
-        <h2 className="font-serif text-2xl text-green">{title}</h2>
-        {body && <div className="mt-3 text-[14px] leading-relaxed text-ink/70">{body}</div>}
-        <div className="mt-6 flex justify-end gap-3">
-          <button type="button" onClick={onCancel} className="btn-quiet" disabled={pending}>
-            {cancelLabel}
-          </button>
-          <button
-            type="button"
-            onClick={onConfirm}
-            className={`btn-secondary ${danger ? "btn-danger" : ""}`}
-            disabled={pending}
-          >
-            {pending ? "Working…" : confirmLabel}
-          </button>
-        </div>
-      </div>
-    </dialog>
-  );
+    if (open && !dialog.open) { dialog.showModal(); cancelRef.current?.focus(); }
+    if (!open && dialog.open) { dialog.close(); returnFocusRef?.current?.focus(); }
+  }, [open, returnFocusRef]);
+  return <dialog ref={ref} aria-labelledby={titleId} aria-describedby={body ? bodyId : undefined} className="portal-dialog portal-confirm" onCancel={event => { event.preventDefault(); if (!pending) onCancel(); }}><div className="app-panel p-6"><h2 id={titleId} className="text-2xl font-medium">{title}</h2>{body && <div id={bodyId} className="mt-3 text-[15px] text-muted">{body}</div>}<div className="mt-6 flex justify-end gap-3"><button ref={cancelRef} type="button" onClick={onCancel} className="app-button app-button--secondary" disabled={pending}>{cancelLabel}</button><Button onClick={onConfirm} intent={danger ? "danger" : "brand"} busy={pending}>{confirmLabel}</Button></div></div></dialog>;
 }

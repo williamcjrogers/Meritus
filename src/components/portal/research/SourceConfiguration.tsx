@@ -9,8 +9,8 @@ type SourceConfigurationProps = {
 };
 
 const inputClass =
-  "w-full rounded border border-ink/25 bg-white px-3 py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green";
-const hintClass = "mt-2 text-sm leading-relaxed text-ink/65";
+  "w-full rounded border border-text/25 bg-white px-3 py-2 text-[15px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary";
+const hintClass = "mt-2 text-[15px] leading-relaxed text-muted";
 
 // Publisher labels checked on 12 September 2026: https://www.thegazette.co.uk/noticecodes
 const gazetteNoticeTypes = [
@@ -142,7 +142,7 @@ function ConfigurationForm({ source, save }: SourceConfigurationProps) {
     >
       <fieldset disabled={busy} className="space-y-6 disabled:opacity-60">
         <div>
-            <label htmlFor={`${id}-status`} className="mb-2 block text-sm font-medium">Use this source</label>
+            <label htmlFor={`${id}-status`} className="mb-2 block text-[15px] font-medium">Use this source</label>
             <select id={`${id}-status`} name="status" value={status} onChange={(event) => setStatus(event.target.value)} aria-describedby={`${id}-status-hint`} className={inputClass}>
               <option value="ready">Enabled for research</option>
               <option value="paused">Paused</option>
@@ -153,7 +153,7 @@ function ConfigurationForm({ source, save }: SourceConfigurationProps) {
 
         {source.provider === "companies-house" && (
           <div>
-            <label htmlFor={`${id}-company`} className="mb-2 block text-sm font-medium">Company number</label>
+            <label htmlFor={`${id}-company`} className="mb-2 block text-[15px] font-medium">Company number</label>
             <input id={`${id}-company`} name="companyNumber" value={companyNumber} onChange={(event) => setCompanyNumber(event.target.value)} aria-describedby={`${id}-company-hint`} className={inputClass} />
             <p id={`${id}-company-hint`} className={hintClass}>Enter the Companies House number, including any letters. Short numeric numbers will receive leading zeroes. Your administrator must also set up the Companies House connection before this source can retrieve records.</p>
           </div>
@@ -161,27 +161,27 @@ function ConfigurationForm({ source, save }: SourceConfigurationProps) {
 
         {source.provider === "gazette" && (
           <fieldset aria-describedby={`${id}-notices-hint`}>
-            <legend className="text-sm font-medium">Gazette notices to include</legend>
+            <legend className="text-[15px] font-medium">Gazette notices to include</legend>
             <p id={`${id}-notices-hint`} className={hintClass}>Choose the notices you want to include in research. Select at least one before enabling.</p>
             <div className="mt-3 grid gap-3 md:grid-cols-2">
               {gazetteNoticeTypes.map((notice) => (
-                <label key={notice.code} className="flex cursor-pointer items-start gap-3 rounded border border-ink/15 bg-white p-3 text-sm leading-relaxed">
+                <label key={notice.code} className="flex cursor-pointer items-start gap-3 rounded border border-text/15 bg-white p-3 text-[15px] leading-relaxed">
                   <input
                     type="checkbox"
                     name="noticeTypes"
                     value={notice.code}
                     checked={noticeTypes.includes(notice.code)}
                     onChange={(event) => setNoticeTypes((current) => event.target.checked ? [...current, notice.code] : current.filter((code) => code !== notice.code))}
-                    className="mt-1 size-4 shrink-0 accent-green"
+                    className="mt-1 size-4 shrink-0 accent-primary"
                   />
                   <span>{notice.label}</span>
                 </label>
               ))}
             </div>
-            <details open={additionalNoticesOpen} onToggle={(event) => setAdditionalNoticesOpen(event.currentTarget.open)} className="mt-4 rounded border border-ink/15 p-4">
-              <summary className="cursor-pointer text-sm font-medium">Additional notice types</summary>
+            <details open={additionalNoticesOpen} onToggle={(event) => setAdditionalNoticesOpen(event.currentTarget.open)} className="mt-4 rounded border border-text/15 p-4">
+              <summary className="cursor-pointer text-[15px] font-medium">Additional notice types</summary>
               <div className="mt-3">
-                <label htmlFor={`${id}-notices`} className="mb-2 block text-sm font-medium">Additional notice codes</label>
+                <label htmlFor={`${id}-notices`} className="mb-2 block text-[15px] font-medium">Additional notice codes</label>
                 <input id={`${id}-notices`} name="additionalNoticeTypes" value={additionalNoticeTypes} onChange={(event) => setAdditionalNoticeTypes(event.target.value)} aria-describedby={`${id}-additional-notices-hint`} className={inputClass} />
                 <p id={`${id}-additional-notices-hint`} className={hintClass}>Existing types outside the choices above are kept here. To add another type, enter its four-digit code from <a href="https://www.thegazette.co.uk/noticecodes" target="_blank" rel="noreferrer" className="underline underline-offset-4">The Gazette's full notice list</a>. Separate codes with commas.</p>
               </div>
@@ -189,30 +189,30 @@ function ConfigurationForm({ source, save }: SourceConfigurationProps) {
           </fieldset>
         )}
 
-        <details open={advancedOpen} onToggle={(event) => setAdvancedOpen(event.currentTarget.open)} className="rounded border border-ink/15 p-4">
-          <summary className="cursor-pointer text-sm font-medium">Advanced limits</summary>
-          <p className="mt-3 text-sm text-ink/65">Technical daily limits for data retrieval and AI processing. Leave these at their saved values unless you need to change capacity.</p>
+        <details open={advancedOpen} onToggle={(event) => setAdvancedOpen(event.currentTarget.open)} className="rounded border border-text/15 p-4">
+          <summary className="cursor-pointer text-[15px] font-medium">Advanced limits</summary>
+          <p className="mt-3 text-[15px] text-muted">Technical daily limits for data retrieval and AI processing. Leave these at their saved values unless you need to change capacity.</p>
           <div className="mt-4">
-            <label htmlFor={`${id}-budget`} className="mb-2 block text-sm font-medium">Daily AI spending limit (£)</label>
+            <label htmlFor={`${id}-budget`} className="mb-2 block text-[15px] font-medium">Daily AI spending limit (£)</label>
             <input id={`${id}-budget`} name="dailyBudgetGbp" inputMode="decimal" value={budget} onChange={(event) => setBudget(event.target.value)} aria-describedby={`${id}-budget-hint`} className={inputClass} />
             <p id={`${id}-budget-hint`} className={hintClass}>Maximum daily model spend for this source, in pounds. Enter an amount from £0 to £10,000.</p>
           </div>
           <div className="mt-4 grid gap-4 md:grid-cols-2">
             <div>
-              <label htmlFor={`${id}-requests`} className="mb-2 block text-sm font-medium">Daily requests</label>
+              <label htmlFor={`${id}-requests`} className="mb-2 block text-[15px] font-medium">Daily requests</label>
               <input id={`${id}-requests`} name="dailyRequests" inputMode="numeric" value={requests} onChange={(event) => setRequests(event.target.value)} className={inputClass} />
             </div>
             <div>
-              <label htmlFor={`${id}-tokens`} className="mb-2 block text-sm font-medium">Daily model tokens</label>
+              <label htmlFor={`${id}-tokens`} className="mb-2 block text-[15px] font-medium">Daily model tokens</label>
               <input id={`${id}-tokens`} name="dailyTokens" inputMode="numeric" value={tokens} onChange={(event) => setTokens(event.target.value)} className={inputClass} />
             </div>
           </div>
         </details>
       </fieldset>
 
-      <details className="rounded border border-ink/15 p-4">
-        <summary className="cursor-pointer text-sm font-medium">Licence and technical details</summary>
-        <div className="mt-3 space-y-3 text-sm leading-relaxed text-ink/70">
+      <details className="rounded border border-text/15 p-4">
+        <summary className="cursor-pointer text-[15px] font-medium">Licence and technical details</summary>
+        <div className="mt-3 space-y-3 text-[15px] leading-relaxed text-muted">
           <p>{source.attribution}</p>
           <p><a href={source.termsUrl} target="_blank" rel="noreferrer" className="underline underline-offset-4">Read the recorded source terms</a>{source.termsVersion && <span> ({source.termsVersion})</span>}</p>
           <p>{source.credentialConfigured ? "A credential reference is recorded. This does not confirm that its key is present or that a connection has succeeded." : "No credential reference is recorded. Some public sources do not need one."} Server credentials are managed by the technical administrator.</p>
@@ -223,9 +223,9 @@ function ConfigurationForm({ source, save }: SourceConfigurationProps) {
       </details>
 
       <div className="flex flex-wrap items-center gap-4">
-        <button type="submit" disabled={busy} className="rounded bg-green px-5 py-2.5 text-sm font-medium text-cream disabled:opacity-50">{busy ? "Saving…" : "Save changes"}</button>
-        {error && <p role="alert" className="text-sm text-red-800">{error}</p>}
-        {saved && <p role="status" className="text-sm text-green">Changes saved.</p>}
+        <button type="submit" disabled={busy} className="rounded bg-primary px-5 py-2.5 text-[15px] font-medium text-surface disabled:opacity-50">{busy ? "Saving…" : "Save changes"}</button>
+        {error && <p role="alert" className="text-[15px] text-danger">{error}</p>}
+        {saved && <p role="status" className="text-[15px] text-primary">Changes saved.</p>}
       </div>
     </form>
   );

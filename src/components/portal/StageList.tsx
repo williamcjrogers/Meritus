@@ -20,15 +20,15 @@ export function StageList({
     <section aria-label={`${stageLabel(stage)} list`}>
       <div className="mb-4 flex items-end justify-between gap-4">
         <Eyebrow rule={false}>
-          {stageLabel(stage)} <span className="text-ink/60">({rows.length})</span>
+          {stageLabel(stage)} <span className="text-muted">({rows.length})</span>
         </Eyebrow>
-        <Link href="/portal/pursuits" className="btn-quiet">
+        <Link href="/portal/pursuits" className="app-button app-button--ghost">
           Back to live leads
         </Link>
       </div>
-      <div className="panel-brackets overflow-x-auto border border-green/10 bg-parchment">
+      <div className="app-panel overflow-x-auto border border-line bg-surface">
         <table className="w-full text-left text-[13px]">
-          <thead className="border-b border-green/10 font-mono text-[10px] tracking-[0.15em] uppercase text-green/80">
+          <thead className="border-b border-line font-sans text-[13px]   text-muted">
             <tr>
               <th className="px-4 py-3 font-medium">Firm</th>
               <th className="px-4 py-3 font-medium">Nature</th>
@@ -38,35 +38,35 @@ export function StageList({
               <th className="px-4 py-3 font-medium">Reason</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-green/10">
+          <tbody className="divide-y divide-line">
             {rows.length === 0 ? (
               <tr>
-                <td colSpan={dormant ? 6 : 5} className="px-4 py-8 text-ink/70">
+                <td colSpan={dormant ? 6 : 5} className="px-4 py-8 text-muted">
                   Nothing at {stageLabel(stage).toLowerCase()}.
                 </td>
               </tr>
             ) : (
               rows.map(({ pursuit, change }) => (
-                <tr key={pursuit.id} className="align-top hover:bg-stone/40">
+                <tr key={pursuit.id} className="align-top hover:bg-mist/40">
                   <td className="px-4 py-3">
-                    <Link href={`/portal/pursuits/${pursuit.id}`} className="font-serif text-[17px] text-green hover:text-brass">
+                    <Link href={`/portal/pursuits/${pursuit.id}`} className="font-sans text-[17px] text-primary hover:text-primary">
                       {pursuit.firm}
                     </Link>
                   </td>
-                  <td className="px-4 py-3 text-ink/70">{pursuit.disputeNature ?? "–"}</td>
+                  <td className="px-4 py-3 text-muted">{pursuit.disputeNature ?? "–"}</td>
                   <td className="px-4 py-3">
                     <OwnerAvatar initials={directorInitials(directors, pursuit.ownerId)} name={directorName(directors, pursuit.ownerId)} />
                   </td>
-                  <td className="whitespace-nowrap px-4 py-3 font-mono text-[11px] text-ink/70">{shortDate(pursuit.stageChangedAt)}</td>
+                  <td className="whitespace-nowrap px-4 py-3 font-sans text-[13px] text-muted">{shortDate(pursuit.stageChangedAt)}</td>
                   {dormant && (
-                    <td className="px-4 py-3 text-ink/80">
+                    <td className="px-4 py-3 text-muted">
                       {pursuit.reviewDue ? "Review" : "–"}
                       {pursuit.reviewDue && (
-                        <span className="ml-2 font-mono text-[10px] tracking-[0.05em] text-ink/70">due {dueLabel(pursuit.reviewDue)}</span>
+                        <span className="ml-2 font-sans text-[13px]  text-muted">due {dueLabel(pursuit.reviewDue)}</span>
                       )}
                     </td>
                   )}
-                  <td className="px-4 py-3 text-ink/70">{change?.meta?.reason ?? "–"}</td>
+                  <td className="px-4 py-3 text-muted">{change?.meta?.reason ?? "–"}</td>
                 </tr>
               ))
             )}

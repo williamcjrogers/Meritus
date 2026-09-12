@@ -14,25 +14,24 @@ export function ProgrammePanel({
 }) {
   return (
     <Panel
-      eyebrow="Programme"
-      title="Intelligence"
+      title="Programme analysis"
       actions={
-        <Link href="/portal/programmes" className="btn-quiet">
+        <Link href="/portal/programmes" className="app-button app-button--ghost">
           All programmes
         </Link>
       }
     >
-      <p className="mb-4 text-[13px] text-ink/70">
-        Ingest an Asta, P6, MSP or CSV export. Figures cite the block engine. Native .pp files are inspected; XML or CSV is needed for activity-level CPM.
+      <p className="mb-4 text-[13px] text-muted">
+        Upload an Asta, Primavera P6, Microsoft Project or CSV export. Native Asta files can be inspected; XML or CSV is needed to analyse activities and the critical path.
       </p>
       <ProgrammeUpload pursuitId={pursuitId} />
-      <ul className="mt-4 divide-y divide-green/10">
+      <ul className="mt-4 divide-y divide-line">
         {programmes.map((item) => (
           <li key={item.id} className="py-3">
-            <Link href={`/portal/programmes/${item.id}`} className="text-[13px] text-green hover:text-brass">
+            <Link href={`/portal/programmes/${item.id}`} className="text-[13px] text-primary hover:text-primary">
               {item.fileName}
             </Link>
-            <p className="font-mono text-[10px] tracking-[0.12em] text-ink/70">
+            <p className="font-sans text-[13px]  text-muted">
               {item.parseStatus}
               {item.report?.method ? ` · ${item.report.method}` : ""}
               {item.report?.healthScore != null ? ` · health ${item.report.healthScore}` : ""}
@@ -40,7 +39,7 @@ export function ProgrammePanel({
             </p>
           </li>
         ))}
-        {programmes.length === 0 && <li className="py-3 text-[13px] text-ink/70">No programmes on this pursuit.</li>}
+        {programmes.length === 0 && <li className="py-3 text-[13px] text-muted">No programmes on this pursuit.</li>}
       </ul>
     </Panel>
   );

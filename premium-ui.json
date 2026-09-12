@@ -1,0 +1,22 @@
+{
+  "profile": "product-admin",
+  "sourceRoots": ["src"],
+  "locale": "en-GB",
+  "canonicalMap": "UX-CONTRACT.md",
+  "requiredCapabilities": ["Table Selection", "Select/Listbox", "Date", "Form", "Scrollbar", "Toast", "CRUD"],
+  "ownership": { "Select/Listbox": "native", "Date": "native" },
+  "requiredCommands": ["unit", "typecheck", "lint", "premium"],
+  "commands": {
+    "unit": "corepack pnpm test",
+    "typecheck": "corepack pnpm exec tsc --noEmit",
+    "lint": "corepack pnpm lint",
+    "premium": "uv run python /Users/williamrogers/.codex/plugins/cache/openai-curated-remote/frontend-design-premium/1.4.0/skills/frontend-design-premium/scripts/audit_project.py . --mode strict --output docs/reviews/experience-reset/premium-audit.json"
+  },
+  "evidence": {
+    "crudFullFlow": "src/components/portal/actions/ActionEditor.test.tsx",
+    "failurePaths": "src/components/portal/research/ResearchDesk.test.tsx",
+    "canonicalControls": "src/components/ui/Primitives.test.tsx",
+    "navigation": "src/components/portal/PortalNavigation.test.tsx",
+    "routeInventory": "docs/reviews/experience-reset/route-inventory.md"
+  }
+}

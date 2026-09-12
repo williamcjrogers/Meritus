@@ -11,9 +11,9 @@ export function SourceHealth({ source }: { source: SourceSettings }) {
             : "Unavailable"}
       </span>
       {source.configurationError && (
-        <p className="text-sm text-amber-900">{source.configurationError}</p>
+        <p className="text-[15px] text-danger">{source.configurationError}</p>
       )}
-      <p className="text-xs text-ink/65">
+      <p className="text-[13px] text-muted">
         Last successful retrieval: {date(source.lastSuccessAt)}
       </p>
     </div>

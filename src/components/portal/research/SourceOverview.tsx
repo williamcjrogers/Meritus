@@ -27,12 +27,12 @@ export function sourceState(source: SourceSettings) {
     (source.provider === "gazette" &&
       (!Array.isArray(source.selection.noticeTypes) || !source.selection.noticeTypes.length));
   if (source.configurationError || missingSelection || source.status === "unavailable")
-    return { group: "attention", label: "Needs attention", colour: "bg-amber-50 text-amber-950 border-amber-200" };
+    return { group: "attention", label: "Needs attention", colour: "bg-[var(--danger-surface)] text-danger border-danger" };
   if (source.status === "paused")
-    return { group: "paused", label: "Paused", colour: "bg-stone text-ink border-ink/20" };
+    return { group: "paused", label: "Paused", colour: "bg-mist text-text border-text/20" };
   if (source.status === "ready")
-    return { group: "ready", label: source.lastSuccessAt ? "Enabled" : "Ready to collect", colour: "bg-green/10 text-green border-green/20" };
-  return { group: "attention", label: "Needs attention", colour: "bg-amber-50 text-amber-950 border-amber-200" };
+    return { group: "ready", label: source.lastSuccessAt ? "Enabled" : "Ready to collect", colour: "bg-primary/10 text-primary border-line" };
+  return { group: "attention", label: "Needs attention", colour: "bg-[var(--danger-surface)] text-danger border-danger" };
 }
 
 function nextStep(source: SourceSettings) {
@@ -71,45 +71,45 @@ export function SourceOverview({ sources, save, busy = false }: {
     <section aria-labelledby="source-overview-title" className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 id="source-overview-title" className="font-serif text-2xl">Your research sources</h2>
-          <p className="mt-2 text-sm text-ink/70">{sources.length} sources · {counts.ready} enabled · {counts.attention} need attention · {counts.paused} paused</p>
+          <h2 id="source-overview-title" className="font-sans text-2xl">Your research sources</h2>
+          <p className="mt-2 text-[15px] text-muted">{sources.length} sources · {counts.ready} enabled · {counts.attention} need attention · {counts.paused} paused</p>
         </div>
-        <Link href="/portal/research" className="rounded bg-green px-4 py-2.5 text-sm font-medium text-cream">Open your research desk →</Link>
+        <Link href="/portal/research" className="rounded bg-primary px-4 py-2.5 text-[15px] font-medium text-surface">Open your research desk →</Link>
       </div>
-      <p className="max-w-3xl text-sm leading-relaxed text-ink/75">Your research desk automatically uses relevant material collected from these sources. Use Import a file to add your own files or licensed datasets.</p>
-      <details className="rounded border border-ink/15 bg-white/30 px-4 py-3">
-        <summary className="cursor-pointer text-sm">Find or filter sources</summary>
+      <p className="max-w-3xl text-[15px] leading-relaxed text-muted">Your research desk automatically uses relevant material collected from these sources. Use Import a file to add your own files or licensed datasets.</p>
+      <details className="rounded border border-text/15 bg-white/30 px-4 py-3">
+        <summary className="cursor-pointer text-[15px]">Find or filter sources</summary>
       <div className="mt-3 flex flex-col gap-3 sm:flex-row">
-        <label className="flex-1 text-sm font-medium">Find a source
-          <input type="search" disabled={busy} value={query} onChange={event => setQuery(event.target.value)} placeholder="Search by name or information type" className="mt-1 block w-full rounded border border-ink/25 bg-white p-3 font-normal" />
+        <label className="flex-1 text-[15px] font-medium">Find a source
+          <input type="search" disabled={busy} value={query} onChange={event => setQuery(event.target.value)} placeholder="Search by name or information type" className="mt-1 block w-full rounded border border-text/25 bg-white p-3 font-normal" />
         </label>
-        <label className="text-sm font-medium sm:w-56">Show
-          <select disabled={busy} value={filter} onChange={event => setFilter(event.target.value)} className="mt-1 block w-full rounded border border-ink/25 bg-white p-3 font-normal">
+        <label className="text-[15px] font-medium sm:w-56">Show
+          <select disabled={busy} value={filter} onChange={event => setFilter(event.target.value)} className="mt-1 block w-full rounded border border-text/25 bg-white p-3 font-normal">
             <option value="all">All sources</option><option value="attention">Needs attention</option><option value="ready">Enabled sources</option><option value="paused">Paused sources</option>
           </select>
         </label>
       </div>
       </details>
-      <div className="overflow-hidden rounded-lg border border-ink/15 bg-white/60">
-        {!shown.length && <p role="status" className="p-6 text-ink/70">{sources.length ? "No sources match these filters." : "No sources have been added yet. Use Add a source to register one."}</p>}
+      <div className="overflow-hidden rounded-lg border border-text/15 bg-white/60">
+        {!shown.length && <p role="status" className="p-6 text-muted">{sources.length ? "No sources match these filters." : "No sources have been added yet. Use Add a source to register one."}</p>}
         {shown.map(source => {
           const state = sourceState(source);
           const open = selected === source.id;
           return (
-            <article key={source.id} className="border-b border-ink/10 last:border-b-0">
+            <article key={source.id} className="border-b border-text/10 last:border-b-0">
               <div className="grid gap-4 p-5 lg:grid-cols-[minmax(0,1fr)_13rem_auto] lg:items-start">
                 <div className="min-w-0">
-                  <h3 className="font-medium text-green">{source.label}</h3>
-                  <p className="mt-1 text-sm leading-relaxed text-ink/75">{descriptions[source.provider] ?? "Information registered for use in your research."}</p>
-                  <p className={`mt-3 text-sm ${state.group === "attention" ? "text-amber-950" : "text-ink/70"}`}>{nextStep(source)}</p>
+                  <h3 className="font-medium text-primary">{source.label}</h3>
+                  <p className="mt-1 text-[15px] leading-relaxed text-muted">{descriptions[source.provider] ?? "Information registered for use in your research."}</p>
+                  <p className={`mt-3 text-[15px] ${state.group === "attention" ? "text-danger" : "text-muted"}`}>{nextStep(source)}</p>
                 </div>
                 <div className="space-y-2">
-                  <span className={`inline-flex rounded-full border px-2.5 py-1 text-xs font-medium ${state.colour}`}>{state.label}</span>
-                  <p className="text-xs leading-relaxed text-ink/70">{source.lastSuccessAt ? `Last collected ${date(source.lastSuccessAt)}` : "No collection recorded"}</p>
+                  <span className={`inline-flex rounded-full border px-2.5 py-1 text-[13px] font-medium ${state.colour}`}>{state.label}</span>
+                  <p className="text-[13px] leading-relaxed text-muted">{source.lastSuccessAt ? `Last collected ${date(source.lastSuccessAt)}` : "No collection recorded"}</p>
                 </div>
-                <button type="button" disabled={busy} aria-label={`Settings for ${source.label}`} aria-expanded={open} aria-controls={`source-settings-${source.id}`} onClick={() => setSelected(open ? null : source.id)} className="min-h-11 rounded border border-ink/25 px-4 py-2 text-sm font-medium hover:bg-green/5 disabled:opacity-50">{open ? "Close settings" : "Settings"}</button>
+                <button type="button" disabled={busy} aria-label={`Settings for ${source.label}`} aria-expanded={open} aria-controls={`source-settings-${source.id}`} onClick={() => setSelected(open ? null : source.id)} className="min-h-11 rounded border border-text/25 px-4 py-2 text-[15px] font-medium hover:bg-primary/5 disabled:opacity-50">{open ? "Close settings" : "Settings"}</button>
               </div>
-              {open && <div id={`source-settings-${source.id}`} className="border-t border-ink/10 bg-white/40 p-5"><SourceConfiguration source={source} save={save} /></div>}
+              {open && <div id={`source-settings-${source.id}`} className="border-t border-text/10 bg-white/40 p-5"><SourceConfiguration source={source} save={save} /></div>}
             </article>
           );
         })}

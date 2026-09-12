@@ -101,11 +101,11 @@ export function Desk({
         <section aria-label="Inbox">
           <Eyebrow>
             Inbox{" "}
-            <span className="text-ink/70">
-              {inbox.length} {inbox.length === 1 ? "enquiry" : "enquiries"} awaiting a director
+            <span className="text-muted">
+              {inbox.length} {inbox.length === 1 ? "enquiry" : "enquiries"} awaiting an owner
             </span>
           </Eyebrow>
-          <div className="panel-brackets mt-4 divide-y divide-green/10 border border-green/10 bg-parchment">
+          <div className="app-panel mt-4 divide-y divide-line border border-line bg-surface">
             {inboxRows.map((pursuit) => (
               <InboxRow
                 key={pursuit.pursuit.id}
@@ -128,11 +128,11 @@ export function Desk({
         <section aria-label="Revisit">
           <Eyebrow>
             Revisit{" "}
-            <span className="text-ink/70">
+            <span className="text-muted">
               {revisit.length} dormant {revisit.length === 1 ? "pursuit" : "pursuits"} past the revisit date
             </span>
           </Eyebrow>
-          <div className="mt-4 divide-y divide-green/10 border border-green/10 bg-parchment/70">
+          <div className="mt-4 divide-y divide-line border border-line bg-surface/70">
             {revisit.map((pursuit) => (
               <RevisitRow
                 key={pursuit.pursuit.id}

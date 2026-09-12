@@ -34,11 +34,11 @@ export function ProspectConvertButton({ prospect }: { prospect: Prospect }) {
             router.push(`/portal/pursuits/${result.id}`);
           });
         }}
-        className="btn-brass text-[13px] disabled:opacity-40"
+        className="app-button text-[13px] disabled:opacity-40"
       >
         {pending ? "Opening…" : "Convert to live lead"}
       </button>
-      {error ? <p className="text-[12px] text-oxblood">{error}</p> : null}
+      {error ? <p className="text-[13px] text-danger">{error}</p> : null}
     </div>
   );
 }

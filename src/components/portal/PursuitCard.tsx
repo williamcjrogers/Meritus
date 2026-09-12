@@ -35,9 +35,9 @@ export function PursuitCard({
   const detail = [pursuit.disputeNature, pursuit.approximateValue].filter(Boolean).join(" · ");
 
   return (
-    <article className="group panel-brackets relative border border-green/10 bg-parchment p-4 transition-colors hover:border-brass/40 focus-within:border-brass/40">
+    <article className="group app-panel relative border border-line bg-surface p-4 transition-colors hover:border-primary/40 focus-within:border-primary/40">
       <div className="flex items-start justify-between gap-2">
-        <Link href={`/portal/pursuits/${pursuit.id}`} className="font-serif text-[19px] leading-tight text-green hover:text-brass">
+        <Link href={`/portal/pursuits/${pursuit.id}`} className="font-sans text-[19px] leading-tight text-primary hover:text-primary">
           {pursuit.firm}
         </Link>
         <div className="shrink-0 md:opacity-0 md:transition-opacity md:group-hover:opacity-100 md:group-focus-within:opacity-100">
@@ -45,37 +45,37 @@ export function PursuitCard({
             current={pursuit.stage}
             onMove={(to, reason, due) => onMove(pursuit.id, to, reason, due)}
             label="Move"
-            buttonClassName="btn-quiet text-[11px]"
+            buttonClassName="app-button app-button--ghost text-[13px]"
           />
         </div>
       </div>
-      <p className="mt-1 text-[12px] text-ink/70">{detail || "No details yet"}</p>
-      <div className="mt-3 flex items-center gap-2 text-[12px] text-ink/70">
+      <p className="mt-1 text-[13px] text-muted">{detail || "No details yet"}</p>
+      <div className="mt-3 flex items-center gap-2 text-[13px] text-muted">
         <OwnerAvatar initials={directorInitials(directors, pursuit.ownerId)} name={directorName(directors, pursuit.ownerId)} />
-        <span className="font-mono text-[11px] tracking-[0.05em]">
+        <span className="font-sans text-[13px] ">
           {`In ${stageLabel(pursuit.stage).toLowerCase()} for ${days} ${days === 1 ? "day" : "days"}`}
         </span>
       </div>
-      <p className={`mt-3 flex items-start gap-2 text-[14px] ${overdue ? "text-oxblood" : "text-green/90"}`}>
+      <p className={`mt-3 flex items-start gap-2 text-[15px] ${overdue ? "text-danger" : "text-primary/90"}`}>
         {nextAction?.title ? (
           <>
-            <span aria-hidden="true" className="mt-[3px] text-[9px]">
+            <span aria-hidden="true" className="mt-[3px] text-[13px]">
               {overdue ? "●" : "▸"}
             </span>
             <span>
               {nextAction?.title}
               {nextAction?.dueDate && (
-                <span className="ml-2 text-[14px]">
+                <span className="ml-2 text-[15px]">
                   {overdue ? "overdue" : dueLabel(nextAction?.dueDate)}
                 </span>
               )}
             </span>
           </>
         ) : (
-          <span className="text-ink/70">No next action</span>
+          <span className="text-muted">No next action</span>
         )}
       </p>
-      {nextAction && <p className="mt-1 text-[14px] text-ink/70">{actionStateLabels[nextAction.state]} · Action assignee: {nextAction.ownerName}</p>}
+      {nextAction && <p className="mt-1 text-[15px] text-muted">{actionStateLabels[nextAction.state]} · Action assignee: {nextAction.ownerName}</p>}
     </article>
   );
 }

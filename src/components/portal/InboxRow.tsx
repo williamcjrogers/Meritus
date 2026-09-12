@@ -76,25 +76,25 @@ export function InboxRow({
     <article className="flex flex-col gap-3 px-5 py-4 md:flex-row md:items-start md:justify-between">
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <Link href={`/portal/pursuits/${pursuit.id}`} className="font-serif text-xl leading-tight text-green hover:text-brass">
+          <Link href={`/portal/pursuits/${pursuit.id}`} className="font-sans text-xl leading-tight text-primary hover:text-primary">
             {pursuit.firm}
           </Link>
           {pursuit.stage !== "enquiry" && <StagePill stage={pursuit.stage} />}
-          <span className="text-[13px] text-ink/70">{meta(pursuit) || "No details given"}</span>
+          <span className="text-[13px] text-muted">{meta(pursuit) || "No details given"}</span>
         </div>
-        <p className="mt-1 text-[13px] text-ink/70">
+        <p className="mt-1 text-[13px] text-muted">
           {pursuit.contactName || "No contact name"}
           {pursuit.contactEmail ? ` · ${pursuit.contactEmail}` : ""}
           {" · "}
-          <span className="font-mono text-[11px] tracking-[0.05em]">{relativeLabel(pursuit.createdAt, now)}</span>
+          <span className="font-sans text-[13px] ">{relativeLabel(pursuit.createdAt, now)}</span>
         </p>
         {related.length > 0 && (
-          <p className="mt-1 text-[12px] text-ink/70">
+          <p className="mt-1 text-[13px] text-muted">
             Previously:{" "}
             {related.map((ref, index) => (
               <span key={ref.id}>
                 {index > 0 && ", "}
-                <Link href={`/portal/pursuits/${ref.id}`} className="text-green underline decoration-brass/40 underline-offset-2 hover:decoration-brass">
+                <Link href={`/portal/pursuits/${ref.id}`} className="text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary">
                   {ref.firm}
                 </Link>
                 {` (${stageLabel(ref.stage).toLowerCase()}, ${ref.date})`}
@@ -103,24 +103,24 @@ export function InboxRow({
           </p>
         )}
         {alertFailed && (
-          <p className="mt-1 font-mono text-[10px] tracking-[0.15em] uppercase text-ink/60">Alert not sent</p>
+          <p className="mt-1 font-sans text-[13px]   text-muted">Alert not sent</p>
         )}
-        {error && <p className="mt-2 text-[12px] text-oxblood">{error}</p>}
+        {error && <p className="mt-2 text-[13px] text-danger">{error}</p>}
       </div>
 
       <div className="flex shrink-0 flex-col items-end gap-2">
         {taken ? (
-          <p className="flex items-center gap-2 text-[12px] text-ink/70">
+          <p className="flex items-center gap-2 text-[13px] text-muted">
             {takenInitials && <OwnerAvatar initials={takenInitials} name={taken} />}
             {taken}
             {onDismiss && (
-              <button type="button" className="btn-quiet text-[11px]" onClick={onDismiss}>
+              <button type="button" className="app-button app-button--ghost text-[13px]" onClick={onDismiss}>
                 Dismiss
               </button>
             )}
           </p>
         ) : declining ? (
-          <form
+          <form noValidate
             className="flex flex-col items-end gap-2 sm:flex-row sm:items-end"
             onSubmit={(event) => {
               event.preventDefault();
@@ -128,31 +128,31 @@ export function InboxRow({
             }}
           >
             <label className="block w-full sm:w-64">
-              <span className="portal-label">Reason for declining</span>
+              <span className="app-label">Reason for declining</span>
               <input
                 autoFocus
                 value={reason}
                 onChange={(event) => setReason(event.target.value)}
-                className="portal-field"
+                className="app-field"
                 placeholder="At least three characters"
                 aria-label="Reason for declining"
               />
             </label>
             <div className="flex gap-2">
-              <button type="button" className="btn-quiet" onClick={() => setDeclining(false)} disabled={busy}>
+              <button type="button" className="app-button app-button--ghost" onClick={() => setDeclining(false)} disabled={busy}>
                 Cancel
               </button>
-              <button type="submit" className="btn-secondary btn-danger" disabled={busy || reason.trim().length < 3}>
+              <button type="submit" className="app-button app-button--secondary app-button--danger" disabled={busy || reason.trim().length < 3}>
                 {busy ? "Declining…" : "Decline"}
               </button>
             </div>
           </form>
         ) : (
           <div className="flex gap-2">
-            <button type="button" className="btn-secondary" onClick={() => void take()} disabled={busy}>
+            <button type="button" className="app-button app-button--secondary" onClick={() => void take()} disabled={busy}>
               {busy ? "Taking…" : "Take"}
             </button>
-            <button type="button" className="btn-quiet" onClick={() => setDeclining(true)} disabled={busy}>
+            <button type="button" className="app-button app-button--ghost" onClick={() => setDeclining(true)} disabled={busy}>
               Decline
             </button>
           </div>

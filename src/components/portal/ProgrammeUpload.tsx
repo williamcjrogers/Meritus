@@ -60,7 +60,7 @@ export function ProgrammeUpload({
 
   return (
     <div>
-      <label className="btn-secondary cursor-pointer has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-green has-[:focus-visible]:outline-offset-2">
+      <label className="app-button app-button--secondary cursor-pointer has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-primary has-[:focus-visible]:outline-offset-2">
         <input
           type="file"
           accept={programmeAcceptAttribute()}
@@ -70,14 +70,14 @@ export function ProgrammeUpload({
         />
         {pending ? "Working…" : "Upload programme"}
       </label>
-      <span className="ml-3 font-mono text-[10px] tracking-[0.08em] text-ink/70">{programmeUploadHint()}</span>
+      <span className="ml-3 font-sans text-[13px]  text-muted">{programmeUploadHint()}</span>
       {progress && (
-        <p className="mt-2 text-[12px] text-ink/70" role="status">
+        <p className="mt-2 text-[13px] text-muted" role="status">
           {progress}
         </p>
       )}
       {error && (
-        <p className="mt-2 text-[12px] text-oxblood" role="alert">
+        <p className="mt-2 text-[13px] text-danger" role="alert">
           {error}
         </p>
       )}

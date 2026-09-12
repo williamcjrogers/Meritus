@@ -1,0 +1,98 @@
+[
+  {
+    "foreground": "text",
+    "background": "white",
+    "ratio": 13.52,
+    "minimum": 4.5
+  },
+  {
+    "foreground": "text",
+    "background": "canvas",
+    "ratio": 13.13,
+    "minimum": 4.5
+  },
+  {
+    "foreground": "muted",
+    "background": "white",
+    "ratio": 5.99,
+    "minimum": 4.5
+  },
+  {
+    "foreground": "muted",
+    "background": "canvas",
+    "ratio": 5.81,
+    "minimum": 4.5
+  },
+  {
+    "foreground": "primary",
+    "background": "white",
+    "ratio": 10.68,
+    "minimum": 4.5
+  },
+  {
+    "foreground": "primary",
+    "background": "canvas",
+    "ratio": 10.37,
+    "minimum": 4.5
+  },
+  {
+    "foreground": "danger",
+    "background": "white",
+    "ratio": 6.41,
+    "minimum": 4.5
+  },
+  {
+    "foreground": "danger",
+    "background": "canvas",
+    "ratio": 6.22,
+    "minimum": 4.5
+  },
+  {
+    "foreground": "success",
+    "background": "white",
+    "ratio": 7.04,
+    "minimum": 4.5
+  },
+  {
+    "foreground": "success",
+    "background": "canvas",
+    "ratio": 6.83,
+    "minimum": 4.5
+  },
+  {
+    "foreground": "warning",
+    "background": "white",
+    "ratio": 6.92,
+    "minimum": 4.5
+  },
+  {
+    "foreground": "warning",
+    "background": "canvas",
+    "ratio": 6.72,
+    "minimum": 4.5
+  },
+  {
+    "foreground": "field-border",
+    "background": "white",
+    "ratio": 3.49,
+    "minimum": 3
+  },
+  {
+    "foreground": "field-border",
+    "background": "canvas",
+    "ratio": 3.39,
+    "minimum": 3
+  },
+  {
+    "foreground": "focus",
+    "background": "white",
+    "ratio": 6.61,
+    "minimum": 3
+  },
+  {
+    "foreground": "focus",
+    "background": "canvas",
+    "ratio": 6.42,
+    "minimum": 3
+  }
+]

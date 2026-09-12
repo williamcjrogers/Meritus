@@ -131,12 +131,15 @@ export function AskDrawer({
   }
 
   async function clearThread() {
+    if (clearing) return;
     setClearing(true);
-    const result = await onClear();
-    setClearing(false);
-    setConfirmClear(false);
-    if (result.ok) setMessages([]);
-    else setSaveError(result.error);
+    setSaveError(null);
+    try {
+      const result = await onClear();
+      if (result.ok) { setMessages([]); setConfirmClear(false); }
+      else setSaveError(result.error);
+    } catch { setSaveError("The questions could not be cleared. Check your connection and try again."); }
+    finally { setClearing(false); }
   }
 
   return (
@@ -153,19 +156,19 @@ export function AskDrawer({
         if (event.target === ref.current) onClose();
       }}
     >
-      <div className="flex h-full flex-col bg-parchment text-ink shadow-[-12px_0_32px_rgba(11,59,36,0.18)]">
-        <header className="flex items-start justify-between gap-4 border-b border-green/10 px-5 py-4">
+      <div className="flex h-full flex-col bg-surface text-text shadow-xl">
+        <header className="flex items-start justify-between gap-4 border-b border-line px-5 py-4">
           <div>
             <Eyebrow rule={false}>Ask</Eyebrow>
-            <h2 className="mt-1 font-serif text-2xl text-green">About this pursuit</h2>
-            <p className="mt-1 text-[12px] text-ink/70">Grounded on the brief, the notes and the files. Inference is marked as such.</p>
+            <h2 className="mt-1 font-sans text-2xl text-primary">About this pursuit</h2>
+            <p className="mt-1 text-[13px] text-muted">Grounded on the brief, the notes and the files. Inference is marked as such.</p>
           </div>
           <div className="flex shrink-0 flex-col items-end gap-1">
-            <button type="button" onClick={onClose} className="btn-quiet">
+            <button type="button" onClick={onClose} className="app-button app-button--ghost">
               Close
             </button>
             {messages.length > 0 && (
-              <button type="button" onClick={() => setConfirmClear(true)} className="btn-quiet text-ink/70" disabled={busy}>
+              <button type="button" onClick={() => setConfirmClear(true)} className="app-button app-button--ghost text-muted" disabled={busy}>
                 Clear
               </button>
             )}
@@ -174,7 +177,7 @@ export function AskDrawer({
 
         <div ref={listRef} className="flex-1 space-y-5 overflow-y-auto px-5 py-5">
           {messages.length === 0 && (
-            <p className="text-[13px] text-ink/70">Ask what the enquiry is really about, what the letter of claim says, or who the counterparty is.</p>
+            <p className="text-[13px] text-muted">Ask what the enquiry is really about, what the letter of claim says, or who the counterparty is.</p>
           )}
           {messages.map((message) => {
             const text = messageText(message);
@@ -182,19 +185,19 @@ export function AskDrawer({
             const tools = message.role === "assistant" ? toolLabels(message) : [];
             return (
               <article key={message.id} className={message.role === "user" ? "pl-6" : ""}>
-                <p className="font-mono text-[9px] tracking-[0.2em] uppercase text-ink/60">{message.role === "user" ? "You" : "Assistant"}</p>
-                {tools.length > 0 && <p className="mt-1 font-mono text-[10px] tracking-[0.08em] text-ink/60">{tools.join(" · ")}</p>}
+                <p className="font-sans text-[13px]   text-muted">{message.role === "user" ? "You" : "Assistant"}</p>
+                {tools.length > 0 && <p className="mt-1 font-sans text-[13px]  text-muted">{tools.join(" · ")}</p>}
                 {text ? (
-                  <p className={`mt-1 whitespace-pre-wrap text-[14px] leading-relaxed ${message.role === "user" ? "text-ink/80" : "text-ink"}`}>{text}</p>
+                  <p className={`mt-1 whitespace-pre-wrap text-[15px] leading-relaxed ${message.role === "user" ? "text-muted" : "text-text"}`}>{text}</p>
                 ) : (
-                  message.role === "assistant" && busy && <p className="mt-1 text-[13px] text-ink/60">Thinking…</p>
+                  message.role === "assistant" && busy && <p className="mt-1 text-[13px] text-muted">Thinking…</p>
                 )}
                 {sources.length > 0 && (
-                  <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10px] tracking-[0.05em] text-ink/60">
+                  <ul className="mt-2 flex flex-wrap gap-x-3 gap-y-1 font-sans text-[13px]  text-muted">
                     {sources.map((source, index) => (
                       <li key={`${source.label}-${index}`}>
                         {source.url ? (
-                          <a href={source.url} target="_blank" rel="noreferrer" className="hover:text-brass">
+                          <a href={source.url} target="_blank" rel="noreferrer" className="hover:text-primary">
                             {source.label} <span aria-hidden="true">↗</span>
                           </a>
                         ) : (
@@ -207,7 +210,7 @@ export function AskDrawer({
                 {message.role === "assistant" && text && !busy && (
                   <button
                     type="button"
-                    className="btn-quiet mt-2 text-[11px]"
+                    className="app-button app-button--ghost mt-2 text-[13px]"
                     onClick={() => void saveNote(message)}
                     disabled={savedIds.has(message.id)}
                   >
@@ -219,8 +222,8 @@ export function AskDrawer({
           })}
         </div>
 
-        <form
-          className="border-t border-green/10 px-5 py-4"
+        <form noValidate
+          className="border-t border-line px-5 py-4"
           onSubmit={(event) => {
             event.preventDefault();
             send();
@@ -232,25 +235,25 @@ export function AskDrawer({
               <input
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
-                className="portal-field"
+                className="app-field"
                 placeholder="Ask about the company, the documents or the dispute"
                 aria-label="Your question"
                 disabled={busy}
               />
             </label>
-            <button type="submit" className="btn-secondary shrink-0" disabled={busy || !input.trim()}>
+            <button type="submit" className="app-button app-button--secondary shrink-0" disabled={busy || !input.trim()}>
               {busy ? "Working…" : "Send"}
             </button>
           </div>
           {(error || saveError) && (
-            <p className="mt-2 text-[12px] text-oxblood">{saveError ?? error?.message ?? "The assistant could not reply. Try again."}</p>
+            <p className="mt-2 text-[13px] text-danger">{saveError ?? error?.message ?? "The assistant could not reply. Try again."}</p>
           )}
         </form>
       </div>
       <ConfirmDialog
         open={confirmClear}
         title="Clear this thread?"
-        body="The questions and answers are deleted. Notes you saved from them stay on the timeline."
+        body={<><p>The questions and answers are deleted. Notes you saved from them stay on the timeline.</p>{saveError && <p role="alert" className="mt-3 text-danger">{saveError}</p>}</>}
         confirmLabel="Clear"
         danger
         pending={clearing}

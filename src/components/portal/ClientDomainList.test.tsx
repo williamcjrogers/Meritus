@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { ClientDomain } from "@/lib/db/schema";
 import { linkClientDomainAction, removeClientDomainAction } from "@/lib/portal/client-actions";
@@ -49,6 +49,8 @@ const files: Record<string, ClientFileSummary[]> = {
 };
 
 beforeEach(() => {
+  HTMLDialogElement.prototype.showModal = vi.fn(function (this: HTMLDialogElement) { this.setAttribute("open", ""); });
+  HTMLDialogElement.prototype.close = vi.fn(function (this: HTMLDialogElement) { this.removeAttribute("open"); });
   mockedLinkClientDomainAction.mockReset().mockResolvedValue({ ok: true });
   mockedRemoveClientDomainAction.mockReset().mockResolvedValue({ ok: true });
 });
@@ -76,32 +78,28 @@ describe("ClientDomainList", () => {
   });
 
   it("removes a domain once the confirmation is accepted", async () => {
-    const confirmSpy = vi.spyOn(window, "confirm").mockReturnValue(true);
     render(<ClientDomainList domains={domains} pursuits={pursuits} files={files} />);
     const removeButtons = screen.getAllByRole("button", { name: "Remove" });
     await userEvent.click(removeButtons[0]);
-    expect(confirmSpy).toHaveBeenCalled();
+    await userEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Remove access" }));
     expect(mockedRemoveClientDomainAction).toHaveBeenCalledWith("d1");
-    confirmSpy.mockRestore();
   });
 
   it("does not remove a domain when the confirmation is declined", async () => {
-    const confirmSpy = vi.spyOn(window, "confirm").mockReturnValue(false);
     render(<ClientDomainList domains={domains} pursuits={pursuits} files={files} />);
     const removeButtons = screen.getAllByRole("button", { name: "Remove" });
     await userEvent.click(removeButtons[0]);
-    expect(confirmSpy).toHaveBeenCalled();
+    await userEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Cancel" }));
     expect(mockedRemoveClientDomainAction).not.toHaveBeenCalled();
-    confirmSpy.mockRestore();
   });
 
   it("shows the server's error when removal fails", async () => {
-    vi.spyOn(window, "confirm").mockReturnValue(true);
     mockedRemoveClientDomainAction.mockResolvedValue({ ok: false, error: "That domain is no longer listed" });
     render(<ClientDomainList domains={domains} pursuits={pursuits} files={files} />);
     const removeButtons = screen.getAllByRole("button", { name: "Remove" });
     await userEvent.click(removeButtons[0]);
-    expect(await screen.findByText("That domain is no longer listed")).toBeInTheDocument();
+    await userEvent.click(within(screen.getByRole("dialog")).getByRole("button", { name: "Remove access" }));
+    expect(await within(screen.getByRole("dialog")).findByText("That domain is no longer listed")).toBeInTheDocument();
     vi.restoreAllMocks();
   });
 

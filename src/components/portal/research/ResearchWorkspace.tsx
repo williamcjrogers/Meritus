@@ -1,6 +1,8 @@
 "use client";
 import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
+import { PageHeader } from "@/components/ui/PageHeader";
+import { Button } from "@/components/ui/Button";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type {
   SourceSettings,
@@ -69,7 +71,7 @@ const refField = (evidence: EvidencePassage[]): Field => ({
   })),
 });
 const navigation = [
-  ["", "Research desk"],
+  ["", "Research"],
   ["signals", "Signals"],
   ["watchlists", "Watchlists"],
   ["case-law", "Case law"],
@@ -110,6 +112,8 @@ function DetailedResearchWorkspace({ mode, id }: { mode: Mode; id?: string }) {
     [error, setError] = useState(""),
     [requestId, setRequestId] = useState(""),
     [busy, setBusy] = useState(false);
+  const loadSequence = useRef(0);
+  const invalidateReads = useCallback(() => { loadSequence.current++; }, []);
   const endpoint =
     mode === "investigation"
       ? `investigations/${id}`
@@ -121,6 +125,7 @@ function DetailedResearchWorkspace({ mode, id }: { mode: Mode; id?: string }) {
             ? `case-law/${id}`
           : mode;
   const reload = useCallback(async () => {
+    const current = ++loadSequence.current;
     setBusy(true);
     try {
       const [body, s, e, d] = await Promise.all([
@@ -129,21 +134,23 @@ function DetailedResearchWorkspace({ mode, id }: { mode: Mode; id?: string }) {
         mode === "sources" ? Promise.resolve([]) : api<Row[]>(`${base}/entities`),
         mode === "sources" ? Promise.resolve([]) : api<Row[]>(`${base}/directory`),
       ]);
+      if (current !== loadSequence.current) return;
       setData(body);
       setSources(mode === "sources" ? body as SourceSettings[] : s);
       setEntities(e);
       setDirectors(d);
       setError("");
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Research could not be loaded");
+      if (current === loadSequence.current) setError(e instanceof Error ? e.message : "Research could not be loaded");
     } finally {
-      setBusy(false);
+      if (current === loadSequence.current) setBusy(false);
     }
   }, [endpoint, mode]);
   useEffect(() => {
     setRequestId(crypto.randomUUID());
     void reload();
-  }, [reload]);
+    return invalidateReads;
+  }, [reload, invalidateReads]);
   useEffect(() => {
     if (!["runs", "investigation"].includes(mode)) return;
     const timer = setInterval(() => void reload(), 30000);
@@ -166,65 +173,35 @@ function DetailedResearchWorkspace({ mode, id }: { mode: Mode; id?: string }) {
     detail = (data ?? {}) as Row;
   return (
     <div className="mx-auto max-w-7xl space-y-8">
-      <header className="space-y-3">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-green">
-          QCS · Director research
-        </p>
-        <div className="flex items-center justify-between gap-4">
-          <h1 className="font-serif text-3xl md:text-4xl">
-            {mode === "investigation"
-              ? "Investigation workspace"
-              : mode === "report"
-                ? "Research report"
-                : mode === "evidence"
-                  ? "Source evidence"
-                  : mode === "sources"
-                    ? "Research sources"
-                  : mode === "case-law"
-                    ? "Case law"
-                    : mode.charAt(0).toUpperCase() + mode.slice(1)}
-          </h1>
-          <button
-            className="rounded border border-ink/20 px-3 py-2 text-sm"
-            onClick={() => void reload()}
-            disabled={busy}
-          >
-            {busy ? "Refreshing…" : mode === "sources" ? "Refresh status" : "Refresh"}
-          </button>
-        </div>
-        <p className="max-w-3xl text-ink/65">
-          {mode === "sources"
-            ? "See where your research comes from, what is available and what needs attention."
-            : "Trace public and licensed evidence, review proposed findings and record commercial decisions. Coverage and director review remain visible throughout."}
-        </p>
+      <PageHeader title={mode === "investigation" ? "Investigation" : mode === "report" ? "Research report" : mode === "evidence" ? "Source evidence" : mode === "sources" ? "Research sources" : mode === "case-law" ? "Case law" : mode.charAt(0).toUpperCase() + mode.slice(1)} description={mode === "sources" ? "Manage connected sources, collection and the material available for research." : "Review findings alongside their sources and record the next decision."} actions={<Button variant="secondary" busy={busy} onClick={() => void reload()}>{mode === "sources" ? "Refresh status" : "Refresh"}</Button>} />
         <nav
           aria-label="Research"
-          className="flex flex-wrap gap-x-5 gap-y-3 border-b border-ink/15 py-3"
+          className="workspace-local-nav"
         >
           {navigation.filter(([path]) => ["", "signals", "watchlists", "case-law", "reports", "sources"].includes(path)).map(([path, text]) => (
             <Link
               key={path}
               href={"/portal/research" + (path ? "/" + path : "")}
               aria-current={(path || "investigations") === mode ? "page" : undefined}
-              className={`text-sm underline-offset-8 hover:underline ${(path || "investigations") === mode ? "font-semibold text-green underline decoration-2" : ""}`}
+              className={`text-[15px] underline-offset-8 hover:underline ${(path || "investigations") === mode ? "font-semibold text-primary underline decoration-2" : ""}`}
             >
               {text}
             </Link>
           ))}
           <details className="relative">
-            <summary className="cursor-pointer text-sm">More tools</summary>
-            <div className="absolute right-0 z-20 mt-3 min-w-48 rounded border border-ink/20 bg-cream p-2 shadow-lg">
+            <summary className="cursor-pointer text-[15px]">More tools</summary>
+            <div className="absolute right-0 z-20 mt-3 min-w-48 rounded border border-text/20 bg-surface p-2 shadow-lg">
               {navigation.filter(([path]) => !["", "signals", "watchlists", "case-law", "reports", "sources"].includes(path)).map(([path, text]) => (
-                <Link key={path} href={"/portal/research/" + path} aria-current={path === mode ? "page" : undefined} className={`block rounded px-3 py-2 text-sm hover:bg-green/5 ${path === mode ? "font-semibold text-green" : ""}`}>{text}</Link>
+                <Link key={path} href={"/portal/research/" + path} aria-current={path === mode ? "page" : undefined} className={`block rounded px-3 py-2 text-[15px] hover:bg-primary/5 ${path === mode ? "font-semibold text-primary" : ""}`}>{text}</Link>
               ))}
             </div>
           </details>
         </nav>
-      </header>
+
       {error && (
         <p
           role="alert"
-          className="rounded border border-amber-700/30 bg-amber-50 p-4"
+          className="rounded border border-danger bg-[var(--danger-surface)] p-4"
         >
           {error}
         </p>
@@ -425,15 +402,15 @@ function DetailedResearchWorkspace({ mode, id }: { mode: Mode; id?: string }) {
           {rows.map((w) => (
             <article
               key={String(w.id)}
-              className="rounded border border-ink/15 p-5 space-y-3"
+              className="rounded border border-text/15 p-5 space-y-3"
             >
-              <h2 className="font-serif text-2xl">{label(w.label)}</h2>
+              <h2 className="font-sans text-2xl">{label(w.label)}</h2>
               <p>
                 {w.enabled ? "Active" : "Paused"} · Every{" "}
                 {Number(w.cadence_seconds) / 3600} hours · Europe/London
               </p>
               <p>{(w.members as Row[]).map((m) => label(m.name)).join(", ")}</p>
-              {(w.members as Row[]).flatMap(m=>(m.refreshes as Row[]??[]).map((f,n)=><p key={String(m.id)+n} className="text-sm">{label(m.name)} · {label(f.source)} · {label(f.status)}{f.reason?': '+label(f.reason):''} · Checked {date(f.checkedAt)}{Boolean(f.runId)&&<Link className="ml-2 underline" href="/portal/research/runs">View run</Link>}</p>))}
+              {(w.members as Row[]).flatMap(m=>(m.refreshes as Row[]??[]).map((f,n)=><p key={String(m.id)+n} className="text-[15px]">{label(m.name)} · {label(f.source)} · {label(f.status)}{f.reason?': '+label(f.reason):''} · Checked {date(f.checkedAt)}{Boolean(f.runId)&&<Link className="ml-2 underline" href="/portal/research/runs">View run</Link>}</p>))}
               <ActionForm title="Delete watchlist" fields={[]} button="Delete monitoring" submit={()=>mutate('watchlists/'+w.id,{},'DELETE')}/>
               <ActionForm
                 title="Update watchlist"
@@ -537,16 +514,16 @@ function DetailedResearchWorkspace({ mode, id }: { mode: Mode; id?: string }) {
               ].map((key) => (
                 <div
                   key={key}
-                  className="rounded border border-ink/15 bg-white/50 p-5"
+                  className="rounded border border-text/15 bg-white/50 p-5"
                 >
-                  <p className="text-3xl font-serif">{label(detail[key])}</p>
-                  <p className="text-sm">
+                  <p className="text-3xl font-sans">{label(detail[key])}</p>
+                  <p className="text-[15px]">
                     {key.replace("reviewedSignals", "Reviewed signals")}
                   </p>
                 </div>
               ))}
             </div>
-            <p className="text-sm text-ink/65">
+            <p className="text-[15px] text-muted">
               Conversation rate:{" "}
               {Number(detail.reviewedSignals) > 0
                 ? Math.round(
@@ -586,11 +563,11 @@ function EvidenceCard({ passage: p }: { passage: EvidencePassage }) {
   return (
     <article
       id={p.passageId}
-      className="rounded border border-ink/15 bg-white/60 p-5 space-y-3"
+      className="rounded border border-text/15 bg-white/60 p-5 space-y-3"
     >
-      <h3 className="font-serif text-xl">{p.title}</h3>
-      <p className="whitespace-pre-wrap text-sm leading-7">{p.text}</p>
-      <dl className="grid gap-2 text-xs text-ink/65">
+      <h3 className="font-sans text-xl">{p.title}</h3>
+      <p className="whitespace-pre-wrap text-[15px] leading-7">{p.text}</p>
+      <dl className="grid gap-2 text-[13px] text-muted">
         <div>
           Locator:{" "}
           {typeof p.locator === "object"
@@ -603,13 +580,13 @@ function EvidenceCard({ passage: p }: { passage: EvidencePassage }) {
         </div>
         <div className="break-all">Version: {p.versionId}</div>
       </dl>
-      <p className="text-xs">{p.attribution}</p>
+      <p className="text-[13px]">{p.attribution}</p>
       {/^https:\/\//.test(p.url) && (
         <a
           href={p.url}
           target="_blank"
           rel="noreferrer"
-          className="text-sm underline"
+          className="text-[15px] underline"
         >
           Open original source
         </a>
@@ -632,7 +609,7 @@ function RunList({
           key: "id",
           title: "Run",
           render: (r) => (
-            <span className="font-mono text-xs">
+            <span className="font-sans text-[13px]">
               {String(r.id).slice(0, 8)}
             </span>
           ),
@@ -702,22 +679,22 @@ function SignalList({
       {rows.map((s) => (
         <article
           key={String(s.id)}
-          className="rounded border border-ink/15 p-5 space-y-4"
+          className="rounded border border-text/15 p-5 space-y-4"
         >
           <div className="flex flex-wrap justify-between gap-3">
-            <h3 className="font-serif text-2xl">
+            <h3 className="font-sans text-2xl">
               {label(s.organisation)}: {label(s.event_type)}
             </h3>
-            <span className="rounded bg-green/10 px-3 py-1">
+            <span className="rounded bg-primary/10 px-3 py-1">
               Priority {label((s.priority as Row)?.score)} / 100
             </span>
           </div>
-          <p className="text-sm">
+          <p className="text-[15px]">
             {label(s.status)} · {label(s.kind)} · Event {date(s.occurred_at)} ·
             Confidence {Math.round(Number(s.confidence) * 100)}% · Half-life{" "}
             {label(s.half_life_days)} days
           </p>
-          <p className="text-xs text-ink/65">
+          <p className="text-[13px] text-muted">
             {s.suppressed ? "Suppressed. " : ""}
             {s.independence_confirmed
               ? "Independent event confirmed. "
@@ -726,13 +703,13 @@ function SignalList({
             same event do not create corroboration.
           </p>
           <Link
-            className="text-sm underline"
+            className="text-[15px] underline"
             href={"/portal/research/investigations/" + s.investigation_id}
           >
             Inspect supporting claims
           </Link>
           <ActionForm
-            title="Director review"
+            title="Review"
             fields={[
               select(
                 "action",
@@ -764,7 +741,7 @@ function SignalList({
               fields={[
                 select(
                   "ownerId",
-                  "Director owner",
+                  "Assigned owner",
                   directors.map((d) => ({
                     value: String(d.id),
                     label: label(d.name),
@@ -839,7 +816,7 @@ function Investigation({
         <p>
           {i.scope.subject} · {i.scope.jurisdiction} · {i.status}
         </p>
-        <p className="text-sm">
+        <p className="text-[15px]">
           Budget: {i.budget.maxRequests} requests,{" "}
           {i.budget.maxTokens.toLocaleString()} model tokens, £
           {(i.budget.maxCostPence / 100).toFixed(2)} maximum.
@@ -847,14 +824,14 @@ function Investigation({
         <RunList rows={runs} mutate={mutate} />
       </Panel>
       <Panel title="Evidence">
-        <p className="text-sm text-ink/65">
+        <p className="text-[15px] text-muted">
           Only current passages retrieved by this investigation are shown.
           Register feeds may cover a wider population. Confirm that each
           selected passage concerns the intended subject.
         </p>
         {evidence.length ? (
           evidence.map((p) => (
-            <details key={p.passageId} className="rounded border border-ink/15">
+            <details key={p.passageId} className="rounded border border-text/15">
               <summary className="cursor-pointer p-4">
                 {p.title} · {p.text.slice(0, 100)}
               </summary>
@@ -897,7 +874,7 @@ function Investigation({
           columns={[
             { key: "text", title: "Finding" },
             { key: "kind", title: "Type" },
-            { key: "status", title: "Director verification" },
+            { key: "status", title: "Verification" },
             {
               key: "evidence",
               title: "Evidence",
@@ -986,7 +963,7 @@ function Investigation({
         mutate={mutate}
       />
       <Panel title="Research assistant">
-        <p className="text-sm text-ink/65">
+        <p className="text-[15px] text-muted">
           Answers are proposed analysis. The assistant searches this
           investigation’s available evidence and verifies citation identities
           and quotations. A call reserves 80,000 tokens conservatively; the cost
@@ -1023,23 +1000,23 @@ function Investigation({
         {answers.map((a) => (
           <article
             key={String(a.id)}
-            className="rounded border border-ink/15 p-5 space-y-3"
+            className="rounded border border-text/15 p-5 space-y-3"
           >
             <h3 className="font-medium">{label(a.question)}</h3>
-            <p className="text-xs">
+            <p className="text-[13px]">
               {label(a.status)} · {date(a.created_at)}
             </p>
             {(((a.answer as Row)?.findings as Row[]) ?? []).map((f, n) => (
               <div key={n}>
                 <p>
                   {label(f.text)}{" "}
-                  <span className="text-xs text-ink/65">({label(f.kind)})</span>
+                  <span className="text-[13px] text-muted">({label(f.kind)})</span>
                 </p>
                 <p>
                   {(f.evidence as EvidenceRef[]).map((e) => (
                     <Link
                       key={e.passageId}
-                      className="mr-3 text-xs underline"
+                      className="mr-3 text-[13px] underline"
                       href={"/portal/research/evidence/" + e.passageId}
                     >
                       Supporting passage
@@ -1048,7 +1025,7 @@ function Investigation({
                 </p>
               </div>
             ))}
-            <p className="text-sm text-amber-900">
+            <p className="text-[15px] text-danger">
               {(((a.answer as Row)?.limitations as string[]) ?? []).join(" ")}
             </p>
           </article>
@@ -1265,7 +1242,7 @@ function ReportView({
       </p>
       <p>{label(report.methodology)}</p>
       {(report.findings as Row[]).map((f, n) => (
-        <article key={n} className="border-b border-ink/15 py-4">
+        <article key={n} className="border-b border-text/15 py-4">
           <p>
             {label(f.text)} ({label(f.kind)})
           </p>
@@ -1274,7 +1251,7 @@ function ReportView({
               <Link
                 key={ref.passageId}
                 href={"/portal/research/evidence/" + ref.passageId}
-                className="mr-3 text-sm underline"
+                className="mr-3 text-[15px] underline"
               >
                 {evidence.find((e) => e.passageId === ref.passageId)?.title ??
                   "Evidence"}
@@ -1320,7 +1297,7 @@ function ReportView({
           {["markdown", "csv", "html"].map((f) => (
             <a
               key={f}
-              className="rounded bg-green px-4 py-2 text-sm text-cream"
+              className="rounded bg-primary px-4 py-2 text-[15px] text-surface"
               href={`${base}/reports/${report.id}/export?format=${f}`}
             >
               Export {f === "html" ? "print view" : f.toUpperCase()}
@@ -1340,8 +1317,8 @@ function CaseLawSearch({ initial,initialAuthority }: { initial: Row[];initialAut
   useEffect(() => setRows(initial), [initial]);
   return (
     <div className="space-y-6">
-      <p className="text-sm">{QCS_CASE_LAW_ACKNOWLEDGEMENT}</p>
-      <p className="rounded border border-brass/40 bg-brass/10 p-4 text-sm">
+      <p className="text-[15px]">{QCS_CASE_LAW_ACKNOWLEDGEMENT}</p>
+      <p className="rounded border border-primary/40 bg-primary/10 p-4 text-[15px]">
         {CASE_LAW_COVERAGE_NOTICE}
       </p>
       <ActionForm
@@ -1419,8 +1396,8 @@ function CaseLawSearch({ initial,initialAuthority }: { initial: Row[];initialAut
       {reader && (
         <Panel title={label(reader.title)}>
           {(reader.passages as Row[]).map((p) => (
-            <article key={String(p.id)} className="border-b border-ink/15 py-4">
-              <p className="text-xs text-ink/65">
+            <article key={String(p.id)} className="border-b border-text/15 py-4">
+              <p className="text-[13px] text-muted">
                 {Object.values(p.locator as object).join(" ")}
               </p>
               <p className="whitespace-pre-wrap leading-7">{label(p.text)}</p>
@@ -1459,7 +1436,7 @@ function Comparison({ value: v }: { value: unknown }) {
     );
   if (typeof v === "object")
     return (
-      <dl className="rounded border border-ink/15 p-4 space-y-2">
+      <dl className="rounded border border-text/15 p-4 space-y-2">
         {Object.entries(v)
           .filter(
             ([k]) =>
@@ -1467,7 +1444,7 @@ function Comparison({ value: v }: { value: unknown }) {
           )
           .map(([k, x]) => (
             <div key={k}>
-              <dt className="text-xs font-medium uppercase tracking-wide text-ink/60">
+              <dt className="text-[13px] font-medium  tracking-wide text-muted">
                 {k}
               </dt>
               <dd>

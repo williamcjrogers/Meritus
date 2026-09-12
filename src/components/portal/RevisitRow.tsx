@@ -38,21 +38,21 @@ export function RevisitRow({
     <article className="flex flex-col gap-3 px-5 py-4 md:flex-row md:items-center md:justify-between">
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-          <Link href={`/portal/pursuits/${pursuit.id}`} className="font-serif text-xl leading-tight text-green hover:text-brass">
+          <Link href={`/portal/pursuits/${pursuit.id}`} className="font-sans text-xl leading-tight text-primary hover:text-primary">
             {pursuit.firm}
           </Link>
-          <span className="text-[13px] text-ink/70">{nextAction?.title || "Revisit date reached"}</span>
+          <span className="text-[13px] text-muted">{nextAction?.title || "Revisit date reached"}</span>
         </div>
-        <p className="mt-1 flex items-center gap-2 text-[12px] text-ink/70">
+        <p className="mt-1 flex items-center gap-2 text-[13px] text-muted">
           {reviewDue && (
-            <span className="text-[14px] text-oxblood">Review due {dueLabel(reviewDue)}</span>
+            <span className="text-[15px] text-danger">Review due {dueLabel(reviewDue)}</span>
           )}
           <OwnerAvatar initials={directorInitials(directors, pursuit.ownerId)} name={directorName(directors, pursuit.ownerId)} />
         </p>
-        {nextAction && <p className="text-[14px]">{actionStateLabels[nextAction.state]} · Action due {nextAction.dueDate ? dueLabel(nextAction.dueDate) : "not set"}. Action assignee: {nextAction.ownerName}</p>}
-        {error && <p className="mt-2 text-[12px] text-oxblood">{error}</p>}
+        {nextAction && <p className="text-[15px]">{actionStateLabels[nextAction.state]} · Action due {nextAction.dueDate ? dueLabel(nextAction.dueDate) : "not set"}. Action assignee: {nextAction.ownerName}</p>}
+        {error && <p className="mt-2 text-[13px] text-danger">{error}</p>}
       </div>
-      <button type="button" className="btn-secondary shrink-0" onClick={() => void reopen()} disabled={busy}>
+      <button type="button" className="app-button app-button--secondary shrink-0" onClick={() => void reopen()} disabled={busy}>
         {busy ? "Reopening…" : `Reopen at ${stageLabel(reopenStage)}`}
       </button>
     </article>

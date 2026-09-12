@@ -106,8 +106,8 @@ describe("BriefPanel states", () => {
     expect(screen.getByText(/J Bye/)).toBeInTheDocument();
 
     const analysis = screen.getByRole("list", { name: "Analysis" });
-    expect(within(analysis).getAllByText("FACT")).toHaveLength(1);
-    expect(within(analysis).getAllByText("INFER")).toHaveLength(1);
+    expect(within(analysis).getAllByText("Fact")).toHaveLength(1);
+    expect(within(analysis).getAllByText("Interpretation")).toHaveLength(1);
     expect(within(analysis).getByText("Two charges registered in 2024")).toBeInTheDocument();
     expect(within(analysis).queryByText("Web research unavailable")).not.toBeInTheDocument();
     expect(screen.getByText("Web research unavailable")).toBeInTheDocument();
@@ -121,7 +121,7 @@ describe("BriefPanel states", () => {
 
   it("failed with no earlier brief: shows the reason and Retry", () => {
     renderPanel({ initial: { latestRun: run("failed", "Analysis model timed out"), brief: null } });
-    expect(screen.getByText("Analysis model timed out")).toHaveClass("text-oxblood");
+    expect(screen.getByText("Analysis model timed out")).toHaveClass("text-danger");
     expect(screen.getByRole("button", { name: "Retry" })).toBeInTheDocument();
     expect(screen.queryByRole("button", { name: "Build the brief" })).not.toBeInTheDocument();
   });

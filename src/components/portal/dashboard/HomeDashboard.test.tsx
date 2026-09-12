@@ -38,7 +38,7 @@ describe("Home dashboard", () => {
   });
   it("offers a new action and persists an independent Home preference", () => {
     render(<HomeDashboard view={dashboardFixture()} />);
-    fireEvent.click(screen.getByRole("button", { name: "+ Add action" }));
+    fireEvent.click(screen.getByRole("button", { name: "Add action" }));
     expect(screen.getByRole("dialog")).toHaveTextContent("New general action");
     fireEvent.click(screen.getByRole("button", { name: "My work" }));
     expect(mocks.push).toHaveBeenCalledWith("/portal?scope=mine");
