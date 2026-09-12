@@ -132,12 +132,28 @@ export default function RootLayout({
                 fontSize: "1rem",
               },
               elements: {
-                rootBox: { width: "100%" },
+                rootBox: {
+                  width: "100%",
+                  "& .cl-formButtonPrimary, & .cl-formButtonPrimary::before, & .cl-formButtonPrimary::after": {
+                    backgroundImage: "none",
+                    boxShadow: "none",
+                  },
+                },
                 cardBox: { width: "100%", boxShadow: "none" },
                 card: { boxShadow: "none", border: "1px solid var(--border)" },
                 formFieldInput: "app-field",
                 formFieldLabel: "app-label",
                 formButtonPrimary: "app-button",
+                socialButtonsBlockButton: {
+                  minHeight: "44px",
+                  background: "var(--surface)",
+                  border: "1px solid var(--field-border)",
+                  color: "var(--text)",
+                  boxShadow: "none",
+                  "&:hover": { background: "var(--mist)" },
+                },
+                formFieldInputShowPasswordButton: { minWidth: "44px", minHeight: "44px" },
+                userButtonTrigger: { minWidth: "44px", minHeight: "44px" },
               },
             }}
           >

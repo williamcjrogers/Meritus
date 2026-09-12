@@ -74,3 +74,14 @@ Verification:
 - `corepack pnpm exec tsc --noEmit`: passed. Log: `nested-access-typecheck.log`.
 - Scoped ESLint across the new translator, changed pages and related-panel implementation/tests: passed without warnings. Log: `nested-access-lint.log`.
 - No shared backend function, API route, worker or permission policy was changed for this correction.
+
+## Live-preview control-size adjustment
+
+The controller measured the deployed Clerk Google button at 36 px and show-password control at 38 px. Root Clerk appearance now gives social buttons a 44 px minimum height, the password visibility toggle a 44 × 44 px minimum target, and the account trigger a 44 × 44 px minimum target. The social button uses the canonical surface, field-border, text and hover tokens.
+
+The primary button retains the shared `app-button` class. A scoped Clerk root appearance rule removes residual gradient images and shadows from that button and its decorative pseudo-elements. Clerk branding and authentication behaviour are unchanged.
+
+- `corepack pnpm exec tsc --noEmit`: passed (`clerk-controls-typecheck.log`).
+- `corepack pnpm exec eslint src/app/layout.tsx`: passed (`clerk-controls-lint.log`).
+- `git diff --check -- src/app/layout.tsx`: passed.
+- Updated deployed target measurements and gradient removal remain for the controller's final browser verification.
