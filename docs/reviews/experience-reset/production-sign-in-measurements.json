@@ -1,0 +1,42 @@
+{
+  "contentWidth": 390,
+  "controls": [
+    {
+      "afterBackground": "none",
+      "background": "rgb(255, 255, 255)",
+      "height": 44,
+      "name": "Enter your email address",
+      "shadow": "color(srgb 0.698039 0.74902 0.764706 / 0.28) 0px 0px 0px 1px, color(srgb 0.698039 0.74902 0.764706 / 0.11) 0px 0px 1px 0px",
+      "width": 263.203125
+    },
+    {
+      "afterBackground": "none",
+      "background": "rgb(255, 255, 255)",
+      "height": 44,
+      "name": "Enter your password",
+      "shadow": "color(srgb 0.698039 0.74902 0.764706 / 0.11) 0px 0px 0px 1px, color(srgb 0.698039 0.74902 0.764706 / 0.07) 0px 0px 1px 0px",
+      "width": 195
+    },
+    {
+      "afterBackground": "none",
+      "background": "rgba(0, 0, 0, 0)",
+      "height": 44,
+      "name": "Show password",
+      "shadow": "none",
+      "width": 44
+    },
+    {
+      "afterBackground": "none",
+      "background": "rgb(38, 66, 76)",
+      "height": 44,
+      "name": "Continue",
+      "shadow": "rgb(38, 66, 76) 0px 0px 0px 1px, rgba(255, 255, 255, 0.07) 0px 1px 1px 0px inset, rgba(34, 42, 53, 0.2) 0px 2px 3px 0px, rgba(0, 0, 0, 0.24) 0px 1px 1px 0px, rgb(34, 100, 123) 0px 0px 0px 4px",
+      "width": 263.203125
+    }
+  ],
+  "focusOutline": "rgb(34, 100, 123) solid 2px",
+  "focusOutlineOffset": "3px",
+  "focusVisible": true,
+  "url": "https://www.meritusvia.com/sign-in",
+  "width": 390
+}

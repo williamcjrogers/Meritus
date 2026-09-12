@@ -1,0 +1,527 @@
+{
+  "verified_at": "2026-09-12T09:26:40.445920+00:00",
+  "phase": "final_production_verified_with_initial_http_regression_evidence",
+  "scope": "Read-only production identity, HTTP and build verification. Initial route matrix retained for the preceding release; final styling commit verified with fresh identity, home and anonymous API checks.",
+  "expected_deployment_id": "dpl_BYUE6e4JvNMxbNRXDzCqcfBoKp7M",
+  "expected_commit_sha": "aa75ceb4a9f50b796f6b18b111bacd22b459c821",
+  "initial_release": {
+    "verified_at": "2026-09-12T09:23:05.773560+00:00",
+    "phase": "initial_production_pass_before_follow_up_style_patch",
+    "scope": "Anonymous read-only HTTP requests on the production custom domains. No forms, emails, account changes, uploads, deployment actions or provider mutations.",
+    "expected_deployment_id": "dpl_3gtrxTksi3BPgvEguhijnMPwH8XS",
+    "expected_commit_sha": "7821feff1a370e4515e95604873ab09604d35723",
+    "http_checks": [
+      {
+        "path": "/",
+        "passed": true,
+        "hops": [
+          {
+            "url": "https://www.meritusvia.com/",
+            "status": 200,
+            "headers": {
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "server": "Vercel",
+              "x-vercel-id": "lhr1::tchmp-1789204985236-a4af24a5a10d",
+              "x-vercel-cache": "HIT",
+              "x-matched-path": "/"
+            },
+            "body_sha256": "1ab5697e2df69d6331fde3e655c3dfdfefbef4ab8e726367e9573f799a79ab92",
+            "visible_text": "Meritus Via | Construction Disputes Advisory Skip to content Meritus Via Expertise Approach Insights Contact Client access Menu Expertise Approach Insights Contact Sectors Credentials Client access Construction disputes advisory A clear position. Built from the record. Delay, quantum and technical expertise for complex construction disputes. We connect what happened on the project with what can be evidenced. Discuss your matter Explore our expertise For contractors, employers and instructing solicitors. Reading the project record Illustration A construction sequence and its supporting records Illustrative building section showing structure, envelope and access. Programme bars below connect the planned sequence to an instruction, site record and cost record. This is not a real project or result. Section through the works Sequence / access Structure Envelope Structure Envelope Completion Test the sequence against the evidence. Instruction Site record Cost record Illustrative records only. No client project or outcome is represented. The expertise your matter needs. Choose a discipline, or bring us an issue that crosses several. Explore our sectors Delay Establish the sequence, the critical path and the effect of change. \u2197 Quantum Build and test valuations against the underlying cost and contract records. \u2197 Technical Investigate defects, design responsibility and the causes of failure. \u2197 Advisory Assess the merits and prepare a proportionate route through the dispute. \u2197 Technology Organise project evidence and keep findings connected to their sources. \u2197 Start with the question. Follow the evidence. Our approach brings project records, analytical discipline and professional judgement into one line of reasoning. How we work Establish the record Identify the relevant contract, programme and contemporary evidence, including the gaps. Test the position Examine cause, effect and value. Challenge assumptions and consider the evidence that cuts against the case. Explain the conclusion Set out the analysis, its sources and its limits so the next decision is properly informed. Current thinking All insights The Reach Adjudicate, Then Attach: One Decision, the Whole Group A twenty-eight day adjudication now reaches companies that never signed the contract. What decided Crest Nicholson v Ardmore was not the law on building liability orders; it was six years of engagement history sitting in the file. September 2026 9 min The Lock The Levy and the Locked Door From 1 October 2026 the completion certificate is withheld until the Building Safety Levy is paid. A tax has been converted into a condition of completion, and almost no live contract says who bears it. August 2026 7 min The Gateway Stuck at the Gateway: Who Owns Building Safety Regulator Delay? Gateway processing times have almost halved in a year. That fixes the queue, not the two years of regulator delay already absorbed into live contracts, and no standard form allocates it. August 2026 8 min A clear starting point for your matter. Tell us about the project, the issue and the decision ahead. Discuss your matter Meritus Via Construction disputes advisory. The detail behind a considered position. enquiries@meritusvia.com Practice Expertise Sectors Approach Insights Get in touch Contact Credentials Client access Staff sign in Information Privacy Terms Accessibility LinkedIn \u00a9 2026 Meritus Group Ltd. All rights reserved. Registered in England and Wales. Company no. 16260734 .",
+            "links": [
+              "#main-content",
+              "/",
+              "/access",
+              "/accessibility",
+              "/contact",
+              "/credentials",
+              "/insights",
+              "/insights/adjudication-building-liability-orders",
+              "/insights/building-safety-levy-completion",
+              "/insights/gateway-delay-risk-allocation",
+              "/method",
+              "/privacy-policy",
+              "/sectors",
+              "/services",
+              "/services#advisory",
+              "/services#delay",
+              "/services#quantum",
+              "/services#technical",
+              "/services#technology",
+              "/sign-in",
+              "/terms",
+              "https://www.linkedin.com/company/meritusvia/about/",
+              "mailto:enquiries@meritusvia.com"
+            ],
+            "inputs": [],
+            "director_word_contexts": []
+          }
+        ]
+      },
+      {
+        "path": "/access",
+        "passed": true,
+        "hops": [
+          {
+            "url": "https://www.meritusvia.com/access",
+            "status": 200,
+            "headers": {
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+              "server": "Vercel",
+              "x-vercel-id": "lhr1::iad1::hzp26-1789204985233-bdd5e7634e0f",
+              "x-vercel-cache": "MISS",
+              "x-matched-path": "/access"
+            },
+            "body_sha256": "bfbc78c588023162288404578497ef77215edb5bb25158f1f5e984745085eae5",
+            "visible_text": "Skip to content Meritus Via Send documents Enter your work email to request a secure link to your organisation\u2019s documents. Work email Send me a link Your link will work once and expire after 30 minutes. Send documents | Meritus Via",
+            "links": [
+              "#main-content",
+              "/"
+            ],
+            "inputs": [
+              {
+                "type": "email",
+                "name": "email",
+                "autocomplete": "email"
+              },
+              {
+                "type": "text",
+                "name": "company_website",
+                "autocomplete": "off"
+              }
+            ],
+            "director_word_contexts": []
+          }
+        ]
+      },
+      {
+        "path": "/sign-in",
+        "passed": true,
+        "hops": [
+          {
+            "url": "https://www.meritusvia.com/sign-in",
+            "status": 200,
+            "headers": {
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+              "server": "Vercel",
+              "x-vercel-id": "lhr1::iad1::hb6dj-1789204985230-80be00776d61",
+              "x-vercel-cache": "MISS",
+              "x-matched-path": "/sign-in/[[...sign-in]]"
+            },
+            "body_sha256": "356b268802d3b352d380e227a7dd536c31692dcdc26f887b4173b0e3907da072",
+            "visible_text": "Skip to content Meritus Via Sign in to Meritus Sign in to Meritus | Meritus Via",
+            "links": [
+              "#main-content",
+              "/"
+            ],
+            "inputs": [],
+            "director_word_contexts": []
+          }
+        ]
+      },
+      {
+        "path": "/sign-up",
+        "passed": true,
+        "hops": [
+          {
+            "url": "https://www.meritusvia.com/sign-up",
+            "status": 200,
+            "headers": {
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+              "server": "Vercel",
+              "x-vercel-id": "lhr1::iad1::zbkl9-1789204985231-315b2cb1a218",
+              "x-vercel-cache": "MISS",
+              "x-matched-path": "/sign-up/[[...sign-up]]"
+            },
+            "body_sha256": "90f10c4d655aca6f350afe211c95d9af5ef271b082de38c804f596ffdcf591ac",
+            "visible_text": "Skip to content Meritus Via Accept your invitation Open the invitation in your email to finish setting up your Meritus account. Sign in Accept your invitation | Meritus Via",
+            "links": [
+              "#main-content",
+              "/",
+              "/sign-in"
+            ],
+            "inputs": [],
+            "director_word_contexts": []
+          }
+        ]
+      },
+      {
+        "path": "/portal/actions?filter=overdue",
+        "passed": true,
+        "hops": [
+          {
+            "url": "https://www.meritusvia.com/portal/actions?filter=overdue",
+            "status": 307,
+            "headers": {
+              "location": "/sign-in?returnTo=%2Fportal%2Factions%3Ffilter%3Doverdue",
+              "content-type": "text/plain",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "server": "Vercel",
+              "x-vercel-id": "lhr1::jm9ts-1789204985381-87ebc269a9de"
+            },
+            "body_sha256": "7c040f8633b8823d72ed63da9b3b2dfe9846e912c66a64c9433ec9c4815d76c2"
+          },
+          {
+            "url": "https://www.meritusvia.com/sign-in?returnTo=%2Fportal%2Factions%3Ffilter%3Doverdue",
+            "status": 200,
+            "headers": {
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+              "server": "Vercel",
+              "x-vercel-id": "lhr1::iad1::4pv5p-1789204985449-e185e71d112d",
+              "x-vercel-cache": "MISS",
+              "x-matched-path": "/sign-in/[[...sign-in]]"
+            },
+            "body_sha256": "79cd7854d4674a5b1de165714599361902d3106231a17024c2fc5f5e2417e722",
+            "visible_text": "Skip to content Meritus Via Sign in to Meritus Sign in to Meritus | Meritus Via",
+            "links": [
+              "#main-content",
+              "/"
+            ],
+            "inputs": [],
+            "director_word_contexts": []
+          }
+        ]
+      },
+      {
+        "path": "/client",
+        "passed": true,
+        "hops": [
+          {
+            "url": "https://www.meritusvia.com/client",
+            "status": 307,
+            "headers": {
+              "location": "/access?returnTo=%2Fclient",
+              "content-type": "text/plain",
+              "cache-control": "public, max-age=0, must-revalidate",
+              "server": "Vercel",
+              "x-vercel-id": "lhr1::fm9cn-1789204985439-4c1f8a7e80bb"
+            },
+            "body_sha256": "7c040f8633b8823d72ed63da9b3b2dfe9846e912c66a64c9433ec9c4815d76c2"
+          },
+          {
+            "url": "https://www.meritusvia.com/access?returnTo=%2Fclient",
+            "status": 200,
+            "headers": {
+              "content-type": "text/html; charset=utf-8",
+              "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+              "server": "Vercel",
+              "x-vercel-id": "lhr1::iad1::4pv5p-1789204985503-414be2688afb",
+              "x-vercel-cache": "MISS",
+              "x-matched-path": "/access"
+            },
+            "body_sha256": "d68840e4e4d93fe949fe7245282d41f18cb58ca1d89cd2afb567b1003c9185fc",
+            "visible_text": "Skip to content Meritus Via Send documents Enter your work email to request a secure link to your organisation\u2019s documents. Work email Send me a link Your link will work once and expire after 30 minutes. Send documents | Meritus Via",
+            "links": [
+              "#main-content",
+              "/"
+            ],
+            "inputs": [
+              {
+                "type": "email",
+                "name": "email",
+                "autocomplete": "email"
+              },
+              {
+                "type": "text",
+                "name": "company_website",
+                "autocomplete": "off"
+              }
+            ],
+            "director_word_contexts": []
+          }
+        ]
+      },
+      {
+        "path": "/api/portal/research/quick",
+        "passed": true,
+        "hops": [
+          {
+            "url": "https://www.meritusvia.com/api/portal/research/quick",
+            "status": 401,
+            "headers": {
+              "content-type": "application/json",
+              "cache-control": "no-store",
+              "server": "Vercel",
+              "x-vercel-id": "lhr1::g4p8f-1789204985498-77ec7e287f80"
+            },
+            "body_sha256": "273c1a6ab2b60b2b67922a9860d0c9de6e20e70d8453302238eac6febbb97160",
+            "json": {
+              "error": "Unauthorized",
+              "code": "UNAUTHENTICATED"
+            }
+          }
+        ]
+      }
+    ],
+    "apex_domain_redirect_checks": [
+      {
+        "url": "https://meritusvia.com/",
+        "status": 307,
+        "headers": {
+          "location": "https://www.meritusvia.com/",
+          "content-type": "text/plain",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "server": "Vercel",
+          "x-vercel-id": "lhr1::4756g-1789204985701-e26b40c32470"
+        },
+        "body_sha256": "7c040f8633b8823d72ed63da9b3b2dfe9846e912c66a64c9433ec9c4815d76c2",
+        "passed": true
+      },
+      {
+        "url": "https://meritusvia.com/portal/actions?filter=overdue",
+        "status": 307,
+        "headers": {
+          "location": "https://www.meritusvia.com/portal/actions?filter=overdue",
+          "content-type": "text/plain",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "server": "Vercel",
+          "x-vercel-id": "lhr1::mhfzr-1789204985747-e8fc3c12ab7f"
+        },
+        "body_sha256": "7c040f8633b8823d72ed63da9b3b2dfe9846e912c66a64c9433ec9c4815d76c2",
+        "passed": true
+      }
+    ],
+    "limitations": [
+      "HTML response checks do not execute Clerk JavaScript or verify hydrated form styling. Root agent handles browser verification.",
+      "Anonymous response checks do not verify authenticated roles, invitation tickets, account switching, data workflows or email delivery.",
+      "Provider registration policy and branding are not verified by these app response checks. Prior release record marks production Clerk configuration pending."
+    ],
+    "vercel_identity": {
+      "verified_at": "2026-09-12T09:23:30.568368+00:00",
+      "method": "Authenticated Vercel CLI read-only API GETs; metadata allowlisted before storage",
+      "scope": "quantum-commercial-solutions",
+      "deployment_endpoint": "/v13/deployments/dpl_3gtrxTksi3BPgvEguhijnMPwH8XS",
+      "deployment": {
+        "id": "dpl_3gtrxTksi3BPgvEguhijnMPwH8XS",
+        "name": "meritus",
+        "url": "meritus-pefcvpasy-quantum-commercial-solutions.vercel.app",
+        "projectId": "prj_c2fS1s9yqPD4AnuHZ5DJlk0xqQFP",
+        "target": "production",
+        "readyState": "READY",
+        "createdAt": 1789204708816,
+        "ready": 1789204815984,
+        "alias": [
+          "www.meritusvia.com",
+          "meritusvia.com",
+          "meritus-quantum-commercial-solutions.vercel.app",
+          "meritus-git-main-quantum-commercial-solutions.vercel.app"
+        ],
+        "aliasAssigned": true,
+        "aliasError": null,
+        "gitSource": {
+          "ref": "main",
+          "sha": "7821feff1a370e4515e95604873ab09604d35723",
+          "type": "github"
+        }
+      },
+      "alias_lookups": [
+        {
+          "endpoint": "/v4/aliases/www.meritusvia.com",
+          "alias": "www.meritusvia.com",
+          "deploymentId": "dpl_3gtrxTksi3BPgvEguhijnMPwH8XS",
+          "projectId": "prj_c2fS1s9yqPD4AnuHZ5DJlk0xqQFP",
+          "redirect": null,
+          "updatedAt": 1789204818029
+        },
+        {
+          "endpoint": "/v4/aliases/meritusvia.com",
+          "alias": "meritusvia.com",
+          "deploymentId": "dpl_3gtrxTksi3BPgvEguhijnMPwH8XS",
+          "projectId": "prj_c2fS1s9yqPD4AnuHZ5DJlk0xqQFP",
+          "redirect": "www.meritusvia.com",
+          "updatedAt": 1789204818028
+        }
+      ],
+      "project_domain_endpoint": "/v9/projects/prj_c2fS1s9yqPD4AnuHZ5DJlk0xqQFP/domains",
+      "project_domains": [
+        {
+          "name": "meritusvia.com",
+          "projectId": "prj_c2fS1s9yqPD4AnuHZ5DJlk0xqQFP",
+          "redirect": "www.meritusvia.com",
+          "verified": true,
+          "gitBranch": null
+        },
+        {
+          "name": "www.meritusvia.com",
+          "projectId": "prj_c2fS1s9yqPD4AnuHZ5DJlk0xqQFP",
+          "redirect": null,
+          "verified": true,
+          "gitBranch": null
+        }
+      ],
+      "all_identity_checks_passed": true,
+      "note": "The initial inspect summary omitted custom domains. The authenticated deployment API and both independent alias lookups confirm the actual mapping."
+    },
+    "summary": {
+      "http_checks": 9,
+      "http_failures": 0,
+      "public_director_word_hits": 0,
+      "verdict": "green for this initial production snapshot; final style-patch deployment verification will follow"
+    },
+    "build_log": {
+      "path": "docs/reviews/experience-reset/production-initial-build.log",
+      "deployment_id": "dpl_3gtrxTksi3BPgvEguhijnMPwH8XS",
+      "commit_sha": "7821feff1a370e4515e95604873ab09604d35723",
+      "retrieval_exit_code": 0,
+      "migrations_applied": true,
+      "compiled_successfully": true,
+      "static_pages_generated": true,
+      "build_completed": true,
+      "deployment_completed": true,
+      "sanitisation": "Potential configuration/credential lines and credential-shaped values redacted before file write."
+    }
+  },
+  "final_release": {
+    "verified_at": "2026-09-12T09:26:40.445920+00:00",
+    "expected_deployment_id": "dpl_BYUE6e4JvNMxbNRXDzCqcfBoKp7M",
+    "expected_commit_sha": "aa75ceb4a9f50b796f6b18b111bacd22b459c821",
+    "vercel_identity": {
+      "method": "Authenticated Vercel CLI read-only API GETs; metadata allowlisted before storage",
+      "scope": "quantum-commercial-solutions",
+      "bounded_ready_wait": {
+        "command": "vercel inspect dpl_BYUE6e4JvNMxbNRXDzCqcfBoKp7M --wait --timeout 3m --scope quantum-commercial-solutions",
+        "exit_code": 0,
+        "observed_state": "READY"
+      },
+      "deployment_lookup": {
+        "endpoint": "/v13/deployments/dpl_BYUE6e4JvNMxbNRXDzCqcfBoKp7M",
+        "exit_code": 0,
+        "data": {
+          "id": "dpl_BYUE6e4JvNMxbNRXDzCqcfBoKp7M",
+          "name": "meritus",
+          "url": "meritus-5ugxk5yuc-quantum-commercial-solutions.vercel.app",
+          "projectId": "prj_c2fS1s9yqPD4AnuHZ5DJlk0xqQFP",
+          "target": "production",
+          "readyState": "READY",
+          "status": "READY",
+          "createdAt": 1789205046614,
+          "ready": 1789205145490,
+          "alias": [
+            "www.meritusvia.com",
+            "meritusvia.com",
+            "meritus-quantum-commercial-solutions.vercel.app",
+            "meritus-git-main-quantum-commercial-solutions.vercel.app"
+          ],
+          "aliasAssigned": true,
+          "aliasError": null,
+          "gitSource": {
+            "ref": "main",
+            "sha": "aa75ceb4a9f50b796f6b18b111bacd22b459c821",
+            "type": "github"
+          },
+          "gitMetadata": {
+            "githubCommitMessage": "fix: keep Clerk controls consistent with shared styling",
+            "githubCommitRef": "main",
+            "githubCommitSha": "aa75ceb4a9f50b796f6b18b111bacd22b459c821"
+          }
+        }
+      },
+      "alias_lookups": [
+        {
+          "endpoint": "/v4/aliases/www.meritusvia.com",
+          "exit_code": 0,
+          "data": {
+            "projectId": "prj_c2fS1s9yqPD4AnuHZ5DJlk0xqQFP",
+            "createdAt": 1772313128699,
+            "alias": "www.meritusvia.com",
+            "deploymentId": "dpl_BYUE6e4JvNMxbNRXDzCqcfBoKp7M",
+            "redirect": null,
+            "redirectStatusCode": null,
+            "updatedAt": 1789205147524,
+            "gitMetadata": {},
+            "deployment": {
+              "id": "dpl_BYUE6e4JvNMxbNRXDzCqcfBoKp7M",
+              "url": "meritus-5ugxk5yuc-quantum-commercial-solutions.vercel.app"
+            }
+          }
+        },
+        {
+          "endpoint": "/v4/aliases/meritusvia.com",
+          "exit_code": 0,
+          "data": {
+            "projectId": "prj_c2fS1s9yqPD4AnuHZ5DJlk0xqQFP",
+            "createdAt": 1774629623912,
+            "alias": "meritusvia.com",
+            "deploymentId": "dpl_BYUE6e4JvNMxbNRXDzCqcfBoKp7M",
+            "redirect": "www.meritusvia.com",
+            "redirectStatusCode": null,
+            "updatedAt": 1789205147525,
+            "gitMetadata": {},
+            "deployment": {
+              "id": "dpl_BYUE6e4JvNMxbNRXDzCqcfBoKp7M",
+              "url": "meritus-5ugxk5yuc-quantum-commercial-solutions.vercel.app"
+            }
+          }
+        }
+      ],
+      "all_identity_checks_passed": true
+    },
+    "http_spot_checks": [
+      {
+        "path": "/",
+        "url": "https://www.meritusvia.com/",
+        "status": 200,
+        "headers": {
+          "content-type": "text/html; charset=utf-8",
+          "cache-control": "public, max-age=0, must-revalidate",
+          "server": "Vercel",
+          "x-vercel-id": "lhr1::lm9s8-1789205200206-fa24c5658038",
+          "x-vercel-cache": "PRERENDER",
+          "x-matched-path": "/"
+        },
+        "body_sha256": "eaa5ea655923492403465fcca76e90de1569049d442abf02bb191c52ad3080d9",
+        "visible_text": "Meritus Via | Construction Disputes Advisory Skip to content Meritus Via Expertise Approach Insights Contact Client access Menu Expertise Approach Insights Contact Sectors Credentials Client access Construction disputes advisory A clear position. Built from the record. Delay, quantum and technical expertise for complex construction disputes. We connect what happened on the project with what can be evidenced. Discuss your matter Explore our expertise For contractors, employers and instructing solicitors. Reading the project record Illustration A construction sequence and its supporting records Illustrative building section showing structure, envelope and access. Programme bars below connect the planned sequence to an instruction, site record and cost record. This is not a real project or result. Section through the works Sequence / access Structure Envelope Structure Envelope Completion Test the sequence against the evidence. Instruction Site record Cost record Illustrative records only. No client project or outcome is represented. The expertise your matter needs. Choose a discipline, or bring us an issue that crosses several. Explore our sectors Delay Establish the sequence, the critical path and the effect of change. \u2197 Quantum Build and test valuations against the underlying cost and contract records. \u2197 Technical Investigate defects, design responsibility and the causes of failure. \u2197 Advisory Assess the merits and prepare a proportionate route through the dispute. \u2197 Technology Organise project evidence and keep findings connected to their sources. \u2197 Start with the question. Follow the evidence. Our approach brings project records, analytical discipline and professional judgement into one line of reasoning. How we work Establish the record Identify the relevant contract, programme and contemporary evidence, including the gaps. Test the position Examine cause, effect and value. Challenge assumptions and consider the evidence that cuts against the case. Explain the conclusion Set out the analysis, its sources and its limits so the next decision is properly informed. Current thinking All insights The Reach Adjudicate, Then Attach: One Decision, the Whole Group A twenty-eight day adjudication now reaches companies that never signed the contract. What decided Crest Nicholson v Ardmore was not the law on building liability orders; it was six years of engagement history sitting in the file. September 2026 9 min The Lock The Levy and the Locked Door From 1 October 2026 the completion certificate is withheld until the Building Safety Levy is paid. A tax has been converted into a condition of completion, and almost no live contract says who bears it. August 2026 7 min The Gateway Stuck at the Gateway: Who Owns Building Safety Regulator Delay? Gateway processing times have almost halved in a year. That fixes the queue, not the two years of regulator delay already absorbed into live contracts, and no standard form allocates it. August 2026 8 min A clear starting point for your matter. Tell us about the project, the issue and the decision ahead. Discuss your matter Meritus Via Construction disputes advisory. The detail behind a considered position. enquiries@meritusvia.com Practice Expertise Sectors Approach Insights Get in touch Contact Credentials Client access Staff sign in Information Privacy Terms Accessibility LinkedIn \u00a9 2026 Meritus Group Ltd. All rights reserved. Registered in England and Wales. Company no. 16260734 .",
+        "director_word_contexts": [],
+        "passed": true
+      },
+      {
+        "path": "/api/portal/research/quick",
+        "url": "https://www.meritusvia.com/api/portal/research/quick",
+        "status": 401,
+        "headers": {
+          "content-type": "application/json",
+          "cache-control": "no-store",
+          "server": "Vercel",
+          "x-vercel-id": "lhr1::tpf49-1789205200221-e32d70acf7a9"
+        },
+        "body_sha256": "273c1a6ab2b60b2b67922a9860d0c9de6e20e70d8453302238eac6febbb97160",
+        "json": {
+          "error": "Unauthorized",
+          "code": "UNAUTHENTICATED"
+        },
+        "passed": true
+      }
+    ],
+    "build_log": {
+      "path": "docs/reviews/experience-reset/production-build.log",
+      "deployment_id": "dpl_BYUE6e4JvNMxbNRXDzCqcfBoKp7M",
+      "commit_sha": "aa75ceb4a9f50b796f6b18b111bacd22b459c821",
+      "retrieval_exit_code": 0,
+      "migrations_applied": true,
+      "compiled_successfully": true,
+      "static_pages_generated": true,
+      "build_completed": true,
+      "deployment_completed": true,
+      "sanitisation": "Potential configuration/credential lines and credential-shaped values redacted before file write."
+    }
+  },
+  "limitations": [
+    "The nine initial HTTP checks relate to commit 7821feff1a370e4515e95604873ab09604d35723. Only Home and anonymous research API were repeated for final style-only commit aa75ceb4a9f50b796f6b18b111bacd22b459c821.",
+    "HTTP HTML checks do not execute Clerk JavaScript or verify hydrated styles. Root agent handles browser verification.",
+    "Authenticated roles, invitation tickets, account switching, uploads and email delivery were not exercised.",
+    "App invitation guidance and anonymous API protection do not establish Clerk provider registration policy or branding. The release record separately documents provider configuration pending."
+  ],
+  "summary": {
+    "initial_http_checks": 9,
+    "initial_http_failures": 0,
+    "final_http_spot_checks": 2,
+    "final_http_failures": 0,
+    "final_identity_checks_passed": true,
+    "final_build_checks_passed": true,
+    "verdict": "green"
+  }
+}
