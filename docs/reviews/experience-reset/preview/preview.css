@@ -1,0 +1,2 @@
+:root { --font-ibm-plex-sans: 'IBM Plex Sans'; --font-literata: 'Literata'; }
+.fixture-notice { margin: 0; padding: 6px 20px; color: #56666b; background: #e7ecec; font: 12px/1.5 var(--font-sans); }

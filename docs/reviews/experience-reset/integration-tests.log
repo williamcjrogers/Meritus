@@ -1,0 +1,18 @@
+$ vitest run
+
+ RUN  v5.0.0 /Users/williamrogers/Projects/Meritus/.worktrees/experience-reset
+
+(node:46020) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/williamrogers/Projects/Meritus/.worktrees/experience-reset/src/lib/research/imports/split-csv.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /Users/williamrogers/Projects/Meritus/.worktrees/experience-reset/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+Not implemented: navigation to another Document
+
+ Test Files  117 passed | 8 skipped (125)
+      Tests  1050 passed | 94 skipped (1144)
+   Start at  09:58:38
+   Duration  7.44s (environment 44%, setup 16%, import 16%, tests 14%, transform 10%, worker 1%)
+
+Environment  jsdom was created 125 times · 46.52s total, 44% of tracked time
+             create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
+             learn more: https://vitest.dev/guide/improving-performance#test-environments

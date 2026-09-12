@@ -1,0 +1,143 @@
+   ▲ Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (275kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled successfully in 7.2s
+   Linting and checking validity of types ...
+   Collecting page data ...
+ ⚠ Using edge runtime on a page currently disables static generation for that page
+   Generating static pages (0/49) ...
+   Generating static pages (12/49) 
+   Generating static pages (24/49) 
+   Generating static pages (36/49) 
+ ✓ Generating static pages (49/49)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                Size  First Load JS
+┌ ○ /                                                     177 B         106 kB
+├ ○ /_not-found                                           301 B         102 kB
+├ ƒ /access                                             2.26 kB         108 kB
+├ ƒ /access/continue                                    2.12 kB         150 kB
+├ ƒ /access/denied                                      1.96 kB         153 kB
+├ ƒ /access/unavailable                                   177 B         106 kB
+├ ○ /accessibility                                        301 B         102 kB
+├ ƒ /account                                              301 B         102 kB
+├ ƒ /api/access                                           301 B         102 kB
+├ ƒ /api/client/uploads                                   301 B         102 kB
+├ ƒ /api/client/uploads/[id]                              301 B         102 kB
+├ ƒ /api/client/uploads/[id]/complete                     301 B         102 kB
+├ ƒ /api/client/uploads/[id]/parts                        301 B         102 kB
+├ ƒ /api/contact                                          301 B         102 kB
+├ ƒ /api/internal/research                                301 B         102 kB
+├ ƒ /api/internal/research-answers                        301 B         102 kB
+├ ƒ /api/portal/companies-house                           301 B         102 kB
+├ ƒ /api/portal/documents/[id]                            301 B         102 kB
+├ ƒ /api/portal/library                                   301 B         102 kB
+├ ƒ /api/portal/programmes                                301 B         102 kB
+├ ƒ /api/portal/programmes/[id]                           301 B         102 kB
+├ ƒ /api/portal/programmes/[id]/report                    301 B         102 kB
+├ ƒ /api/portal/pursuits/[id]/brief                       301 B         102 kB
+├ ƒ /api/portal/pursuits/[id]/documents                   301 B         102 kB
+├ ƒ /api/portal/pursuits/[id]/questions                   301 B         102 kB
+├ ƒ /api/portal/research/calendar                         301 B         102 kB
+├ ƒ /api/portal/research/case-law                         301 B         102 kB
+├ ƒ /api/portal/research/case-law/[id]                    301 B         102 kB
+├ ƒ /api/portal/research/case-law/compare                 301 B         102 kB
+├ ƒ /api/portal/research/case-law/treatment               301 B         102 kB
+├ ƒ /api/portal/research/digests                          301 B         102 kB
+├ ƒ /api/portal/research/directory                        301 B         102 kB
+├ ƒ /api/portal/research/documents                        301 B         102 kB
+├ ƒ /api/portal/research/documents/[id]/reinstate         301 B         102 kB
+├ ƒ /api/portal/research/entities                         301 B         102 kB
+├ ƒ /api/portal/research/entities/[id]/confirm            301 B         102 kB
+├ ƒ /api/portal/research/entities/[id]/identifiers        301 B         102 kB
+├ ƒ /api/portal/research/entities/search                  301 B         102 kB
+├ ƒ /api/portal/research/evidence/[id]                    301 B         102 kB
+├ ƒ /api/portal/research/imports                          301 B         102 kB
+├ ƒ /api/portal/research/indexes                          301 B         102 kB
+├ ƒ /api/portal/research/investigations                   301 B         102 kB
+├ ƒ /api/portal/research/investigations/[id]              301 B         102 kB
+├ ƒ /api/portal/research/investigations/[id]/claims       301 B         102 kB
+├ ƒ /api/portal/research/investigations/[id]/questions    301 B         102 kB
+├ ƒ /api/portal/research/investigations/[id]/reports      301 B         102 kB
+├ ƒ /api/portal/research/investigations/[id]/signals      301 B         102 kB
+├ ƒ /api/portal/research/opportunities/[id]               301 B         102 kB
+├ ƒ /api/portal/research/outcomes                         301 B         102 kB
+├ ƒ /api/portal/research/quick                            301 B         102 kB
+├ ƒ /api/portal/research/quick/[id]                       301 B         102 kB
+├ ƒ /api/portal/research/referrals                        301 B         102 kB
+├ ƒ /api/portal/research/reports                          301 B         102 kB
+├ ƒ /api/portal/research/reports/[id]                     301 B         102 kB
+├ ƒ /api/portal/research/reports/[id]/export              301 B         102 kB
+├ ƒ /api/portal/research/reports/[id]/review              301 B         102 kB
+├ ƒ /api/portal/research/rights                           301 B         102 kB
+├ ƒ /api/portal/research/runs                             301 B         102 kB
+├ ƒ /api/portal/research/runs/[id]                        301 B         102 kB
+├ ƒ /api/portal/research/signals                          301 B         102 kB
+├ ƒ /api/portal/research/signals/[id]/convert             301 B         102 kB
+├ ƒ /api/portal/research/signals/[id]/decisions           301 B         102 kB
+├ ƒ /api/portal/research/signals/[id]/review              301 B         102 kB
+├ ƒ /api/portal/research/sources                          301 B         102 kB
+├ ƒ /api/portal/research/sources/[id]                     301 B         102 kB
+├ ƒ /api/portal/research/suppressions                     301 B         102 kB
+├ ƒ /api/portal/research/watchlists                       301 B         102 kB
+├ ƒ /api/portal/research/watchlists/[id]                  301 B         102 kB
+├ ○ /claims-intelligence                                  187 B         106 kB
+├ ƒ /client                                             4.54 kB         155 kB
+├ ƒ /contact                                            11.1 kB         117 kB
+├ ○ /credentials                                          187 B         106 kB
+├ ƒ /icon                                                 301 B         102 kB
+├ ○ /insights                                             187 B         106 kB
+├ ● /insights/[slug]                                    3.42 kB         145 kB
+├   ├ /insights/delay-analysis-adjudications
+├   ├ /insights/building-safety-act-remediation
+├   ├ /insights/ai-in-construction-disputes
+├   └ [+7 more paths]
+├ ○ /method                                               177 B         106 kB
+├ ƒ /opengraph-image                                      301 B         102 kB
+├ ƒ /portal                                             4.45 kB         143 kB
+├ ƒ /portal/actions                                     2.38 kB         141 kB
+├ ƒ /portal/clients                                     4.71 kB         110 kB
+├ ƒ /portal/library                                     3.41 kB         109 kB
+├ ƒ /portal/programmes                                   1.3 kB         107 kB
+├ ƒ /portal/programmes/[id]                             1.07 kB         140 kB
+├ ƒ /portal/prospects                                   1.84 kB         107 kB
+├ ƒ /portal/prospects/[id]                              1.98 kB         141 kB
+├ ƒ /portal/pursuits                                    7.62 kB         145 kB
+├ ƒ /portal/pursuits/[id]                               42.4 kB         186 kB
+├ ƒ /portal/research                                      330 B         134 kB
+├ ƒ /portal/research/advanced                             330 B         134 kB
+├ ƒ /portal/research/calendar                             330 B         134 kB
+├ ƒ /portal/research/case-law                             330 B         134 kB
+├ ƒ /portal/research/case-law/[id]                        330 B         134 kB
+├ ƒ /portal/research/digests                              129 B         110 kB
+├ ƒ /portal/research/evidence/[id]                        330 B         134 kB
+├ ƒ /portal/research/indexes                              129 B         110 kB
+├ ƒ /portal/research/investigations/[id]                  680 B         167 kB
+├ ƒ /portal/research/outcomes                             330 B         134 kB
+├ ƒ /portal/research/referrals                            330 B         134 kB
+├ ƒ /portal/research/reports                              330 B         134 kB
+├ ƒ /portal/research/reports/[id]                         330 B         134 kB
+├ ƒ /portal/research/runs                                 330 B         134 kB
+├ ƒ /portal/research/signals                              330 B         134 kB
+├ ƒ /portal/research/sources                              330 B         134 kB
+├ ƒ /portal/research/watchlists                           330 B         134 kB
+├ ○ /privacy-policy                                       301 B         102 kB
+├ ○ /sectors                                              177 B         106 kB
+├ ○ /services                                             187 B         106 kB
+├ ƒ /sign-in/[[...sign-in]]                             1.96 kB         153 kB
+├ ƒ /sign-up/[[...sign-up]]                              2.6 kB         150 kB
+└ ○ /terms                                                301 B         102 kB
++ First Load JS shared by all                            102 kB
+  ├ chunks/4977-d4ccf7430c7f43db.js                       46 kB
+  ├ chunks/6ee9f5d1-f8aca178a72dc11c.js                 54.2 kB
+  └ other shared chunks (total)                         1.94 kB
+
+
+ƒ Middleware                                            92.5 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand

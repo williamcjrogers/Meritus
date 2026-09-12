@@ -1,8 +1,8 @@
 # Meritus experience reset
 
-Date: 12 September 2026  
-Status: Approved by William Rogers on 12 September 2026 with instruction to implement.  
-Product repository: `williamcjrogers/Meritus`  
+Date: 12 September 2026
+Status: Approved by William Rogers on 12 September 2026 with instruction to implement.
+Product repository: `williamcjrogers/Meritus`
 Verified production revision: `efd8849cac66cf8db622260983249482ca9c4f7c`
 
 ## Decision
