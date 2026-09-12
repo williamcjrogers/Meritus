@@ -62,3 +62,9 @@ export type DocumentSummary = {
 export function summariseDocument(doc: DocumentRow): DocumentSummary {
   return { id: doc.id, title: doc.title, size: doc.size, createdAt: doc.createdAt, hasText: hasReadableText(doc) };
 }
+
+/** RFC 6266: a plain ASCII filename for old agents and the UTF-8 form for everyone else. */
+export function contentDisposition(fileName: string): string {
+  const ascii = fileName.replace(/[^\x20-\x7e]|["\\]/g, "_");
+  return `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(fileName)}`;
+}
