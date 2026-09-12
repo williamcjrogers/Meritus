@@ -204,7 +204,7 @@ export function PursuitShell({
     setDeleting(false);
     if (result.ok) {
       setDeleteOpen(false);
-      router.push("/portal");
+      router.push("/portal/pursuits");
     } else {
       setHeaderError(result.error);
       setDeleteOpen(false);
@@ -228,8 +228,8 @@ export function PursuitShell({
   return (
     <div className="max-w-6xl">
       <div className="mb-6 flex items-center justify-between gap-4">
-        <Link href="/portal" className="btn-quiet">
-          <span aria-hidden="true">←</span> Desk
+        <Link href="/portal/pursuits" className="btn-quiet">
+          <span aria-hidden="true">←</span> Live leads
         </Link>
         <div className="flex items-center gap-2">
           <MoveToMenu current={pursuit.stage} onMove={move} />
@@ -283,7 +283,7 @@ export function PursuitShell({
                     setDeleteOpen(true);
                   }}
                 >
-                  Delete pursuit
+                  Delete live lead
                 </button>
               </div>
             )}
@@ -438,14 +438,14 @@ export function PursuitShell({
         onSaveNote={(text) => saveAnswerAsNote(pursuit.id, text)}
         onClear={() => clearQuestions(pursuit.id)}
       />
-      <SlideOver open={editOpen} onClose={() => setEditOpen(false)} eyebrow="Pursuit" title="Edit details">
+      <SlideOver open={editOpen} onClose={() => setEditOpen(false)} eyebrow="Live lead" title="Edit details">
         <PursuitForm key={editKey} mode="edit" initial={toFormInput(serverPursuit)} onSubmit={saveEdit} onCancel={() => setEditOpen(false)} />
       </SlideOver>
       <ConfirmDialog
         open={deleteOpen}
         title={`Delete ${pursuit.firm}?`}
-        body="The pursuit, its timeline, its brief, its questions and its files are removed. This cannot be undone."
-        confirmLabel="Delete"
+        body="The live lead, its timeline, its brief, its questions and its files are removed. This cannot be undone."
+        confirmLabel="Delete live lead"
         danger
         pending={deleting}
         onConfirm={() => void confirmDelete()}

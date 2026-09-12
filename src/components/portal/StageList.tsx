@@ -22,8 +22,8 @@ export function StageList({
         <Eyebrow rule={false}>
           {stageLabel(stage)} <span className="text-ink/60">({rows.length})</span>
         </Eyebrow>
-        <Link href="/portal" className="btn-quiet">
-          Back to board
+        <Link href="/portal/pursuits" className="btn-quiet">
+          Back to live leads
         </Link>
       </div>
       <div className="panel-brackets overflow-x-auto border border-green/10 bg-parchment">
