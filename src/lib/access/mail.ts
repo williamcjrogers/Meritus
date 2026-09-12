@@ -11,7 +11,7 @@ export function accessMailSubject(): string {
 export function accessMailText(url: string): string {
   const origin = url.split("/access/")[0];
   return [
-    "Use this link within 30 minutes to open your Meritus upload desk:",
+    "Use this link within 30 minutes to open Client documents at Meritus:",
     "",
     url,
     "",

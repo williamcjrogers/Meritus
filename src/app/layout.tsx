@@ -1,35 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Cinzel, Cormorant_Garamond, Inter, JetBrains_Mono } from "next/font/google";
+import { IBM_Plex_Sans, Literata } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import { SITE_CONFIG } from "@/lib/constants";
 import { isClerkConfigured } from "@/lib/env";
 import "@/styles/globals.css";
 
-const cinzel = Cinzel({
+const ibmPlexSans = IBM_Plex_Sans({
   subsets: ["latin"],
-  weight: ["400", "700"],
-  variable: "--font-cinzel",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-ibm-plex-sans",
   display: "swap",
 });
-
-const cormorantGaramond = Cormorant_Garamond({
+const literata = Literata({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-cormorant-garamond",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--font-jetbrains-mono",
+  variable: "--font-literata",
   display: "swap",
 });
 
@@ -78,7 +62,7 @@ export const metadata: Metadata = {
         url: "/opengraph-image",
         width: 1200,
         height: 630,
-        alt: `${SITE_CONFIG.name} — Construction Disputes Advisory`,
+        alt: `${SITE_CONFIG.name}, Construction Disputes Advisory`,
       },
     ],
   },
@@ -105,7 +89,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0B3B24",
+  themeColor: "#FAFCFC",
 };
 
 export default function RootLayout({
@@ -117,9 +101,9 @@ export default function RootLayout({
     <html
       lang="en-GB"
       suppressHydrationWarning
-      className={`${cinzel.variable} ${cormorantGaramond.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${ibmPlexSans.variable} ${literata.variable}`}
     >
-      <body suppressHydrationWarning className="font-sans text-ink bg-stone antialiased min-h-screen">
+      <body suppressHydrationWarning className="font-sans antialiased min-h-screen">
         <a href="#main-content" className="skip-to-content">
           Skip to content
         </a>
@@ -127,10 +111,35 @@ export default function RootLayout({
           <ClerkProvider
             signInUrl="/sign-in"
             signUpUrl="/sign-up"
-            signInFallbackRedirectUrl="/portal"
-            signInForceRedirectUrl="/portal"
-            signUpFallbackRedirectUrl="/portal"
-            signUpForceRedirectUrl="/portal"
+            signInFallbackRedirectUrl="/account"
+            signInForceRedirectUrl="/account"
+            signUpFallbackRedirectUrl="/account"
+            signUpForceRedirectUrl="/account"
+            afterSignOutUrl="/"
+            appearance={{
+              variables: {
+                colorPrimary: "var(--primary)",
+                colorBackground: "var(--surface)",
+                colorForeground: "var(--text)",
+                colorMutedForeground: "var(--muted)",
+                colorInput: "var(--surface)",
+                colorInputForeground: "var(--text)",
+                colorDanger: "var(--danger)",
+                colorBorder: "var(--border)",
+                colorRing: "var(--focus)",
+                borderRadius: "var(--radius-control)",
+                fontFamily: "var(--font-ibm-plex-sans)",
+                fontSize: "1rem",
+              },
+              elements: {
+                rootBox: { width: "100%" },
+                cardBox: { width: "100%", boxShadow: "none" },
+                card: { boxShadow: "none", border: "1px solid var(--border)" },
+                formFieldInput: "app-field",
+                formFieldLabel: "app-label",
+                formButtonPrimary: "app-button",
+              },
+            }}
           >
             {children}
           </ClerkProvider>

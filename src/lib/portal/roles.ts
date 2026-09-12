@@ -1,75 +1,53 @@
-/**
- * Who a signed-in user is to the portal. The role lives in Clerk `publicMetadata` (`director`
- * or `client`, set by William for directors and by /api/access for clients). The session token
- * carries it when the dashboard adds the `metadata` claim; otherwise the Backend API is asked
- * and the answer held for five minutes. Anything else is no role, which every gate denies.
- *
- * Server only: this module imports "@clerk/nextjs/server".
- */
-
+/** Server-only identity authority. Session claims and cross-request caches never grant access. */
 import { clerkClient } from "@clerk/nextjs/server";
 
 export const ROLES = ["director", "client"] as const;
 export type Role = (typeof ROLES)[number];
+export type Identity = { userId: string; role: Role | null; domain: string | null; email: string | null };
+export const IDENTITY_TIMEOUT_MS = 8_000;
 
-export type Identity = {
-  userId: string;
-  role: Role | null;
-  /** The client's company domain; null for directors. */
-  domain: string | null;
-  email: string | null;
-};
-
-const CACHE_TTL_MS = 5 * 60 * 1000;
-const cache = new Map<string, { identity: Identity; expiresAt: number }>();
+export class IdentityUnavailableError extends Error {
+  readonly status = 503;
+  readonly code = "IDENTITY_UNAVAILABLE";
+  constructor() {
+    super("We could not verify your access. Please try again.");
+    this.name = "IdentityUnavailableError";
+  }
+}
 
 export function roleFromMetadata(value: unknown): Role | null {
   return value === "director" || value === "client" ? value : null;
 }
 
-function readMetadata(source: unknown): Pick<Identity, "role" | "domain" | "email"> | null {
-  if (!source || typeof source !== "object") return null;
-  const meta = source as Record<string, unknown>;
-  return {
-    role: roleFromMetadata(meta.role),
-    domain: typeof meta.domain === "string" && meta.domain ? meta.domain : null,
-    email: typeof meta.email === "string" && meta.email ? meta.email : null,
-  };
-}
-
-/** The `metadata` session claim, when the Clerk dashboard has been told to add it. */
-export function identityFromClaims(userId: string, claims: unknown): Identity | null {
-  if (!claims || typeof claims !== "object") return null;
-  const meta = readMetadata((claims as Record<string, unknown>).metadata);
-  if (!meta) return null;
-  return { userId, ...meta };
-}
-
-async function fetchIdentity(userId: string): Promise<Identity> {
-  const client = await clerkClient();
-  const user = await client.users.getUser(userId);
-  const meta = readMetadata(user.publicMetadata) ?? { role: null, domain: null, email: null };
-  const primary =
-    user.emailAddresses.find((entry) => entry.id === user.primaryEmailAddressId) ?? user.emailAddresses[0];
-  return { userId, role: meta.role, domain: meta.domain, email: meta.email ?? primary?.emailAddress ?? null };
-}
-
-export async function resolveIdentity(userId: string, claims: unknown): Promise<Identity> {
-  const fromClaims = identityFromClaims(userId, claims);
-  if (fromClaims?.role) return fromClaims;
-  const cached = cache.get(userId);
-  if (cached && cached.expiresAt > Date.now()) return cached.identity;
+/** Each protected operation gets current backend metadata, including background worker rechecks. */
+export async function resolveIdentity(userId: string, _claims?: unknown): Promise<Identity> {
+  void _claims; // Kept for existing callers; claims cannot grant current access.
+  let timer: ReturnType<typeof setTimeout> | undefined;
   try {
-    const identity = await fetchIdentity(userId);
-    cache.set(userId, { identity, expiresAt: Date.now() + CACHE_TTL_MS });
-    return identity;
+    const user = await Promise.race([
+      (async () => (await clerkClient()).users.getUser(userId))(),
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new IdentityUnavailableError()), IDENTITY_TIMEOUT_MS);
+      }),
+    ]);
+    const meta = user.publicMetadata ?? {};
+    const addresses = user.emailAddresses ?? [];
+    const primary = addresses.find(entry => entry.id === user.primaryEmailAddressId);
+    return {
+      userId,
+      role: roleFromMetadata(meta.role),
+      domain: typeof meta.domain === "string" && meta.domain ? meta.domain : null,
+      email: primary?.verification?.status === "verified" ? primary.emailAddress : null,
+    };
   } catch (error) {
-    console.warn("Roles: Clerk user lookup unavailable", error instanceof Error ? error.name : "unknown");
-    return { userId, role: null, domain: null, email: null };
+    // A confirmed missing account has no entitlement; transport and service errors are unavailable.
+    if (error && typeof error === "object" && "status" in error && error.status === 404) {
+      return { userId, role: null, domain: null, email: null };
+    }
+    // Do not log provider bodies: they may contain addresses or ticket values.
+    console.warn("Access identity lookup unavailable", error instanceof Error ? error.name : "unknown");
+    throw new IdentityUnavailableError();
+  } finally {
+    clearTimeout(timer);
   }
-}
-
-/** Test hook. */
-export function __resetIdentityCache(): void {
-  cache.clear();
 }

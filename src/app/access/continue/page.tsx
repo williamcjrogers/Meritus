@@ -1,32 +1,15 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { AccessContinue } from "@/components/access/AccessContinue";
-import { HallmarkLogo } from "@/components/icons/HallmarkLogo";
-import { SetupNotice } from "@/components/portal/SetupNotice";
+import { AccessShell } from "@/components/access/AccessShell";
 import { isClerkConfigured } from "@/lib/env";
-
-export const metadata = {
-  title: "Opening your upload desk",
-  robots: { index: false, follow: false },
-};
-
+export const metadata = { title: "Open client documents", robots: { index: false, follow: false }, referrer: "no-referrer" as const };
 export const dynamic = "force-dynamic";
-
 export default function AccessContinuePage() {
-  return (
-    <main id="main-content" className="min-h-screen bg-green grain flex flex-col items-center justify-center px-6 py-20">
-      <Link href="/" className="mb-10">
-        <HallmarkLogo size="standalone" variant="light" showDescriptor />
-      </Link>
-      {isClerkConfigured() ? (
-        <Suspense fallback={null}>
-          <AccessContinue />
-        </Suspense>
-      ) : (
-        <div className="w-full max-w-lg">
-          <SetupNotice title="Client access is not configured yet" />
-        </div>
-      )}
-    </main>
-  );
+  return <AccessShell title="Open client documents">
+    {isClerkConfigured() ? <Suspense fallback={<p role="status">Checking your link…</p>}><AccessContinue /></Suspense> : <>
+      <p className="app-status">We cannot open your documents at the moment. Please try again shortly.</p>
+      <Link href="/access" className="app-button">Request a new link</Link>
+    </>}
+  </AccessShell>;
 }

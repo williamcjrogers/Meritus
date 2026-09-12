@@ -6,6 +6,7 @@
 
 import { randomBytes } from "node:crypto";
 import { clerkClient } from "@clerk/nextjs/server";
+import { destinationFor } from "@/lib/portal/destination";
 import { SITE_CONFIG } from "@/lib/constants";
 
 export const ACCESS_LINK_TTL_SECONDS = 30 * 60;
@@ -19,8 +20,9 @@ export function accessLinkOrigin(): string {
   return raw.replace(/\/+$/, "");
 }
 
-export function continueUrl(origin: string, token: string): string {
-  return `${origin}/access/continue?ticket=${encodeURIComponent(token)}`;
+export function continueUrl(origin: string, token: string, returnTo?: string): string {
+  const target = returnTo ? `&returnTo=${encodeURIComponent(destinationFor("client", returnTo))}` : "";
+  return `${origin}/access/continue?ticket=${encodeURIComponent(token)}${target}`;
 }
 
 export function randomPassword(): string {
@@ -31,6 +33,7 @@ export async function issueAccessLink(input: {
   email: string;
   domain: string;
   origin?: string;
+  returnTo?: string;
 }): Promise<IssueResult> {
   const email = input.email.trim().toLowerCase();
   const origin = input.origin ?? accessLinkOrigin();
@@ -66,7 +69,7 @@ export async function issueAccessLink(input: {
       userId,
       expiresInSeconds: ACCESS_LINK_TTL_SECONDS,
     });
-    return { ok: true, url: continueUrl(origin, token.token), userId };
+    return { ok: true, url: continueUrl(origin, token.token, input.returnTo), userId };
   } catch (error) {
     // Clerk error bodies can quote the address, so only the error name is logged.
     console.warn("Access: Clerk unavailable", error instanceof Error ? error.name : "unknown");

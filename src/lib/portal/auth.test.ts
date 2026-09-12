@@ -41,7 +41,7 @@ describe("requirePortalUser", () => {
     vi.mocked(resolveIdentity).mockResolvedValue({ ...director, role: null });
     const result = await requirePortalUser();
     expect(result.error?.status).toBe(403);
-    expect(await result.error?.json()).toEqual({ error: "Directors only", code: "FORBIDDEN" });
+    expect(await result.error?.json()).toEqual({ error: "Workspace access required", code: "FORBIDDEN" });
   });
   it("answers 503 when Clerk is not configured", async () => {
     delete process.env.CLERK_SECRET_KEY;
@@ -55,7 +55,7 @@ describe("requireActionUser", () => {
   });
   it("refuses a client", async () => {
     vi.mocked(resolveIdentity).mockResolvedValue(client);
-    expect(await requireActionUser()).toEqual({ ok: false, error: "Directors only" });
+    expect(await requireActionUser()).toEqual({ ok: false, error: "Workspace access required" });
   });
   it("asks for a sign-in when there is no session", async () => {
     vi.mocked(auth).mockResolvedValue({ userId: null, sessionClaims: null } as never);
@@ -78,4 +78,16 @@ describe("requireClientUser", () => {
     vi.mocked(auth).mockResolvedValue({ userId: null, sessionClaims: null } as never);
     expect((await requireClientUser()).error?.status).toBe(401);
   });
+});
+
+it("distinguishes provider failure across API and action guards", async () => {
+  vi.mocked(resolveIdentity).mockRejectedValue(new Error("private provider details"));
+  expect((await requirePortalUser()).error?.status).toBe(503);
+  expect((await requireClientUser()).error?.status).toBe(503);
+  expect(await requireActionUser()).toMatchObject({ ok: false, code: "IDENTITY_UNAVAILABLE", status: 503 });
+});
+it("handles session-provider failures as unavailable", async () => {
+  vi.mocked(auth).mockRejectedValue(new Error("provider failure"));
+  expect((await requirePortalUser()).error?.status).toBe(503);
+  expect((await requireClientUser()).error?.status).toBe(503);
 });

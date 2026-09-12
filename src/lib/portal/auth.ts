@@ -1,91 +1,74 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { redirect } from "next/navigation";
 import { isClerkConfigured, isDatabaseConfigured } from "@/lib/env";
 import { resolveIdentity, type Identity, type Role } from "./roles";
+import { safeReturnPath, unavailableDestination } from "./destination";
 
+const UNAVAILABLE = "We could not verify your access. Please try again.";
 function forbidden(message: string): NextResponse {
   return NextResponse.json({ error: message, code: "FORBIDDEN" }, { status: 403 });
 }
+function unavailable(): NextResponse {
+  return NextResponse.json({ error: UNAVAILABLE, code: "IDENTITY_UNAVAILABLE" }, { status: 503, headers: { "Retry-After": "5", "Cache-Control": "no-store" } });
+}
 
-/** A route-handler gate for directors. The middleware has already checked; this checks again. */
+/** Shared session and backend lookup, without cross-request authority caching. */
+async function currentIdentity(): Promise<Identity | null> {
+  const { userId, sessionClaims } = await auth();
+  return userId ? resolveIdentity(userId, sessionClaims) : null;
+}
+
 export async function requirePortalUser(): Promise<
   { userId: string; error?: undefined } | { userId?: undefined; error: NextResponse }
 > {
-  if (!isClerkConfigured()) {
-    return {
-      error: NextResponse.json(
-        { error: "Clerk is not configured", code: "SETUP" },
-        { status: 503 }
-      ),
-    };
-  }
-
-  const { userId, sessionClaims } = await auth();
-  if (!userId) {
-    return {
-      error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }),
-    };
-  }
-
-  const identity = await resolveIdentity(userId, sessionClaims);
-  if (identity.role !== "director") {
-    return { error: forbidden("Directors only") };
-  }
-
-  return { userId };
+  if (!isClerkConfigured()) return { error: unavailable() };
+  let identity: Identity | null;
+  try { identity = await currentIdentity(); } catch { return { error: unavailable() }; }
+  if (!identity) return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
+  if (identity.role !== "director") return { error: forbidden("Workspace access required") };
+  return { userId: identity.userId };
 }
 
 export type ClientIdentity = Identity & { role: Role };
-
-/** A route-handler gate for the client desk. Clients and directors pass; a director has no domain. */
+/** Existing API scope is retained: clients and staff pass; individual operations enforce domains. */
 export async function requireClientUser(): Promise<
   { identity: ClientIdentity; error?: undefined } | { identity?: undefined; error: NextResponse }
 > {
-  if (!isClerkConfigured()) {
-    return { error: setupResponse("Clerk is not configured") };
-  }
-  const { userId, sessionClaims } = await auth();
-  if (!userId) {
-    return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
-  }
-  const identity = await resolveIdentity(userId, sessionClaims);
-  if (identity.role !== "client" && identity.role !== "director") {
-    return { error: forbidden("No access") };
-  }
+  if (!isClerkConfigured()) return { error: unavailable() };
+  let identity: Identity | null;
+  try { identity = await currentIdentity(); } catch { return { error: unavailable() }; }
+  if (!identity) return { error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }) };
+  if (identity.role !== "client" && identity.role !== "director") return { error: forbidden("No access") };
   return { identity: { ...identity, role: identity.role } };
 }
 
-export function setupResponse(message = "Portal is not fully configured"): NextResponse {
+/** Page guards call this independently of middleware; callers enforce their experience boundary. */
+export async function requirePageIdentity(requested: string): Promise<Identity> {
+  if (!isClerkConfigured()) redirect(unavailableDestination(requested));
+  let identity: Identity | null;
+  try { identity = await currentIdentity(); } catch { redirect(unavailableDestination(requested)); }
+  if (!identity) {
+    const target = safeReturnPath(requested);
+    const entry = target?.startsWith("/client") ? "/access" : "/sign-in";
+    redirect(target ? `${entry}?returnTo=${encodeURIComponent(target)}` : entry);
+  }
+  return identity;
+}
+
+export function setupResponse(message = "This service is temporarily unavailable. Please try again."): NextResponse {
   return NextResponse.json({ error: message, code: "SETUP" }, { status: 503 });
 }
-
 export function requireDatabaseOr503(): NextResponse | null {
-  if (!isDatabaseConfigured()) {
-    return setupResponse("DATABASE_URL is not configured");
-  }
-  return null;
+  return isDatabaseConfigured() ? null : setupResponse();
 }
-
-export type ActionUser = { ok: true; userId: string } | { ok: false; error: string };
-
-/**
- * The server-action counterpart of requirePortalUser: a result object rather than a
- * NextResponse, so an action can hand it straight back to the client.
- */
+export type ActionUser = { ok: true; userId: string } | { ok: false; error: string; code?: string; status?: number };
 export async function requireActionUser(): Promise<ActionUser> {
-  if (!isClerkConfigured()) {
-    return { ok: false, error: "Clerk is not configured" };
-  }
-  if (!isDatabaseConfigured()) {
-    return { ok: false, error: "DATABASE_URL is not configured" };
-  }
-  const { userId, sessionClaims } = await auth();
-  if (!userId) {
-    return { ok: false, error: "Sign in again" };
-  }
-  const identity = await resolveIdentity(userId, sessionClaims);
-  if (identity.role !== "director") {
-    return { ok: false, error: "Directors only" };
-  }
-  return { ok: true, userId };
+  if (!isClerkConfigured()) return { ok: false, error: UNAVAILABLE, code: "IDENTITY_UNAVAILABLE", status: 503 };
+  if (!isDatabaseConfigured()) return { ok: false, error: "This service is temporarily unavailable. Please try again.", code: "SERVICE_UNAVAILABLE", status: 503 };
+  let identity: Identity | null;
+  try { identity = await currentIdentity(); } catch { return { ok: false, error: UNAVAILABLE, code: "IDENTITY_UNAVAILABLE", status: 503 }; }
+  if (!identity) return { ok: false, error: "Sign in again" };
+  if (identity.role !== "director") return { ok: false, error: "Workspace access required" };
+  return { ok: true, userId: identity.userId };
 }

@@ -1,0 +1,12 @@
+
+ RUN  v5.0.0 /Users/williamrogers/Projects/Meritus/.worktrees/experience-reset
+
+
+ Test Files  31 passed (31)
+      Tests  359 passed (359)
+   Start at  09:58:29
+   Duration  1.66s (environment 48%, setup 20%, transform 13%, import 9%, tests 8%, worker 1%)
+
+    Isolate  31 workers spawned · ~366ms startup each (spawn + environment, per file)
+             at least ~301ms faster with isolate: false — reuses workers across files instead of one per file
+

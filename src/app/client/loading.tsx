@@ -1,0 +1,1 @@
+export default function ClientLoading() { return <section className="client-section"><h1>Client documents</h1><p role="status" className="app-status">Loading your organisation’s submissions…</p></section>; }

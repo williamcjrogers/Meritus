@@ -116,3 +116,8 @@ describe("issueAccessLink", () => {
     expect(await issueAccessLink({ email: "jane@example-firm.co.uk", domain: "example-firm.co.uk" })).toEqual({ ok: false, reason: "clerk_error" });
   });
 });
+
+it("retains only a safe client return destination in the emailed link", () => {
+  expect(continueUrl("https://meritusvia.com", "ticket", "/client?receipt=recent")).toBe("https://meritusvia.com/access/continue?ticket=ticket&returnTo=%2Fclient%3Freceipt%3Drecent");
+  expect(continueUrl("https://meritusvia.com", "ticket", "https://evil.example")).toBe("https://meritusvia.com/access/continue?ticket=ticket&returnTo=%2Fclient");
+});

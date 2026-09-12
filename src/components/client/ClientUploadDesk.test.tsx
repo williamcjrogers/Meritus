@@ -55,7 +55,7 @@ describe("ClientUploadDesk", () => {
       resolveUpload({ id: "doc1", title: "bundle.pdf", size: file.size });
     });
 
-    expect(await screen.findByText(/received/)).toBeInTheDocument();
+    expect(await screen.findByText(/received/i)).toBeInTheDocument();
     expect(refresh).toHaveBeenCalledTimes(1);
     getItemSpy.mockRestore();
   });
@@ -74,6 +74,15 @@ describe("ClientUploadDesk", () => {
     await userEvent.click(retryButton);
 
     await waitFor(() => expect(mockedUploadFile).toHaveBeenCalledTimes(2));
-    expect(await screen.findByText(/received/)).toBeInTheDocument();
+    expect(await screen.findByText(/received/i)).toBeInTheDocument();
   });
+});
+
+it("does not claim receipt when byte transfer is complete but confirmation is pending", async () => {
+  mockedUploadFile.mockImplementation((_file, _transport, options) => { options?.onProgress?.(1); return new Promise(() => {}); });
+  render(<ClientUploadDesk />);
+  await userEvent.upload(selectInput(), new File(["contents"], "bundle.pdf", { type: "application/pdf" }));
+  expect(screen.getByText(/confirming receipt/i)).toBeInTheDocument();
+  expect(screen.queryByText(/Received/)).not.toBeInTheDocument();
+  expect(screen.getByRole("progressbar")).toHaveAttribute("value", "1");
 });

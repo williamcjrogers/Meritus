@@ -1,43 +1,24 @@
 import { SignIn } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import Link from "next/link";
-import { HallmarkLogo } from "@/components/icons/HallmarkLogo";
-import { SetupNotice } from "@/components/portal/SetupNotice";
+import { redirect } from "next/navigation";
+import { AccessShell } from "@/components/access/AccessShell";
 import { isClerkConfigured } from "@/lib/env";
-
-export const metadata = {
-  title: "Partner sign in",
-  robots: { index: false, follow: false },
-};
-
-export default function SignInPage() {
-  return (
-    <main id="main-content" className="min-h-screen bg-green grain flex flex-col items-center justify-center px-6 py-20">
-      <Link href="/" className="mb-10">
-        <HallmarkLogo size="standalone" variant="light" showDescriptor />
-      </Link>
-      <p className="mb-6 max-w-sm text-center text-[13px] leading-relaxed text-cream/70">
-        First-time access is by invitation email. Use Login only after you have accepted
-        that invite.
-      </p>
-      {isClerkConfigured() ? (
-        <SignIn
-          signUpUrl="/sign-up"
-          fallbackRedirectUrl="/portal"
-          forceRedirectUrl="/portal"
-          appearance={{
-            variables: {
-              colorPrimary: "#B5975A",
-              colorBackground: "#EDE7DB",
-              borderRadius: "0px",
-              fontFamily: "var(--font-inter)",
-            },
-          }}
-        />
-      ) : (
-        <div className="w-full max-w-lg">
-          <SetupNotice title="Sign-in is not configured yet" />
-        </div>
-      )}
-    </main>
-  );
+import { accountDestination, unavailableDestination } from "@/lib/portal/destination";
+export const metadata = { title: "Sign in to Meritus", robots: { index: false, follow: false } };
+export const dynamic = "force-dynamic";
+export default async function SignInPage({ searchParams }: { searchParams: Promise<{ returnTo?: string }> }) {
+  const { returnTo } = await searchParams;
+  const destination = accountDestination(returnTo);
+  if (isClerkConfigured()) {
+    let signedIn = false;
+    try { signedIn = Boolean((await auth()).userId); } catch { redirect(unavailableDestination(returnTo)); }
+    if (signedIn) redirect(destination);
+  }
+  return <AccessShell title="Sign in to Meritus">
+    {isClerkConfigured() ? <SignIn routing="hash" withSignUp={false} fallbackRedirectUrl={destination} forceRedirectUrl={destination} appearance={{ elements: { header: { display: "none" }, footerAction: { display: "none" } } }} /> : <>
+      <p className="app-status">Sign-in is temporarily unavailable. Please try again shortly.</p>
+      <Link className="app-button" href="/sign-in" prefetch={false}>Retry</Link>
+    </>}
+  </AccessShell>;
 }

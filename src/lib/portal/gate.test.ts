@@ -21,21 +21,21 @@ describe("decideGate", () => {
   });
 
   it("sends signed-out visitors to the right door", () => {
-    expect(decideGate({ pathname: "/portal", signedIn: false, role: null })).toEqual({ kind: "redirect", to: "/sign-in" });
-    expect(decideGate({ pathname: "/client", signedIn: false, role: null })).toEqual({ kind: "redirect", to: "/access" });
+    expect(decideGate({ pathname: "/portal", signedIn: false, role: null })).toEqual({ kind: "redirect", to: "/sign-in?returnTo=%2Fportal" });
+    expect(decideGate({ pathname: "/client", signedIn: false, role: null })).toEqual({ kind: "redirect", to: "/access?returnTo=%2Fclient" });
     expect(decideGate({ pathname: "/api/portal/library", signedIn: false, role: null })).toEqual({ kind: "json", status: 401, error: "Unauthorized" });
     expect(decideGate({ pathname: "/api/client/uploads", signedIn: false, role: null })).toEqual({ kind: "json", status: 401, error: "Unauthorized" });
   });
 
   it("admits directors everywhere", () => {
     expect(decideGate({ pathname: "/portal/clients", signedIn: true, role: "director" })).toEqual({ kind: "next" });
-    expect(decideGate({ pathname: "/client", signedIn: true, role: "director" })).toEqual({ kind: "next" });
+    expect(decideGate({ pathname: "/client", signedIn: true, role: "director" })).toEqual({ kind: "redirect", to: "/portal/clients" });
     expect(decideGate({ pathname: "/api/client/uploads", signedIn: true, role: "director" })).toEqual({ kind: "next" });
   });
 
   it("keeps clients out of the portal and sends them to their desk", () => {
     expect(decideGate({ pathname: "/portal", signedIn: true, role: "client" })).toEqual({ kind: "redirect", to: "/client" });
-    expect(decideGate({ pathname: "/api/portal/library", signedIn: true, role: "client" })).toEqual({ kind: "json", status: 403, error: "Directors only" });
+    expect(decideGate({ pathname: "/api/portal/library", signedIn: true, role: "client" })).toEqual({ kind: "json", status: 403, error: "Workspace access required" });
     expect(decideGate({ pathname: "/client", signedIn: true, role: "client" })).toEqual({ kind: "next" });
   });
 
@@ -44,4 +44,11 @@ describe("decideGate", () => {
     expect(decideGate({ pathname: "/client", signedIn: true, role: null })).toEqual({ kind: "redirect", to: "/access/denied" });
     expect(decideGate({ pathname: "/api/client/uploads", signedIn: true, role: null })).toEqual({ kind: "json", status: 403, error: "No access" });
   });
+});
+
+it("keeps the complete local deep link across sign-in and provider recovery", () => {
+  const input = { pathname: "/portal/actions", search: "?scope=mine", signedIn: false, role: null };
+  expect(decideGate(input)).toEqual({ kind: "redirect", to: "/sign-in?returnTo=%2Fportal%2Factions%3Fscope%3Dmine" });
+  expect(decideGate({ ...input, unavailable: true })).toEqual({ kind: "redirect", to: "/access/unavailable?returnTo=%2Fportal%2Factions%3Fscope%3Dmine" });
+  expect(decideGate({ ...input, pathname: "/api/portal/actions", unavailable: true })).toMatchObject({ kind: "json", status: 503 });
 });

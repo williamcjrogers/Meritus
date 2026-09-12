@@ -153,7 +153,7 @@ describe("the action guard", () => {
       domain: "example-firm.co.uk",
       email: "jane@example-firm.co.uk",
     });
-    expect(await actions.addNote("p1", "Client attempt")).toEqual({ ok: false, error: "Directors only" });
+    expect(await actions.addNote("p1", "Client attempt")).toEqual({ ok: false, error: "Workspace access required" });
     expect(getPursuit).not.toHaveBeenCalled();
     expect(addActivity).not.toHaveBeenCalled();
   });
@@ -168,7 +168,7 @@ describe("the action guard", () => {
   it("reports missing configuration as an error rather than throwing", async () => {
     delete process.env.CLERK_SECRET_KEY;
     const result = await actions.addNote("p1", "Spoke to Jane.");
-    expect(result).toEqual({ ok: false, error: "Clerk is not configured" });
+    expect(result).toEqual({ ok: false, error: "We could not verify your access. Please try again.", code: "IDENTITY_UNAVAILABLE", status: 503 });
     expect(auth).not.toHaveBeenCalled();
     expect(addActivity).not.toHaveBeenCalled();
     expectRevalidated();
@@ -177,7 +177,7 @@ describe("the action guard", () => {
   it("reports a missing database before touching Clerk", async () => {
     delete process.env.DATABASE_URL;
     const result = await actions.addNote("p1", "Spoke to Jane.");
-    expect(result).toEqual({ ok: false, error: "DATABASE_URL is not configured" });
+    expect(result).toEqual({ ok: false, error: "This service is temporarily unavailable. Please try again.", code: "SERVICE_UNAVAILABLE", status: 503 });
     expect(auth).not.toHaveBeenCalled();
   });
 
