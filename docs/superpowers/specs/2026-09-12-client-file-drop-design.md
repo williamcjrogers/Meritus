@@ -129,7 +129,7 @@ export async function getActor(id: string): Promise<Actor | null | "unknown">;
 
 ### 5.4 Roles module (`src/lib/portal/roles.ts`)
 
-Pure functions from PR #7: `actorKindFromMetadata`, `actorKindFromSignals`, `isClientRole`. `allowPortalAccess` is dropped in favour of the explicit three-way handling above.
+Pure functions, adapted from PR #7: `isClientRole`, `actorKindFromSignals`, plus `clientActorId(email)` and `clientActorEmail(actorId)` for the `client:` activity actor ids. PR #7's `allowPortalAccess` is dropped in favour of the explicit three-way handling above.
 
 ## 6. Data model
 
