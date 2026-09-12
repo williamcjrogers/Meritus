@@ -78,6 +78,13 @@
       "when": 1789228800007,
       "tag": "0010_qcs_research_quick",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1789228800008,
+      "tag": "0011_client_files",
+      "breakpoints": true
     }
   ]
 }

@@ -1,5 +1,5 @@
 import { maskResearchPursuitSummaries, maskResearchPursuitSummary } from "./research-workflow";
-import { and, desc, eq, gte, ilike, inArray, isNull, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, gte, ilike, inArray, isNull, ne, or, sql } from "drizzle-orm";
 import { normaliseFirm } from "@/lib/portal/intake";
 import { requireDb } from "./index";
 import {
@@ -330,6 +330,12 @@ export async function declinePursuitGuardedWithActivity(
     return false;
   }
   return true;
+}
+
+/** Every pursuit a client domain could be linked to: everything but declined, by firm name. */
+export async function listPursuitsForLinking(): Promise<Pursuit[]> {
+  const db = requireDb();
+  return db.select().from(pursuits).where(ne(pursuits.stage, "declined")).orderBy(asc(pursuits.firm));
 }
 
 export type GuardedPursuitDeletion = { ok: true; blobKeys: string[] } | { ok: false; code: "linked_actions" | "not_found" };

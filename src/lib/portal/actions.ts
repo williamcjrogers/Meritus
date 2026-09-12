@@ -4,8 +4,9 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { CONTACT_FORM_OPTIONS } from "@/lib/constants";
 import { addActivity, addResearchDerivedNote, listActivity } from "@/lib/db/activity";
-import { readRelatedActions } from "@/lib/db/desk-actions";
 import { isOpenAction } from "@/lib/actions/model";
+import { detachClientDocuments } from "@/lib/db/documents";
+import { readRelatedActions } from "@/lib/db/desk-actions";
 import {
   createPursuitWithEnquiry,
   declinePursuitGuardedWithActivity,
@@ -212,6 +213,17 @@ async function insertNote(pursuitId: string, actorId: string, body: string): Pro
   return { ok: true };
 }
 
+/** After a stage change, tells the caller how many linked actions are still open, when that can be read. */
+async function stageUpdated(id: string): Promise<ActionResult> {
+  try {
+    const remainingActions = (await readRelatedActions({ kind: "pursuit", id })).filter(isOpenAction).length;
+    return remainingActions ? { ok: true, remainingActions } : { ok: true };
+  } catch {
+    // The stage has committed; a failed summary read cannot reverse its success.
+    return { ok: true, remainingActionsUnavailable: true };
+  }
+}
+
 // Actions -----------------------------------------------------------------------------------
 
 export async function createPursuit(input: PursuitFormInput): Promise<CreateResult> {
@@ -251,28 +263,35 @@ export async function updatePursuit(id: string, input: PursuitFormInput): Promis
   });
 }
 
-/** Delete the database parent before cleaning up its exclusively owned blobs. */
+/**
+ * Deletes the pursuit and everything under it, except a client firm's own files. A client
+ * domain's documents are detached (kept, with their scope switched away from "pursuit") before
+ * the guarded delete runs, so its blob keys never appear in what it collects for S3 cleanup and
+ * its own refusal to delete a pursuit with linked actions still stands.
+ */
 export async function deletePursuit(id: string): Promise<ActionResult> {
   return guarded<ActionResult>("deletePursuit", async () => {
     if (!isId(id)) return notFound();
+    await detachClientDocuments(id);
     const result = await deletePursuitGuarded(id);
-    if (!result.ok) return { ok: false, error: result.code === "linked_actions"
-      ? "Retain linked actions as standalone records before deleting this live lead"
-      : "This live lead no longer exists" };
-    try { if (result.blobKeys.length) await deleteObjects(result.blobKeys); }
-    catch (error) { console.error(`[portal] Blob cleanup failed after deleting live lead ${id}`, error); }
+    if (!result.ok) {
+      return {
+        ok: false,
+        error:
+          result.code === "linked_actions"
+            ? "Retain linked actions as standalone records before deleting this live lead"
+            : "This live lead no longer exists",
+      };
+    }
+    if (result.blobKeys.length) {
+      try {
+        await deleteObjects(result.blobKeys);
+      } catch (error) {
+        console.error(`[portal] Blob cleanup failed after deleting live lead ${id}`, error);
+      }
+    }
     return { ok: true };
   });
-}
-
-async function stageUpdated(id: string): Promise<ActionResult> {
-  try {
-    const remainingActions = (await readRelatedActions({ kind: "pursuit", id })).filter(isOpenAction).length;
-    return remainingActions ? { ok: true, remainingActions } : { ok: true };
-  } catch {
-    // The stage has committed; a failed summary read cannot reverse its success.
-    return { ok: true, remainingActionsUnavailable: true };
-  }
 }
 
 export async function takePursuit(id: string): Promise<ActionResult> {
@@ -418,9 +437,11 @@ export async function saveAnswerAsNote(id: string, body: string): Promise<Action
     if (!isId(id)) return notFound();
     const text = asText(body).trim();
     if (!text) return { ok: false, error: "There is no answer to save" };
-    if (!await getPursuit(id)) return notFound();
+    if (!(await getPursuit(id))) return notFound();
     const saved = await addResearchDerivedNote({ pursuitId: id, actorId: userId, body: text.slice(0, NOTE_MAX) });
-    return saved ? { ok: true } : { ok: false, error: "The research source has changed; refresh the answer before saving" };
+    return saved
+      ? { ok: true }
+      : { ok: false, error: "The research source has changed; refresh the answer before saving" };
   });
 }
 

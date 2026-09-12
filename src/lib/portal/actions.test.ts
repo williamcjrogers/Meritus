@@ -5,7 +5,7 @@ import { viewFixture } from "@/lib/actions/view-fixture.test-support";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { addActivity, addResearchDerivedNote, listActivity } from "@/lib/db/activity";
-import { listDocuments } from "@/lib/db/documents";
+import { detachClientDocuments } from "@/lib/db/documents";
 import {
   createPursuitWithEnquiry,
   declinePursuitGuarded,
@@ -20,15 +20,16 @@ import { clearQuestions as deleteQuestions } from "@/lib/db/questions";
 import type { Activity, Pursuit, PursuitStage } from "@/lib/db/schema";
 import { listDirectors } from "@/lib/portal/directors";
 import { deleteObjects } from "./s3";
+import { resolveIdentity } from "./roles";
 import * as actions from "./actions";
 import type { PursuitFormInput } from "./actions";
 
 vi.mock("@/lib/db/desk-actions", () => ({ readRelatedActions: vi.fn().mockResolvedValue([]) }));
 
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
-const { getUser } = vi.hoisted(() => ({ getUser: vi.fn() }));
-vi.mock("@clerk/nextjs/server", () => ({ auth: vi.fn(), clerkClient: async () => ({ users: { getUser } }) }));
+vi.mock("@clerk/nextjs/server", () => ({ auth: vi.fn() }));
 vi.mock("./s3", () => ({ deleteObjects: vi.fn() }));
+vi.mock("./roles", () => ({ resolveIdentity: vi.fn() }));
 vi.mock("@/lib/db/pursuits", () => ({
   getPursuit: vi.fn(),
   createPursuitWithEnquiry: vi.fn(),
@@ -40,7 +41,7 @@ vi.mock("@/lib/db/pursuits", () => ({
   updatePursuitWithActivity: vi.fn(),
 }));
 vi.mock("@/lib/db/activity", () => ({ addActivity: vi.fn(), addResearchDerivedNote: vi.fn(), listActivity: vi.fn() }));
-vi.mock("@/lib/db/documents", () => ({ listDocuments: vi.fn() }));
+vi.mock("@/lib/db/documents", () => ({ detachClientDocuments: vi.fn() }));
 vi.mock("@/lib/db/questions", () => ({ clearQuestions: vi.fn() }));
 vi.mock("@/lib/portal/directors", () => ({ listDirectors: vi.fn() }));
 
@@ -114,7 +115,7 @@ beforeEach(() => {
   process.env.CLERK_SECRET_KEY = "sk_test";
   process.env.DATABASE_URL = "postgres://test";
   vi.mocked(auth).mockResolvedValue({ userId: "user_wr" } as never);
-  getUser.mockResolvedValue({ publicMetadata: { role: "director" } });
+  vi.mocked(resolveIdentity).mockResolvedValue({ userId: "user_wr", role: "director", domain: null, email: null });
   vi.mocked(listDirectors).mockResolvedValue([
     { id: "user_wr", name: "William Rogers", email: "wr@meritusvia.com", initials: "WR" },
     { id: "user_md", name: "Mateo Diaz", email: "md@meritusvia.com", initials: "MD" },
@@ -132,7 +133,6 @@ beforeEach(() => {
   vi.mocked(addActivity).mockResolvedValue({} as Activity);
   vi.mocked(addResearchDerivedNote).mockResolvedValue(true);
   vi.mocked(listActivity).mockResolvedValue([]);
-  vi.mocked(listDocuments).mockResolvedValue([]);
   vi.mocked(deleteQuestions).mockResolvedValue(undefined);
   vi.mocked(deleteObjects).mockResolvedValue(undefined);
 });
@@ -147,8 +147,13 @@ function expectRevalidated() {
 
 describe("the action guard", () => {
   it("rejects a signed-in client before touching pursuit data", async () => {
-    getUser.mockResolvedValue({ publicMetadata: { role: "client" } });
-    expect(await actions.addNote("p1", "Client attempt")).toEqual({ ok: false, error: "Director access required" });
+    vi.mocked(resolveIdentity).mockResolvedValue({
+      userId: "user_wr",
+      role: "client",
+      domain: "example-firm.co.uk",
+      email: "jane@example-firm.co.uk",
+    });
+    expect(await actions.addNote("p1", "Client attempt")).toEqual({ ok: false, error: "Directors only" });
     expect(getPursuit).not.toHaveBeenCalled();
     expect(addActivity).not.toHaveBeenCalled();
   });
@@ -742,6 +747,21 @@ describe("deletePursuit", () => {
     vi.mocked(deleteObjects).mockRejectedValue(new Error("S3 unavailable"));
     expect(await actions.deletePursuit("p1")).toEqual({ ok: true });
     expect(error).toHaveBeenCalled();
+  });
+
+  it("keeps a client firm's files when the pursuit is deleted", async () => {
+    // Detaching runs first, so by the time the guarded delete collects blob keys the client's
+    // own document has already left this pursuit's scope and cannot be among them.
+    vi.mocked(deletePursuitGuarded).mockResolvedValue({
+      ok: true,
+      blobKeys: ["meritus/portal/pursuit/p1/own.pdf"],
+    });
+    expect(await actions.deletePursuit("p1")).toEqual({ ok: true });
+    expect(detachClientDocuments).toHaveBeenCalledWith("p1");
+    expect(vi.mocked(detachClientDocuments).mock.invocationCallOrder[0]).toBeLessThan(
+      vi.mocked(deletePursuitGuarded).mock.invocationCallOrder[0]
+    );
+    expect(deleteObjects).toHaveBeenCalledWith(["meritus/portal/pursuit/p1/own.pdf"]);
   });
 });
 

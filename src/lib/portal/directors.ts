@@ -1,8 +1,9 @@
 /**
- * Directors have an explicit director role in the Clerk application; there is no directors
- * table. The list is read through the Clerk backend client, held in memory for
- * five minutes, and abandoned after eight seconds so a slow Clerk never holds
- * up intake or the desk. The directory result distinguishes a failed lookup from a healthy empty list.
+ * The directors are the Clerk users whose publicMetadata.role is "director";
+ * there is no directors table. The list is read through the Clerk backend
+ * client, held in memory for five minutes, and abandoned after eight seconds so
+ * a slow Clerk never holds up intake or the desk. The directory result
+ * distinguishes a failed lookup from a healthy empty list.
  *
  * This module imports "@clerk/nextjs/server", which Next refuses to bundle for
  * the browser, so only server components, route handlers and server actions
@@ -34,14 +35,16 @@ type ClerkUserLike = {
   lastName: string | null;
   primaryEmailAddressId: string | null;
   emailAddresses: ReadonlyArray<{ id: string; emailAddress: string }>;
+  publicMetadata?: Record<string, unknown> | null;
 };
 
 type CacheEntry = { directors: Director[]; expiresAt: number };
 
+export type DirectorDirectory = { available: boolean; directors: Director[] };
+
 const TIMED_OUT = Symbol("directors timed out");
 
 let cache: CacheEntry | null = null;
-export type DirectorDirectory = { available: boolean; directors: Director[] };
 let inFlight: Promise<DirectorDirectory> | null = null;
 
 function primaryEmail(user: ClerkUserLike): string {
@@ -68,13 +71,17 @@ function byName(a: Director, b: Director): number {
   return a.name.localeCompare(b.name, "en-GB", { sensitivity: "base" });
 }
 
+function isDirector(user: ClerkUserLike): boolean {
+  return user.publicMetadata?.role === "director";
+}
+
 async function fetchDirectors(): Promise<Director[]> {
   const client = await clerkClient();
   const directors: Director[] = [];
   let offset = 0;
   while (true) {
     const { data, totalCount } = await client.users.getUserList({ limit: PAGE_LIMIT, offset });
-    directors.push(...data.filter((user) => user.publicMetadata.role === "director").map(toDirector));
+    directors.push(...data.filter(isDirector).map((user) => toDirector(user)));
     offset += data.length;
     if (offset >= totalCount) break;
     if (data.length === 0) throw new Error("Incomplete director directory");
@@ -119,6 +126,11 @@ export async function readDirectorDirectory(): Promise<DirectorDirectory> {
   return inFlight;
 }
 
+/** Compatibility reader; callers needing availability use readDirectorDirectory. */
+export async function listDirectors(): Promise<Director[]> {
+  return (await readDirectorDirectory()).directors;
+}
+
 export async function getDirector(id: string | null | undefined): Promise<Director | null> {
   if (!id) return null;
   const directors = await listDirectors();
@@ -129,9 +141,4 @@ export async function getDirector(id: string | null | undefined): Promise<Direct
 export function __resetDirectorsCache(): void {
   cache = null;
   inFlight = null;
-}
-
-/** Compatibility reader; callers needing availability use readDirectorDirectory. */
-export async function listDirectors(): Promise<Director[]> {
-  return (await readDirectorDirectory()).directors;
 }

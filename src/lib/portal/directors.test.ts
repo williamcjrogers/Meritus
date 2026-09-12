@@ -33,14 +33,14 @@ function clerkUser(overrides: {
   lastName?: string | null;
   primaryEmailAddressId?: string | null;
   emailAddresses?: ClerkEmail[];
-  publicMetadata?: { role?: string };
+  publicMetadata?: Record<string, unknown> | null;
 }) {
   return {
-    publicMetadata: { role: "director" },
     firstName: null,
     lastName: null,
     primaryEmailAddressId: null,
     emailAddresses: [],
+    publicMetadata: { role: "director" },
     ...overrides,
   };
 }
@@ -60,6 +60,22 @@ const mateo = clerkUser({
   id: "user_ma",
   primaryEmailAddressId: "em_ma",
   emailAddresses: [{ id: "em_ma", emailAddress: "mateo@x.com" }],
+});
+
+const clientJane = clerkUser({
+  id: "user_jane",
+  firstName: "Jane",
+  lastName: "Partner",
+  primaryEmailAddressId: "em_jane",
+  emailAddresses: [{ id: "em_jane", emailAddress: "jane@example-firm.co.uk" }],
+  publicMetadata: { role: "client", domain: "example-firm.co.uk" },
+});
+
+const noRole = clerkUser({
+  id: "user_norole",
+  primaryEmailAddressId: "em_norole",
+  emailAddresses: [{ id: "em_norole", emailAddress: "someone@example.com" }],
+  publicMetadata: {},
 });
 
 const expectedMateo: Director = {
@@ -94,7 +110,7 @@ beforeEach(() => {
   __resetDirectorsCache();
   clerkClient.mockClear();
   getUserList.mockReset();
-  getUserList.mockResolvedValue({ data: [william, mateo], totalCount: 2 });
+  getUserList.mockResolvedValue({ data: [william, mateo, clientJane, noRole], totalCount: 4 });
 });
 
 afterEach(() => {
@@ -232,6 +248,13 @@ describe("listDirectors", () => {
       { id: "user_np", name: "np@x.com", email: "np@x.com", initials: "NP" },
     ]);
   });
+
+  it("lists only users whose public metadata role is director", async () => {
+    const directors = await listDirectors();
+    expect(directors.map((d) => d.id)).toEqual(["user_ma", "user_wr"]);
+    expect(await getDirector("user_jane")).toBeNull();
+    expect(await getDirector("user_norole")).toBeNull();
+  });
 });
 
 describe("getDirector", () => {
@@ -264,7 +287,7 @@ describe("directorInitials", () => {
   });
 
   it("uses a placeholder that is not an em dash", () => {
-    expect(UNASSIGNED_INITIALS).not.toContain("\u2014");
+    expect(UNASSIGNED_INITIALS).not.toContain("—");
     expect(UNASSIGNED_INITIALS.length).toBeGreaterThan(0);
   });
 });
@@ -276,7 +299,7 @@ describe("directorName", () => {
     expect(directorName(directors, "user_wr")).toBe("William Rogers");
   });
 
-  it("reads Unassigned for an unknown or missing id", () => {
+  it("reads Unassigned for a missing id, and flags an unresolved id", () => {
     expect(UNASSIGNED_NAME).toBe("Unassigned");
     expect(directorName(directors, "user_zz")).toBe("Assigned, name unavailable");
     expect(directorName(directors, null)).toBe("Unassigned");
@@ -299,12 +322,12 @@ describe("director-helpers", () => {
   });
 });
 
- describe("directory availability", () => {
- it("distinguishes a healthy empty directory from a failure", async () => {
- getUserList.mockResolvedValueOnce({data:[],totalCount:0});
- expect(await readDirectorDirectory()).toEqual({available:true,directors:[]});
- __resetDirectorsCache();
- getUserList.mockRejectedValueOnce(new Error("offline"));
- expect(await readDirectorDirectory()).toEqual({available:false,directors:[]});
- });
- });
+describe("directory availability", () => {
+  it("distinguishes a healthy empty directory from a failure", async () => {
+    getUserList.mockResolvedValueOnce({ data: [], totalCount: 0 });
+    expect(await readDirectorDirectory()).toEqual({ available: true, directors: [] });
+    __resetDirectorsCache();
+    getUserList.mockRejectedValueOnce(new Error("offline"));
+    expect(await readDirectorDirectory()).toEqual({ available: false, directors: [] });
+  });
+});

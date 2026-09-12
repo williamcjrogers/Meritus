@@ -3,9 +3,13 @@ import { deleteDocumentRow, getDocument } from "@/lib/db/documents";
 import { addActivity } from "@/lib/db/activity";
 import { requireDatabaseOr503, requirePortalUser, setupResponse } from "@/lib/portal/auth";
 import { isStorageConfigured } from "@/lib/env";
-import { deleteObjects, getObject } from "@/lib/portal/s3";
+import { DIRECT_DOWNLOAD_BYTES, contentDisposition } from "@/lib/portal/files";
+import { deleteObjects } from "@/lib/portal/s3";
+import { getObjectStream, presignDownload } from "@/lib/portal/s3-transfer";
 
 export const dynamic = "force-dynamic";
+/** Streaming a file of up to 100 MiB on a slow link can take minutes. */
+export const maxDuration = 300;
 
 export async function GET(
   _request: Request,
@@ -21,17 +25,24 @@ export async function GET(
   const document = await getDocument(id);
   if (!document) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
-  const body = await getObject(document.blobPathname);
-  if (!body) {
+  if (document.size > DIRECT_DOWNLOAD_BYTES) {
+    const url = await presignDownload(document.blobPathname, document.fileName);
+    return NextResponse.redirect(url, 302);
+  }
+
+  const object = await getObjectStream(document.blobPathname);
+  if (!object) {
     return NextResponse.json({ error: "File missing" }, { status: 404 });
   }
 
-  return new Response(Buffer.from(body), {
-    headers: {
-      "Content-Type": document.mime,
-      "Content-Disposition": `attachment; filename="${document.fileName}"`,
-    },
+  const headers = new Headers({
+    "Content-Type": document.mime,
+    "Content-Disposition": contentDisposition(document.fileName),
+    "X-Content-Type-Options": "nosniff",
+    "Cache-Control": "private, no-store",
   });
+  if (object.size !== null) headers.set("Content-Length", String(object.size));
+  return new Response(object.body, { headers });
 }
 
 export async function DELETE(
@@ -62,7 +73,7 @@ export async function DELETE(
   try {
     await deleteObjects([document.blobPathname]);
   } catch (error) {
-    console.warn("S3 delete failed", document.blobPathname, error);
+    console.warn("S3 delete failed", { documentId: document.id, error: error instanceof Error ? error.name : "unknown" });
   }
   return NextResponse.json({ ok: true });
 }

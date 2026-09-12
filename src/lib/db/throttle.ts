@@ -14,6 +14,13 @@ export const GLOBAL_KEY = "global";
 /** Rows whose window began longer ago than this are deleted on each submission. */
 export const PURGE_AFTER_MS = 24 * HOUR_MS;
 
+/** Access-link requests: all three counters run over one hour and share the enquiry table. */
+export const ACCESS_WINDOW_MS = HOUR_MS;
+export const ACCESS_EMAIL_CAP = 5;
+export const ACCESS_IP_CAP = 30;
+export const ACCESS_GLOBAL_CAP = 200;
+export const ACCESS_GLOBAL_KEY = "access-global";
+
 export type ThrottleVerdict = { emailAllowed: boolean; ipAllowed: boolean; alertAllowed: boolean };
 
 /** The decision over the three counters, kept pure so the caps can be tested without a database. */
@@ -23,6 +30,10 @@ export function decideThrottle(counts: { email: number; ip: number; global: numb
     ipAllowed: counts.ip <= IP_CAP,
     alertAllowed: counts.global <= GLOBAL_CAP,
   };
+}
+
+export function decideAccessThrottle(counts: { email: number; ip: number; global: number }): boolean {
+  return counts.email <= ACCESS_EMAIL_CAP && counts.ip <= ACCESS_IP_CAP && counts.global <= ACCESS_GLOBAL_CAP;
 }
 
 /**
@@ -66,6 +77,27 @@ export async function registerEnquiryAttempt(
   if (!capped.emailAllowed || !capped.ipAllowed) return capped;
   const globalRows = await bump(GLOBAL_KEY, GLOBAL_WINDOW_MS, now);
   return decideThrottle({ ...counts, global: globalRows[0]?.count ?? 1 });
+}
+
+/**
+ * Counts an access-link request against its hashed email, hashed IP and the access-global key.
+ * `keys` are already hashed with the "access-email" and "access-ip" prefixes (intake.hashKey).
+ */
+export async function registerAccessAttempt(
+  keys: { email: string; ip: string },
+  now: Date = new Date()
+): Promise<boolean> {
+  const db = requireDb();
+  const [emailRows, ipRows, globalRows] = await db.batch([
+    bump(keys.email, ACCESS_WINDOW_MS, now),
+    bump(keys.ip, ACCESS_WINDOW_MS, now),
+    bump(ACCESS_GLOBAL_KEY, ACCESS_WINDOW_MS, now),
+  ]);
+  return decideAccessThrottle({
+    email: emailRows[0]?.count ?? 1,
+    ip: ipRows[0]?.count ?? 1,
+    global: globalRows[0]?.count ?? 1,
+  });
 }
 
 /** Deletes counters whose window began more than 24 hours ago. */

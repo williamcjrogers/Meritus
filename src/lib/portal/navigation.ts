@@ -6,4 +6,5 @@ export const PORTAL_NAV = [
   { href: "/portal/programmes", label: "Programmes", exact: false },
   { href: "/portal/research", label: "Research", exact: false },
   { href: "/portal/library", label: "Library", exact: false },
+  { href: "/portal/clients", label: "Clients", exact: false },
 ] as const;
