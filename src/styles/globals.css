@@ -6,39 +6,42 @@
 
 /* Canonical runtime values. DESIGN.md documents this source; adapters never own values. */
 :root {
-  --surface: #ffffff;
-  --canvas: #fafcfc;
-  --text: #263033;
-  --muted: #56666b;
-  --primary: #26424c;
-  --primary-hover: #345965;
-  --primary-active: #1b333c;
-  --mist: #e7ecec;
+  --surface: #fffcf7;
+  --accent: #b5975a;
+  --accent-light: #d3bc8b;
+  --on-primary: #f5f0e8;
+  --canvas: #f5f0e8;
+  --text: #1c2921;
+  --muted: #5b645c;
+  --primary: #0b3b24;
+  --primary-hover: #154d35;
+  --primary-active: #072e1b;
+  --mist: #e7ecdd;
   --danger: #a63a35;
   --danger-surface: #fff0ef;
   --success: #28634e;
   --success-surface: #edf6f1;
   --warning: #79521c;
   --warning-surface: #faf3e6;
-  --border: #b2bfc3;
-  --field-border: #7c8c92;
-  --border-subtle: #dce3e5;
-  --focus: #22647b;
-  --disabled: #e7ecec;
-  --disabled-text: #66767b;
+  --border: #cac5b6;
+  --field-border: #838d7f;
+  --border-subtle: #e2dccd;
+  --focus: #856320;
+  --disabled: #e8e3d8;
+  --disabled-text: #676a60;
   --radius-control: 6px;
   --radius-panel: 10px;
   --space-section: 32px;
-  --scrollbar-thumb: #829499;
-  --scrollbar-track: #eef2f3;
-  --scrollbar-hover: #56666b;
-  --scrollbar-active: #26424c;
+  --scrollbar-thumb: #928464;
+  --scrollbar-track: #eee8dc;
+  --scrollbar-hover: #776747;
+  --scrollbar-active: #0b3b24;
   --shadow-overlay: 0 12px 48px rgb(38 48 51 / 18%);
   --font-sans: var(--font-ibm-plex-sans), "Helvetica Neue", Arial, sans-serif;
   --font-serif: var(--font-literata), Georgia, serif;
 }
 
-@theme inline {
+@theme {
   --breakpoint-3xl: 1920px;
   --color-surface: var(--surface);
   --color-canvas: var(--canvas);
@@ -148,15 +151,19 @@ textarea.app-field, textarea.portal-field { min-height: 120px; resize: none; fie
 .app-search-clear { position: absolute; top: 4px; right: 4px; }
 
 /* Distinct audience shells consume the same controls. */
-.access-shell { min-height: 100svh; padding: 32px clamp(20px, 6vw, 80px); background: var(--canvas); }
+.access-shell { min-height: 100svh; padding: 32px clamp(20px, 6vw, 80px); border-top: 6px solid var(--accent); background: var(--canvas); }
 .access-brand { display: inline-flex; color: var(--primary); font-size: 24px; font-weight: 600; letter-spacing: -.025em; }
 .access-content { width: min(100%, 480px); margin: clamp(44px, 9vh, 100px) auto 40px; }
-.access-title { color: var(--text); font: 500 clamp(28px, 4vw, 36px)/1.2 var(--font-sans); letter-spacing: -.025em; }
+.access-title { color: var(--primary); font: 600 clamp(28px, 4vw, 36px)/1.2 var(--font-sans); letter-spacing: -.025em; }
 .access-intro { margin: 16px 0 28px; color: var(--muted); font-size: 16px; }
 .access-form { display: grid; gap: 20px; }
 .access-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 24px; }
 .client-shell { min-height: 100svh; background: var(--canvas); }
-.client-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; padding: 20px max(24px, calc((100vw - 1120px) / 2)); border-bottom: 1px solid var(--border-subtle); background: var(--surface); }
+.client-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; padding: 20px max(24px, calc((100vw - 1120px) / 2)); border-bottom: 3px solid var(--accent); background: var(--primary); color: var(--on-primary); }
+.client-header .access-brand { color: var(--on-primary); }
+.client-header .app-button--ghost { color: var(--on-primary); }
+.client-header .app-button--ghost:hover { background: var(--primary-hover); }
+.client-header :focus-visible { outline-color: var(--accent-light); }
 .client-main { max-width: 1120px; margin: 0 auto; padding: 40px 24px 64px; }
 .client-section { margin-top: 32px; padding: 28px; border: 1px solid var(--border-subtle); border-radius: var(--radius-panel); background: var(--surface); }
 .client-section h2 { font: 500 23px/1.35 var(--font-sans); }

@@ -1,0 +1,142 @@
+   ▲ Next.js 15.5.12
+   - Environments: .env.local
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 8.3s
+   Linting and checking validity of types ...
+   Collecting page data ...
+ ⚠ Using edge runtime on a page currently disables static generation for that page
+   Generating static pages (0/49) ...
+   Generating static pages (12/49)
+   Generating static pages (24/49)
+   Generating static pages (36/49)
+ ✓ Generating static pages (49/49)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                Size  First Load JS
+┌ ○ /                                                   11.2 kB         192 kB
+├ ○ /_not-found                                           293 B         103 kB
+├ ƒ /access                                             2.26 kB         108 kB
+├ ƒ /access/continue                                    2.12 kB         150 kB
+├ ƒ /access/denied                                      1.96 kB         153 kB
+├ ƒ /access/unavailable                                   167 B         106 kB
+├ ○ /accessibility                                        458 B         174 kB
+├ ƒ /account                                              293 B         103 kB
+├ ƒ /api/access                                           293 B         103 kB
+├ ƒ /api/client/uploads                                   293 B         103 kB
+├ ƒ /api/client/uploads/[id]                              293 B         103 kB
+├ ƒ /api/client/uploads/[id]/complete                     293 B         103 kB
+├ ƒ /api/client/uploads/[id]/parts                        293 B         103 kB
+├ ƒ /api/contact                                          293 B         103 kB
+├ ƒ /api/internal/research                                293 B         103 kB
+├ ƒ /api/internal/research-answers                        293 B         103 kB
+├ ƒ /api/portal/companies-house                           293 B         103 kB
+├ ƒ /api/portal/documents/[id]                            293 B         103 kB
+├ ƒ /api/portal/library                                   293 B         103 kB
+├ ƒ /api/portal/programmes                                293 B         103 kB
+├ ƒ /api/portal/programmes/[id]                           293 B         103 kB
+├ ƒ /api/portal/programmes/[id]/report                    293 B         103 kB
+├ ƒ /api/portal/pursuits/[id]/brief                       293 B         103 kB
+├ ƒ /api/portal/pursuits/[id]/documents                   293 B         103 kB
+├ ƒ /api/portal/pursuits/[id]/questions                   293 B         103 kB
+├ ƒ /api/portal/research/calendar                         293 B         103 kB
+├ ƒ /api/portal/research/case-law                         293 B         103 kB
+├ ƒ /api/portal/research/case-law/[id]                    293 B         103 kB
+├ ƒ /api/portal/research/case-law/compare                 293 B         103 kB
+├ ƒ /api/portal/research/case-law/treatment               293 B         103 kB
+├ ƒ /api/portal/research/digests                          293 B         103 kB
+├ ƒ /api/portal/research/directory                        293 B         103 kB
+├ ƒ /api/portal/research/documents                        293 B         103 kB
+├ ƒ /api/portal/research/documents/[id]/reinstate         293 B         103 kB
+├ ƒ /api/portal/research/entities                         293 B         103 kB
+├ ƒ /api/portal/research/entities/[id]/confirm            293 B         103 kB
+├ ƒ /api/portal/research/entities/[id]/identifiers        293 B         103 kB
+├ ƒ /api/portal/research/entities/search                  293 B         103 kB
+├ ƒ /api/portal/research/evidence/[id]                    293 B         103 kB
+├ ƒ /api/portal/research/imports                          293 B         103 kB
+├ ƒ /api/portal/research/indexes                          293 B         103 kB
+├ ƒ /api/portal/research/investigations                   293 B         103 kB
+├ ƒ /api/portal/research/investigations/[id]              293 B         103 kB
+├ ƒ /api/portal/research/investigations/[id]/claims       293 B         103 kB
+├ ƒ /api/portal/research/investigations/[id]/questions    293 B         103 kB
+├ ƒ /api/portal/research/investigations/[id]/reports      293 B         103 kB
+├ ƒ /api/portal/research/investigations/[id]/signals      293 B         103 kB
+├ ƒ /api/portal/research/opportunities/[id]               293 B         103 kB
+├ ƒ /api/portal/research/outcomes                         293 B         103 kB
+├ ƒ /api/portal/research/quick                            293 B         103 kB
+├ ƒ /api/portal/research/quick/[id]                       293 B         103 kB
+├ ƒ /api/portal/research/referrals                        293 B         103 kB
+├ ƒ /api/portal/research/reports                          293 B         103 kB
+├ ƒ /api/portal/research/reports/[id]                     293 B         103 kB
+├ ƒ /api/portal/research/reports/[id]/export              293 B         103 kB
+├ ƒ /api/portal/research/reports/[id]/review              293 B         103 kB
+├ ƒ /api/portal/research/rights                           293 B         103 kB
+├ ƒ /api/portal/research/runs                             293 B         103 kB
+├ ƒ /api/portal/research/runs/[id]                        293 B         103 kB
+├ ƒ /api/portal/research/signals                          293 B         103 kB
+├ ƒ /api/portal/research/signals/[id]/convert             293 B         103 kB
+├ ƒ /api/portal/research/signals/[id]/decisions           293 B         103 kB
+├ ƒ /api/portal/research/signals/[id]/review              293 B         103 kB
+├ ƒ /api/portal/research/sources                          293 B         103 kB
+├ ƒ /api/portal/research/sources/[id]                     293 B         103 kB
+├ ƒ /api/portal/research/suppressions                     293 B         103 kB
+├ ƒ /api/portal/research/watchlists                       293 B         103 kB
+├ ƒ /api/portal/research/watchlists/[id]                  293 B         103 kB
+├ ○ /claims-intelligence                                  379 B         181 kB
+├ ƒ /client                                             4.54 kB         155 kB
+├ ○ /contact                                            13.6 kB         187 kB
+├ ○ /credentials                                        3.31 kB         180 kB
+├ ƒ /icon                                                 293 B         103 kB
+├ ○ /insights                                             379 B         181 kB
+├ ● /insights/[slug]                                      379 B         181 kB
+├   ├ /insights/delay-analysis-adjudications
+├   ├ /insights/building-safety-act-remediation
+├   ├ /insights/ai-in-construction-disputes
+├   └ [+7 more paths]
+├ ○ /method                                               379 B         181 kB
+├ ƒ /opengraph-image                                      293 B         103 kB
+├ ƒ /portal                                             4.45 kB         143 kB
+├ ƒ /portal/actions                                     2.38 kB         141 kB
+├ ƒ /portal/clients                                     4.71 kB         110 kB
+├ ƒ /portal/library                                     3.41 kB         109 kB
+├ ƒ /portal/programmes                                   1.3 kB         107 kB
+├ ƒ /portal/programmes/[id]                             1.07 kB         140 kB
+├ ƒ /portal/prospects                                   1.84 kB         107 kB
+├ ƒ /portal/prospects/[id]                              1.98 kB         141 kB
+├ ƒ /portal/pursuits                                    7.62 kB         148 kB
+├ ƒ /portal/pursuits/[id]                               42.4 kB         189 kB
+├ ƒ /portal/research                                      330 B         134 kB
+├ ƒ /portal/research/advanced                             330 B         134 kB
+├ ƒ /portal/research/calendar                             330 B         134 kB
+├ ƒ /portal/research/case-law                             330 B         134 kB
+├ ƒ /portal/research/case-law/[id]                        330 B         134 kB
+├ ƒ /portal/research/digests                              129 B         110 kB
+├ ƒ /portal/research/evidence/[id]                        330 B         134 kB
+├ ƒ /portal/research/indexes                              129 B         110 kB
+├ ƒ /portal/research/investigations/[id]                  680 B         167 kB
+├ ƒ /portal/research/outcomes                             330 B         134 kB
+├ ƒ /portal/research/referrals                            330 B         134 kB
+├ ƒ /portal/research/reports                              330 B         134 kB
+├ ƒ /portal/research/reports/[id]                         330 B         134 kB
+├ ƒ /portal/research/runs                                 330 B         134 kB
+├ ƒ /portal/research/signals                              330 B         134 kB
+├ ƒ /portal/research/sources                              330 B         134 kB
+├ ƒ /portal/research/watchlists                           330 B         134 kB
+├ ○ /privacy-policy                                       458 B         174 kB
+├ ○ /sectors                                            8.59 kB         189 kB
+├ ○ /services                                             379 B         181 kB
+├ ƒ /sign-in/[[...sign-in]]                             1.96 kB         153 kB
+├ ƒ /sign-up/[[...sign-up]]                              2.6 kB         150 kB
+└ ○ /terms                                                458 B         174 kB
++ First Load JS shared by all                            102 kB
+  ├ chunks/4977-d4ccf7430c7f43db.js                       46 kB
+  ├ chunks/6ee9f5d1-f8aca178a72dc11c.js                 54.2 kB
+  └ other shared chunks (total)                         1.96 kB
+
+
+ƒ Middleware                                            92.5 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand

@@ -3,18 +3,20 @@ version: alpha
 name: Meritus
 description: Construction advisory expertise and a clear evidence-led working environment.
 colors:
-  primary: "#26424C"
-  surface: "#FFFFFF"
-  canvas: "#FAFCFC"
-  text: "#263033"
-  muted: "#56666B"
-  mist: "#E7ECEC"
+  primary: "#0B3B24"
+  accent: "#B5975A"
+  accent-light: "#D3BC8B"
+  surface: "#FFFCF7"
+  canvas: "#F5F0E8"
+  text: "#1C2921"
+  muted: "#5B645C"
+  mist: "#E7ECDD"
   danger: "#A63A35"
   success: "#28634E"
   warning: "#79521C"
-  border: "#B2BFC3"
-  field-border: "#7C8C92"
-  focus: "#22647B"
+  border: "#CAC5B6"
+  field-border: "#838D7F"
+  focus: "#856320"
 typography:
   sans:
     fontFamily: "IBM Plex Sans, Helvetica Neue, Arial, sans-serif"
@@ -41,21 +43,21 @@ components:
 
 ### Creative North Star
 
-A finding beside its evidence; an action beside its owner and date. Clear construction records supply the character, with generous public compositions and disciplined working screens.
+Meritus colour and clear working priorities. Racing green establishes the workspace; brass identifies current work and selected tools. Urgent actions and distinct feature entry points attract the eye through meaningful colour, readable type and useful hierarchy.
 
 ### Product context and register
 
-The approved source is `docs/superpowers/specs/2026-09-12-meritus-experience-reset-design.md`, approved on 12 September 2026. Public pages explain Meritus expertise and invite relevant enquiries. Client documents support organisation-wide submission and receipt history. Staff use Home, Actions, Pursuits, Prospects, Research, Programmes and Library. These are three shells within one Next.js application, with existing Clerk, Resend, Neon and storage services.
+The controlling instruction is the user's correction on 12 September 2026: improve the internal system, restore the original public website, and reject monochrome treatment in either experience. `docs/reviews/experience-reset/scope-correction.md` supersedes the earlier redesign specification wherever scope, public design or palette conflicts. Public pages explain Meritus expertise and invite relevant enquiries. Client documents support organisation-wide submission and receipt history. Staff use Home, Actions, Pursuits, Prospects, Research, Programmes and Library. These are three shells within one Next.js application, with existing Clerk, Resend, Neon and storage services.
 
-Working language is British English, with en-GB dates and Europe/London operational time. No Japanese market or locale is in scope. Public headings use Literata; all application text uses IBM Plex Sans. Working screens support frequent desktop use and a usable narrow-screen journey. The public website has a considered editorial register; application labels are direct, sentence case and task-specific.
+Working language is British English, with en-GB dates and Europe/London operational time. No Japanese market or locale is in scope. The original public site uses Cormorant Garamond, Cinzel, Inter and JetBrains Mono, loaded only in the marketing layout. Application text uses IBM Plex Sans. Working screens support frequent desktop use and a usable narrow-screen journey. The public website has a considered editorial register; application labels are direct, sentence case and task-specific.
 
-The approved redesign retires racing green, parchment, brass, decorative brackets, grain, small monospaced labels and ambient motion. Do not preserve those choices as variants.
+Preserve the original public site's colour, typography, content and composition. Internal screens retain the repaired access/workflow behaviour and current usable layouts, with strong Meritus green, brass, warm surfaces and meaningful status colours. Do not reinstate a monochrome design.
 
-Runtime CSS is canonical (model B): `src/styles/globals.css` owns values, `@theme inline` adapts them to Tailwind, and shared controls consume those properties. This document mirrors the accepted values. Root layout only loads the fonts and points provider appearance at CSS variables. `marketing.css`, `workspace.css`, `dashboard.css` and `actions.css` own layout, never another palette.
+Runtime CSS is canonical (model B): `src/styles/globals.css` owns internal semantic values and `@theme` exposes runtime-resolved Tailwind tokens. `marketing.css` scopes the original public theme and baseline styles to `.marketing-shell`. This prevents either audience's typography and styles from overriding the other. Workspace, dashboard and actions styles consume semantic tokens. Clerk appearance consumes the same internal control variables.
 
 ## Colors
 
-Chalk canvas and white content sit beneath Flint text. Mineral blue identifies primary actions and selection. Mist supplies a secondary surface. Oxide identifies errors and overdue work with accompanying text. Success and warning have separate text and light surface tokens. Normal text uses `--text`; secondary copy uses `--muted`, never alpha opacity.
+Warm cream canvas and paper surfaces sit beneath dark green text. Racing green identifies the workspace and primary actions; brass identifies selection and due-today work. Pale green supplies a secondary surface. Oxide identifies errors and overdue work with accompanying text. Success and warning have separate text and light surface tokens. Normal text uses `--text`; secondary copy uses `--muted`, never alpha opacity.
 
 Structural boundaries use `--border` and `--border-subtle`. Interactive field boundaries use the stronger `--field-border`, an accessibility refinement of the approved base palette. Focus uses `--focus`. Text colour must remain legible in every state, including primary navigation links and disabled controls. Light is the supported theme; forced colours defer to the operating system.
 
@@ -68,7 +70,7 @@ Structural boundaries use `--border` and `--border-subtle`. Interactive field bo
 | colors.danger / success / warning | same-named semantic variables | same-named colour adapters | Status and button intent |
 | colors.focus | --focus | --color-focus | Keyboard focus |
 | rounded.DEFAULT | --radius-control | Direct CSS | Shared controls |
-| typography.sans / serif | --font-ibm-plex-sans / --font-literata | --font-sans / --font-serif | Working/public typography |
+| typography.sans / serif | --font-ibm-plex-sans / --font-literata | --font-sans / --font-serif | Internal typography; public font variables are scoped separately |
 
 Compatibility aliases map older names to these variables for service-generated or unmigrated content. They are adapters, not an alternative identity. Portal components use semantic names.
 
@@ -100,7 +102,7 @@ All enabled buttons and links have visible hover and keyboard focus. Primary act
 
 ### Buttons and actions
 
-`src/components/ui/Button.tsx` owns primary, secondary and ghost emphasis, alongside brand, neutral, success, warning, info and danger intent. It supports native button attributes and link destinations. Primary actions have white text on Mineral blue; secondary actions have an explicit boundary. Destructive actions remain distinct and require confirmation when irreversible or permission-changing.
+`src/components/ui/Button.tsx` owns primary, secondary and ghost emphasis, alongside brand, neutral, success, warning, info and danger intent. It supports native button attributes and link destinations. Primary actions have light text on racing green; secondary actions have an explicit boundary. Destructive actions remain distinct and require confirmation when irreversible or permission-changing.
 
 ### Navigation and data display
 
@@ -129,6 +131,6 @@ Use task names, evidence provenance and precise states. Internal role identifier
 - Do place the finding beside its evidence and the action beside its owner and date.
 - Do reuse the canonical control and route owners across the three audience shells.
 - Do keep Home an overview and preserve the question-first Research workflow.
-- Do not reintroduce grain, brackets, brass, dark green application surfaces or uppercase miniature labels.
+- Do not remove the Meritus colour identity. Keep internal body labels readable and use status text alongside colour. Public styling must remain faithful to the restored original.
 - Do not make client screens depend on portal styling or imply matter-specific confidentiality.
 - Do not override shared button colours with broad anchor selectors in an audience stylesheet.

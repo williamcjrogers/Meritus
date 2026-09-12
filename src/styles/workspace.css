@@ -1,23 +1,28 @@
 /* Workspace: fixed navigation, natural document scrolling, bounded data regions. */
 .workspace-shell { min-height: 100vh; color: var(--text); background: var(--canvas); font: 15px/1.6 var(--font-sans); }
-.workspace-rail { position: fixed; inset: 0 auto 0 0; z-index: 20; display: none; width: 248px; flex-direction: column; padding: 24px 18px 18px; border-right: 1px solid var(--border-subtle); background: var(--surface); }
-.workspace-wordmark { display: inline-flex; gap: 9px; align-items: baseline; color: var(--primary); font-size: 29px; font-weight: 600; letter-spacing: -.05em; line-height: 1.1; }
+.workspace-rail { position: fixed; inset: 0 auto 0 0; z-index: 20; display: none; width: 248px; flex-direction: column; padding: 28px 18px 18px; border-right: 1px solid var(--primary-active); background: var(--primary); color: var(--on-primary); }
+.workspace-wordmark { display: inline-flex; gap: 9px; align-items: baseline; color: var(--on-primary); font-size: 29px; font-weight: 600; letter-spacing: -.05em; line-height: 1.1; }
 .workspace-wordmark span { font-weight: 400; font-size: 15px; letter-spacing: .02em; }
-.workspace-product-name { margin: 10px 0 24px; color: var(--muted); font-size: 14px; }
-.workspace-nav { display: flex; flex-direction: column; gap: 18px; flex: 1; min-height: 0; overflow-y: auto; }
+.workspace-product-name { margin: 10px 0 28px; color: var(--accent-light); font-size: 14px; }
+.workspace-nav { display: flex; flex-direction: column; gap: 18px; flex: 1; min-height: 0; overflow-y: auto; scrollbar-color: var(--accent) var(--primary-active); }
 .workspace-nav-group { display: grid; gap: 4px; }
-.workspace-nav-label { padding: 0 12px 5px; color: var(--muted); font-size: 13px; font-weight: 500; }
-.workspace-nav-link { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 10px 12px; border-radius: 6px; color: var(--muted); font-size: 15px; font-weight: 500; }
-.workspace-nav-link:hover { color: var(--primary); background: var(--canvas); }
-.workspace-nav-link[aria-current=page] { background: var(--mist); color: var(--primary); }
+.workspace-nav-label { padding: 0 12px 5px; color: var(--accent-light); font-size: 13px; font-weight: 600; }
+.workspace-nav-link { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 10px 12px; border-radius: 6px; color: var(--on-primary); font-size: 15px; font-weight: 500; }
+.workspace-nav-link:hover { color: var(--on-primary); background: var(--primary-hover); }
+.workspace-nav-link[aria-current=page] { background: var(--accent-light); color: var(--primary-active); font-weight: 600; }
+.workspace-nav-link[aria-current=page]:hover { background: var(--accent); }
+.workspace-rail :focus-visible, .workspace-mobile-nav :focus-visible, .workspace-mobile-bar :focus-visible { outline: 3px solid var(--accent-light); outline-offset: 3px; }
 .workspace-nav-icon { width: 20px; height: 20px; flex-shrink: 0; }
-.workspace-account { display: grid; gap: 14px; margin-top: 18px; padding: 16px 10px 0; border-top: 1px solid var(--border-subtle); }
-.workspace-account > a { font-size: 14px; color: var(--muted); }
-.workspace-account > a:hover { color: var(--primary); text-decoration: underline; }
+.workspace-account { display: grid; gap: 14px; margin-top: 18px; padding: 16px 10px 0; border-top: 1px solid color-mix(in srgb, var(--accent) 45%, var(--primary)); }
+.workspace-account .text-text { color: var(--on-primary); }
+.workspace-account .text-muted, .workspace-account > a { font-size: 14px; color: var(--accent-light); }
+.workspace-account > a:hover { color: var(--on-primary); text-decoration: underline; }
 .workspace-main { max-width: 1680px; margin: 0 auto; padding: 32px 20px 64px; }
-.workspace-mobile-bar { position: sticky; top: 0; z-index: 20; display: flex; gap: 16px; align-items: center; justify-content: space-between; background: var(--surface); padding: 12px 20px; border-bottom: 1px solid var(--border-subtle); }
+.workspace-mobile-bar { position: sticky; top: 0; z-index: 20; display: flex; gap: 16px; align-items: center; justify-content: space-between; background: var(--primary); color: var(--on-primary); padding: 12px 20px; border-bottom: 2px solid var(--accent); }
 .workspace-mobile-bar .workspace-wordmark { font-size: 24px; }
-.workspace-mobile-nav { display: flex; flex-direction: column; height: 100%; padding: 24px; background: var(--surface); color: var(--text); }
+.workspace-mobile-nav { display: flex; flex-direction: column; height: 100%; padding: 24px; background: var(--primary); color: var(--on-primary); }
+.workspace-mobile-bar .app-button, .workspace-mobile-nav > header .app-button { color: var(--on-primary); border-color: var(--accent); background: var(--primary); }
+.workspace-mobile-bar .app-button:hover, .workspace-mobile-nav > header .app-button:hover { color: var(--primary-active); background: var(--accent-light); }
 .workspace-mobile-nav > header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
 .workspace-shell h1, .workspace-shell h2, .workspace-shell h3, .workspace-shell h4 { font-family: var(--font-sans); font-weight: 500; }
 .workspace-shell h1 { letter-spacing: -.025em; }
@@ -31,9 +36,9 @@
 .workspace-local-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding-bottom: 24px; margin-bottom: 24px; border-bottom: 1px solid var(--border-subtle); }
 .workspace-local-nav a, .workspace-local-nav button { display: inline-flex; align-items: center; min-height: 44px; padding: 9px 16px; border: 1px solid var(--border-subtle); border-radius: 6px; background: var(--surface); color: var(--primary); font-weight: 500; }
 .workspace-local-nav a:hover, .workspace-local-nav button:hover { background: var(--mist); }
-.workspace-local-nav [aria-current=page] { color: var(--surface); background: var(--primary); border-color: var(--primary); }
+.workspace-local-nav [aria-current=page] { color: var(--on-primary); background: var(--primary); border-color: var(--primary); box-shadow: inset 0 -3px var(--accent); }
 dialog.portal-dialog { border: 0; padding: 0; background: transparent; color: var(--text); max-width: none; max-height: none; }
-dialog.portal-dialog::backdrop { background: rgb(38 48 51 / 40%); }
+dialog.portal-dialog::backdrop { background: color-mix(in srgb, var(--primary-active) 45%, transparent); }
 dialog.portal-drawer { margin: 0 0 0 auto; width: min(100%, var(--drawer-width, 520px)); height: 100dvh; }
 dialog.portal-confirm { margin: auto; width: min(92vw, 480px); }
 .app-drawer-content { display: flex; flex-direction: column; height: 100%; background: var(--surface); box-shadow: var(--shadow-overlay); }

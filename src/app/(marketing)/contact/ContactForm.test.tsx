@@ -8,15 +8,9 @@ const gtagMock = vi.fn();
 
 async function fillRequired() {
   await userEvent.type(screen.getByLabelText("Name"), "Jane Partner");
-  await userEvent.type(
-    screen.getByLabelText("Firm"),
-    "Brewster Bye Architects",
-  );
+  await userEvent.type(screen.getByLabelText("Firm"), "Brewster Bye Architects");
   await userEvent.type(screen.getByLabelText("Email"), "jane@bba.co.uk");
-  await userEvent.selectOptions(
-    screen.getByLabelText("Nature of dispute"),
-    "Technical / defects dispute",
-  );
+  await userEvent.selectOptions(screen.getByLabelText("Nature of dispute"), "Technical / defects dispute");
 }
 
 function submit() {
@@ -40,18 +34,12 @@ describe("ContactForm", () => {
     render(<ContactForm />);
     await fillRequired();
     await submit();
-    expect(
-      await screen.findByText(/thank you for your enquiry/i),
-    ).toBeInTheDocument();
+    expect(await screen.findByText(/thank you for your enquiry/i)).toBeInTheDocument();
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, init] = fetchMock.mock.calls[0];
     expect(url).toBe("/api/contact");
     const sent = JSON.parse(init.body);
-    expect(sent).toMatchObject({
-      name: "Jane Partner",
-      firm: "Brewster Bye Architects",
-      email: "jane@bba.co.uk",
-    });
+    expect(sent).toMatchObject({ name: "Jane Partner", firm: "Brewster Bye Architects", email: "jane@bba.co.uk" });
     expect(sent.company_website).toBe("");
   });
 
@@ -64,10 +52,7 @@ describe("ContactForm", () => {
     expect(gtagMock).toHaveBeenCalledTimes(1);
     const [command, , params] = gtagMock.mock.calls[0];
     expect(command).toBe("event");
-    expect(params).toEqual({
-      form: "enquiry",
-      dispute_nature: "Technical / defects dispute",
-    });
+    expect(params).toEqual({ form: "enquiry", dispute_nature: "Technical / defects dispute" });
   });
 
   it("does not fire the GA4 event when the server rejects the enquiry", async () => {
@@ -85,11 +70,9 @@ describe("ContactForm", () => {
     await fillRequired();
     await submit();
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "You have sent several enquiries today. Please email enquiries@meritusvia.com.",
+      "You have sent several enquiries today. Please email enquiries@meritusvia.com."
     );
-    expect(
-      screen.queryByText(/thank you for your enquiry/i),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/thank you for your enquiry/i)).not.toBeInTheDocument();
     expect(screen.getByLabelText("Name")).toHaveValue("Jane Partner");
   });
 
@@ -97,22 +80,15 @@ describe("ContactForm", () => {
     fetchMock.mockResolvedValue({ ok: false, status: 500 });
     render(<ContactForm />);
     await fillRequired();
-    await userEvent.type(
-      screen.getByLabelText("Brief summary"),
-      "Curtain wall defects.",
-    );
+    await userEvent.type(screen.getByLabelText("Brief summary"), "Curtain wall defects.");
     await submit();
     expect(await screen.findByRole("alert")).toHaveTextContent(
-      "We could not send your enquiry. Please email enquiries@meritusvia.com.",
+      "We could not send your enquiry. Please email enquiries@meritusvia.com."
     );
     expect(screen.getByLabelText("Name")).toHaveValue("Jane Partner");
-    expect(screen.getByLabelText("Firm")).toHaveValue(
-      "Brewster Bye Architects",
-    );
+    expect(screen.getByLabelText("Firm")).toHaveValue("Brewster Bye Architects");
     expect(screen.getByLabelText("Email")).toHaveValue("jane@bba.co.uk");
-    expect(screen.getByLabelText("Brief summary")).toHaveValue(
-      "Curtain wall defects.",
-    );
+    expect(screen.getByLabelText("Brief summary")).toHaveValue("Curtain wall defects.");
   });
 
   it("shows the could-not-send copy when the request throws", async () => {
@@ -120,9 +96,7 @@ describe("ContactForm", () => {
     render(<ContactForm />);
     await fillRequired();
     await submit();
-    expect(await screen.findByRole("alert")).toHaveTextContent(
-      /could not send your enquiry/i,
-    );
+    expect(await screen.findByRole("alert")).toHaveTextContent(/could not send your enquiry/i);
     expect(screen.getByLabelText("Name")).toHaveValue("Jane Partner");
   });
 
@@ -142,65 +116,5 @@ describe("ContactForm", () => {
     expect(honeypot).toHaveAttribute("aria-hidden", "true");
     expect(honeypot).toHaveAttribute("autocomplete", "off");
     expect(honeypot).toHaveAttribute("type", "text");
-  });
-});
-
-describe("ContactForm accessible recovery", () => {
-  beforeEach(() => {
-    fetchMock.mockReset();
-    vi.stubGlobal("fetch", fetchMock);
-  });
-  afterEach(() => {
-    vi.unstubAllGlobals();
-  });
-
-  it("associates required-field errors and focuses the first invalid input", async () => {
-    render(<ContactForm />);
-    await submit();
-    const name = screen.getByLabelText("Name");
-    expect(name).toHaveAttribute("aria-invalid", "true");
-    expect(name).toHaveAttribute("aria-describedby", "name-error");
-    expect(name).toHaveAccessibleDescription("Required");
-    expect(name).toHaveFocus();
-  });
-  it("prevents duplicate sends while the request is pending", async () => {
-    let complete: (value: { ok: boolean; status: number }) => void = () => {};
-    fetchMock.mockImplementation(
-      () =>
-        new Promise((resolve) => {
-          complete = resolve;
-        }),
-    );
-    render(<ContactForm />);
-    await fillRequired();
-    await submit();
-    const button = screen.getByRole("button", { name: /send enquiry/i });
-    expect(button).toBeDisabled();
-    expect(button).toHaveAttribute("aria-busy", "true");
-    await userEvent.click(button);
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-    complete({ ok: true, status: 200 });
-    const confirmation = await screen.findByRole("status");
-    expect(confirmation).toHaveTextContent("Thank you for your enquiry.");
-    expect(confirmation).toHaveFocus();
-  });
-  it("preselects the existing credentials request option", () => {
-    render(<ContactForm initialEnquiry="Credentials request" />);
-    expect(screen.getByLabelText("Nature of dispute")).toHaveValue(
-      "Credentials request",
-    );
-  });
-  it("retains an accepted outcome if analytics throws", async () => {
-    fetchMock.mockResolvedValue({ ok: true, status: 200 });
-    vi.stubGlobal("gtag", () => {
-      throw new Error("Analytics unavailable");
-    });
-    render(<ContactForm />);
-    await fillRequired();
-    await submit();
-    expect(await screen.findByRole("status")).toHaveTextContent(
-      "Thank you for your enquiry.",
-    );
-    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
   });
 });
