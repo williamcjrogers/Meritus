@@ -1,0 +1,11 @@
+export const QCS_WORKSPACE_ID = "51435300-0000-4000-8000-000000000001";
+export type SourceRecord = { id: string; provider: string; hosts: string[]; status: "ready" | "unavailable" | "paused"; credentialRef: string | null };
+export type SourceEnvelope = { sourceId: string; providerId: string; url: string; retrievedAt: string; publishedAt: string | null; updatedAt: string | null; eventAt: string | null; contentType: string; body: Uint8Array; metadata: Record<string, unknown> };
+export type Coverage = { complete: boolean; notes: string[] };
+export type ConnectorContext = { source: SourceRecord; cursor: string | null; window: { from: string; to: string }; signal: AbortSignal };
+export type ConnectorPage = { records: SourceEnvelope[]; nextCursor: string | null; coverage: Coverage };
+export type SourceConnector = { provider: string; fetchPage(context: ConnectorContext): Promise<ConnectorPage> };
+export type Locator = { kind: "paragraph" | "page" | "field"; value: string };
+export type ExtractedEvidence = { passages: { locator: Locator; text: string }[]; facts: { predicate: string; value: unknown; locator: Locator; status: "observation" | "allegation" | "inference" }[]; coverage: Coverage };
+export type StagedRecord = Omit<SourceEnvelope, "body"> & { hash: string; objectKey: string; parserVersion: string; passages: { locator: Locator; text: string; hash: string }[] };
+export type Lease = { id: string; sourceId: string; scopeKey: string; runId: string; payload: Record<string, unknown>; cursor: string | null; leaseToken: number; revision: number; attempts: number };

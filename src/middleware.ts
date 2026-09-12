@@ -8,6 +8,13 @@ import { resolveIdentity } from "@/lib/portal/roles";
 /**
  * /portal and /api/portal are for directors; /client and /api/client for clients (directors may
  * look). Every page and route checks the role again in its own guard; this is the outer wall.
+ *
+ * origin/main's QCS research work added its own director gate for the same /portal and
+ * /api/portal paths (readResearchActor + auth.protect() in @/lib/research/roles), but every
+ * research API route already calls requireResearchDirector() itself via researchApi(), so
+ * dropping that middleware-level check here loses no protection: the route layer still enforces
+ * it, and this gate already covers /portal, /api/portal, /client and /api/client with the same
+ * director/client role split.
  */
 const clerkHandler = clerkMiddleware(async (auth, req) => {
   const pathname = req.nextUrl.pathname;

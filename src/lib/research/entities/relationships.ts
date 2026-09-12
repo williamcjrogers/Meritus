@@ -1,0 +1,4 @@
+import { z } from 'zod';
+const relationshipSchema = z.object({ subjectId: z.string().min(1), objectId: z.string().min(1), subjectKind: z.enum(['company', 'group', 'person', 'project', 'contract', 'case', 'adviser']), objectKind: z.enum(['company', 'group', 'person', 'project', 'contract', 'case', 'adviser']), predicate: z.string().min(1), versionId: z.string().min(1), passageId: z.string().min(1), confidence: z.number().min(0).max(1), validFrom: z.iso.date().nullable(), validTo: z.iso.date().nullable(), reviewerId: z.string().min(1) }).refine(v => !v.validFrom || !v.validTo || v.validFrom <= v.validTo, { message: 'Invalid relationship validity dates' });
+export type EvidencedRelationship = z.infer<typeof relationshipSchema>;
+export function validateRelationship(value: unknown): EvidencedRelationship { return relationshipSchema.parse(value); }

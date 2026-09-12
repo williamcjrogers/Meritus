@@ -1,26 +1,30 @@
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { readRelatedActions } from "@/lib/db/desk-actions";
+import { viewFixture } from "@/lib/actions/view-fixture.test-support";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { addActivity, listActivity } from "@/lib/db/activity";
-import { detachClientDocuments, listDocuments } from "@/lib/db/documents";
+import { addActivity, addResearchDerivedNote, listActivity } from "@/lib/db/activity";
+import { detachClientDocuments } from "@/lib/db/documents";
 import {
   createPursuitWithEnquiry,
   declinePursuitGuarded,
   declinePursuitGuardedWithActivity,
-  deletePursuit as removePursuit,
+  deletePursuitGuarded,
   getPursuit,
   takePursuitGuarded,
   updatePursuit as patchPursuit,
   updatePursuitWithActivity,
 } from "@/lib/db/pursuits";
 import { clearQuestions as deleteQuestions } from "@/lib/db/questions";
-import type { Activity, DocumentRow, Pursuit, PursuitStage } from "@/lib/db/schema";
+import type { Activity, Pursuit, PursuitStage } from "@/lib/db/schema";
 import { listDirectors } from "@/lib/portal/directors";
 import { deleteObjects } from "./s3";
 import { resolveIdentity } from "./roles";
 import * as actions from "./actions";
 import type { PursuitFormInput } from "./actions";
+
+vi.mock("@/lib/db/desk-actions", () => ({ readRelatedActions: vi.fn().mockResolvedValue([]) }));
 
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("@clerk/nextjs/server", () => ({ auth: vi.fn() }));
@@ -30,14 +34,14 @@ vi.mock("@/lib/db/pursuits", () => ({
   getPursuit: vi.fn(),
   createPursuitWithEnquiry: vi.fn(),
   updatePursuit: vi.fn(),
-  deletePursuit: vi.fn(),
+  deletePursuitGuarded: vi.fn(),
   takePursuitGuarded: vi.fn(),
   declinePursuitGuarded: vi.fn(),
   declinePursuitGuardedWithActivity: vi.fn(),
   updatePursuitWithActivity: vi.fn(),
 }));
-vi.mock("@/lib/db/activity", () => ({ addActivity: vi.fn(), listActivity: vi.fn() }));
-vi.mock("@/lib/db/documents", () => ({ listDocuments: vi.fn(), detachClientDocuments: vi.fn() }));
+vi.mock("@/lib/db/activity", () => ({ addActivity: vi.fn(), addResearchDerivedNote: vi.fn(), listActivity: vi.fn() }));
+vi.mock("@/lib/db/documents", () => ({ detachClientDocuments: vi.fn() }));
 vi.mock("@/lib/db/questions", () => ({ clearQuestions: vi.fn() }));
 vi.mock("@/lib/portal/directors", () => ({ listDirectors: vi.fn() }));
 
@@ -66,6 +70,7 @@ function makePursuit(overrides: Partial<Pursuit> = {}): Pursuit {
     stageChangedAt: NOW,
     nextAction: null,
     nextActionDue: null,
+    reviewDue: null,
     createdBy: "site",
     createdAt: NOW,
     updatedAt: NOW,
@@ -82,26 +87,6 @@ function stageChange(from: PursuitStage, to: PursuitStage, createdAt: string): A
     body: null,
     meta: { from, to, reason: "Because" },
     createdAt: new Date(createdAt),
-  };
-}
-
-function makeDocument(overrides: Partial<DocumentRow> = {}): DocumentRow {
-  return {
-    id: "d1",
-    scope: "pursuit",
-    pursuitId: "p1",
-    clientDomainId: null,
-    title: "Letter of claim.pdf",
-    blobUrl: "s3://vericase-docs/meritus/portal/pursuit/p1/letter.pdf",
-    blobPathname: "meritus/portal/pursuit/p1/letter.pdf",
-    fileName: "letter.pdf",
-    mime: "application/pdf",
-    size: 1024,
-    extractedText: null,
-    uploadedBy: "user_wr",
-    uploaderEmail: null,
-    createdAt: NOW,
-    ...overrides,
   };
 }
 
@@ -124,6 +109,7 @@ const validForm: PursuitFormInput = {
 };
 
 beforeEach(() => {
+  vi.mocked(deletePursuitGuarded).mockResolvedValue({ ok: true, blobKeys: [] });
   vi.clearAllMocks();
   process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY = "pk_test";
   process.env.CLERK_SECRET_KEY = "sk_test";
@@ -140,14 +126,13 @@ beforeEach(() => {
     activity: {} as Activity,
   }));
   vi.mocked(patchPursuit).mockImplementation(async (_id, values) => makePursuit(values as Partial<Pursuit>));
-  vi.mocked(removePursuit).mockResolvedValue(undefined);
   vi.mocked(takePursuitGuarded).mockResolvedValue(true);
   vi.mocked(declinePursuitGuarded).mockResolvedValue(true);
   vi.mocked(declinePursuitGuardedWithActivity).mockResolvedValue(true);
   vi.mocked(updatePursuitWithActivity).mockImplementation(async (id, values) => makePursuit({ id, ...values }));
   vi.mocked(addActivity).mockResolvedValue({} as Activity);
+  vi.mocked(addResearchDerivedNote).mockResolvedValue(true);
   vi.mocked(listActivity).mockResolvedValue([]);
-  vi.mocked(listDocuments).mockResolvedValue([]);
   vi.mocked(deleteQuestions).mockResolvedValue(undefined);
   vi.mocked(deleteObjects).mockResolvedValue(undefined);
 });
@@ -161,6 +146,17 @@ function expectRevalidated() {
 }
 
 describe("the action guard", () => {
+  it("rejects a signed-in client before touching pursuit data", async () => {
+    vi.mocked(resolveIdentity).mockResolvedValue({
+      userId: "user_wr",
+      role: "client",
+      domain: "example-firm.co.uk",
+      email: "jane@example-firm.co.uk",
+    });
+    expect(await actions.addNote("p1", "Client attempt")).toEqual({ ok: false, error: "Directors only" });
+    expect(getPursuit).not.toHaveBeenCalled();
+    expect(addActivity).not.toHaveBeenCalled();
+  });
   it("asks the director to sign in again when there is no session and touches nothing", async () => {
     vi.mocked(auth).mockResolvedValue({ userId: null } as never);
     const result = await actions.addNote("p1", "Spoke to Jane.");
@@ -321,7 +317,7 @@ describe("movePursuit", () => {
     expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", {
       stage: "dormant",
       stageChangedAt: expect.any(Date),
-      nextActionDue: "2026-10-01",
+      reviewDue: "2026-10-01",
     }, expect.anything());
     expect(updatePursuitWithActivity).toHaveBeenCalledWith(
       "p1",
@@ -379,7 +375,7 @@ describe("reopenPursuit", () => {
     expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", {
       stage: "proposal",
       stageChangedAt: expect.any(Date),
-      nextActionDue: null,
+      reviewDue: null,
     }, expect.anything());
     expect(updatePursuitWithActivity).toHaveBeenCalledWith(
       "p1",
@@ -471,56 +467,9 @@ describe("setOwner", () => {
 });
 
 describe("setNextAction", () => {
-  it("keeps the next action to 140 characters", async () => {
-    const result = await actions.setNextAction("p1", "x".repeat(141), null);
-    expect(result).toEqual({ ok: false, error: "Keep the next action to 140 characters" });
+  it("refuses obsolete clients without writing legacy fields", async () => {
+    expect(await actions.setNextAction("p1", "Old text", "2026-09-12")).toMatchObject({ ok: false, error: expect.stringContaining("Refresh") });
     expect(updatePursuitWithActivity).not.toHaveBeenCalled();
-    expectRevalidated();
-  });
-
-  it("accepts exactly 140 characters", async () => {
-    const result = await actions.setNextAction("p1", "x".repeat(140), null);
-    expect(result).toEqual({ ok: true });
-  });
-
-  it("refuses a due date that is not a date", async () => {
-    const result = await actions.setNextAction("p1", "Call Jane Partner", "Friday");
-    expect(result).toEqual({ ok: false, error: "Give the due date as a valid date" });
-    expect(updatePursuitWithActivity).not.toHaveBeenCalled();
-  });
-
-  it("saves the trimmed text and due date and logs them", async () => {
-    const result = await actions.setNextAction("p1", "  Call Jane Partner ", "2026-09-12");
-    expect(result).toEqual({ ok: true });
-    expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", {
-      nextAction: "Call Jane Partner",
-      nextActionDue: "2026-09-12",
-    }, expect.anything());
-    expect(updatePursuitWithActivity).toHaveBeenCalledWith(
-      "p1",
-      expect.anything(),
-      expect.objectContaining({
-        kind: "next_action_set",
-        actorId: "user_wr",
-        body: "Call Jane Partner",
-        meta: { nextAction: "Call Jane Partner", nextActionDue: "2026-09-12" },
-      })
-    );
-  });
-
-  it("clears the text and the date together when the text is empty", async () => {
-    const result = await actions.setNextAction("p1", "   ", "2026-09-12");
-    expect(result).toEqual({ ok: true });
-    expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", { nextAction: null, nextActionDue: null }, expect.anything());
-    expect(updatePursuitWithActivity).toHaveBeenCalledWith(
-      "p1",
-      expect.anything(),
-      expect.objectContaining({
-        kind: "next_action_set",
-        body: "Next action cleared",
-        meta: { nextAction: null, nextActionDue: null },
-      })
-    );
   });
 });
 
@@ -561,9 +510,8 @@ describe("saveAnswerAsNote", () => {
   it("stores the answer as a note", async () => {
     const result = await actions.saveAnswerAsNote("p1", "The firm is the architect, not the contractor.");
     expect(result).toEqual({ ok: true });
-    expect(addActivity).toHaveBeenCalledWith(
+    expect(addResearchDerivedNote).toHaveBeenCalledWith(
       expect.objectContaining({
-        kind: "note",
         actorId: "user_wr",
         body: "The firm is the architect, not the contractor.",
       })
@@ -580,8 +528,13 @@ describe("saveAnswerAsNote", () => {
   it("truncates a long answer to 4,000 characters rather than refusing it", async () => {
     const result = await actions.saveAnswerAsNote("p1", "z".repeat(4500));
     expect(result).toEqual({ ok: true });
-    const call = vi.mocked(addActivity).mock.calls[0][0];
+    const call = vi.mocked(addResearchDerivedNote).mock.calls[0][0];
     expect(call.body).toHaveLength(4000);
+  });
+  it("refuses a saved answer when its source was withdrawn during generation", async () => {
+    vi.mocked(addResearchDerivedNote).mockResolvedValue(false);
+    expect(await actions.saveAnswerAsNote("p1", "Old generated text")).toEqual({ ok: false, error: "The research source has changed; refresh the answer before saving" });
+    expect(addActivity).not.toHaveBeenCalled();
   });
 });
 
@@ -777,56 +730,38 @@ describe("updatePursuit", () => {
 });
 
 describe("deletePursuit", () => {
-  it("removes the S3 objects and then the row", async () => {
-    vi.mocked(listDocuments).mockResolvedValue([
-      makeDocument({ id: "d1", blobPathname: "meritus/portal/pursuit/p1/a.pdf" }),
-      makeDocument({ id: "d2", blobPathname: "meritus/portal/pursuit/p1/b.docx" }),
-    ]);
-    const result = await actions.deletePursuit("p1");
-    expect(result).toEqual({ ok: true });
-    expect(listDocuments).toHaveBeenCalledWith({ scope: "pursuit", pursuitId: "p1" });
-    expect(deleteObjects).toHaveBeenCalledWith([
-      "meritus/portal/pursuit/p1/a.pdf",
-      "meritus/portal/pursuit/p1/b.docx",
-    ]);
-    expect(removePursuit).toHaveBeenCalledWith("p1");
-    expectRevalidated();
+  it("deletes the database row before touching captured blobs", async () => {
+    vi.mocked(deletePursuitGuarded).mockResolvedValue({ ok: true, blobKeys: ["owned.pdf"] });
+    expect(await actions.deletePursuit("p1")).toEqual({ ok: true });
+    expect(deleteObjects).toHaveBeenCalledWith(["owned.pdf"]);
+    expect(vi.mocked(deletePursuitGuarded).mock.invocationCallOrder[0]).toBeLessThan(vi.mocked(deleteObjects).mock.invocationCallOrder[0]);
   });
-
-  it("still deletes the row when the S3 delete fails", async () => {
-    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    vi.mocked(listDocuments).mockResolvedValue([makeDocument()]);
-    vi.mocked(deleteObjects).mockRejectedValue(new Error("S3 down"));
-    const result = await actions.deletePursuit("p1");
-    expect(result).toEqual({ ok: true });
-    expect(removePursuit).toHaveBeenCalledWith("p1");
-    expect(warn).toHaveBeenCalled();
-  });
-
-  it("skips the S3 call when there are no documents", async () => {
-    const result = await actions.deletePursuit("p1");
-    expect(result).toEqual({ ok: true });
+  it("never touches blobs after a refused deletion", async () => {
+    vi.mocked(deletePursuitGuarded).mockResolvedValue({ ok: false, code: "linked_actions" });
+    expect(await actions.deletePursuit("p1")).toMatchObject({ ok: false });
     expect(deleteObjects).not.toHaveBeenCalled();
-    expect(removePursuit).toHaveBeenCalledWith("p1");
   });
-
-  it("reports a pursuit that no longer exists", async () => {
-    vi.mocked(getPursuit).mockResolvedValue(null);
-    const result = await actions.deletePursuit("p1");
-    expect(result).toEqual({ ok: false, error: "This pursuit no longer exists" });
-    expect(removePursuit).not.toHaveBeenCalled();
+  it("records cleanup failure without falsely refusing a completed deletion", async () => {
+    const error = vi.spyOn(console, "error").mockImplementation(() => {});
+    vi.mocked(deletePursuitGuarded).mockResolvedValue({ ok: true, blobKeys: ["owned.pdf"] });
+    vi.mocked(deleteObjects).mockRejectedValue(new Error("S3 unavailable"));
+    expect(await actions.deletePursuit("p1")).toEqual({ ok: true });
+    expect(error).toHaveBeenCalled();
   });
 
   it("keeps a client firm's files when the pursuit is deleted", async () => {
-    vi.mocked(getPursuit).mockResolvedValue(makePursuit());
-    vi.mocked(listDocuments).mockResolvedValue([
-      makeDocument({ id: "own", blobPathname: "meritus/portal/pursuit/p1/own.pdf", clientDomainId: null }),
-      makeDocument({ id: "theirs", blobPathname: "meritus/clients/example-firm.co.uk/theirs.pdf", clientDomainId: "cd_1" }),
-    ]);
+    // Detaching runs first, so by the time the guarded delete collects blob keys the client's
+    // own document has already left this pursuit's scope and cannot be among them.
+    vi.mocked(deletePursuitGuarded).mockResolvedValue({
+      ok: true,
+      blobKeys: ["meritus/portal/pursuit/p1/own.pdf"],
+    });
     expect(await actions.deletePursuit("p1")).toEqual({ ok: true });
-    expect(deleteObjects).toHaveBeenCalledWith(["meritus/portal/pursuit/p1/own.pdf"]);
     expect(detachClientDocuments).toHaveBeenCalledWith("p1");
-    expect(removePursuit).toHaveBeenCalledWith("p1");
+    expect(vi.mocked(detachClientDocuments).mock.invocationCallOrder[0]).toBeLessThan(
+      vi.mocked(deletePursuitGuarded).mock.invocationCallOrder[0]
+    );
+    expect(deleteObjects).toHaveBeenCalledWith(["meritus/portal/pursuit/p1/own.pdf"]);
   });
 });
 
@@ -840,7 +775,6 @@ describe("every action revalidates the portal tree", () => {
     ["movePursuit", () => actions.movePursuit("p1", "scoping")],
     ["reopenPursuit", () => actions.reopenPursuit("p1")],
     ["setOwner", () => actions.setOwner("p1", "user_md")],
-    ["setNextAction", () => actions.setNextAction("p1", "Call Jane", null)],
     ["addNote", () => actions.addNote("p1", "Spoke to Jane.")],
     ["saveAnswerAsNote", () => actions.saveAnswerAsNote("p1", "An answer.")],
     ["clearQuestions", () => actions.clearQuestions("p1")],
@@ -862,8 +796,24 @@ describe("every action revalidates the portal tree", () => {
     vi.mocked(createPursuitWithEnquiry).mockRejectedValue(new Error("boom"));
     vi.mocked(takePursuitGuarded).mockRejectedValue(new Error("boom"));
     vi.mocked(deleteQuestions).mockRejectedValue(new Error("boom"));
+    vi.mocked(deletePursuitGuarded).mockRejectedValue(new Error("boom"));
     const result = await run();
     expect(result.ok).toBe(false);
     expectRevalidated();
+  });
+});
+
+describe("stage action independence", () => {
+  it("preserves open actions and returns a review affordance when instructed", async () => {
+    vi.mocked(getPursuit).mockResolvedValue(makePursuit({ stage: "proposal" }));
+    vi.mocked(readRelatedActions).mockResolvedValueOnce([viewFixture(), viewFixture({ id: "done", state: "completed" })]);
+    expect(await actions.movePursuit("p1", "instructed")).toEqual({ ok: true, remainingActions: 1 });
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", { stage: "instructed", stageChangedAt: expect.any(Date) }, expect.anything());
+  });
+  it("retains successful stage changes when the remaining-actions read fails", async () => {
+    vi.mocked(getPursuit).mockResolvedValue(makePursuit({ stage: "proposal" }));
+    vi.mocked(readRelatedActions).mockRejectedValueOnce(new Error("Action read unavailable"));
+    expect(await actions.movePursuit("p1", "instructed")).toEqual({ ok: true, remainingActionsUnavailable: true });
+    expect(updatePursuitWithActivity).toHaveBeenCalledWith("p1", expect.objectContaining({ stage: "instructed" }), expect.anything());
   });
 });

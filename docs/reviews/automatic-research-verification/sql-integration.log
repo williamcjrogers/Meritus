@@ -1,0 +1,8 @@
+
+ RUN  v5.0.0 /Users/williamrogers/Projects/Meritus/.worktrees/sources-clarity
+
+
+ Test Files  8 passed (8)
+      Tests  93 passed | 1 skipped (94)
+   Start at  06:24:15
+   Duration  37.07s (tests 93%, import 3%, environment 2%, setup 1%, transform 1%)

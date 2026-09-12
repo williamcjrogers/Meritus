@@ -20,10 +20,10 @@ describe("migration journal", () => {
     });
   });
 
-  it("includes 0003_client_files with the client tables and the wider size column", () => {
-    const entry = journal.entries.find((e) => e.tag === "0003_client_files");
+  it("includes 0011_client_files with the client tables and the wider size column", () => {
+    const entry = journal.entries.find((e) => e.tag === "0011_client_files");
     expect(entry).toBeDefined();
-    const sql = readFileSync(join(root, "0003_client_files.sql"), "utf8");
+    const sql = readFileSync(join(root, "0011_client_files.sql"), "utf8");
     expect(sql).toMatch(/ALTER TYPE "document_scope" ADD VALUE IF NOT EXISTS 'client'/);
     expect(sql).toMatch(/CREATE TABLE "client_domains"/);
     expect(sql).toMatch(/CREATE TABLE "client_uploads"/);

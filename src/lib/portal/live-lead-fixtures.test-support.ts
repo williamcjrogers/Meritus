@@ -1,0 +1,31 @@
+import type { Pursuit } from "@/lib/db/schema";
+export function pursuitFixture(overrides: Partial<Pursuit> = {}): Pursuit {
+  return {
+    id: "p1",
+    firm: "Brewster Bye Architects",
+    contactName: "Jane Partner",
+    contactEmail: "jane@bba.co.uk",
+    contactPhone: null,
+    website: null,
+    companyNumber: null,
+    party: null,
+    partyCompanyNumber: null,
+    counterparty: null,
+    disputeNature: "Technical / defects dispute",
+    approximateValue: null,
+    forum: null,
+    summary: null,
+    source: "site_form",
+    sourceDetail: null,
+    ownerId: null,
+    stage: "enquiry",
+    stageChangedAt: new Date("2026-09-12T10:00:00Z"),
+    nextAction: null,
+    nextActionDue: null,
+    reviewDue: null,
+    createdBy: "site",
+    createdAt: new Date("2026-09-12T10:00:00Z"),
+    updatedAt: new Date("2026-09-12T10:00:00Z"),
+    ...overrides,
+  };
+}

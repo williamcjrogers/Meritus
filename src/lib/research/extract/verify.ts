@@ -1,0 +1,1 @@
+export function supportsQuotation(quotation: string, passage: string): boolean { const normalise = (value: string) => value.normalize('NFC').replace(/\s+/g, ' ').trim(); return normalise(quotation).length > 0 && normalise(passage).includes(normalise(quotation)); }

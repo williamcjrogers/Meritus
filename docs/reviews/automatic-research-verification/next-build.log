@@ -1,0 +1,129 @@
+   ▲ Next.js 15.5.12
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 5.3s
+   Linting and checking validity of types ...
+   Collecting page data ...
+ ⚠ Using edge runtime on a page currently disables static generation for that page
+   Generating static pages (0/49) ...
+   Generating static pages (12/49)
+   Generating static pages (24/49)
+   Generating static pages (36/49)
+ ✓ Generating static pages (49/49)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                Size  First Load JS
+┌ ○ /                                                   11.2 kB         192 kB
+├ ○ /_not-found                                           275 B         102 kB
+├ ○ /accessibility                                        453 B         174 kB
+├ ƒ /api/contact                                          275 B         102 kB
+├ ƒ /api/internal/research                                275 B         102 kB
+├ ƒ /api/internal/research-answers                        275 B         102 kB
+├ ƒ /api/portal/companies-house                           275 B         102 kB
+├ ƒ /api/portal/documents/[id]                            275 B         102 kB
+├ ƒ /api/portal/library                                   275 B         102 kB
+├ ƒ /api/portal/programmes                                275 B         102 kB
+├ ƒ /api/portal/programmes/[id]                           275 B         102 kB
+├ ƒ /api/portal/programmes/[id]/report                    275 B         102 kB
+├ ƒ /api/portal/pursuits/[id]/brief                       275 B         102 kB
+├ ƒ /api/portal/pursuits/[id]/documents                   275 B         102 kB
+├ ƒ /api/portal/pursuits/[id]/questions                   275 B         102 kB
+├ ƒ /api/portal/research/calendar                         275 B         102 kB
+├ ƒ /api/portal/research/case-law                         275 B         102 kB
+├ ƒ /api/portal/research/case-law/[id]                    275 B         102 kB
+├ ƒ /api/portal/research/case-law/compare                 275 B         102 kB
+├ ƒ /api/portal/research/case-law/treatment               275 B         102 kB
+├ ƒ /api/portal/research/digests                          275 B         102 kB
+├ ƒ /api/portal/research/directory                        275 B         102 kB
+├ ƒ /api/portal/research/documents                        275 B         102 kB
+├ ƒ /api/portal/research/documents/[id]/reinstate         275 B         102 kB
+├ ƒ /api/portal/research/entities                         275 B         102 kB
+├ ƒ /api/portal/research/entities/[id]/confirm            275 B         102 kB
+├ ƒ /api/portal/research/entities/[id]/identifiers        275 B         102 kB
+├ ƒ /api/portal/research/entities/search                  275 B         102 kB
+├ ƒ /api/portal/research/evidence/[id]                    275 B         102 kB
+├ ƒ /api/portal/research/imports                          275 B         102 kB
+├ ƒ /api/portal/research/indexes                          275 B         102 kB
+├ ƒ /api/portal/research/investigations                   275 B         102 kB
+├ ƒ /api/portal/research/investigations/[id]              275 B         102 kB
+├ ƒ /api/portal/research/investigations/[id]/claims       275 B         102 kB
+├ ƒ /api/portal/research/investigations/[id]/questions    275 B         102 kB
+├ ƒ /api/portal/research/investigations/[id]/reports      275 B         102 kB
+├ ƒ /api/portal/research/investigations/[id]/signals      275 B         102 kB
+├ ƒ /api/portal/research/opportunities/[id]               275 B         102 kB
+├ ƒ /api/portal/research/outcomes                         275 B         102 kB
+├ ƒ /api/portal/research/quick                            275 B         102 kB
+├ ƒ /api/portal/research/quick/[id]                       275 B         102 kB
+├ ƒ /api/portal/research/referrals                        275 B         102 kB
+├ ƒ /api/portal/research/reports                          275 B         102 kB
+├ ƒ /api/portal/research/reports/[id]                     275 B         102 kB
+├ ƒ /api/portal/research/reports/[id]/export              275 B         102 kB
+├ ƒ /api/portal/research/reports/[id]/review              275 B         102 kB
+├ ƒ /api/portal/research/rights                           275 B         102 kB
+├ ƒ /api/portal/research/runs                             275 B         102 kB
+├ ƒ /api/portal/research/runs/[id]                        275 B         102 kB
+├ ƒ /api/portal/research/signals                          275 B         102 kB
+├ ƒ /api/portal/research/signals/[id]/convert             275 B         102 kB
+├ ƒ /api/portal/research/signals/[id]/decisions           275 B         102 kB
+├ ƒ /api/portal/research/signals/[id]/review              275 B         102 kB
+├ ƒ /api/portal/research/sources                          275 B         102 kB
+├ ƒ /api/portal/research/sources/[id]                     275 B         102 kB
+├ ƒ /api/portal/research/suppressions                     275 B         102 kB
+├ ƒ /api/portal/research/watchlists                       275 B         102 kB
+├ ƒ /api/portal/research/watchlists/[id]                  275 B         102 kB
+├ ○ /claims-intelligence                                  374 B         181 kB
+├ ○ /contact                                            13.6 kB         188 kB
+├ ○ /credentials                                        3.31 kB         181 kB
+├ ƒ /icon                                                 275 B         102 kB
+├ ○ /insights                                             374 B         181 kB
+├ ● /insights/[slug]                                      374 B         181 kB
+├   ├ /insights/delay-analysis-adjudications
+├   ├ /insights/building-safety-act-remediation
+├   ├ /insights/ai-in-construction-disputes
+├   └ [+7 more paths]
+├ ○ /method                                               374 B         181 kB
+├ ƒ /opengraph-image                                      275 B         102 kB
+├ ƒ /portal                                             3.84 kB         143 kB
+├ ƒ /portal/actions                                     1.98 kB         141 kB
+├ ƒ /portal/library                                     2.14 kB         104 kB
+├ ƒ /portal/programmes                                  1.21 kB         107 kB
+├ ƒ /portal/programmes/[id]                             1.07 kB         140 kB
+├ ƒ /portal/prospects                                   1.54 kB         107 kB
+├ ƒ /portal/prospects/[id]                                 2 kB         141 kB
+├ ƒ /portal/pursuits                                    7.77 kB         147 kB
+├ ƒ /portal/pursuits/[id]                               41.2 kB         187 kB
+├ ƒ /portal/research                                      314 B         133 kB
+├ ƒ /portal/research/advanced                             314 B         133 kB
+├ ƒ /portal/research/calendar                             314 B         133 kB
+├ ƒ /portal/research/case-law                             314 B         133 kB
+├ ƒ /portal/research/case-law/[id]                        314 B         133 kB
+├ ƒ /portal/research/digests                              129 B         110 kB
+├ ƒ /portal/research/evidence/[id]                        314 B         133 kB
+├ ƒ /portal/research/indexes                              129 B         110 kB
+├ ƒ /portal/research/investigations/[id]                  680 B         167 kB
+├ ƒ /portal/research/outcomes                             314 B         133 kB
+├ ƒ /portal/research/referrals                            314 B         133 kB
+├ ƒ /portal/research/reports                              314 B         133 kB
+├ ƒ /portal/research/reports/[id]                         314 B         133 kB
+├ ƒ /portal/research/runs                                 314 B         133 kB
+├ ƒ /portal/research/signals                              314 B         133 kB
+├ ƒ /portal/research/sources                              314 B         133 kB
+├ ƒ /portal/research/watchlists                           314 B         133 kB
+├ ○ /privacy-policy                                       453 B         174 kB
+├ ○ /sectors                                            8.35 kB         189 kB
+├ ○ /services                                             374 B         181 kB
+├ ƒ /sign-in/[[...sign-in]]                             1.97 kB         153 kB
+├ ƒ /sign-up/[[...sign-up]]                             1.97 kB         153 kB
+└ ○ /terms                                                453 B         174 kB
++ First Load JS shared by all                            102 kB
+  ├ chunks/1600-f3b1fd29521247a1.js                       46 kB
+  ├ chunks/1e33f335-7bfab0f36b3064aa.js                 54.2 kB
+  └ other shared chunks (total)                         1.96 kB
+
+
+ƒ Middleware                                            91.7 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand

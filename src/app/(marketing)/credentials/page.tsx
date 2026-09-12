@@ -138,7 +138,7 @@ export default function CredentialsPage() {
                 { title: "Representative Matters", description: "Anonymised case histories: sector, dispute type, value, role, and outcome.", ref: "DOC_02" },
                 { title: "Method Notes", description: "Analytical methodology, quality governance, and technology audit framework.", ref: "DOC_03" },
                 { title: "Sample Outputs", description: "Redacted expert report extracts, exhibit packs, and chronology samples.", ref: "DOC_04" },
-              ].map((item, index) => (
+              ].map((item) => (
                 <div key={item.title} className="p-8 bg-parchment border border-green/5 relative group transition-all duration-300 hover:border-brass/20 hover:shadow-md">
                   <div className="font-mono text-[9px] tracking-[0.2em] text-brass/50 mb-6 uppercase">{item.ref}</div>
                   <h3 className="font-serif text-2xl text-green mb-4 group-hover:text-brass transition-colors duration-300">{item.title}</h3>

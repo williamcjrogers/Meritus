@@ -1,0 +1,6 @@
+{
+  "crons": [
+    { "path": "/api/internal/research", "schedule": "* * * * *" },
+    { "path": "/api/internal/research-answers", "schedule": "* * * * *" }
+  ]
+}

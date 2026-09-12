@@ -1,3 +1,4 @@
+import { requireResearchDirector } from "@/lib/research/roles";
 import Link from "next/link";
 import { Eyebrow } from "@/components/portal/Eyebrow";
 import { ProspectsTable } from "@/components/portal/ProspectsTable";
@@ -24,6 +25,7 @@ export default async function ProspectsPage({
   if (missingRequiredSetup() || !isDatabaseConfigured()) {
     return <SetupNotice />;
   }
+  await requireResearchDirector();
 
   const params = await searchParams;
   const view = params.view && isProspectView(params.view) ? params.view : "approachable";

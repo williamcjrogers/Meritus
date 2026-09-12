@@ -40,5 +40,5 @@ export function directorInitials(directors: Director[], id: string | null | unde
 }
 
 export function directorName(directors: Director[], id: string | null | undefined): string {
-  return findDirector(directors, id)?.name || UNASSIGNED_NAME;
+  return findDirector(directors, id)?.name || (id ? "Assigned, name unavailable" : UNASSIGNED_NAME);
 }

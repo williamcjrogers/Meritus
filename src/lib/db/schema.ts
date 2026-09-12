@@ -73,6 +73,7 @@ export const pursuits = pgTable(
     stageChangedAt: timestamp("stage_changed_at", { withTimezone: true }).notNull().defaultNow(),
     nextAction: text("next_action"),
     nextActionDue: date("next_action_due"),
+    reviewDue: date("review_due"),
     createdBy: text("created_by").notNull(),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
@@ -356,6 +357,8 @@ export type AlertOutcome =
   | { skipped: "not_configured" };
 
 export type ActivityMeta = {
+  /** A saved AI answer remains subject to its research evidence lifecycle. */
+  researchDerived?: boolean;
   from?: PursuitStage;
   to?: PursuitStage;
   reason?: string | null;
@@ -410,3 +413,17 @@ export type BriefAnalysisLine = {
 };
 
 export type QuestionSource = { label: string; url?: string | null };
+
+export * from "./research-schema";
+
+export * from "./research-workflow-schema";
+
+export * from "./research-intelligence-schema";
+
+export * from "./research-entities-schema";
+
+export * from "./research-watchlist-schema";
+
+export * from "./research-quick-schema";
+
+export * from "./desk-action-schema";

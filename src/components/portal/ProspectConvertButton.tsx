@@ -14,7 +14,7 @@ export function ProspectConvertButton({ prospect }: { prospect: Prospect }) {
   if (prospect.convertedPursuitId) {
     return (
       <Link href={`/portal/pursuits/${prospect.convertedPursuitId}`} className="btn-outline text-[13px]">
-        View pursuit
+        View live lead
       </Link>
     );
   }
@@ -36,7 +36,7 @@ export function ProspectConvertButton({ prospect }: { prospect: Prospect }) {
         }}
         className="btn-brass text-[13px] disabled:opacity-40"
       >
-        {pending ? "Opening…" : "Open as pursuit"}
+        {pending ? "Opening…" : "Convert to live lead"}
       </button>
       {error ? <p className="text-[12px] text-oxblood">{error}</p> : null}
     </div>

@@ -20,6 +20,7 @@ import {
   getDirector,
   initialsFor,
   listDirectors,
+  readDirectorDirectory,
   type Director,
 } from "./directors";
 import * as helpers from "./director-helpers";
@@ -146,7 +147,7 @@ describe("initialsFor", () => {
 describe("listDirectors", () => {
   it("maps Clerk users to directors using the primary email, sorted by name", async () => {
     await expect(listDirectors()).resolves.toEqual([expectedMateo, expectedWilliam]);
-    expect(getUserList).toHaveBeenCalledWith({ limit: 50 });
+    expect(getUserList).toHaveBeenCalledWith({ limit: 50, offset: 0 });
   });
 
   it("serves the cached list on the second call", async () => {
@@ -286,7 +287,7 @@ describe("directorInitials", () => {
   });
 
   it("uses a placeholder that is not an em dash", () => {
-    expect(UNASSIGNED_INITIALS).not.toContain("\u2014");
+    expect(UNASSIGNED_INITIALS).not.toContain("—");
     expect(UNASSIGNED_INITIALS.length).toBeGreaterThan(0);
   });
 });
@@ -298,9 +299,9 @@ describe("directorName", () => {
     expect(directorName(directors, "user_wr")).toBe("William Rogers");
   });
 
-  it("reads Unassigned for an unknown or missing id", () => {
+  it("reads Unassigned for a missing id, and flags an unresolved id", () => {
     expect(UNASSIGNED_NAME).toBe("Unassigned");
-    expect(directorName(directors, "user_zz")).toBe("Unassigned");
+    expect(directorName(directors, "user_zz")).toBe("Assigned, name unavailable");
     expect(directorName(directors, null)).toBe("Unassigned");
     expect(directorName([], undefined)).toBe("Unassigned");
   });
@@ -318,5 +319,15 @@ describe("director-helpers", () => {
   it("imports nothing from Clerk or Next, so client components can bundle it", () => {
     const source = readFileSync(fileURLToPath(new URL("./director-helpers.ts", import.meta.url)), "utf8");
     expect(source).not.toMatch(/from\s+["'](@clerk\/|next\/|server-only)/);
+  });
+});
+
+describe("directory availability", () => {
+  it("distinguishes a healthy empty directory from a failure", async () => {
+    getUserList.mockResolvedValueOnce({ data: [], totalCount: 0 });
+    expect(await readDirectorDirectory()).toEqual({ available: true, directors: [] });
+    __resetDirectorsCache();
+    getUserList.mockRejectedValueOnce(new Error("offline"));
+    expect(await readDirectorDirectory()).toEqual({ available: false, directors: [] });
   });
 });

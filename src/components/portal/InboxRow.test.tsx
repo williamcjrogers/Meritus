@@ -37,6 +37,7 @@ function makePursuit(overrides: Partial<Pursuit> = {}): Pursuit {
     stageChangedAt: new Date("2026-09-09T08:00:00Z"),
     nextAction: null,
     nextActionDue: null,
+    reviewDue: null,
     createdBy: "site",
     createdAt: new Date("2026-09-09T08:00:00Z"),
     updatedAt: new Date("2026-09-09T08:00:00Z"),

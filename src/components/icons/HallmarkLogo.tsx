@@ -18,7 +18,6 @@ interface HallmarkLogoProps {
 export function HallmarkLogo({
   size = "header",
   variant = "light",
-  showDescriptor = false,
   className = "",
 }: HallmarkLogoProps) {
   const brass = "#B5975A";

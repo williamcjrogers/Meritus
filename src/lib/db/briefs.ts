@@ -1,8 +1,10 @@
 import { and, desc, eq, sql } from "drizzle-orm";
 import { requireDb } from "./index";
 import { briefs, type Brief, type BriefAnalysisLine, type BriefFacts } from "./schema";
+import { isResearchPursuitAvailable } from "./research-workflow";
 
 export async function latestBrief(pursuitId: string): Promise<Brief | null> {
+  if (!await isResearchPursuitAvailable(pursuitId)) return null;
   const db = requireDb();
   const [row] = await db
     .select()
@@ -10,10 +12,11 @@ export async function latestBrief(pursuitId: string): Promise<Brief | null> {
     .where(eq(briefs.pursuitId, pursuitId))
     .orderBy(desc(briefs.createdAt))
     .limit(1);
-  return row ?? null;
+  return row && await isResearchPursuitAvailable(pursuitId) ? row : null;
 }
 
 export async function latestCompleteBrief(pursuitId: string): Promise<Brief | null> {
+  if (!await isResearchPursuitAvailable(pursuitId)) return null;
   const db = requireDb();
   const [row] = await db
     .select()
@@ -21,13 +24,13 @@ export async function latestCompleteBrief(pursuitId: string): Promise<Brief | nu
     .where(and(eq(briefs.pursuitId, pursuitId), eq(briefs.status, "complete")))
     .orderBy(desc(briefs.createdAt))
     .limit(1);
-  return row ?? null;
+  return row && await isResearchPursuitAvailable(row.pursuitId) ? row : null;
 }
 
 export async function getBrief(id: string): Promise<Brief | null> {
   const db = requireDb();
   const [row] = await db.select().from(briefs).where(eq(briefs.id, id)).limit(1);
-  return row ?? null;
+  return row && await isResearchPursuitAvailable(row.pursuitId) ? row : null;
 }
 
 /** Marks runs still "running" after two minutes as failed so a stuck run never blocks a new one. */
@@ -59,10 +62,7 @@ export async function completeBrief(
   values: { facts: BriefFacts | null; analysis: BriefAnalysisLine[]; summary: string; sources: string[] }
 ): Promise<void> {
   const db = requireDb();
-  await db
-    .update(briefs)
-    .set({ status: "complete", error: null, ...values })
-    .where(eq(briefs.id, id));
+  await db.execute(sql`select research_complete_pursuit_brief(${id},${JSON.stringify(values)}::jsonb)`);
 }
 
 export async function failBrief(id: string, error: string): Promise<void> {

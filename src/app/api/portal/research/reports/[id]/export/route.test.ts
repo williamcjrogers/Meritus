@@ -1,0 +1,12 @@
+import { beforeEach,it,expect,vi } from 'vitest';
+vi.mock('@/lib/research/roles',async original=>({...await original<typeof import('@/lib/research/roles')>(),requireResearchDirector:vi.fn().mockResolvedValue('director')}));
+vi.mock('@/lib/env',()=>({isDatabaseConfigured:()=>true}));
+vi.mock('@/lib/db/research-workflow',async original=>({...await original<typeof import('@/lib/db/research-workflow')>(),getResearchReport:vi.fn()}));
+import { getResearchReport,WorkflowError } from '@/lib/db/research-workflow';
+import { GET } from './route';
+const id='00000000-0000-4000-8000-000000000001';
+const report={id,investigationId:id,runId:id,audience:'external' as const,status:'draft' as const,findings:[],coverage:[],methodology:'The current corpus was reviewed.',createdAt:'2026-09-12'};
+beforeEach(()=>{vi.mocked(getResearchReport).mockResolvedValue({report,evidence:[]});});
+it('rejects an external draft that has not received director rights review',async()=>{const response=await GET(new Request('https://example.test?format=html'),{params:Promise.resolve({id})});expect(response.status).toBe(409);expect(await response.json()).toEqual({error:'external_review_required'});});
+it('rejects a report immediately when its source is unavailable',async()=>{vi.mocked(getResearchReport).mockRejectedValue(new WorkflowError('evidence_unavailable',409));const response=await GET(new Request('https://example.test?format=csv'),{params:Promise.resolve({id})});expect(response.status).toBe(409);});
+it('returns a reviewed export with private headers',async()=>{vi.mocked(getResearchReport).mockResolvedValue({report:{...report,status:'reviewed'},evidence:[]});const response=await GET(new Request('https://example.test?format=html'),{params:Promise.resolve({id})});expect(response.status).toBe(200);expect(response.headers.get('Cache-Control')).toBe('private, no-store');expect(await response.text()).toContain('QCS research report');});

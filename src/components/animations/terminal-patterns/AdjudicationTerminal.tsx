@@ -9,14 +9,6 @@ export function AdjudicationTerminal({
 }: {
   className?: string;
 }) {
-  const milestones = [
-    { x: 100, day: "DAY_01", label: "INSTRUCT", gold: false },
-    { x: 200, day: "DAY_03", label: "INGEST_CLASSIFY", gold: false },
-    { x: 340, day: "DAY_07", label: "EXPERT_PAPER", gold: false },
-    { x: 520, day: "DAY_21", label: "SUBMISSION", gold: false },
-    { x: 700, day: "DAY_28", label: "DECISION_FAVOUR", gold: true },
-  ];
-
   return (
     <div
       data-adj-terminal

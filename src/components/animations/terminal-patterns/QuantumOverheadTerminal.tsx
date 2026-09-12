@@ -74,7 +74,7 @@ export function QuantumOverheadTerminal({ className = "" }: { className?: string
         ${timesheets
           .filter((t) => t.diverted)
           .map(
-            (t, i) => `
+            (t) => `
         .terminal-active [data-oa-terminal] .oa-strike-${t.id} {
           stroke-dasharray: 700;
           stroke-dashoffset: 700;

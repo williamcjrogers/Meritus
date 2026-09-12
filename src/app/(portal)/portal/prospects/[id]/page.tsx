@@ -1,3 +1,4 @@
+import { requireResearchDirector } from "@/lib/research/roles";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Eyebrow } from "@/components/portal/Eyebrow";
@@ -6,6 +7,7 @@ import { ProspectConvertButton } from "@/components/portal/ProspectConvertButton
 import { ProspectNotesForm } from "@/components/portal/ProspectNotesForm";
 import { ProspectStatusForm } from "@/components/portal/ProspectStatusForm";
 import { SetupNotice } from "@/components/portal/SetupNotice";
+import { RelatedActionPanel } from "@/components/portal/actions/RelatedActionPanel";
 import { getProspect } from "@/lib/db/prospects";
 import { isDatabaseConfigured, missingRequiredSetup } from "@/lib/env";
 import {
@@ -29,6 +31,7 @@ export default async function ProspectPage({ params }: { params: Promise<{ id: s
   if (missingRequiredSetup() || !isDatabaseConfigured()) {
     return <SetupNotice />;
   }
+  await requireResearchDirector();
 
   const { id } = await params;
   let prospect;
@@ -121,6 +124,7 @@ export default async function ProspectPage({ params }: { params: Promise<{ id: s
           </Panel>
         </div>
       </div>
+      <RelatedActionPanel link={{ kind: "prospect", id }} />
     </div>
   );
 }

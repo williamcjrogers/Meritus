@@ -138,8 +138,6 @@ export function toPursuitValues(input: EnquiryInput, id: string, now: Date): New
     ownerId: null,
     stage: "enquiry",
     stageChangedAt: now,
-    nextAction: null,
-    nextActionDue: null,
     createdBy: "site",
     createdAt: now,
     updatedAt: now,

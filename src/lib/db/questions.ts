@@ -1,14 +1,17 @@
 import { eq } from "drizzle-orm";
 import { requireDb } from "./index";
 import { questions, type Question, type QuestionSource } from "./schema";
+import { isResearchPursuitAvailable } from "./research-workflow";
 
 export async function listQuestions(pursuitId: string): Promise<Question[]> {
+  if (!await isResearchPursuitAvailable(pursuitId)) return [];
   const db = requireDb();
-  return db
+  const rows = await db
     .select()
     .from(questions)
     .where(eq(questions.pursuitId, pursuitId))
     .orderBy(questions.createdAt);
+  return await isResearchPursuitAvailable(pursuitId) ? rows : [];
 }
 
 export async function addQuestion(values: {
