@@ -26,6 +26,8 @@ describe("migration journal", () => {
     const sql = readFileSync(join(root, "0011_client_files.sql"), "utf8");
     expect(sql).toMatch(/ALTER TYPE "document_scope" ADD VALUE IF NOT EXISTS 'client'/);
     expect(sql).toMatch(/CREATE TABLE "client_domains"/);
+    expect(sql.indexOf('DROP TABLE IF EXISTS "client_domains"')).toBeGreaterThan(-1);
+    expect(sql.indexOf('DROP TABLE IF EXISTS "client_domains"')).toBeLessThan(sql.indexOf('CREATE TABLE "client_domains"'));
     expect(sql).toMatch(/CREATE TABLE "client_uploads"/);
     expect(sql).toMatch(/ALTER TABLE "documents" ALTER COLUMN "size" TYPE bigint/);
     expect(sql).toMatch(/ADD COLUMN "client_domain_id"/);

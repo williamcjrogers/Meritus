@@ -1,5 +1,9 @@
 ALTER TYPE "document_scope" ADD VALUE IF NOT EXISTS 'client';
 --> statement-breakpoint
+-- An abandoned draft (PR #7) once created an empty "client_domains" with different columns on the
+-- production database and never shipped. It holds no rows, so it is dropped and recreated in this shape.
+DROP TABLE IF EXISTS "client_domains";
+--> statement-breakpoint
 CREATE TABLE "client_domains" (
   "id" text PRIMARY KEY NOT NULL,
   "domain" text NOT NULL,
