@@ -1,4 +1,5 @@
 import {
+  bigint,
   date,
   index,
   integer,
@@ -46,7 +47,7 @@ export const activityKindEnum = pgEnum("activity_kind", ACTIVITY_KINDS);
 
 export const briefStatusEnum = pgEnum("brief_status", ["running", "complete", "failed"]);
 
-export const documentScopeEnum = pgEnum("document_scope", ["pursuit", "library"]);
+export const documentScopeEnum = pgEnum("document_scope", ["pursuit", "library", "client"]);
 
 export const pursuits = pgTable(
   "pursuits",
@@ -103,16 +104,65 @@ export const documents = pgTable("documents", {
   id: text("id").primaryKey(),
   scope: documentScopeEnum("scope").notNull(),
   pursuitId: text("pursuit_id").references(() => pursuits.id, { onDelete: "cascade" }),
+  clientDomainId: text("client_domain_id").references(() => clientDomains.id, { onDelete: "set null" }),
   title: text("title").notNull(),
   blobUrl: text("blob_url").notNull(),
   blobPathname: text("blob_pathname").notNull(),
   fileName: text("file_name").notNull(),
   mime: text("mime").notNull(),
-  size: integer("size").notNull(),
+  size: bigint("size", { mode: "number" }).notNull(),
   extractedText: text("extracted_text"),
   uploadedBy: text("uploaded_by").notNull(),
+  /** The client's address when a client uploaded it; null for director uploads. */
+  uploaderEmail: text("uploader_email"),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });
+
+/**
+ * Company email domains whose people may request a file-upload link. Removal is a timestamp,
+ * not a delete, so files keep the domain they came from.
+ */
+export const clientDomains = pgTable(
+  "client_domains",
+  {
+    id: text("id").primaryKey(),
+    domain: text("domain").notNull().unique(),
+    firm: text("firm").notNull(),
+    pursuitId: text("pursuit_id").references(() => pursuits.id, { onDelete: "set null" }),
+    createdBy: text("created_by").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    removedAt: timestamp("removed_at", { withTimezone: true }),
+  },
+  (t) => [index("client_domains_pursuit_idx").on(t.pursuitId)]
+);
+
+export const CLIENT_UPLOAD_STATUSES = ["pending", "complete", "aborted"] as const;
+export type ClientUploadStatus = (typeof CLIENT_UPLOAD_STATUSES)[number];
+
+/** One S3 multipart upload a client started. Rows outlive the upload so a stale one can be aborted. */
+export const clientUploads = pgTable(
+  "client_uploads",
+  {
+    id: text("id").primaryKey(),
+    clientDomainId: text("client_domain_id")
+      .notNull()
+      .references(() => clientDomains.id),
+    pursuitId: text("pursuit_id").references(() => pursuits.id, { onDelete: "set null" }),
+    userId: text("user_id").notNull(),
+    uploaderEmail: text("uploader_email"),
+    key: text("key").notNull(),
+    uploadId: text("upload_id").notNull(),
+    fileName: text("file_name").notNull(),
+    mime: text("mime").notNull(),
+    size: bigint("size", { mode: "number" }).notNull(),
+    partSize: integer("part_size").notNull(),
+    status: text("status").$type<ClientUploadStatus>().notNull().default("pending"),
+    documentId: text("document_id"),
+    createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index("client_uploads_status_created_idx").on(t.status, t.createdAt)]
+);
 
 export const briefs = pgTable(
   "briefs",
@@ -277,6 +327,10 @@ export type NewProspect = typeof prospects.$inferInsert;
 export type Activity = typeof activity.$inferSelect;
 export type NewActivity = typeof activity.$inferInsert;
 export type DocumentRow = typeof documents.$inferSelect;
+export type ClientDomain = typeof clientDomains.$inferSelect;
+export type NewClientDomain = typeof clientDomains.$inferInsert;
+export type ClientUpload = typeof clientUploads.$inferSelect;
+export type NewClientUpload = typeof clientUploads.$inferInsert;
 export type Brief = typeof briefs.$inferSelect;
 export type Question = typeof questions.$inferSelect;
 export type ProgrammeRow = typeof programmes.$inferSelect;

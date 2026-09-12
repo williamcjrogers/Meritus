@@ -88,6 +88,7 @@ function makeDocument(overrides: Partial<DocumentRow> = {}): DocumentRow {
     id: "d1",
     scope: "pursuit",
     pursuitId: "p1",
+    clientDomainId: null,
     title: "Letter of claim.pdf",
     blobUrl: "s3://vericase-docs/meritus/portal/pursuit/p1/letter.pdf",
     blobPathname: "meritus/portal/pursuit/p1/letter.pdf",
@@ -96,6 +97,7 @@ function makeDocument(overrides: Partial<DocumentRow> = {}): DocumentRow {
     size: 1024,
     extractedText: null,
     uploadedBy: "user_wr",
+    uploaderEmail: null,
     createdAt: NOW,
     ...overrides,
   };
