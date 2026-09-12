@@ -132,13 +132,7 @@ export default function RootLayout({
                 fontSize: "1rem",
               },
               elements: {
-                rootBox: {
-                  width: "100%",
-                  "& .cl-formButtonPrimary, & .cl-formButtonPrimary::before, & .cl-formButtonPrimary::after": {
-                    backgroundImage: "none",
-                    boxShadow: "none",
-                  },
-                },
+                rootBox: { width: "100%" },
                 cardBox: { width: "100%", boxShadow: "none" },
                 card: { boxShadow: "none", border: "1px solid var(--border)" },
                 formFieldInput: "app-field",

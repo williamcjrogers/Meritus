@@ -113,6 +113,11 @@ textarea { resize: none; }
 .app-button:disabled, .app-button[aria-disabled=true], .home-primary-button:disabled, .btn-secondary:disabled, .btn-brass:disabled, .btn-quiet:disabled { color: var(--disabled-text); background: var(--disabled); border-color: var(--border-subtle); cursor: not-allowed; }
 .app-button[aria-busy=true] { position: relative; }
 .app-button[aria-busy=true]::after { content: ""; position: absolute; width: 12px; height: 12px; right: 7px; border: 2px solid currentColor; border-right-color: transparent; border-radius: 50%; animation: control-spin .8s linear infinite; }
+/* Clerk injects its decoration after global styles; stable classes keep the shared treatment authoritative. */
+.cl-rootBox .cl-formButtonPrimary.app-button,
+.cl-rootBox .cl-formButtonPrimary.app-button::before,
+.cl-rootBox .cl-formButtonPrimary.app-button::after { background-image: none; box-shadow: none; }
+.cl-rootBox .cl-formButtonPrimary.app-button:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; }
 .app-field, .portal-field { display: block; width: 100%; min-height: 44px; padding: 10px 12px; background: var(--surface); color: var(--text); border: 1px solid var(--field-border); border-radius: var(--radius-control); font: inherit; font-size: 16px; line-height: 1.5; }
 .app-field::placeholder, .portal-field::placeholder { color: var(--muted); opacity: 1; }
 .app-field:focus-visible, .portal-field:focus-visible { outline: 2px solid var(--focus); outline-offset: 3px; border-color: var(--focus); }

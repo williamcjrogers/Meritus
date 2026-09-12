@@ -24,7 +24,7 @@ Approval: William Rogers, 12 September 2026, “just do it”.
 - Task 1: 0461e5f, 8ba1051 and 3410bdc; independent access reviewer approves all scoped fixes, 74 independent tests pass.
 - Task 2: 5f7d9dd, with coordinated page presentation in 8ba1051; independent experience reviewer approves draft retention and interrupted-action recovery, 8 focused tests pass.
 - Task 3: 9898314 and eb5b45a; public redesign and reading-link specificity fix approved; article/legal wording preserved.
-- Task 4: independent final verification at 3410bdc passes 1,092 tests, lint, database-free production build (49/49 static pages) and standalone typecheck. The 94 skipped tests require opt-in isolated PostgreSQL environments. Strict Premium raw exit 1 has nine documented parser/wrapper/fixture false positives, no application defect indicated. Final built article/legal link styles confirmed in browser. Preview and release pending.
+- Task 4: independent final verification at 3410bdc passes 1,092 tests, lint, database-free production build (49/49 static pages) and standalone typecheck. The 94 skipped tests require opt-in isolated PostgreSQL environments. Strict Premium raw exit 1 has nine documented parser/wrapper/fixture false positives, no application defect indicated. Final built article/legal link styles confirmed in browser. Preview passed; production 7821fef is READY and both custom domains map to it. Production browser checks confirm separate client entry and preserved staff destinations. A final scoped Clerk decoration correction is being released after live verification exposed an ineffective nested appearance selector.
 
 ## Decisions
 
@@ -37,7 +37,7 @@ Approval: William Rogers, 12 September 2026, “just do it”.
 ## Provider configuration evidence
 
 - Read-only FAPI inspection confirms production host clerk.meritusvia.com, application name meritus-portal, user_settings.sign_up.mode=public, hosted entry at accounts.meritusvia.com.
-- This contradicts intended invite-only staff policy. Application invitation enforcement and UI are being corrected in Task 1.
+- This contradicts intended invite-only staff policy. Application invitation enforcement and UI have been corrected in Task 1; the separate provider setting remains pending.
 - The backend instance API does not expose sign-up mode management in the installed supported SDK. Dashboard access is required for the remaining provider change.
 - Clerk dashboard is signed out in the available browser. GitHub sign-in requests read-only profile/email OAuth access for williamcjrogers. User confirmation requested asynchronously before authorising this new access; no authorisation submitted yet.
 - Reference: https://clerk.com/docs/guides/secure/restricting-access and https://clerk.com/docs/reference/frontend-api/2026-05-12/description/introduction .

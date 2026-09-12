@@ -17,7 +17,7 @@ Deployed browser checks confirmed:
 
 The preview uses the project's existing development Clerk instance; it is protected by Vercel Authentication. Browser access and Vercel CLI protection bypass used existing authorised sessions. Plain unauthenticated HTTP requests correctly stopped at Vercel's SSO boundary.
 
-Final visual refinement: 3c29b53 raises provider control targets to 44px and removes the primary gradient/shadow. No auth behaviour changed. Scoped lint/typecheck passed; live production measurements follow publication.
+Final visual refinement: 3c29b53 raises provider control targets to 44px. Live production measurement confirms 44px targets, but found that Clerk ignored the nested appearance selector intended to remove its primary gradient/shadow. A scoped stylesheet correction using stable Clerk classes follows. No auth behaviour changed; scoped lint/typecheck passed.
 
 Outstanding external work: production Clerk remains configured for public registration and hosted meritus-portal branding. Changing those provider settings requires the pending GitHub-to-Clerk dashboard authorisation. No OAuth access, invitation, email, user grant or live client upload was performed. Real invitation/ticket/account-switch journeys remain unverified with live identities.
 
