@@ -293,7 +293,7 @@ export function PursuitShell({
 
       <header className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div className="min-w-0">
-          <Eyebrow rule={false}>Pursuit</Eyebrow>
+          <Eyebrow rule={false}>Live lead</Eyebrow>
           <h1 className="mt-1 font-serif text-3xl leading-tight text-green sm:text-4xl">{pursuit.firm}</h1>
           {partyLine && <p className="mt-1 font-serif text-xl italic text-green/80">{partyLine}</p>}
           <p className="mt-2 text-[13px] text-ink/70">{meta.join(" · ")}</p>

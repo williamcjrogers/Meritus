@@ -6,7 +6,19 @@ import { PortalNavigation } from "./PortalNavigation";
 const pathnameMock = vi.fn();
 
 vi.mock("next/navigation", () => ({ usePathname: () => pathnameMock() }));
-vi.mock("next/link", () => ({ default: ({ children, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => <a {...props}>{children}</a> }));
+vi.mock("next/link", () => ({
+  default: ({ children, onClick, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement>) => (
+    <a
+      {...props}
+      onClick={(event) => {
+        event.preventDefault();
+        onClick?.(event);
+      }}
+    >
+      {children}
+    </a>
+  ),
+}));
 
 beforeEach(() => {
   pathnameMock.mockReturnValue("/portal");
