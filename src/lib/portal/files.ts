@@ -71,3 +71,10 @@ export function contentDisposition(fileName: string): string {
 
 /** Above this a Vercel function cannot proxy the file; the route redirects to a one-minute presigned url instead. */
 export const DIRECT_DOWNLOAD_BYTES = 100 * 1024 * 1024;
+
+export function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 ** 2) return `${Math.round(bytes / 1024)} KB`;
+  if (bytes < 1024 ** 3) return `${(bytes / 1024 ** 2).toFixed(1)} MB`;
+  return `${(bytes / 1024 ** 3).toFixed(2)} GB`;
+}
