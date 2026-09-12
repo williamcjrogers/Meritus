@@ -83,14 +83,15 @@ export async function uploadFile(file: File, transport: UploadTransport, options
   }
 
   async function putWithRetry(n: number, blob: Blob): Promise<string> {
+    let best = 0;
     const onProgress = (loaded: number) => {
-      inFlight.set(n, loaded);
+      best = Math.max(best, loaded);
+      inFlight.set(n, best);
       report();
     };
     try {
       return await transport.putPart(await urlFor(n), blob, onProgress);
     } catch {
-      inFlight.set(n, 0);
       return transport.putPart(await urlFor(n, true), blob, onProgress);
     }
   }

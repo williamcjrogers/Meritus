@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { uploadFile, type UploadTransport } from "./upload";
 
 function fakeTransport(partSize: number, opts: { described?: { partNumber: number; etag: string; size: number }[]; failFirstPut?: boolean } = {}) {
@@ -83,6 +83,14 @@ describe("uploadFile", () => {
     await uploadFile(file, transport, { concurrency: 1 });
     expect(calls.puts.length).toBe(3);
     expect(calls.sign.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("never reports progress going backwards when a part retries", async () => {
+    const { transport } = fakeTransport(4, { failFirstPut: true });
+    const progress: number[] = [];
+    await uploadFile(file, transport, { concurrency: 1, onProgress: (f) => progress.push(f) });
+    for (let i = 1; i < progress.length; i++) expect(progress[i]).toBeGreaterThanOrEqual(progress[i - 1]);
+    expect(progress.at(-1)).toBe(1);
   });
 
   it("finishes with several workers", async () => {
