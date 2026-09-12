@@ -1,8 +1,9 @@
 /**
- * The directors are the users of the Clerk application; there is no directors
- * table. The list is read through the Clerk backend client, held in memory for
- * five minutes, and abandoned after eight seconds so a slow Clerk never holds
- * up intake or the desk. Every failure path resolves to an empty list.
+ * The directors are the Clerk users whose publicMetadata.role is "director";
+ * there is no directors table. The list is read through the Clerk backend
+ * client, held in memory for five minutes, and abandoned after eight seconds so
+ * a slow Clerk never holds up intake or the desk. Every failure path resolves
+ * to an empty list.
  *
  * This module imports "@clerk/nextjs/server", which Next refuses to bundle for
  * the browser, so only server components, route handlers and server actions
@@ -34,6 +35,7 @@ type ClerkUserLike = {
   lastName: string | null;
   primaryEmailAddressId: string | null;
   emailAddresses: ReadonlyArray<{ id: string; emailAddress: string }>;
+  publicMetadata?: Record<string, unknown> | null;
 };
 
 type CacheEntry = { directors: Director[]; expiresAt: number };
@@ -67,10 +69,14 @@ function byName(a: Director, b: Director): number {
   return a.name.localeCompare(b.name, "en-GB", { sensitivity: "base" });
 }
 
+function isDirector(user: ClerkUserLike): boolean {
+  return user.publicMetadata?.role === "director";
+}
+
 async function fetchDirectors(): Promise<Director[]> {
   const client = await clerkClient();
   const { data } = await client.users.getUserList({ limit: PAGE_LIMIT });
-  return data.map((user) => toDirector(user)).sort(byName);
+  return data.filter(isDirector).map((user) => toDirector(user)).sort(byName);
 }
 
 function withTimeout<T>(work: Promise<T>, ms: number): Promise<T | typeof TIMED_OUT> {

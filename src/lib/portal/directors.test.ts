@@ -32,12 +32,14 @@ function clerkUser(overrides: {
   lastName?: string | null;
   primaryEmailAddressId?: string | null;
   emailAddresses?: ClerkEmail[];
+  publicMetadata?: Record<string, unknown> | null;
 }) {
   return {
     firstName: null,
     lastName: null,
     primaryEmailAddressId: null,
     emailAddresses: [],
+    publicMetadata: { role: "director" },
     ...overrides,
   };
 }
@@ -57,6 +59,22 @@ const mateo = clerkUser({
   id: "user_ma",
   primaryEmailAddressId: "em_ma",
   emailAddresses: [{ id: "em_ma", emailAddress: "mateo@x.com" }],
+});
+
+const clientJane = clerkUser({
+  id: "user_jane",
+  firstName: "Jane",
+  lastName: "Partner",
+  primaryEmailAddressId: "em_jane",
+  emailAddresses: [{ id: "em_jane", emailAddress: "jane@example-firm.co.uk" }],
+  publicMetadata: { role: "client", domain: "example-firm.co.uk" },
+});
+
+const noRole = clerkUser({
+  id: "user_norole",
+  primaryEmailAddressId: "em_norole",
+  emailAddresses: [{ id: "em_norole", emailAddress: "someone@example.com" }],
+  publicMetadata: {},
 });
 
 const expectedMateo: Director = {
@@ -91,7 +109,7 @@ beforeEach(() => {
   __resetDirectorsCache();
   clerkClient.mockClear();
   getUserList.mockReset();
-  getUserList.mockResolvedValue({ data: [william, mateo], totalCount: 2 });
+  getUserList.mockResolvedValue({ data: [william, mateo, clientJane, noRole], totalCount: 4 });
 });
 
 afterEach(() => {
@@ -228,6 +246,13 @@ describe("listDirectors", () => {
     await expect(listDirectors()).resolves.toEqual([
       { id: "user_np", name: "np@x.com", email: "np@x.com", initials: "NP" },
     ]);
+  });
+
+  it("lists only users whose public metadata role is director", async () => {
+    const directors = await listDirectors();
+    expect(directors.map((d) => d.id)).toEqual(["user_ma", "user_wr"]);
+    expect(await getDirector("user_jane")).toBeNull();
+    expect(await getDirector("user_norole")).toBeNull();
   });
 });
 
