@@ -6,7 +6,7 @@ import { startTransition, useEffect, useMemo, useOptimistic, useRef, useState } 
 import type { Activity, Pursuit, PursuitStage } from "@/lib/db/schema";
 import type { DocumentSummary } from "@/lib/portal/files";
 import type { ProgrammeListItem } from "@/lib/programme/view";
-import { fullDate, isOverdue, shortDate } from "@/lib/portal/dates";
+import { fullDate, shortDate } from "@/lib/portal/dates";
 import type { Director } from "@/lib/portal/director-helpers";
 import {
   addNote,
@@ -16,7 +16,6 @@ import {
   reopenPursuit,
   saveAnswerAsNote,
   setCompanyNumber,
-  setNextAction,
   setOwner,
   updatePursuit,
 } from "@/lib/portal/actions";
@@ -30,7 +29,10 @@ import { Eyebrow } from "./Eyebrow";
 import { FileList } from "./FileList";
 import { ProgrammePanel } from "./ProgrammePanel";
 import { MoveToMenu } from "./MoveToMenu";
-import { NextActionField } from "./NextActionField";
+import { RelatedActions } from "./actions/RelatedActions";
+import { actionStateLabels } from "./actions/ActionRow";
+import { displayDate } from "@/lib/actions/dates";
+import type { ActionView } from "@/lib/actions/types";
 import { NoteBox } from "./NoteBox";
 import { OwnerSelect } from "./OwnerSelect";
 import { Panel } from "./Panel";
@@ -89,6 +91,9 @@ export function PursuitShell({
   briefState,
   questions,
   programmes,
+  actions,
+  nextAction,
+  directoryAvailable,
   now,
 }: {
   pursuit: Pursuit;
@@ -101,6 +106,9 @@ export function PursuitShell({
   briefState: BriefState;
   questions: AskMessage[];
   programmes: ProgrammeListItem[];
+  actions: ActionView[];
+  nextAction: ActionView | null;
+  directoryAvailable: boolean;
   now: string;
 }) {
   const router = useRouter();
@@ -118,12 +126,20 @@ export function PursuitShell({
   const moreButtonRef = useRef<HTMLButtonElement>(null);
   const moreItemsRef = useRef<Array<HTMLButtonElement | null>>([]);
 
+  const [remainingActions, setRemainingActions] = useState(0);
+  const [remainingActionsUnavailable, setRemainingActionsUnavailable] = useState(false);
+
   function run(changes: Partial<Pursuit>, action: () => Promise<ActionResult>): Promise<ActionResult> {
     return new Promise((resolve) => {
       startTransition(async () => {
         patch(changes);
         try {
-          resolve(await action());
+          const result = await action();
+          if (result.ok) {
+            setRemainingActions(result.remainingActions ?? 0);
+            setRemainingActionsUnavailable(result.remainingActionsUnavailable ?? false);
+          }
+          resolve(result);
         } catch (error) {
           resolve({ ok: false, error: error instanceof Error ? error.message : "Something went wrong" });
         }
@@ -132,12 +148,12 @@ export function PursuitShell({
   }
 
   const move = (to: PursuitStage, reason?: string, revisitDue?: string) =>
-    run({ stage: to, stageChangedAt: nowDate, ...(revisitDue ? { nextActionDue: revisitDue } : {}) }, () => movePursuit(pursuit.id, to, reason, revisitDue));
+    run({ stage: to, stageChangedAt: nowDate, ...(pursuit.stage === "dormant" ? { reviewDue: null } : {}), ...(revisitDue ? { reviewDue: revisitDue } : {}) }, () => movePursuit(pursuit.id, to, reason, revisitDue));
   const reopenStage = resolveReopenStage(latestChange ? [latestChange] : []);
   const reopen = async () => {
     setReopening(true);
     setHeaderError(null);
-    const result = await run({ stage: reopenStage, stageChangedAt: nowDate }, () => reopenPursuit(pursuit.id));
+    const result = await run({ reviewDue: null, stage: reopenStage, stageChangedAt: nowDate }, () => reopenPursuit(pursuit.id));
     setReopening(false);
     if (!result.ok) setHeaderError(result.error);
   };
@@ -146,9 +162,6 @@ export function PursuitShell({
     const result = await run({ ownerId }, () => setOwner(pursuit.id, ownerId));
     if (!result.ok) setHeaderError(result.error);
   };
-  const saveNextAction = (text: string, due: string | null) =>
-    run({ nextAction: text || null, nextActionDue: due }, () => setNextAction(pursuit.id, text, due));
-
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
       if (event.key === "?" && !event.metaKey && !event.ctrlKey && !event.altKey && !isEditableTarget(event.target)) {
@@ -336,14 +349,15 @@ export function PursuitShell({
           </div>
         )}
         <div className="mt-4 border-t border-green/10 pt-3">
-          <NextActionField
-            text={pursuit.nextAction}
-            due={pursuit.nextActionDue}
-            overdue={active && isOverdue(pursuit.nextActionDue, nowDate)}
-            onSave={saveNextAction}
-          />
+          <p>Next action: {nextAction?.title ?? "No open action"}</p>
+          {nextAction && <p>{actionStateLabels[nextAction.state]} · Action assignee: {nextAction.ownerName}. Action due: {nextAction.dueDate ? displayDate(nextAction.dueDate) : "Not set"}</p>}
+          {pursuit.reviewDue && <p>Review due: {displayDate(pursuit.reviewDue)}</p>}
+          {remainingActions > 0 && <p role="status">Stage updated. Review the {remainingActions} open actions linked to this lead. <a href="#actions">Actions</a></p>}
+          {remainingActionsUnavailable && <p role="status">Stage updated. Could not load remaining actions. <a href="#actions">Review linked actions</a></p>}
         </div>
       </div>
+
+      <section id="actions" className="mt-6"><RelatedActions link={{ kind: "pursuit", id: pursuit.id }} rows={actions} directory={{ available: directoryAvailable, directors }} /></section>
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-12">
         <div className="order-1 lg:order-none lg:col-span-8">

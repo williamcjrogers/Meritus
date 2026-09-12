@@ -143,4 +143,32 @@ describe.skipIf(!homeTestEnabled)('isolated accountable action persistence', () 
         }
         expect(JSON.parse(runSql(save(a.id, 2, {state:'todo'}))).action).toMatchObject({state:'todo',version:3,completed_at:null});
     });
+    it('refuses guarded deletion with child-programme actions and keeps document blobs', () => {
+        const lead = pursuit(), programme = `programme-${++sequence}`;
+        runSql(`insert into programmes(id,pursuit_id,file_name,format,content_hash,parse_status,parse_engine,parse_confidence,issues,created_by) values('${programme}','${lead}','test.xer','xer','synthetic','parsed','fixture',100,'[]','director');`);
+        createFixtureAction({ link: {kind:'programme',id:programme} });
+        expect(JSON.parse(runSql(`select desk_delete_pursuit_guarded('${lead}');`))).toEqual({ok:false,code:'linked_actions'});
+        expect(runSql(`select count(*) from pursuits where id='${lead}';`)).toBe('1');
+        expect(runSql(`select count(*) from programmes where id='${programme}';`)).toBe('1');
+    });
+    it('captures only pursuit documents and retains shared library rows', () => {
+        const lead = pursuit();
+        runSql(`insert into documents(id,scope,pursuit_id,title,blob_url,blob_pathname,file_name,mime,size,uploaded_by) values('doc-${lead}','pursuit','${lead}','Owned','s3://owned','owned-${lead}','owned.pdf','application/pdf',1,'director'),('lib-${lead}','library','${lead}','Shared','s3://shared','shared-${lead}','shared.pdf','application/pdf',1,'director');`);
+        expect(JSON.parse(runSql(`select desk_delete_pursuit_guarded('${lead}');`))).toEqual({ok:true,blobKeys:[`owned-${lead}`]});
+        expect(runSql(`select count(*) from documents where id='lib-${lead}' and pursuit_id is null;`)).toBe('1');
+        expect(JSON.parse(runSql(`select desk_delete_pursuit_guarded('${lead}');`))).toEqual({ok:false,code:'not_found'});
+    });
+    it('serialises a parent deletion racing action creation without orphaning actions', async () => {
+        const lead = pursuit(), actionId = id(++sequence);
+        const results = await Promise.all([
+            concurrentSql(`select desk_delete_pursuit_guarded('${lead}');`),
+            concurrentSql(save(actionId,0,{link:{kind:'pursuit',id:lead}}))
+        ]);
+        const deleted=JSON.parse(results[0]), created=JSON.parse(results[1]);
+        expect([deleted.ok,created.ok].filter(Boolean)).toHaveLength(1);
+        expect(runSql(`select count(*) from desk_actions a left join pursuits p on p.id=a.pursuit_id where a.id='${actionId}' and p.id is null;`)).toBe('0');
+        if (!deleted.ok) expect(deleted).toEqual({ok:false,code:'linked_actions'});
+        else expect(deleted.blobKeys).toEqual([]);
+    });
+
 });

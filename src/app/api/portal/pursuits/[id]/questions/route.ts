@@ -15,6 +15,8 @@ import { isUrlPermitted } from "@/lib/questions/allowlist";
 import { collectSourcesFromSteps, finalText } from "@/lib/questions/sources";
 import { fencedBlock } from "@/lib/ai/fence";
 import { extractUrls } from "@/lib/research/urls";
+import { readRelatedActions } from "@/lib/db/desk-actions";
+import { chooseNextAction } from "@/lib/actions/model";
 import { buildSystemPrompt } from "@/lib/questions/system-prompt";
 import { searchWeb } from "@/lib/research/search-web";
 
@@ -134,9 +136,11 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
     }),
   };
 
+  const actions = await readRelatedActions({ kind: "pursuit", id });
+  const nextAction = chooseNextAction(actions, actions.find(action => action.isPrimary)?.id ?? null);
   const result = streamText({
     model: getLanguageModel(),
-    system: buildSystemPrompt({ pursuit, brief, activity, documents, directors }),
+    system: buildSystemPrompt({ pursuit, brief, activity, documents, directors, actions, nextActionId: nextAction?.id ?? null, reviewDue: pursuit.reviewDue }),
     messages: await convertToModelMessages(messages, { tools, ignoreIncompleteToolCalls: true }),
     tools,
     stopWhen: stepCountIs(4),

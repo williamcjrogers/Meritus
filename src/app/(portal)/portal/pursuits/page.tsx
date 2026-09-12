@@ -2,6 +2,7 @@ import { requireResearchDirector } from "@/lib/research/roles";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { auth } from "@clerk/nextjs/server";
+import { readLiveLeads } from "@/lib/portal/live-leads";
 import { Desk } from "@/components/portal/Desk";
 import { Eyebrow } from "@/components/portal/Eyebrow";
 import { NewPursuitButton } from "@/components/portal/NewPursuitButton";
@@ -101,7 +102,7 @@ export default async function LiveLeadsPage({ searchParams }: { searchParams: Pr
     );
   }
 
-  const extras = await deskExtras(pursuits);
+  const [extras, leads] = await Promise.all([deskExtras(pursuits), readLiveLeads(pursuits)]);
   const open = counts.enquiry + counts.scoping + counts.proposal;
 
   return (
@@ -113,7 +114,7 @@ export default async function LiveLeadsPage({ searchParams }: { searchParams: Pr
           <p className="mt-2 text-[14px] text-ink/70">Enquiries from the site land here.</p>
         </div>
       ) : (
-        <Desk pursuits={pursuits} extras={extras} directors={directors} userId={userId} scope={scope} now={now.toISOString()} />
+        <Desk pursuits={leads} extras={extras} directors={directors} userId={userId} scope={scope} now={now.toISOString()} />
       )}
       <p className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] tracking-[0.15em] uppercase text-ink/70">
         {LIST_STAGES.map((item, index) => (

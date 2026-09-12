@@ -2,7 +2,7 @@
  * Directors have an explicit director role in the Clerk application; there is no directors
  * table. The list is read through the Clerk backend client, held in memory for
  * five minutes, and abandoned after eight seconds so a slow Clerk never holds
- * up intake or the desk. Every failure path resolves to an empty list.
+ * up intake or the desk. The directory result distinguishes a failed lookup from a healthy empty list.
  *
  * This module imports "@clerk/nextjs/server", which Next refuses to bundle for
  * the browser, so only server components, route handlers and server actions
@@ -41,7 +41,8 @@ type CacheEntry = { directors: Director[]; expiresAt: number };
 const TIMED_OUT = Symbol("directors timed out");
 
 let cache: CacheEntry | null = null;
-let inFlight: Promise<Director[]> | null = null;
+export type DirectorDirectory = { available: boolean; directors: Director[] };
+let inFlight: Promise<DirectorDirectory> | null = null;
 
 function primaryEmail(user: ClerkUserLike): string {
   const primary = user.emailAddresses.find((entry) => entry.id === user.primaryEmailAddressId);
@@ -89,29 +90,28 @@ function withTimeout<T>(work: Promise<T>, ms: number): Promise<T | typeof TIMED_
   return Promise.race([work, expiry]).finally(() => clearTimeout(timer));
 }
 
-async function loadDirectors(): Promise<Director[]> {
+async function loadDirectors(): Promise<DirectorDirectory> {
   try {
     const result = await withTimeout(fetchDirectors(), FETCH_TIMEOUT_MS);
     if (result === TIMED_OUT) {
       console.warn(`Directors: Clerk user list took longer than ${FETCH_TIMEOUT_MS} ms`);
-      return [];
+      return { available: false, directors: [] };
     }
     cache = { directors: result, expiresAt: Date.now() + CACHE_TTL_MS };
-    return result;
+    return { available: true, directors: result };
   } catch (error) {
     console.warn("Directors: Clerk user list unavailable", error);
-    return [];
+    return { available: false, directors: [] };
   }
 }
 
 /**
- * Every director, sorted by name. Empty when Clerk is not configured, when the
- * list cannot be read, or when Clerk takes longer than eight seconds. A good
- * answer is cached for five minutes; failures are not cached.
+ * Every director, sorted by name, with explicit availability. A good answer is
+ * cached for five minutes; failures are not cached.
  */
-export async function listDirectors(): Promise<Director[]> {
-  if (!isClerkConfigured()) return [];
-  if (cache && cache.expiresAt > Date.now()) return cache.directors;
+export async function readDirectorDirectory(): Promise<DirectorDirectory> {
+  if (!isClerkConfigured()) return { available: false, directors: [] };
+  if (cache && cache.expiresAt > Date.now()) return { available: true, directors: cache.directors };
   if (inFlight) return inFlight;
   inFlight = loadDirectors().finally(() => {
     inFlight = null;
@@ -129,4 +129,9 @@ export async function getDirector(id: string | null | undefined): Promise<Direct
 export function __resetDirectorsCache(): void {
   cache = null;
   inFlight = null;
+}
+
+/** Compatibility reader; callers needing availability use readDirectorDirectory. */
+export async function listDirectors(): Promise<Director[]> {
+  return (await readDirectorDirectory()).directors;
 }

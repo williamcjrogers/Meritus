@@ -75,7 +75,7 @@ export function PortalNavigation({ clerk = false, director = null }: PortalNavig
         }}
       >
         {open && (
-          <div className="flex min-h-full flex-col px-5 py-5">
+          <div className="flex min-h-full flex-col bg-green px-5 py-5">
             <div className="flex items-center justify-between border-b border-brass/20 pb-5">
               <Eyebrow tone="brass" rule={false}>Navigation</Eyebrow>
               <button type="button" className="btn-quiet min-h-11 text-cream" onClick={closeMenu}>Close</button>

@@ -34,7 +34,7 @@ export function StageList({
               <th className="px-4 py-3 font-medium">Nature</th>
               <th className="px-4 py-3 font-medium">Owner</th>
               <th className="px-4 py-3 font-medium">Since</th>
-              {dormant && <th className="px-4 py-3 font-medium">Next action</th>}
+              {dormant && <th className="px-4 py-3 font-medium">Review due</th>}
               <th className="px-4 py-3 font-medium">Reason</th>
             </tr>
           </thead>
@@ -60,9 +60,9 @@ export function StageList({
                   <td className="whitespace-nowrap px-4 py-3 font-mono text-[11px] text-ink/70">{shortDate(pursuit.stageChangedAt)}</td>
                   {dormant && (
                     <td className="px-4 py-3 text-ink/80">
-                      {pursuit.nextAction ?? (pursuit.nextActionDue ? "Revisit" : "–")}
-                      {pursuit.nextActionDue && (
-                        <span className="ml-2 font-mono text-[10px] tracking-[0.05em] text-ink/70">due {dueLabel(pursuit.nextActionDue)}</span>
+                      {pursuit.reviewDue ? "Review" : "–"}
+                      {pursuit.reviewDue && (
+                        <span className="ml-2 font-mono text-[10px] tracking-[0.05em] text-ink/70">due {dueLabel(pursuit.reviewDue)}</span>
                       )}
                     </td>
                   )}

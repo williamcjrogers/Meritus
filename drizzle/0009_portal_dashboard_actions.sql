@@ -225,3 +225,25 @@ DO $$ BEGIN
  IF EXISTS(SELECT 1 FROM pursuits WHERE stage='dormant' AND next_action_due IS NOT NULL AND review_due IS DISTINCT FROM next_action_due) THEN RAISE EXCEPTION 'Dormant review date reconciliation failed'; END IF;
 END $$;
 -- END LEGACY IMPORT
+
+--> statement-breakpoint
+CREATE OR REPLACE FUNCTION desk_delete_pursuit_guarded(p_id text) RETURNS jsonb
+LANGUAGE plpgsql AS $$
+DECLARE keys jsonb;
+BEGIN
+  PERFORM id FROM pursuits WHERE id=p_id FOR UPDATE;
+  IF NOT FOUND THEN RETURN jsonb_build_object('ok',false,'code','not_found'); END IF;
+  PERFORM id FROM programmes WHERE pursuit_id=p_id ORDER BY id FOR UPDATE;
+  PERFORM id FROM documents WHERE pursuit_id=p_id ORDER BY id FOR UPDATE;
+  IF EXISTS(SELECT 1 FROM desk_actions WHERE pursuit_id=p_id OR programme_id IN(SELECT id FROM programmes WHERE pursuit_id=p_id)) THEN
+    RETURN jsonb_build_object('ok',false,'code','linked_actions');
+  END IF;
+  SELECT COALESCE(jsonb_agg(blob_pathname),'[]'::jsonb) INTO keys FROM documents WHERE pursuit_id=p_id AND scope='pursuit';
+  -- Shared library documents must survive a lead deletion.
+  UPDATE documents SET pursuit_id=NULL WHERE pursuit_id=p_id AND scope<>'pursuit';
+  DELETE FROM pursuits WHERE id=p_id;
+  RETURN jsonb_build_object('ok',true,'blobKeys',keys);
+EXCEPTION WHEN foreign_key_violation THEN
+  RETURN jsonb_build_object('ok',false,'code','linked_actions');
+END;
+$$;
