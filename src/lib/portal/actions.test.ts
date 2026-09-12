@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { addActivity, listActivity } from "@/lib/db/activity";
-import { listDocuments } from "@/lib/db/documents";
+import { detachClientDocuments, listDocuments } from "@/lib/db/documents";
 import {
   createPursuitWithEnquiry,
   declinePursuitGuarded,
@@ -37,7 +37,7 @@ vi.mock("@/lib/db/pursuits", () => ({
   updatePursuitWithActivity: vi.fn(),
 }));
 vi.mock("@/lib/db/activity", () => ({ addActivity: vi.fn(), listActivity: vi.fn() }));
-vi.mock("@/lib/db/documents", () => ({ listDocuments: vi.fn() }));
+vi.mock("@/lib/db/documents", () => ({ listDocuments: vi.fn(), detachClientDocuments: vi.fn() }));
 vi.mock("@/lib/db/questions", () => ({ clearQuestions: vi.fn() }));
 vi.mock("@/lib/portal/directors", () => ({ listDirectors: vi.fn() }));
 
@@ -815,6 +815,18 @@ describe("deletePursuit", () => {
     const result = await actions.deletePursuit("p1");
     expect(result).toEqual({ ok: false, error: "This pursuit no longer exists" });
     expect(removePursuit).not.toHaveBeenCalled();
+  });
+
+  it("keeps a client firm's files when the pursuit is deleted", async () => {
+    vi.mocked(getPursuit).mockResolvedValue(makePursuit());
+    vi.mocked(listDocuments).mockResolvedValue([
+      makeDocument({ id: "own", blobPathname: "meritus/portal/pursuit/p1/own.pdf", clientDomainId: null }),
+      makeDocument({ id: "theirs", blobPathname: "meritus/clients/example-firm.co.uk/theirs.pdf", clientDomainId: "cd_1" }),
+    ]);
+    expect(await actions.deletePursuit("p1")).toEqual({ ok: true });
+    expect(deleteObjects).toHaveBeenCalledWith(["meritus/portal/pursuit/p1/own.pdf"]);
+    expect(detachClientDocuments).toHaveBeenCalledWith("p1");
+    expect(removePursuit).toHaveBeenCalledWith("p1");
   });
 });
 

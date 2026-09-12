@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { CONTACT_FORM_OPTIONS } from "@/lib/constants";
 import { addActivity, listActivity } from "@/lib/db/activity";
-import { listDocuments } from "@/lib/db/documents";
+import { detachClientDocuments, listDocuments } from "@/lib/db/documents";
 import {
   createPursuitWithEnquiry,
   declinePursuitGuardedWithActivity,
@@ -251,20 +251,25 @@ export async function updatePursuit(id: string, input: PursuitFormInput): Promis
   });
 }
 
-/** Deletes the pursuit and everything under it. S3 objects go first, best effort; the row cascades. */
+/**
+ * Deletes the pursuit and everything under it, except a client firm's own files: their S3
+ * objects are left alone and their document rows are detached before the row cascades.
+ */
 export async function deletePursuit(id: string): Promise<ActionResult> {
   return guarded<ActionResult>("deletePursuit", async () => {
     if (!isId(id)) return notFound();
     const pursuit = await getPursuit(id);
     if (!pursuit) return notFound();
     const docs = await listDocuments({ scope: "pursuit", pursuitId: id });
-    if (docs.length > 0) {
+    const own = docs.filter((doc) => !doc.clientDomainId);
+    if (own.length > 0) {
       try {
-        await deleteObjects(docs.map((doc) => doc.blobPathname));
+        await deleteObjects(own.map((doc) => doc.blobPathname));
       } catch (error) {
         console.warn(`[portal] S3 delete failed for pursuit ${id}`, error);
       }
     }
+    await detachClientDocuments(id);
     await removePursuit(id);
     return { ok: true };
   });

@@ -67,6 +67,9 @@ export default async function PortalLayout({ children }: { children: React.React
           <NavLink href="/portal/library">
             Library
           </NavLink>
+          <NavLink href="/portal/clients">
+            Clients
+          </NavLink>
         </nav>
         <div className="space-y-4 border-t border-brass/15 px-4 py-5">
           {clerk && <DirectorMenu name={director?.name ?? null} initials={director?.initials ?? null} />}
@@ -93,6 +96,9 @@ export default async function PortalLayout({ children }: { children: React.React
             </NavLink>
             <NavLink href="/portal/library" variant="bar">
               Library
+            </NavLink>
+            <NavLink href="/portal/clients" variant="bar">
+              Clients
             </NavLink>
           </nav>
           {clerk ? <DirectorMenu name={director?.name ?? null} initials={director?.initials ?? null} compact /> : <span />}
