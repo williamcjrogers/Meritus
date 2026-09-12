@@ -302,6 +302,8 @@ export type AlertOutcome =
   | { skipped: "not_configured" };
 
 export type ActivityMeta = {
+  /** A saved AI answer remains subject to its research evidence lifecycle. */
+  researchDerived?: boolean;
   from?: PursuitStage;
   to?: PursuitStage;
   reason?: string | null;
@@ -356,3 +358,13 @@ export type BriefAnalysisLine = {
 };
 
 export type QuestionSource = { label: string; url?: string | null };
+
+export * from "./research-schema";
+
+export * from "./research-workflow-schema";
+
+export * from "./research-intelligence-schema";
+
+export * from "./research-entities-schema";
+
+export * from "./research-watchlist-schema";

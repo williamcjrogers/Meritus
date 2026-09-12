@@ -1,6 +1,6 @@
-import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { isClerkConfigured, isDatabaseConfigured } from "@/lib/env";
+import { requireResearchDirector, ResearchAccessError } from "@/lib/research/roles";
 
 export async function requirePortalUser(): Promise<
   { userId: string; error?: undefined } | { userId?: undefined; error: NextResponse }
@@ -14,14 +14,14 @@ export async function requirePortalUser(): Promise<
     };
   }
 
-  const { userId } = await auth();
-  if (!userId) {
+  try {
+    return { userId: await requireResearchDirector() };
+  } catch (error) {
+    const status = error instanceof ResearchAccessError ? error.status : 503;
     return {
-      error: NextResponse.json({ error: "Unauthorized" }, { status: 401 }),
+      error: NextResponse.json({ error: status === 401 ? "Unauthorised" : status === 403 ? "Director access required" : "Identity service unavailable" }, { status }),
     };
   }
-
-  return { userId };
 }
 
 export function setupResponse(message = "Portal is not fully configured"): NextResponse {
@@ -48,9 +48,10 @@ export async function requireActionUser(): Promise<ActionUser> {
   if (!isDatabaseConfigured()) {
     return { ok: false, error: "DATABASE_URL is not configured" };
   }
-  const { userId } = await auth();
-  if (!userId) {
-    return { ok: false, error: "Sign in again" };
+  try {
+    return { ok: true, userId: await requireResearchDirector() };
+  } catch (error) {
+    const status = error instanceof ResearchAccessError ? error.status : 503;
+    return { ok: false, error: status === 401 ? "Sign in again" : status === 403 ? "Director access required" : "Identity service unavailable" };
   }
-  return { ok: true, userId };
 }

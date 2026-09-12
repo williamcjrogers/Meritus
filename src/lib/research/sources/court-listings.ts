@@ -1,0 +1,4 @@
+import type { ExtractedEvidence } from '../contracts';
+export function normaliseListing(row: Record<string, unknown>): ExtractedEvidence { for (const field of ['caseReference', 'court', 'hearingDate'])
+    if (typeof row[field] !== 'string' || !String(row[field]).trim())
+        throw new Error(`Missing listing ${field}`); return { passages: Object.entries(row).map(([field, value]) => ({ locator: { kind: 'field', value: field }, text: typeof value === 'string' ? value : JSON.stringify(value) })), facts: Object.entries(row).filter(([key]) => key !== 'outcome').map(([field, value]) => ({ predicate: 'listing.' + field, value, locator: { kind: 'field', value: field }, status: 'observation' })), coverage: { complete: true, notes: ['A listing records a scheduled proceeding. Outcomes and merits require separate evidence. HMCTS rights are independent of Find Case Law rights.'] } }; }

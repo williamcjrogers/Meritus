@@ -1,3 +1,4 @@
+import { requireResearchDirector } from "@/lib/research/roles";
 import { SetupNotice } from "@/components/portal/SetupNotice";
 import { Eyebrow } from "@/components/portal/Eyebrow";
 import { FileList } from "@/components/portal/FileList";
@@ -11,6 +12,7 @@ export default async function LibraryPage() {
   if (missingRequiredSetup() || !isDatabaseConfigured()) {
     return <SetupNotice />;
   }
+  await requireResearchDirector();
 
   let files;
   try {

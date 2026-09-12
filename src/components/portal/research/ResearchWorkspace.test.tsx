@@ -1,0 +1,22 @@
+import { render,screen,fireEvent,waitFor } from '@testing-library/react';
+import { it,expect,vi,afterEach } from 'vitest';
+const router=vi.hoisted(()=>({push:vi.fn()}));
+vi.mock('next/navigation',()=>({useRouter:()=>router}));
+import { ResearchWorkspace } from './ResearchWorkspace';
+afterEach(()=>vi.unstubAllGlobals());
+it('retains one investigation request ID across a network failure and navigates only after success',async()=>{
+ const posted:Record<string,unknown>[]=[];
+ const source={id:'00000000-0000-4000-8000-000000000001',label:'Find Case Law',provider:'find-case-law',status:'ready'};
+ vi.stubGlobal('fetch',vi.fn(async(path:string,init?:RequestInit)=>{if(init?.method==='POST'){posted.push(JSON.parse(String(init.body)));if(posted.length===1)throw new Error('Network interrupted');return Response.json({investigationId:'00000000-0000-4000-8000-000000000009'});}return Response.json(path.endsWith('/sources')?[source]:[]);}));
+ render(<ResearchWorkspace mode="investigations"/>);
+ await screen.findByRole('checkbox',{name:'Find Case Law (ready)'});
+ fireEvent.change(screen.getByLabelText('Research question'),{target:{value:'Which authorities address this issue?'}});
+ fireEvent.change(screen.getByLabelText('Public subject'),{target:{value:'Construction payment disputes'}});
+ fireEvent.change(screen.getByLabelText('Scope'),{target:{value:'legal_issue'}});
+ fireEvent.click(screen.getByRole('checkbox',{name:'Find Case Law (ready)'}));
+ fireEvent.click(screen.getByRole('button',{name:'Start investigation'}));
+ expect(await screen.findByRole('alert')).toHaveTextContent('Network interrupted');expect(router.push).not.toHaveBeenCalled();
+ fireEvent.click(screen.getByRole('button',{name:'Start investigation'}));
+ await waitFor(()=>expect(router.push).toHaveBeenCalledWith('/portal/research/investigations/00000000-0000-4000-8000-000000000009'));
+ expect(posted).toHaveLength(2);expect(posted[0]).toEqual(posted[1]);expect(posted[0].requestId).toMatch(/^[a-f0-9-]{36}$/);
+});

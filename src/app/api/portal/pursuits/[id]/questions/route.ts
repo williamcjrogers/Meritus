@@ -1,13 +1,13 @@
 import { convertToModelMessages, stepCountIs, streamText, tool, type UIMessage } from "ai";
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { sql } from "drizzle-orm";
 import { getLanguageModel } from "@/lib/ai/model";
 import { requireDb } from "@/lib/db";
 import { listActivity } from "@/lib/db/activity";
 import { latestCompleteBrief } from "@/lib/db/briefs";
 import { listDocuments } from "@/lib/db/documents";
 import { getPursuit } from "@/lib/db/pursuits";
-import { questions } from "@/lib/db/schema";
 import { isAiConfigured } from "@/lib/env";
 import { requireDatabaseOr503, requirePortalUser, setupResponse } from "@/lib/portal/auth";
 import { listDirectors } from "@/lib/portal/directors";
@@ -150,24 +150,25 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
       try {
         const db = requireDb();
         const askedAt = new Date();
-        await db.batch([
-          db.insert(questions).values({
+        const messages = [
+          {
             id: crypto.randomUUID(),
             pursuitId: id,
             role: "user",
             content: question,
             sources: null,
             createdAt: askedAt,
-          }),
-          db.insert(questions).values({
+          },
+          {
             id: crypto.randomUUID(),
             pursuitId: id,
             role: "assistant",
             content: answer,
             sources: collectSourcesFromSteps(event.steps),
             createdAt: new Date(askedAt.getTime() + 1),
-          }),
-        ]);
+          },
+        ];
+        await db.execute(sql`select research_write_pursuit_questions(${id},${JSON.stringify(messages)}::jsonb)`);
       } catch (error) {
         console.error("questions persist failed", id, error);
       }

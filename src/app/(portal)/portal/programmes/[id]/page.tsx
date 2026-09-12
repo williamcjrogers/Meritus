@@ -1,3 +1,4 @@
+import { requireResearchDirector } from "@/lib/research/roles";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Eyebrow } from "@/components/portal/Eyebrow";
@@ -14,6 +15,7 @@ export default async function ProgrammeReportPage({ params }: { params: Promise<
   if (missingRequiredSetup() || !isDatabaseConfigured()) {
     return <SetupNotice />;
   }
+  await requireResearchDirector();
 
   const { id } = await params;
   let detail;

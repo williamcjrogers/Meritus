@@ -1,3 +1,4 @@
+import { maskResearchPursuitSummaries, maskResearchPursuitSummary } from "./research-workflow";
 import { and, desc, eq, gte, ilike, inArray, isNull, or, sql } from "drizzle-orm";
 import { normaliseFirm } from "@/lib/portal/intake";
 import { requireDb } from "./index";
@@ -17,36 +18,38 @@ export const ACTIVE_STAGES: readonly PursuitStage[] = ["enquiry", "scoping", "pr
 export async function getPursuit(id: string): Promise<Pursuit | null> {
   const db = requireDb();
   const [row] = await db.select().from(pursuits).where(eq(pursuits.id, id)).limit(1);
-  return row ?? null;
+  return row ? maskResearchPursuitSummary(row) : null;
 }
 
 /** Enquiries from the site that no director has taken yet, oldest first. */
 export async function listInbox(): Promise<Pursuit[]> {
   const db = requireDb();
-  return db
+  const rows = await db
     .select()
     .from(pursuits)
     .where(and(isNull(pursuits.ownerId), eq(pursuits.stage, "enquiry")))
     .orderBy(pursuits.createdAt);
+  return maskResearchPursuitSummaries(rows);
 }
 
 /** Owned pursuits in the three active stages. Sorting into columns happens in lib/portal/board. */
 export async function listBoard(): Promise<Pursuit[]> {
   const db = requireDb();
-  return db
+  const rows = await db
     .select()
     .from(pursuits)
     .where(and(inArray(pursuits.stage, [...ACTIVE_STAGES]), sql`${pursuits.ownerId} is not null`))
     .orderBy(desc(pursuits.updatedAt));
+  return maskResearchPursuitSummaries(rows);
 }
 
 export async function listByStage(stage: PursuitStage): Promise<Pursuit[]> {
   const db = requireDb();
   const query = db.select().from(pursuits).where(eq(pursuits.stage, stage));
   if (stage === "dormant") {
-    return query.orderBy(sql`${pursuits.nextActionDue} asc nulls last`, desc(pursuits.stageChangedAt));
+    return maskResearchPursuitSummaries(await query.orderBy(sql`${pursuits.nextActionDue} asc nulls last`, desc(pursuits.stageChangedAt)));
   }
-  return query.orderBy(desc(pursuits.stageChangedAt));
+  return maskResearchPursuitSummaries(await query.orderBy(desc(pursuits.stageChangedAt)));
 }
 
 export async function countByStage(): Promise<Record<PursuitStage, number>> {
@@ -78,7 +81,7 @@ export async function findOpenPursuitByEmail(email: string): Promise<Pursuit | n
     )
     .orderBy(desc(pursuits.updatedAt))
     .limit(1);
-  return row ?? null;
+  return row ? maskResearchPursuitSummary(row) : null;
 }
 
 export async function createPursuit(values: NewPursuit): Promise<Pursuit> {
@@ -120,7 +123,7 @@ export async function updatePursuit(id: string, values: PursuitPatch): Promise<P
     .set({ ...values, updatedAt: new Date() })
     .where(eq(pursuits.id, id))
     .returning();
-  return row ?? null;
+  return row ? maskResearchPursuitSummary(row) : null;
 }
 
 export async function touchPursuit(id: string): Promise<void> {
@@ -136,11 +139,12 @@ export async function deletePursuit(id: string): Promise<void> {
 /** Everything the desk shows: the three active stages for the inbox and board, plus dormant for the revisit strip. */
 export async function listDeskPursuits(): Promise<Pursuit[]> {
   const db = requireDb();
-  return db
+  const rows = await db
     .select()
     .from(pursuits)
     .where(inArray(pursuits.stage, [...ACTIVE_STAGES, "dormant"]))
     .orderBy(pursuits.createdAt);
+  return maskResearchPursuitSummaries(rows);
 }
 
 /**
@@ -177,14 +181,14 @@ const RELATED_CANDIDATE_LIMIT = 50;
 /** The most recent unowned enquiry from this address created within the last 24 hours, if any. */
 export async function findDoubleSubmissionCandidate(email: string, now: Date): Promise<Pursuit | null> {
   const [row] = await findDoubleSubmissionCandidates(email, now);
-  return row ?? null;
+  return row ? maskResearchPursuitSummary(row) : null;
 }
 
 /** Unowned enquiries from this address in the last 24 hours, newest first, so the firm can be matched in code. */
 export async function findDoubleSubmissionCandidates(email: string, now: Date): Promise<Pursuit[]> {
   const db = requireDb();
   const since = new Date(now.getTime() - DOUBLE_SUBMISSION_WINDOW_MS);
-  return db
+  const rows = await db
     .select()
     .from(pursuits)
     .where(
@@ -197,6 +201,7 @@ export async function findDoubleSubmissionCandidates(email: string, now: Date): 
     )
     .orderBy(desc(pursuits.createdAt))
     .limit(5);
+  return maskResearchPursuitSummaries(rows);
 }
 
 function escapeLike(value: string): string {
@@ -229,11 +234,11 @@ export async function findRelatedPursuits(
     .orderBy(desc(pursuits.updatedAt))
     .limit(RELATED_CANDIDATE_LIMIT);
 
-  return rows.filter((row) => {
+  return maskResearchPursuitSummaries(rows.filter((row) => {
     if (excludeId && row.id === excludeId) return false;
     if (lowerEmail && row.contactEmail?.toLowerCase() === lowerEmail) return true;
     return firmNormalised !== "" && normaliseFirm(row.firm) === firmNormalised;
-  });
+  }));
 }
 
 export type ActivityEntry = {
@@ -289,7 +294,7 @@ export async function updatePursuitWithActivity(
       meta: entry.meta ?? null,
     }),
   ]);
-  return rows[0] ?? null;
+  return rows[0] ? maskResearchPursuitSummary(rows[0]) : null;
 }
 
 /**

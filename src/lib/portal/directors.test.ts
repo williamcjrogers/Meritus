@@ -32,8 +32,10 @@ function clerkUser(overrides: {
   lastName?: string | null;
   primaryEmailAddressId?: string | null;
   emailAddresses?: ClerkEmail[];
+  publicMetadata?: { role?: string };
 }) {
   return {
+    publicMetadata: { role: "director" },
     firstName: null,
     lastName: null,
     primaryEmailAddressId: null,
@@ -128,7 +130,7 @@ describe("initialsFor", () => {
 describe("listDirectors", () => {
   it("maps Clerk users to directors using the primary email, sorted by name", async () => {
     await expect(listDirectors()).resolves.toEqual([expectedMateo, expectedWilliam]);
-    expect(getUserList).toHaveBeenCalledWith({ limit: 50 });
+    expect(getUserList).toHaveBeenCalledWith({ limit: 50, offset: 0 });
   });
 
   it("serves the cached list on the second call", async () => {

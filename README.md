@@ -5,11 +5,12 @@ Next.js 15 site for Meritus Via at meritusvia.com, with the directors' pursuit d
 ## Develop
 
 ```
-npm ci
-npm run dev
-npm test
-npm run lint && npx tsc --noEmit
-npm run build      # runs pending database migrations first when DATABASE_URL is set
+corepack pnpm install --frozen-lockfile
+corepack pnpm dev
+corepack pnpm test
+corepack pnpm exec eslint src
+corepack pnpm exec tsc --noEmit
+corepack pnpm build  # applies pending database migrations before building
 ```
 
 Copy `.env.example` to `.env.local` and fill in what you need. Without Clerk, database, VeriCase S3 and AI Gateway variables the portal renders a setup notice and the public site works as normal.
@@ -24,11 +25,11 @@ The desk is the directors' private area: enquiries from the public form land in 
 
 ### Database
 
-Schema lives in `src/lib/db/schema.ts`; migrations in `drizzle/`. Generate a migration after a schema change with `npx drizzle-kit generate --name <change>`, and apply with `npm run db:migrate` (or let the build apply it). The build script applies pending migrations before `next build`, so Vercel migrates the connected Neon database on every deployment.
+Schema lives in `src/lib/db/schema.ts`; migrations in `drizzle/`. Generate a migration after a schema change with `corepack pnpm exec drizzle-kit generate --name <change>`, and apply with `corepack pnpm db:migrate` (or let the build apply it). The build script applies pending migrations before `next build`, so Vercel migrates the connected Neon database on every deployment. To validate compilation without migration side effects, use `env -u DATABASE_URL corepack pnpm exec next build` in a checkout without environment files.
 
 ### One-off manual steps
 
-1. **Clerk**: invite the three directors; keep access mode Invite-only. First sign-in is the invitation email (it lands on `/sign-up` with a ticket). Do not type the address on Login before that.
+1. **Clerk**: invite the directors; keep access mode Invite-only and set each director's `publicMetadata.role` to `director`. First sign-in is the invitation email (it lands on `/sign-up` with a ticket). Do not type the address on Login before that. Signed-in client accounts do not have directors' portal access.
 2. **Resend**: add the Resend Marketplace integration, verify the sending domain for `enquiries@meritusvia.com` in the EU region, set data retention to the minimum, set `RESEND_API_KEY` and (optionally) `ENQUIRY_ALERT_FROM`, then submit a test enquiry and confirm the alert arrives.
 3. **Vercel firewall**: add a rate-limit rule for `POST /api/contact`.
 4. **Companies House**: set `COMPANIES_HOUSE_API_KEY` so briefs carry register facts.
@@ -40,3 +41,11 @@ Files on a pursuit or in the library go to the VeriCase AWS S3 bucket under `mer
 ### Environment
 
 See `.env.example`. `RESEND_API_KEY` is optional; without it enquiries are still stored and the inbox row shows "Alert not sent".
+
+## QCS director research
+
+`/portal/research` provides investigations, evidence, signals, case law, source settings, watchlists, calendars, referrals, reports, weekly digests, methodology indexes and outcomes. Reviewed opportunities convert into the existing pursuit desk with their evidence links retained.
+
+Research uses private objects under the research prefix and dedicated database tables. Client deposits remain separate. Apply migrations through `0008_qcs_research_watchlists` before enabling the worker. Configure `CRON_SECRET` and verify the authenticated `/api/internal/research` scheduler. Long acquisitions use `corepack pnpm exec tsx scripts/research-worker.ts` with the same jobs and leases.
+
+See [implementation and acceptance](docs/reviews/2026-09-12-qcs-research-delivery.md), [operations](docs/research-operations.md) and [provider coverage](docs/research/provider-contracts.md). Source configuration and code tests do not establish that a provider account or deployed scheduler has passed live acceptance.

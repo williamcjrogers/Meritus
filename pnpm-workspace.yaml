@@ -1,0 +1,7 @@
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+  '@clerk/shared': false
+minimumReleaseAgeExclude:
+  - '@aws-sdk/client-s3@3.1131.0'

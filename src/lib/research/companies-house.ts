@@ -1,3 +1,4 @@
+import {safeFetchCompaniesHouse} from "./safe-fetch";
 import { isCompaniesHouseConfigured } from "@/lib/env";
 import type { BriefOfficer, CompanyCandidate } from "@/lib/db/schema";
 
@@ -23,27 +24,12 @@ export type CompaniesHouseSnapshot = {
   searchHits: CompaniesHouseCompany[];
 };
 
-function chHeaders(): HeadersInit {
-  const key = process.env.COMPANIES_HOUSE_API_KEY;
-  if (!key) throw new Error("COMPANIES_HOUSE_API_KEY is not configured");
-  const token = Buffer.from(`${key}:`).toString("base64");
-  return { Authorization: `Basic ${token}`, Accept: "application/json" };
-}
-
-/** Every request to Companies House gives up after ten seconds. */
+/** Every request uses the shared Companies House transport and account quota. */
 const REQUEST_TIMEOUT_MS = 10_000;
-
 async function chGet<T>(path: string): Promise<T | null> {
-  const res = await fetch(`https://api.company-information.service.gov.uk${path}`, {
-    headers: chHeaders(),
-    cache: "no-store",
-    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
-  });
-  if (res.status === 404) return null;
-  if (!res.ok) {
-    throw new Error(`Companies House ${res.status}`);
-  }
-  return (await res.json()) as T;
+  const res=await safeFetchCompaniesHouse(`https://api.company-information.service.gov.uk${path}`,{signal:AbortSignal.timeout(REQUEST_TIMEOUT_MS),maxBytes:10*1024*1024});
+  if(res.status===404)return null;
+  return JSON.parse(new TextDecoder('utf-8',{fatal:true}).decode(res.body)) as T;
 }
 
 export async function fetchCompaniesHouseSnapshot(input: {
@@ -68,14 +54,6 @@ export async function fetchCompaniesHouseSnapshot(input: {
     `/search/companies?q=${encodeURIComponent(number || input.companyName)}&items_per_page=5`
   );
 
-  if (!company && search?.items?.[0]?.company_number) {
-    const first = search.items[0].company_number;
-    company = await chGet<Record<string, unknown>>(`/company/${encodeURIComponent(first)}`);
-    const officerPage = await chGet<{ items?: CompaniesHouseOfficer[] }>(
-      `/company/${encodeURIComponent(first)}/officers?items_per_page=12`
-    );
-    officers = officerPage?.items ?? [];
-  }
 
   return {
     company,
@@ -199,10 +177,19 @@ export async function fetchCompany(number: string): Promise<CompanyRecord | null
 
 export async function fetchOfficers(number: string): Promise<BriefOfficer[]> {
   const id = encodeURIComponent(normaliseCompanyNumber(number));
-  const page = await chGet<{ items?: CompaniesHouseOfficer[] }>(`/company/${id}/officers?items_per_page=20`);
+  const items:CompaniesHouseOfficer[]=[];
+  let start=0;
+  for(let pages=0;pages<10000;pages++){
+    const page=await chGet<{items?:CompaniesHouseOfficer[];total_results?:number}>(`/company/${id}/officers?items_per_page=100&start_index=${start}`);
+    if(!page)break;
+    if(!Array.isArray(page.items)||!Number.isSafeInteger(page.total_results)||page.total_results!<0)throw new Error('Incomplete Companies House officer page');
+    items.push(...page.items);start+=page.items.length;
+    if(start>=page.total_results!)break;
+    if(!page.items.length||pages===9999)throw new Error('Incomplete Companies House officer page');
+  }
   // Current appointments only, once each: the register keeps resigned and re-appointed entries side by side.
   const seen = new Set<string>();
-  return (page?.items ?? [])
+  return items
     .filter((officer) => !officer.resigned_on)
     .map(toOfficer)
     .filter((officer) => {

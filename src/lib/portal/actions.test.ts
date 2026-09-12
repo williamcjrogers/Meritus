@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { auth } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
-import { addActivity, listActivity } from "@/lib/db/activity";
+import { addActivity, addResearchDerivedNote, listActivity } from "@/lib/db/activity";
 import { listDocuments } from "@/lib/db/documents";
 import {
   createPursuitWithEnquiry,
@@ -22,7 +22,8 @@ import * as actions from "./actions";
 import type { PursuitFormInput } from "./actions";
 
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
-vi.mock("@clerk/nextjs/server", () => ({ auth: vi.fn() }));
+const { getUser } = vi.hoisted(() => ({ getUser: vi.fn() }));
+vi.mock("@clerk/nextjs/server", () => ({ auth: vi.fn(), clerkClient: async () => ({ users: { getUser } }) }));
 vi.mock("./s3", () => ({ deleteObjects: vi.fn() }));
 vi.mock("@/lib/db/pursuits", () => ({
   getPursuit: vi.fn(),
@@ -34,7 +35,7 @@ vi.mock("@/lib/db/pursuits", () => ({
   declinePursuitGuardedWithActivity: vi.fn(),
   updatePursuitWithActivity: vi.fn(),
 }));
-vi.mock("@/lib/db/activity", () => ({ addActivity: vi.fn(), listActivity: vi.fn() }));
+vi.mock("@/lib/db/activity", () => ({ addActivity: vi.fn(), addResearchDerivedNote: vi.fn(), listActivity: vi.fn() }));
 vi.mock("@/lib/db/documents", () => ({ listDocuments: vi.fn() }));
 vi.mock("@/lib/db/questions", () => ({ clearQuestions: vi.fn() }));
 vi.mock("@/lib/portal/directors", () => ({ listDirectors: vi.fn() }));
@@ -125,6 +126,7 @@ beforeEach(() => {
   process.env.CLERK_SECRET_KEY = "sk_test";
   process.env.DATABASE_URL = "postgres://test";
   vi.mocked(auth).mockResolvedValue({ userId: "user_wr" } as never);
+  getUser.mockResolvedValue({ publicMetadata: { role: "director" } });
   vi.mocked(listDirectors).mockResolvedValue([
     { id: "user_wr", name: "William Rogers", email: "wr@meritusvia.com", initials: "WR" },
     { id: "user_md", name: "Mateo Diaz", email: "md@meritusvia.com", initials: "MD" },
@@ -141,6 +143,7 @@ beforeEach(() => {
   vi.mocked(declinePursuitGuardedWithActivity).mockResolvedValue(true);
   vi.mocked(updatePursuitWithActivity).mockImplementation(async (id, values) => makePursuit({ id, ...values }));
   vi.mocked(addActivity).mockResolvedValue({} as Activity);
+  vi.mocked(addResearchDerivedNote).mockResolvedValue(true);
   vi.mocked(listActivity).mockResolvedValue([]);
   vi.mocked(listDocuments).mockResolvedValue([]);
   vi.mocked(deleteQuestions).mockResolvedValue(undefined);
@@ -156,6 +159,12 @@ function expectRevalidated() {
 }
 
 describe("the action guard", () => {
+  it("rejects a signed-in client before touching pursuit data", async () => {
+    getUser.mockResolvedValue({ publicMetadata: { role: "client" } });
+    expect(await actions.addNote("p1", "Client attempt")).toEqual({ ok: false, error: "Director access required" });
+    expect(getPursuit).not.toHaveBeenCalled();
+    expect(addActivity).not.toHaveBeenCalled();
+  });
   it("asks the director to sign in again when there is no session and touches nothing", async () => {
     vi.mocked(auth).mockResolvedValue({ userId: null } as never);
     const result = await actions.addNote("p1", "Spoke to Jane.");
@@ -556,9 +565,8 @@ describe("saveAnswerAsNote", () => {
   it("stores the answer as a note", async () => {
     const result = await actions.saveAnswerAsNote("p1", "The firm is the architect, not the contractor.");
     expect(result).toEqual({ ok: true });
-    expect(addActivity).toHaveBeenCalledWith(
+    expect(addResearchDerivedNote).toHaveBeenCalledWith(
       expect.objectContaining({
-        kind: "note",
         actorId: "user_wr",
         body: "The firm is the architect, not the contractor.",
       })
@@ -575,8 +583,13 @@ describe("saveAnswerAsNote", () => {
   it("truncates a long answer to 4,000 characters rather than refusing it", async () => {
     const result = await actions.saveAnswerAsNote("p1", "z".repeat(4500));
     expect(result).toEqual({ ok: true });
-    const call = vi.mocked(addActivity).mock.calls[0][0];
+    const call = vi.mocked(addResearchDerivedNote).mock.calls[0][0];
     expect(call.body).toHaveLength(4000);
+  });
+  it("refuses a saved answer when its source was withdrawn during generation", async () => {
+    vi.mocked(addResearchDerivedNote).mockResolvedValue(false);
+    expect(await actions.saveAnswerAsNote("p1", "Old generated text")).toEqual({ ok: false, error: "The research source has changed; refresh the answer before saving" });
+    expect(addActivity).not.toHaveBeenCalled();
   });
 });
 

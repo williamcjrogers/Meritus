@@ -1,5 +1,5 @@
 /**
- * The directors are the users of the Clerk application; there is no directors
+ * Directors have an explicit director role in the Clerk application; there is no directors
  * table. The list is read through the Clerk backend client, held in memory for
  * five minutes, and abandoned after eight seconds so a slow Clerk never holds
  * up intake or the desk. Every failure path resolves to an empty list.
@@ -69,8 +69,16 @@ function byName(a: Director, b: Director): number {
 
 async function fetchDirectors(): Promise<Director[]> {
   const client = await clerkClient();
-  const { data } = await client.users.getUserList({ limit: PAGE_LIMIT });
-  return data.map((user) => toDirector(user)).sort(byName);
+  const directors: Director[] = [];
+  let offset = 0;
+  while (true) {
+    const { data, totalCount } = await client.users.getUserList({ limit: PAGE_LIMIT, offset });
+    directors.push(...data.filter((user) => user.publicMetadata.role === "director").map(toDirector));
+    offset += data.length;
+    if (offset >= totalCount) break;
+    if (data.length === 0) throw new Error("Incomplete director directory");
+  }
+  return directors.sort(byName);
 }
 
 function withTimeout<T>(work: Promise<T>, ms: number): Promise<T | typeof TIMED_OUT> {

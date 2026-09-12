@@ -1,0 +1,2 @@
+export type CalendarProposal={kind:'practical_completion'|'retention'|'limitation'|'hearing';date:string;evidenceIds:string[];jurisdiction:string|null;rule:string|null;accrualBasis:string|null;reviewedBy:string|null};
+export function calendarState(value:CalendarProposal):'provisional'|'reviewed'{if(!value.evidenceIds.length||!value.reviewedBy)return 'provisional';if(value.kind==='limitation'&&(!value.jurisdiction?.trim()||!value.rule?.trim()||!value.accrualBasis?.trim()))return 'provisional';return 'reviewed';}

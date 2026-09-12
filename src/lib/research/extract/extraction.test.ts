@@ -1,0 +1,16 @@
+// @vitest-environment node
+// Synthetic documents, containing no real judgment or company allegation.
+import { expect, it } from 'vitest';
+import { zipSync, strToU8 } from 'fflate';
+import { parseSafeXml } from './xml';
+import { extractHtml } from './html';
+import { parseRemediationOds } from './ods';
+import { parseLegalDocMl } from '../case-law/legaldocml';
+import { parseAtom, caseFeedUrl } from '../case-law/atom';
+import { supportsQuotation } from './verify';
+it('rejects entity declarations, malformed XML and excessive depth', () => { expect(() => parseSafeXml('<!DOCTYPE a><a/>')).toThrow(); expect(() => parseSafeXml('<a>')).toThrow(); expect(() => parseSafeXml('<a>'.repeat(101) + '</a>'.repeat(101))).toThrow(); });
+it('drops executable HTML while retaining table context as text', () => { const result = extractHtml(strToU8('<h1>Accounts</h1><table><tr><td>GBP</td><td>10</td></tr></table><script>steal()</script>')); expect(result.passages.map(p => p.text)).toEqual(['Accounts', 'GBP 10']); });
+it('preserves paragraphs, references and independently supplied identifiers', () => { const result = parseLegalDocMl('<akomaNtoso xmlns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0"><judgment><body><paragraph eId="para_7"><num>7.</num><content><p>Synthetic finding.</p></content></paragraph></body></judgment></akomaNtoso>'); expect(result.passages[0].locator.value).toBe('para_7'); const feed = parseAtom('<feed xmlns="http://www.w3.org/2005/Atom" xmlns:tna="https://caselaw.nationalarchives.gov.uk"><entry><tna:uri>d-synthetic</tna:uri><title>Synthetic</title><tna:identifier type="fclid" slug="synthetic">A</tna:identifier><tna:identifier type="ukncn" slug="synthetic2">B</tna:identifier><link rel="alternate" type="application/pdf" href="https://assets.caselaw.nationalarchives.gov.uk/synthetic.pdf"/></entry></feed>'); expect(feed.entries[0].identifiers).toHaveLength(2); expect(feed.entries[0].xmlUrl).toBeNull(); const url = new URL(caseFeedUrl({ courts: ['uksc', 'ewhc/tcc'] }, '-updated')); expect(url.searchParams.getAll('court')).toEqual(['uksc', 'ewhc/tcc']); expect(url.searchParams.get('minimum_availability')).toBe('document'); });
+it('rejects malicious ODS traversal and keeps suppressed cells', () => { expect(() => parseRemediationOds(zipSync({ '../content.xml': strToU8('x') }))).toThrow(); const body = zipSync({ 'content.xml': strToU8('<document><table table:name="Notes"><table-row><table-cell><p>Suppressed</p></table-cell></table-row></table></document>') }); expect(parseRemediationOds(body).passages[0].text).toBe('Suppressed'); });
+it('does not validate unsupported or empty quotations', () => { expect(supportsQuotation('hello world', 'hello\nworld')).toBe(true); expect(supportsQuotation('', 'hello')).toBe(false); expect(supportsQuotation('invented', 'hello')).toBe(false); });
+it('decodes only safe XML character references in source text and pagination attributes',()=>{const feed=parseAtom('<feed xmlns="http://www.w3.org/2005/Atom" xmlns:tna="https://caselaw.nationalarchives.gov.uk"><link rel="next" href="https://caselaw.nationalarchives.gov.uk/atom.xml?query=synthetic&amp;page=2"/><entry><tna:uri>d-synthetic</tna:uri><title>A &amp; B</title></entry></feed>');expect(feed.entries[0].title).toBe('A & B');expect(new URL(feed.next!).searchParams.get('page')).toBe('2');});

@@ -3,7 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { CONTACT_FORM_OPTIONS } from "@/lib/constants";
-import { addActivity, listActivity } from "@/lib/db/activity";
+import { addActivity, addResearchDerivedNote, listActivity } from "@/lib/db/activity";
 import { listDocuments } from "@/lib/db/documents";
 import {
   createPursuitWithEnquiry,
@@ -434,7 +434,9 @@ export async function saveAnswerAsNote(id: string, body: string): Promise<Action
     if (!isId(id)) return notFound();
     const text = asText(body).trim();
     if (!text) return { ok: false, error: "There is no answer to save" };
-    return insertNote(id, userId, text.slice(0, NOTE_MAX));
+    if (!await getPursuit(id)) return notFound();
+    const saved = await addResearchDerivedNote({ pursuitId: id, actorId: userId, body: text.slice(0, NOTE_MAX) });
+    return saved ? { ok: true } : { ok: false, error: "The research source has changed; refresh the answer before saving" };
   });
 }
 

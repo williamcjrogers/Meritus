@@ -1,3 +1,6 @@
+import { requireResearchDirector } from "@/lib/research/roles";
+import Link from "next/link";
+import { pursuitResearchLink } from "@/lib/db/research-intelligence";
 import { notFound } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import type { AskMessage } from "@/components/portal/AskDrawer";
@@ -30,6 +33,7 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
   if (missingRequiredSetup() || !isDatabaseConfigured()) {
     return <SetupNotice />;
   }
+  await requireResearchDirector();
   const { id } = await params;
 
   let pursuit;
@@ -53,7 +57,7 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
     programmeItems = [];
   }
 
-  const [directors, activity, documents, run, brief, questions, changes, relatedRows, userId] = await Promise.all([
+  const [directors, activity, documents, run, brief, questions, changes, relatedRows, userId, researchLink] = await Promise.all([
     listDirectors(),
     listActivity(id),
     listDocuments({ scope: "pursuit", pursuitId: id }),
@@ -63,6 +67,7 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
     latestStageChanges([id]),
     findRelatedPursuits(pursuit.contactEmail, normaliseFirm(pursuit.firm), id),
     signedInUserId(),
+    pursuitResearchLink(id),
   ]);
 
   const briefState: BriefState = {
@@ -78,6 +83,11 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
   const related: RelatedRef[] = relatedRows.map((row) => ({ id: row.id, firm: row.firm, stage: row.stage, date: shortDate(row.stageChangedAt) }));
 
   return (
+    <>
+    {researchLink && <aside className="mb-5 rounded border border-green/25 bg-green/5 px-5 py-4 text-sm">
+      <Link href={`/portal/research/investigations/${researchLink.investigationId}`} className="font-medium underline">Open supporting QCS research and source passages</Link>
+      {(researchLink.needsReview || !researchLink.available) && <p className="mt-2">The source evidence or review basis has changed. Review this pursuit against the current research.</p>}
+    </aside>}
     <PursuitShell
       pursuit={pursuit}
       directors={directors}
@@ -91,5 +101,6 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
       programmes={programmeItems}
       now={new Date().toISOString()}
     />
+    </>
   );
 }

@@ -1,3 +1,4 @@
+import { requireResearchDirector } from "@/lib/research/roles";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { auth } from "@clerk/nextjs/server";
@@ -69,6 +70,7 @@ export default async function PursuitDeskPage({
   if (missingRequiredSetup() || !isDatabaseConfigured()) {
     return <SetupNotice />;
   }
+  await requireResearchDirector();
 
   const { stage } = await searchParams;
   const listStage = LIST_STAGES.find((s) => s === stage) ?? null;

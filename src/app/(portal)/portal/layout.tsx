@@ -1,3 +1,4 @@
+import { requireResearchDirector } from "@/lib/research/roles";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { auth } from "@clerk/nextjs/server";
@@ -28,6 +29,7 @@ async function signedInDirector(): Promise<{ name: string; initials: string } | 
 }
 
 export default async function PortalLayout({ children }: { children: React.ReactNode }) {
+  if (isClerkConfigured()) await requireResearchDirector();
   const director = await signedInDirector();
   const clerk = isClerkConfigured();
 
@@ -52,6 +54,7 @@ export default async function PortalLayout({ children }: { children: React.React
           <NavLink href="/portal/programmes">
             Programmes
           </NavLink>
+          <NavLink href="/portal/research">Research</NavLink>
           <NavLink href="/portal/library">
             Library
           </NavLink>
@@ -79,6 +82,7 @@ export default async function PortalLayout({ children }: { children: React.React
             <NavLink href="/portal/programmes" variant="bar">
               Programmes
             </NavLink>
+            <NavLink href="/portal/research" variant="bar">Research</NavLink>
             <NavLink href="/portal/library" variant="bar">
               Library
             </NavLink>
