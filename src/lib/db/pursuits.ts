@@ -113,6 +113,7 @@ export type PursuitPatch = Partial<
     | "stageChangedAt"
     | "nextAction"
     | "nextActionDue"
+    | "reviewDue"
   >
 >;
 

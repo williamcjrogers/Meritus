@@ -72,6 +72,7 @@ export const pursuits = pgTable(
     stageChangedAt: timestamp("stage_changed_at", { withTimezone: true }).notNull().defaultNow(),
     nextAction: text("next_action"),
     nextActionDue: date("next_action_due"),
+    reviewDue: date("review_due"),
     createdBy: text("created_by").notNull(),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
@@ -368,3 +369,5 @@ export * from "./research-intelligence-schema";
 export * from "./research-entities-schema";
 
 export * from "./research-watchlist-schema";
+
+export * from "./desk-action-schema";
