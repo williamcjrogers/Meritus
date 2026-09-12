@@ -68,3 +68,6 @@ export function contentDisposition(fileName: string): string {
   const ascii = fileName.replace(/[^\x20-\x7e]|["\\]/g, "_");
   return `attachment; filename="${ascii}"; filename*=UTF-8''${encodeURIComponent(fileName)}`;
 }
+
+/** Above this a Vercel function cannot proxy the file; the route redirects to a one-minute presigned url instead. */
+export const DIRECT_DOWNLOAD_BYTES = 100 * 1024 * 1024;
