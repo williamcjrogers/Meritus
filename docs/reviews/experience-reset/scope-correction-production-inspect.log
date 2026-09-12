@@ -1,0 +1,29 @@
+Vercel CLI 59.16.0 (Node.js 24.20.0)
+Fetching deployment "meritus-5gjqj45y6-quantum-commercial-solutions.vercel.app" in quantum-commercial-solutions
+> Fetched deployment "meritus-5gjqj45y6-quantum-commercial-solutions.vercel.app" in quantum-commercial-solutions [1m]
+
+  General
+
+    id		dpl_5jCJY75vRWcRjcAC6ZxR7ugCZztk
+    name	meritus
+    target	production
+    status	● Ready
+    url		https://meritus-5gjqj45y6-quantum-commercial-solutions.vercel.app
+    created	Sat Sep 12 2026 11:24:36 GMT+0100 (British Summer Time) [2m ago]
+
+
+  Aliases
+
+    ╶ https://meritus-quantum-commercial-solutions.vercel.app
+    ╶ https://meritus-git-main-quantum-commercial-solutions.vercel.app
+
+
+  Builds
+
+    ┌ .        [0ms]
+    ├── λ index (1.63MB) [iad1]
+    ├── λ _not-found (1.63MB) [iad1]
+    ├── λ _not-found.rsc (1.63MB) [iad1]
+    ├── λ accessibility (1.63MB) [iad1]
+    ├── λ accessibility.rsc (1.63MB) [iad1]
+    └── 236 output items hidden

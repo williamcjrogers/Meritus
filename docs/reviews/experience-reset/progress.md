@@ -1,5 +1,7 @@
 # Experience reset progress
 
+Current direction: the user corrected scope on 12 September 2026. Restore the original public website and retain the repaired internal system with strong Meritus colour. `scope-correction.md` supersedes the earlier public design and palette decisions; the chronology below records the previous release.
+
 Plan: `docs/superpowers/plans/2026-09-12-meritus-experience-reset.md`
 Spec: `docs/superpowers/specs/2026-09-12-meritus-experience-reset-design.md`
 Baseline: `efd8849cac66cf8db622260983249482ca9c4f7c`

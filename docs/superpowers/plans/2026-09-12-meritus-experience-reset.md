@@ -1,5 +1,7 @@
 # Meritus experience reset implementation plan
 
+> Superseded for public scope and colour by the user's correction on 12 September 2026. Do not repeat the public redesign or monochrome palette. Follow `docs/reviews/experience-reset/scope-correction.md` and current `DESIGN.md`.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development to implement this plan task-by-task. Steps use checkbox syntax for tracking.
 
 **Goal:** Replace the public, access, client and internal experiences with the approved design and reliable role-separated journeys.

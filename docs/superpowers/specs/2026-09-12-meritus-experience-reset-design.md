@@ -1,7 +1,7 @@
 # Meritus experience reset
 
 Date: 12 September 2026
-Status: Approved by William Rogers on 12 September 2026 with instruction to implement.
+Status: Superseded for public scope and colour. On 12 September 2026 the user clarified that the requested changes concerned the internal system, rejected the public redesign and rejected monochrome treatment in the internal system. The public redesign was an incorrect interpretation of scope. Follow `docs/reviews/experience-reset/scope-correction.md` and the current `DESIGN.md`; retain the access and workflow repairs.
 Product repository: `williamcjrogers/Meritus`
 Verified production revision: `efd8849cac66cf8db622260983249482ca9c4f7c`
 

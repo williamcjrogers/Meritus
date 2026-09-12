@@ -21,6 +21,9 @@ IBM Plex Sans remains the working face. Weight, scale and colour make priorities
 - Representative internal text colour pairs pass WCAG AA; see `internal-colour-report.md`.
 - Full lint, standalone typecheck and the database-free production build passed. Independent review found and confirmed fixes for the public outline-button background and error/focus contrast on the brass Prospects summary. No remaining material finding in the reviewed correction.
 - No backend, authentication, API or workflow implementation was changed by this correction. The previously deployed functional repairs remain intact.
-- Live deployment identity and verification are recorded after publication.
+- Live correction: `11a2c4730ef6c66ff5839d48a2c36bfe7ae350a5`, deployment `dpl_5jCJY75vRWcRjcAC6ZxR7ugCZztk`, production READY. Both www.meritusvia.com and meritusvia.com independently resolve to it.
+- Production browser confirms original `Expertise. Evolved.` heading, Cormorant Garamond public type, green `rgb(11, 59, 36)` hero and original warm stone background. The user's production tab was refreshed.
+- Production staff deep link preserves the actions filter through sign-in. Sign-in retains IBM Plex Sans, a warm cream background, green heading and flat green 44px primary action. Anonymous research API returns 401; `/client` uses the separate `/access` route. Seven HTTP checks are captured in `scope-correction-production.json`.
+- Internal dashboard screenshots use actual components with illustrative fixture data. This correction did not exercise live account sign-in, client links, invitations or account switching.
 
 Production Clerk dashboard settings remain a separate pending permission from the previous work. This correction makes no provider, identity, email or document mutations.

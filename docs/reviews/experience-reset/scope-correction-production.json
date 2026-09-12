@@ -1,0 +1,58 @@
+{
+  "verifiedAt": "2026-09-12T10:26:53.820Z",
+  "deployment": "dpl_5jCJY75vRWcRjcAC6ZxR7ugCZztk",
+  "sha": "11a2c4730ef6c66ff5839d48a2c36bfe7ae350a5",
+  "checks": [
+    {
+      "path": "/",
+      "status": 200,
+      "location": null,
+      "homeRestored": true
+    },
+    {
+      "path": "/access",
+      "status": 200,
+      "location": null
+    },
+    {
+      "path": "/sign-in",
+      "status": 200,
+      "location": null
+    },
+    {
+      "path": "/sign-up",
+      "status": 200,
+      "location": null
+    },
+    {
+      "path": "/portal/actions?filter=overdue",
+      "status": 307,
+      "location": "/sign-in?returnTo=%2Fportal%2Factions%3Ffilter%3Doverdue"
+    },
+    {
+      "path": "/client",
+      "status": 307,
+      "location": "/access?returnTo=%2Fclient"
+    },
+    {
+      "path": "/api/portal/research/quick",
+      "status": 401,
+      "location": null,
+      "apiResponse": {
+        "error": "Unauthorized",
+        "code": "UNAUTHENTICATED"
+      }
+    }
+  ],
+  "state": "READY",
+  "aliases": [
+    {
+      "alias": "www.meritusvia.com",
+      "deploymentId": "dpl_5jCJY75vRWcRjcAC6ZxR7ugCZztk"
+    },
+    {
+      "alias": "meritusvia.com",
+      "deploymentId": "dpl_5jCJY75vRWcRjcAC6ZxR7ugCZztk"
+    }
+  ]
+}
