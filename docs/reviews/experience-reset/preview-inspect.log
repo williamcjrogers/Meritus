@@ -1,0 +1,23 @@
+Vercel CLI 59.16.0 (Node.js 24.20.0)
+Fetching deployment "meritus-ldjly88vb-quantum-commercial-solutions.vercel.app" in quantum-commercial-solutions
+> Fetched deployment "meritus-ldjly88vb-quantum-commercial-solutions.vercel.app" in quantum-commercial-solutions [2s]
+
+  General
+
+    id		dpl_74jxCVzjQdEEB9GPo3iZzRfXzGi3
+    name	meritus
+    target	preview
+    status	● Ready
+    url		https://meritus-ldjly88vb-quantum-commercial-solutions.vercel.app
+    created	Sat Sep 12 2026 10:12:34 GMT+0100 (British Summer Time) [2m ago]
+
+
+  Builds
+
+    ┌ .        [0ms]
+    ├── λ index (1.56MB) [iad1]
+    ├── λ _not-found (1.56MB) [iad1]
+    ├── λ _not-found.rsc (1.56MB) [iad1]
+    ├── λ accessibility (1.56MB) [iad1]
+    ├── λ accessibility.rsc (1.56MB) [iad1]
+    └── 236 output items hidden

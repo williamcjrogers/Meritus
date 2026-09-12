@@ -1,0 +1,39 @@
+{
+  "plainHttpClient": [
+    {
+      "path": "/",
+      "status": 302,
+      "protection": "Vercel Authentication redirect, application not reached"
+    },
+    {
+      "path": "/access",
+      "status": 302,
+      "protection": "Vercel Authentication redirect, application not reached"
+    },
+    {
+      "path": "/sign-in",
+      "status": 302,
+      "protection": "Vercel Authentication redirect, application not reached"
+    },
+    {
+      "path": "/sign-up",
+      "status": 302,
+      "protection": "Vercel Authentication redirect, application not reached"
+    },
+    {
+      "path": "/portal/actions?filter=overdue",
+      "status": 302,
+      "protection": "Vercel Authentication redirect, application not reached"
+    },
+    {
+      "path": "/client",
+      "status": 302,
+      "protection": "Vercel Authentication redirect, application not reached"
+    },
+    {
+      "path": "/api/portal/research/quick",
+      "status": 302,
+      "protection": "Vercel Authentication redirect, application not reached"
+    }
+  ]
+}

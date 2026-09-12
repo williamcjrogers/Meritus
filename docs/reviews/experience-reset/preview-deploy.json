@@ -1,0 +1,26 @@
+{
+  "status": "ok",
+  "deployment": {
+    "id": "dpl_74jxCVzjQdEEB9GPo3iZzRfXzGi3",
+    "url": "https://meritus-ldjly88vb-quantum-commercial-solutions.vercel.app",
+    "inspectorUrl": "https://vercel.com/quantum-commercial-solutions/meritus/74jxCVzjQdEEB9GPo3iZzRfXzGi3",
+    "readyState": "INITIALIZING",
+    "target": null,
+    "deploymentApiUrl": "https://api.vercel.com/v13/deployments/dpl_74jxCVzjQdEEB9GPo3iZzRfXzGi3"
+  },
+  "message": "Deployment meritus-ldjly88vb-quantum-commercial-solutions.vercel.app ready.",
+  "next": [
+    {
+      "command": "vercel curl https://meritus-ldjly88vb-quantum-commercial-solutions.vercel.app",
+      "when": "Verify deployment, including when Deployment Protection is enabled"
+    },
+    {
+      "command": "vercel inspect meritus-ldjly88vb-quantum-commercial-solutions.vercel.app --scope quantum-commercial-solutions",
+      "when": "Inspect deployment"
+    },
+    {
+      "command": "vercel deploy --prod --scope quantum-commercial-solutions",
+      "when": "Promote to production"
+    }
+  ]
+}
