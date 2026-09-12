@@ -32,7 +32,7 @@ The everyday desk searches current permitted evidence already collected. It does
 
 Question owners must still be directors when the worker runs. Confirmed loss of that role stops the monitor and releases its slot. Cancellation fences active work. Answers remain linked to existing conversation and withdrawal records, so unavailable evidence is hidden at read time. Pausing daily updates does not remove an already completed answer.
 
-For an application rollback, retain the additive `0009` schema and stored questions. Restore the previous application deployment and its scheduler configuration; do not drop research data. Investigate a failed migration, repeated worker failures or a failing director research flow before promoting a replacement deployment.
+For an application rollback, retain the additive `0010` schema and stored questions. Restore the previous application deployment and its scheduler configuration; do not drop research data. Investigate a failed migration, repeated worker failures or a failing director research flow before promoting a replacement deployment.
 
 ## Supervised worker
 

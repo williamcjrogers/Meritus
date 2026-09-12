@@ -759,8 +759,8 @@ function SignalList({
           />
           {s.status === "reviewed" && (
             <ActionForm
-              title="Convert to a pursuit"
-              button="Create pursuit"
+              title="Convert to a live lead"
+              button="Create live lead"
               fields={[
                 select(
                   "ownerId",

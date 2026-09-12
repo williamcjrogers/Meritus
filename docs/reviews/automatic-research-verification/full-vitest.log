@@ -1,16 +1,16 @@
 
  RUN  v5.0.0 /Users/williamrogers/Projects/Meritus/.worktrees/sources-clarity
 
-(node:17196) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/williamrogers/Projects/Meritus/.worktrees/sources-clarity/src/lib/research/imports/split-csv.ts is not specified and it doesn't parse as CommonJS.
+(node:68251) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///Users/williamrogers/Projects/Meritus/.worktrees/sources-clarity/src/lib/research/imports/split-csv.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /Users/williamrogers/Projects/Meritus/.worktrees/sources-clarity/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
 
- Test Files  73 passed | 6 skipped (79)
-      Tests  767 passed | 70 skipped (837)
-   Start at  05:44:40
-   Duration  5.24s (environment 40%, import 17%, setup 16%, tests 14%, transform 12%, worker 1%)
+ Test Files  90 passed | 8 skipped (98)
+      Tests  863 passed | 94 skipped (957)
+   Start at  06:24:14
+   Duration  7.39s (environment 45%, import 18%, setup 14%, tests 14%, transform 9%, worker 1%)
 
-Environment  jsdom was created 79 times · 30.76s total, 40% of tracked time
+Environment  jsdom was created 98 times · 47.91s total, 45% of tracked time
              create it once per worker with pool: 'vmThreads' (keeps per-file isolation) or isolate: false (shares it across files)
              learn more: https://vitest.dev/guide/improving-performance#test-environments

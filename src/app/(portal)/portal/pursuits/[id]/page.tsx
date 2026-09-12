@@ -1,3 +1,5 @@
+import { readRelatedActions } from "@/lib/db/desk-actions";
+import { chooseNextAction } from "@/lib/actions/model";
 import { requireResearchDirector } from "@/lib/research/roles";
 import Link from "next/link";
 import { pursuitResearchLink } from "@/lib/db/research-intelligence";
@@ -16,7 +18,7 @@ import { findRelatedPursuits, getPursuit } from "@/lib/db/pursuits";
 import { listQuestions } from "@/lib/db/questions";
 import { isClerkConfigured, isDatabaseConfigured, missingRequiredSetup } from "@/lib/env";
 import { shortDate } from "@/lib/portal/dates";
-import { listDirectors } from "@/lib/portal/directors";
+import { readDirectorDirectory } from "@/lib/portal/directors";
 import { summariseDocument } from "@/lib/portal/files";
 import { summariseProgramme, type ProgrammeListItem } from "@/lib/programme/view";
 import { normaliseFirm } from "@/lib/portal/intake";
@@ -57,8 +59,8 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
     programmeItems = [];
   }
 
-  const [directors, activity, documents, run, brief, questions, changes, relatedRows, userId, researchLink] = await Promise.all([
-    listDirectors(),
+  const [directory, activity, documents, run, brief, questions, changes, relatedRows, userId, researchLink] = await Promise.all([
+    readDirectorDirectory(),
     listActivity(id),
     listDocuments({ scope: "pursuit", pursuitId: id }),
     latestBrief(id),
@@ -69,6 +71,11 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
     signedInUserId(),
     pursuitResearchLink(id),
   ]);
+
+  const directors = directory.directors;
+  const actions = await readRelatedActions({ kind: "pursuit", id });
+  const selected = chooseNextAction(actions, actions.find(action => action.isPrimary)?.id ?? null);
+  const nextAction = actions.find(action => action.id === selected?.id) ?? null;
 
   const briefState: BriefState = {
     latestRun: run ? { id: run.id, status: run.status, error: run.error, createdAt: run.createdAt.toISOString() } : null,
@@ -90,6 +97,9 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
     </aside>}
     <PursuitShell
       pursuit={pursuit}
+      actions={actions}
+      directoryAvailable={directory.available}
+      nextAction={nextAction}
       directors={directors}
       userId={userId}
       related={related}

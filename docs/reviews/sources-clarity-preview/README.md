@@ -26,7 +26,7 @@ Source settings explain what each source provides, its collection status and the
 
 ## Delivery boundary
 
-Implementation is on `codex/sources-clarity`. It has not been committed, published or migrated to production. Migration `0009_qcs_research_quick.sql` adds the automatic question lifecycle. The existing source forms retain their API contracts. Deployment requires applying that migration and scheduling `/api/internal/research-answers` with the existing cron secret. The production model configuration must also be available.
+Implementation is on `codex/sources-clarity`; William approved publication on 12 September 2026. Migration `0010_qcs_research_quick.sql` adds the automatic question lifecycle after the separately published Home dashboard migration `0009`. The existing source forms retain their API contracts. Deployment requires applying that migration and scheduling `/api/internal/research-answers` with the existing cron secret. The production model configuration must also be available. The implementation review records release verification separately from this sample preview.
 
 The package's `build` command performs migrations. Development verification uses `next build` directly and a separate disposable PostgreSQL database. No live source configuration, licence, import, document state or question has been changed.
 

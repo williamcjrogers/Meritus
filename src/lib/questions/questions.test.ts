@@ -3,6 +3,7 @@ import type { UIMessage, UIMessagePart } from "ai";
 import type { Activity, Brief, Pursuit } from "@/lib/db/schema";
 import { isUrlPermitted } from "./allowlist";
 import { collectSources, finalText, shouldPersist } from "./sources";
+import { viewFixture } from "@/lib/actions/view-fixture.test-support";
 import { buildSystemPrompt } from "./system-prompt";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,6 +32,7 @@ function makePursuit(overrides: Partial<Pursuit> = {}): Pursuit {
     stageChangedAt: new Date("2026-09-09T13:02:00Z"),
     nextAction: "Call Jane Partner about the curtain wall scope",
     nextActionDue: "2026-09-12",
+    reviewDue: null,
     createdBy: "site",
     createdAt: new Date("2026-09-09T08:02:00Z"),
     updatedAt: new Date("2026-09-09T13:02:00Z"),
@@ -292,6 +294,7 @@ describe("buildSystemPrompt", () => {
 
   const prompt = buildSystemPrompt({
     pursuit: makePursuit(),
+    actions: [], nextActionId: null, reviewDue: null,
     brief: makeBrief(),
     activity: [makeActivity(), enquiryActivity],
     documents,
@@ -348,6 +351,7 @@ describe("buildSystemPrompt", () => {
   it("says when there is no complete brief", () => {
     const withoutBrief = buildSystemPrompt({
       pursuit: makePursuit(),
+      actions: [], nextActionId: null, reviewDue: null,
       brief: null,
       activity: [],
       documents: [],
@@ -362,4 +366,22 @@ describe("buildSystemPrompt", () => {
     expect(prompt).not.toContain("\u2014");
     expect(prompt.toLowerCase()).not.toMatch(/\blead\b/);
   });
+});
+
+it("uses all open actions, their status and nomination without legacy text", () => {
+ const nominated = viewFixture({ title: "Current instruction", dueDate: "2026-09-14", state: "waiting", stateReason: "Client confirmation" });
+ const other = viewFixture({ id: "00000000-0000-4000-8000-000000000002", title: "Review fee proposal", state: "in_progress", dueDate: "2026-09-18" });
+ const closed = viewFixture({ id: "00000000-0000-4000-8000-000000000003", title: "Already completed commitment", state: "completed" });
+ const prompt = buildSystemPrompt({ pursuit: makePursuit({ nextAction: "Obsolete instruction", nextActionDue: "2025-01-01", reviewDue: "2026-09-20" }), actions: [nominated, other, closed], nextActionId: nominated.id, reviewDue: "2026-09-20", brief: null, activity: [], documents: [], directors: [] });
+ expect(prompt).toContain("Current instruction");
+ expect(prompt).toContain("Mateo Diaz");
+ expect(prompt).toContain("Commercial review due:");
+ expect(prompt).toContain("<current_actions>");
+ expect(prompt).toContain("selected next action");
+ expect(prompt).toContain("Waiting");
+ expect(prompt).toContain("Client confirmation");
+ expect(prompt).toContain("Review fee proposal");
+ expect(prompt).toContain("In progress");
+ expect(prompt).not.toContain("Already completed commitment");
+ expect(prompt).not.toContain("Obsolete instruction");
 });

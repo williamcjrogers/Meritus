@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "./dashboard.css";
+@import "./actions.css";
 
 @theme {
   /* Large-screen breakpoint */
@@ -362,6 +364,11 @@ h1, h2, h3, h4 {
 .btn-quiet:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+.portal-rail .btn-quiet,
+.portal-dialog[aria-label="Navigation"] .btn-quiet {
+  color: var(--color-cream);
 }
 
 .btn-danger {

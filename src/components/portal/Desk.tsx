@@ -1,6 +1,8 @@
 "use client";
 
 import { startTransition, useMemo, useOptimistic, useState } from "react";
+import type { LiveLead } from "@/lib/portal/live-leads";
+import Link from "next/link";
 import type { Pursuit, PursuitStage } from "@/lib/db/schema";
 import { partitionDesk, type Scope } from "@/lib/portal/board";
 import type { Director } from "@/lib/portal/director-helpers";
@@ -27,7 +29,7 @@ export function Desk({
   scope,
   now,
 }: {
-  pursuits: Pursuit[];
+  pursuits: LiveLead[];
   extras: DeskExtras;
   directors: Director[];
   userId: string;
@@ -35,15 +37,17 @@ export function Desk({
   now: string;
 }) {
   const nowDate = useMemo(() => new Date(now), [now]);
-  const [list, applyPatch] = useOptimistic(pursuits, (state: Pursuit[], patch: Patch) =>
-    state.map((pursuit) => (pursuit.id === patch.id ? { ...pursuit, ...patch.changes } : pursuit))
+  const [list, applyPatch] = useOptimistic(pursuits, (state: LiveLead[], patch: Patch) =>
+    state.map((pursuit) => (pursuit.pursuit.id === patch.id ? { ...pursuit, pursuit: { ...pursuit.pursuit, ...patch.changes }, reviewDue: patch.changes.reviewDue === undefined ? pursuit.reviewDue : patch.changes.reviewDue } : pursuit))
   );
   // A refused action is remembered here, because the row that asked for it may no longer be
   // rendered once the server tree refreshes (another director took the pursuit).
-  const [failures, setFailures] = useState<Record<string, { error: string; pursuit: Pursuit }>>({});
+  const [failures, setFailures] = useState<Record<string, { error: string; pursuit: LiveLead }>>({});
+
+  const [stageNotice, setStageNotice] = useState<{ id: string; count: number | null } | null>(null);
 
   function run(patch: Patch, action: () => Promise<ActionResult>): Promise<ActionResult> {
-    const snapshot = list.find((pursuit) => pursuit.id === patch.id);
+    const snapshot = list.find((pursuit) => pursuit.pursuit.id === patch.id);
     return new Promise((resolve) => {
       startTransition(async () => {
         applyPatch(patch);
@@ -57,6 +61,7 @@ export function Desk({
           const failure = { error: result.error, pursuit: snapshot };
           setFailures((current) => ({ ...current, [patch.id]: failure }));
         }
+        if (result.ok && (result.remainingActions || result.remainingActionsUnavailable)) setStageNotice({ id: patch.id, count: result.remainingActionsUnavailable ? null : result.remainingActions! });
         resolve(result);
       });
     });
@@ -74,23 +79,24 @@ export function Desk({
     run({ id, changes: { stage: "declined", ownerId: userId, stageChangedAt: nowDate } }, () => declinePursuit(id, reason));
   const move = (id: string, to: PursuitStage, reason?: string, revisitDue?: string) =>
     run(
-      { id, changes: { stage: to, stageChangedAt: nowDate, ...(revisitDue ? { nextActionDue: revisitDue } : {}) } },
+      { id, changes: { stage: to, stageChangedAt: nowDate, ...(revisitDue ? { reviewDue: revisitDue } : {}) } },
       () => movePursuit(id, to, reason, revisitDue)
     );
   const reopen = (id: string) =>
-    run({ id, changes: { stage: extras.reopenStages[id] ?? "enquiry", stageChangedAt: nowDate } }, () => reopenPursuit(id));
+    run({ id, changes: { reviewDue: null, stage: extras.reopenStages[id] ?? "enquiry", stageChangedAt: nowDate } }, () => reopenPursuit(id));
 
   const { inbox, revisit, board, counts } = partitionDesk(list, { scope, userId, now: nowDate });
   // Rows whose Take or Decline was refused stay visible with the reason until dismissed.
   const inboxRows = [
     ...inbox,
     ...Object.values(failures)
-      .filter((failure) => !inbox.some((pursuit) => pursuit.id === failure.pursuit.id))
+      .filter((failure) => !inbox.some((pursuit) => pursuit.pursuit.id === failure.pursuit.pursuit.id))
       .map((failure) => failure.pursuit),
   ];
 
   return (
     <div className="space-y-10">
+      {stageNotice && <p role="status">Stage updated. {stageNotice.count === null ? "Could not load remaining actions. Review the linked actions." : `Review the ${stageNotice.count} open actions linked to this lead.`} <Link href={`/portal/pursuits/${stageNotice.id}#actions`}>Actions</Link></p>}
       {inboxRows.length > 0 && (
         <section aria-label="Inbox">
           <Eyebrow>
@@ -102,14 +108,14 @@ export function Desk({
           <div className="panel-brackets mt-4 divide-y divide-green/10 border border-green/10 bg-parchment">
             {inboxRows.map((pursuit) => (
               <InboxRow
-                key={pursuit.id}
-                pursuit={pursuit}
-                related={extras.related[pursuit.id]}
-                alert={extras.alerts[pursuit.id]}
+                key={pursuit.pursuit.id}
+                pursuit={pursuit.pursuit}
+                related={extras.related[pursuit.pursuit.id]}
+                alert={extras.alerts[pursuit.pursuit.id]}
                 directors={directors}
                 now={nowDate}
-                error={failures[pursuit.id]?.error}
-                onDismiss={() => dismissFailure(pursuit.id)}
+                error={failures[pursuit.pursuit.id]?.error}
+                onDismiss={() => dismissFailure(pursuit.pursuit.id)}
                 onTake={take}
                 onDecline={decline}
               />
@@ -129,9 +135,9 @@ export function Desk({
           <div className="mt-4 divide-y divide-green/10 border border-green/10 bg-parchment/70">
             {revisit.map((pursuit) => (
               <RevisitRow
-                key={pursuit.id}
-                pursuit={pursuit}
-                reopenStage={extras.reopenStages[pursuit.id] ?? "enquiry"}
+                key={pursuit.pursuit.id}
+                lead={pursuit}
+                reopenStage={extras.reopenStages[pursuit.pursuit.id] ?? "enquiry"}
                 directors={directors}
                 onReopen={reopen}
               />

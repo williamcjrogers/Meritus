@@ -1,5 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen, within } from "@testing-library/react";
+import type { LiveLead } from "@/lib/portal/live-leads";
+import type { ActionView } from "@/lib/actions/types";
 import type { Pursuit } from "@/lib/db/schema";
 import { Board } from "./Board";
 
@@ -13,8 +15,8 @@ vi.mock("next/link", () => ({
 
 const now = new Date("2026-09-09T10:00:00Z");
 
-function makePursuit(overrides: Partial<Pursuit>): Pursuit {
-  return {
+function makePursuit(overrides: Partial<Pursuit>): LiveLead {
+  const pursuit: Pursuit = {
     id: "p",
     firm: "Firm",
     contactName: null,
@@ -36,11 +38,17 @@ function makePursuit(overrides: Partial<Pursuit>): Pursuit {
     stageChangedAt: new Date("2026-09-06T10:00:00Z"),
     nextAction: null,
     nextActionDue: null,
+    reviewDue: null,
     createdBy: "u1",
     createdAt: new Date("2026-09-06T10:00:00Z"),
     updatedAt: new Date("2026-09-06T10:00:00Z"),
     ...overrides,
   };
+  const nextAction = (pursuit.nextAction || pursuit.nextActionDue) ? {
+    id: `action-${pursuit.id}`, title: pursuit.nextAction ?? "Action", dueDate: pursuit.nextActionDue,
+    ownerName: "Other director", state: "todo", ownerId: "action-owner"
+  } as ActionView : null;
+  return { pursuit, nextAction, reviewDue: pursuit.reviewDue ?? (pursuit.stage === "dormant" ? pursuit.nextActionDue : null) };
 }
 
 const directors = [{ id: "u1", name: "William Rogers", email: "w@x.com", initials: "WR" }];
@@ -58,7 +66,7 @@ describe("Board", () => {
     expect(within(enquiry).getByText("(1)")).toBeInTheDocument();
     expect(within(enquiry).getByRole("link", { name: "Newton Wood" })).toHaveAttribute("href", "/portal/pursuits/a");
     expect(within(enquiry).getByText("WR")).toBeInTheDocument();
-    expect(within(enquiry).getByText("3 days")).toBeInTheDocument();
+    expect(within(enquiry).getByText("In enquiry for 3 days")).toBeInTheDocument();
     expect(within(enquiry).getByText("Sat 12 Sep")).toBeInTheDocument();
 
     const scoping = screen.getByRole("region", { name: "Scoping column" });

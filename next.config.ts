@@ -8,8 +8,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["pdf-parse", "mammoth", "postal-mime"],
   async redirects() {
     return [
-      // The lead-era portal pages were replaced by the pursuit desk.
-      { source: "/portal/leads", destination: "/portal", permanent: false },
+      { source: "/portal/leads", destination: "/portal/pursuits", permanent: false },
     ];
   },
 };

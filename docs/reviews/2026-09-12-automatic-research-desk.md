@@ -24,12 +24,20 @@ The local browser preview has been checked for question submission, background c
 
 ## Deployment boundary
 
-The implementation remains local on `codex/sources-clarity`, without a commit, push or production migration. Source collectors retain their existing schedules. Publication adds migration `0009` and the separately bounded `/api/internal/research-answers` cron route, using the existing cron secret and configured model. No production data or model service was used for development verification.
+William approved publication on 12 September 2026, including the background answer worker. The release incorporates the separately published Home dashboard without replacing its changes. Dashboard migration `0009` remains unchanged; automatic questions use additive migration `0010_qcs_research_quick`, with a strictly later journal timestamp. Source collectors retain their existing schedules. Publication adds the separately bounded `/api/internal/research-answers` cron route, using the existing cron secret and configured model. No production data or model service was used for development verification.
 
-## Final verification
+## Research verification before Home integration
 
 The final production Next build passed after the source freeze with application service credentials unset, using `next build` directly so no migration script ran. It compiled successfully and generated all 49 static pages. TypeScript, ESLint and whitespace checks also passed after the final source changes.
 
 The full application suite passed 767 tests. Its 70 opt-in SQL tests were then accounted for separately: 69 passed against fresh isolated databases with migrations `0000` to `0009`, and one external Neon HTTP adapter test remained skipped because no isolated external URL was supplied. This gives 836 unique passing tests, including all 53 existing SQL checks and 16 new automatic-research checks. No live model request was used; model responses are controlled in tests and simulated in the preview.
 
 Independent review found no remaining material issues after the fixes. Reproduction commands and results are in [the verification report](automatic-research-verification/README.md).
+
+## Combined release verification
+
+The release combines automatic research with Home dashboard commit `9d6744a`. Independent integration review found no material issues. The resolved journal contains 11 migrations with unique, strictly increasing timestamps. The Home and research SQL bodies remain unchanged, and an offline Drizzle generation found no schema changes left to generate.
+
+The full application suite passed 863 tests. Eight isolated PostgreSQL suites passed another 93 tests, including all 69 research checks and 24 Home/action checks. One external Neon HTTP adapter test remains skipped because no isolated external URL was supplied. The combined result is 956 unique passing tests. Fresh installation through `0010` and upgrades from `0008`, `0009` and `0010` were verified. TypeScript, ESLint, whitespace checks and the final Next production build passed. The local build used no application service credentials and did not invoke the migration script.
+
+A read-only production check before publication confirmed the Home migration was applied at `1789228800006`, with matching migration hashes and all three action tables present. The production deployment immediately preceding this research release was `dpl_5RbapmPAz23ZwrrqnJTEoPcmbuvE`, from commit `9d6744a`; retain its additive database schema if an application rollback is needed.

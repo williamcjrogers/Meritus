@@ -7,6 +7,7 @@ import { ProspectConvertButton } from "@/components/portal/ProspectConvertButton
 import { ProspectNotesForm } from "@/components/portal/ProspectNotesForm";
 import { ProspectStatusForm } from "@/components/portal/ProspectStatusForm";
 import { SetupNotice } from "@/components/portal/SetupNotice";
+import { RelatedActionPanel } from "@/components/portal/actions/RelatedActionPanel";
 import { getProspect } from "@/lib/db/prospects";
 import { isDatabaseConfigured, missingRequiredSetup } from "@/lib/env";
 import {
@@ -123,6 +124,7 @@ export default async function ProspectPage({ params }: { params: Promise<{ id: s
           </Panel>
         </div>
       </div>
+      <RelatedActionPanel link={{ kind: "prospect", id }} />
     </div>
   );
 }

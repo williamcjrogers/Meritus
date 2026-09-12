@@ -20,6 +20,7 @@ import {
   getDirector,
   initialsFor,
   listDirectors,
+  readDirectorDirectory,
   type Director,
 } from "./directors";
 import * as helpers from "./director-helpers";
@@ -277,7 +278,7 @@ describe("directorName", () => {
 
   it("reads Unassigned for an unknown or missing id", () => {
     expect(UNASSIGNED_NAME).toBe("Unassigned");
-    expect(directorName(directors, "user_zz")).toBe("Unassigned");
+    expect(directorName(directors, "user_zz")).toBe("Assigned, name unavailable");
     expect(directorName(directors, null)).toBe("Unassigned");
     expect(directorName([], undefined)).toBe("Unassigned");
   });
@@ -297,3 +298,13 @@ describe("director-helpers", () => {
     expect(source).not.toMatch(/from\s+["'](@clerk\/|next\/|server-only)/);
   });
 });
+
+ describe("directory availability", () => {
+ it("distinguishes a healthy empty directory from a failure", async () => {
+ getUserList.mockResolvedValueOnce({data:[],totalCount:0});
+ expect(await readDirectorDirectory()).toEqual({available:true,directors:[]});
+ __resetDirectorsCache();
+ getUserList.mockRejectedValueOnce(new Error("offline"));
+ expect(await readDirectorDirectory()).toEqual({available:false,directors:[]});
+ });
+ });

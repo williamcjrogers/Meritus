@@ -47,7 +47,7 @@ export async function listByStage(stage: PursuitStage): Promise<Pursuit[]> {
   const db = requireDb();
   const query = db.select().from(pursuits).where(eq(pursuits.stage, stage));
   if (stage === "dormant") {
-    return maskResearchPursuitSummaries(await query.orderBy(sql`${pursuits.nextActionDue} asc nulls last`, desc(pursuits.stageChangedAt)));
+    return maskResearchPursuitSummaries(await query.orderBy(sql`${pursuits.reviewDue} asc nulls last`, desc(pursuits.stageChangedAt)));
   }
   return maskResearchPursuitSummaries(await query.orderBy(desc(pursuits.stageChangedAt)));
 }
@@ -111,8 +111,7 @@ export type PursuitPatch = Partial<
     | "ownerId"
     | "stage"
     | "stageChangedAt"
-    | "nextAction"
-    | "nextActionDue"
+    | "reviewDue"
   >
 >;
 
@@ -331,4 +330,10 @@ export async function declinePursuitGuardedWithActivity(
     return false;
   }
   return true;
+}
+
+export type GuardedPursuitDeletion = { ok: true; blobKeys: string[] } | { ok: false; code: "linked_actions" | "not_found" };
+export async function deletePursuitGuarded(id: string): Promise<GuardedPursuitDeletion> {
+  const result = await requireDb().execute(sql`select desk_delete_pursuit_guarded(${id}) as result`);
+  return result.rows[0].result as GuardedPursuitDeletion;
 }
