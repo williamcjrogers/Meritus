@@ -58,6 +58,8 @@ Do 1 and 2 before the branch deploys, or the directors lock themselves out.
 }
 ```
 
+   Abort, ListMultipartUploadParts and the prefix-limited ListBucket are what multipart uploads need beyond the spec's Get, Put and Delete; nothing else is granted.
+
    Then on the Vercel project `meritus` (team `quantum-commercial-solutions`) set `S3_BUCKET=vericase-data`, `S3_REGION=eu-west-2`, `S3_KEY_PREFIX=meritus`, and the new user's `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`. Never VeriCase's production keys.
 4. **CORS.** Checked on 12 September 2026: `vericase-data` already allows `PUT` from `*` and exposes `ETag`, which browser multipart needs. If VeriCase later narrows `AllowedOrigins`, add `https://www.meritusvia.com` and `https://meritusvia.com`.
 5. **Resend.** Already live. The access link is sent from `ENQUIRY_ALERT_FROM` (default `enquiries@meritusvia.com`).
@@ -295,7 +297,7 @@ export function clientDomainErrorMessage(error: DomainParseError): string {
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `npx vitest run src/lib/portal/domains.test.ts`
-Expected: PASS, 8 tests.
+Expected: PASS.
 
 - [ ] **Step 5: Commit**
 
@@ -532,15 +534,19 @@ Append to `drizzle/meta/_journal.json` `entries`:
 }
 ```
 
-- [ ] **Step 5: Run the test and the type check**
+- [ ] **Step 5: Update the existing DocumentRow fixtures**
 
-Run: `npx vitest run src/lib/db/migrations.test.ts && npx tsc --noEmit`
-Expected: PASS, 3 tests; tsc clean. If tsc complains that `size` is now `number` somewhere, it is not: `bigint` in number mode infers `number`.
+`DocumentRow` gains two columns, so every test that builds a full row literal must add `clientDomainId: null,` and `uploaderEmail: null,` or `npx tsc --noEmit` fails. They are in `src/lib/portal/actions.test.ts` (the `makeDocument` helper), `src/lib/portal/upload.test.ts` and `src/app/api/portal/pursuits/[id]/documents/route.test.ts`; run tsc and fix each place it names.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 6: Run the test and the type check**
+
+Run: `npx vitest run src/lib/db/migrations.test.ts && npx tsc --noEmit && npm test`
+Expected: PASS; tsc clean; the whole suite green. `bigint` in number mode infers `number`, so `size` needs no other change.
+
+- [ ] **Step 7: Commit**
 
 ```bash
-git add src/lib/db/schema.ts drizzle/0003_client_files.sql drizzle/meta/_journal.json src/lib/db/migrations.test.ts
+git add src/lib/db/schema.ts drizzle/0003_client_files.sql drizzle/meta/_journal.json src/lib/db/migrations.test.ts src/lib/portal/actions.test.ts src/lib/portal/upload.test.ts "src/app/api/portal/pursuits/[id]/documents/route.test.ts"
 git commit -m "feat(db): client domains, client uploads, bigint document size
 
 Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
@@ -571,9 +577,10 @@ The repository does not unit-test its thin Drizzle modules; every consumer mocks
   - `removeClientDomain(id: string, now?: Date): Promise<boolean>`
   - `insertClientUpload(values: NewClientUpload): Promise<ClientUpload>`
   - `getClientUpload(id: string): Promise<ClientUpload | null>`
-  - `updateClientUpload(id: string, patch: { status?: ClientUploadStatus; documentId?: string | null }): Promise<void>`
+  - `updateClientUpload(id: string, patch: { status?: ClientUploadStatus; documentId?: string | null }): Promise<boolean>` (only a pending row is updated; false means it had already moved on)
   - `listStaleClientUploads(before: Date, limit?: number): Promise<ClientUpload[]>`
   - `listClientDocuments(clientDomainId: string): Promise<DocumentRow[]>`
+  - `detachClientDocuments(pursuitId: string): Promise<void>`
   - `listPursuitsForLinking(): Promise<Pursuit[]>`
 
 - [ ] **Step 1: Create `src/lib/db/client-domains.ts`**
@@ -688,15 +695,18 @@ export async function getClientUpload(id: string): Promise<ClientUpload | null> 
   return row ?? null;
 }
 
+/** Moves a pending upload on; false when it was no longer pending, so two completions cannot both win. */
 export async function updateClientUpload(
   id: string,
   patch: { status?: ClientUploadStatus; documentId?: string | null }
-): Promise<void> {
+): Promise<boolean> {
   const db = requireDb();
-  await db
+  const rows = await db
     .update(clientUploads)
     .set({ ...patch, updatedAt: new Date() })
-    .where(eq(clientUploads.id, id));
+    .where(and(eq(clientUploads.id, id), eq(clientUploads.status, "pending")))
+    .returning({ id: clientUploads.id });
+  return rows.length > 0;
 }
 
 /** Pending uploads started before `before`, oldest first, capped so a sweep stays cheap. */
@@ -724,6 +734,19 @@ export async function listClientDocuments(clientDomainId: string): Promise<Docum
     .from(documents)
     .where(eq(documents.clientDomainId, clientDomainId))
     .orderBy(desc(documents.createdAt));
+}
+```
+
+Also add to `src/lib/db/documents.ts` (and add `isNotNull` to its drizzle-orm import):
+
+```ts
+/** Before a pursuit is deleted: its client files stay, unlinked, so the hold never loses a firm's documents. */
+export async function detachClientDocuments(pursuitId: string): Promise<void> {
+  const db = requireDb();
+  await db
+    .update(documents)
+    .set({ pursuitId: null, scope: "client" })
+    .where(and(eq(documents.pursuitId, pursuitId), isNotNull(documents.clientDomainId)));
 }
 ```
 
@@ -944,7 +967,7 @@ export async function resolveIdentity(userId: string, claims: unknown): Promise<
     cache.set(userId, { identity, expiresAt: Date.now() + CACHE_TTL_MS });
     return identity;
   } catch (error) {
-    console.warn("Roles: Clerk user lookup unavailable", error);
+    console.warn("Roles: Clerk user lookup unavailable", error instanceof Error ? error.name : "unknown");
     return { userId, role: null, domain: null, email: null };
   }
 }
@@ -970,7 +993,7 @@ declare global {
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `npx vitest run src/lib/portal/roles.test.ts && npx tsc --noEmit`
-Expected: PASS, 8 tests; tsc clean.
+Expected: PASS; tsc clean.
 
 - [ ] **Step 5: Commit**
 
@@ -1107,7 +1130,7 @@ export function decideGate(input: { pathname: string; signedIn: boolean; role: R
 - [ ] **Step 4: Run test to verify it passes**
 
 Run: `npx vitest run src/lib/portal/gate.test.ts`
-Expected: PASS, 6 tests.
+Expected: PASS.
 
 - [ ] **Step 5: Rewrite the middleware**
 
@@ -1397,16 +1420,33 @@ In the `beforeEach` that sets `vi.mocked(auth).mockResolvedValue({ userId: "user
 vi.mocked(resolveIdentity).mockResolvedValue({ userId: "user_wr", role: "director", domain: null, email: null });
 ```
 
-- [ ] **Step 5: Run the tests**
+- [ ] **Step 5: Make every portal page check the role again**
+
+The spec says every portal page checks the role, not only the middleware. The portal layout wraps every page, so one check there covers them all. In `src/app/(portal)/portal/layout.tsx` add the imports `import { redirect } from "next/navigation";` and `import { resolveIdentity } from "@/lib/portal/roles";`, add this helper next to `signedInDirector()`:
+
+```ts
+/** The middleware already keeps non-directors out; this is the page-level check the spec asks for. */
+async function redirectUnlessDirector(): Promise<void> {
+  if (!isClerkConfigured()) return;
+  const { userId, sessionClaims } = await auth();
+  if (!userId) redirect("/sign-in");
+  const identity = await resolveIdentity(userId, sessionClaims);
+  if (identity.role !== "director") redirect(identity.role === "client" ? "/client" : "/access/denied");
+}
+```
+
+and call `await redirectUnlessDirector();` as the first statement inside `PortalLayout`. There is no layout test in this repository; `npx tsc --noEmit` and the manual check in Task 17 cover it.
+
+- [ ] **Step 6: Run the tests**
 
 Run: `npx vitest run src/lib/portal/auth.test.ts src/lib/portal/actions.test.ts && npx tsc --noEmit`
 Expected: PASS for both files; tsc clean.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
-git add src/lib/portal/auth.ts src/lib/portal/auth.test.ts src/lib/portal/actions.test.ts
-git commit -m "feat(auth): guards require the director role; client guard for the desk
+git add src/lib/portal/auth.ts src/lib/portal/auth.test.ts src/lib/portal/actions.test.ts "src/app/(portal)/portal/layout.tsx"
+git commit -m "feat(auth): guards and the portal layout require the director role; client guard for the desk
 
 Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 ```
@@ -1441,13 +1481,13 @@ function clerkUser(overrides: {
     lastName: null,
     primaryEmailAddressId: null,
     emailAddresses: [],
-    publicMetadata: {},
+    publicMetadata: { role: "director" },
     ...overrides,
   };
 }
 ```
 
-Add `publicMetadata: { role: "director" }` to both the `william` and `mateo` fixtures. Add a third fixture after `mateo`:
+The default role is `director` so every existing fixture in the file, including the ones built inline in individual tests, keeps counting as a director. Add two fixtures after `mateo`:
 
 ```ts
 const clientJane = clerkUser({
@@ -1652,7 +1692,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 - Test: `src/lib/access/link.test.ts`, `src/lib/access/mail.test.ts`
 
 **Interfaces:**
-- `link.ts` produces: `ACCESS_LINK_TTL_SECONDS = 1800`, `accessLinkOrigin(): string`, `continueUrl(origin: string, token: string): string`, `randomPassword(): string`, `type IssueResult = { ok: true; url: string; userId: string } | { ok: false; reason: "director" | "clerk_error" }`, `issueAccessLink(input: { email: string; domain: string; origin?: string }): Promise<IssueResult>`.
+- `link.ts` produces: `ACCESS_LINK_TTL_SECONDS = 1800`, `accessLinkOrigin(): string`, `continueUrl(origin: string, token: string): string`, `randomPassword(): string`, `type IssueResult = { ok: true; url: string; userId: string } | { ok: false; reason: "director" | "unmatched" | "clerk_error" }` ("unmatched": the address belongs to an account whose primary verified address is a different one, so nothing is issued), `issueAccessLink(input: { email: string; domain: string; origin?: string }): Promise<IssueResult>`.
 - `mail.ts` produces: `type AccessMailOutcome = { sentAt: string } | { error: string }`, `accessMailSubject(): string`, `accessMailText(url: string): string`, `sendAccessLink(input: { to: string; url: string }): Promise<AccessMailOutcome>`.
 - `request.ts` produces: `parseAccessRequest(body: unknown): { ok: true; email: string } | { ok: false; error: string }`.
 - Consumes: `ALERT_TIMEOUT_MS`, `alertFrom()` from `src/lib/portal/alerts.ts`; `isResendConfigured()` from `src/lib/env.ts`; `domainFromEmail` from Task 1; `SITE_CONFIG.url` from `src/lib/constants.ts`.
@@ -1663,6 +1703,16 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 // src/lib/access/link.test.ts
 // @vitest-environment node
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+
+/** A Clerk user whose primary, verified address is `email`; the shape the Backend API returns. */
+function existingUser(publicMetadata: Record<string, unknown>, email = "jane@example-firm.co.uk") {
+  return {
+    id: "user_old",
+    publicMetadata,
+    primaryEmailAddressId: "em_1",
+    emailAddresses: [{ id: "em_1", emailAddress: email, verification: { status: "verified" } }],
+  };
+}
 
 const clerk = vi.hoisted(() => {
   const getUserList = vi.fn();
@@ -1730,7 +1780,7 @@ describe("issueAccessLink", () => {
 
   it("reuses an existing client user without touching their metadata", async () => {
     clerk.getUserList.mockResolvedValue({
-      data: [{ id: "user_old", publicMetadata: { role: "client", domain: "example-firm.co.uk" } }],
+      data: [existingUser({ role: "client", domain: "example-firm.co.uk" })],
       totalCount: 1,
     });
     const result = await issueAccessLink({ email: "jane@example-firm.co.uk", domain: "example-firm.co.uk" });
@@ -1740,11 +1790,21 @@ describe("issueAccessLink", () => {
   });
 
   it("stamps the client role on an existing user who has none", async () => {
-    clerk.getUserList.mockResolvedValue({ data: [{ id: "user_old", publicMetadata: {} }], totalCount: 1 });
+    clerk.getUserList.mockResolvedValue({ data: [existingUser({})], totalCount: 1 });
     await issueAccessLink({ email: "jane@example-firm.co.uk", domain: "example-firm.co.uk" });
     expect(clerk.updateUserMetadata).toHaveBeenCalledWith("user_old", {
       publicMetadata: { role: "client", domain: "example-firm.co.uk", email: "jane@example-firm.co.uk" },
     });
+  });
+
+  it("refuses an account whose primary verified address is not the one typed", async () => {
+    vi.spyOn(console, "warn").mockImplementation(() => {});
+    const other = existingUser({ role: "client", domain: "other.co.uk" }, "jane@other.co.uk");
+    other.emailAddresses.push({ id: "em_added", emailAddress: "jane@example-firm.co.uk", verification: { status: "unverified" } });
+    clerk.getUserList.mockResolvedValue({ data: [other], totalCount: 1 });
+    expect(await issueAccessLink({ email: "jane@example-firm.co.uk", domain: "example-firm.co.uk" })).toEqual({ ok: false, reason: "unmatched" });
+    expect(clerk.updateUserMetadata).not.toHaveBeenCalled();
+    expect(clerk.createSignInToken).not.toHaveBeenCalled();
   });
 
   it("never issues a client link to a director", async () => {
@@ -1853,7 +1913,7 @@ export const ACCESS_LINK_TTL_SECONDS = 30 * 60;
 
 export type IssueResult =
   | { ok: true; url: string; userId: string }
-  | { ok: false; reason: "director" | "clerk_error" };
+  | { ok: false; reason: "director" | "unmatched" | "clerk_error" };
 
 export function accessLinkOrigin(): string {
   const raw = process.env.ACCESS_LINK_ORIGIN?.trim() || SITE_CONFIG.url;
@@ -1884,6 +1944,12 @@ export async function issueAccessLink(input: {
     if (existing) {
       const meta = (existing.publicMetadata ?? {}) as Record<string, unknown>;
       if (meta.role === "director") return { ok: false, reason: "director" };
+      // Only the account whose primary, verified address is the typed one may be reused. A signed-in
+      // client can add an unverified address to their own account, so anything else is refused.
+      const primary = (existing.emailAddresses ?? []).find((entry) => entry.id === existing.primaryEmailAddressId);
+      if (!primary || primary.emailAddress.toLowerCase() !== email || primary.verification?.status !== "verified") {
+        return { ok: false, reason: "unmatched" };
+      }
       if (meta.role !== "client" || meta.domain !== input.domain) {
         await client.users.updateUserMetadata(existing.id, { publicMetadata: metadata });
       }
@@ -1988,7 +2054,7 @@ export function parseAccessRequest(body: unknown): { ok: true; email: string } |
 - [ ] **Step 4: Run tests to verify they pass**
 
 Run: `npx vitest run src/lib/access && npx tsc --noEmit`
-Expected: PASS, 12 tests; tsc clean. If tsc rejects `skipPasswordChecks` or `publicMetadata` on `createUser`, check `node_modules/@clerk/backend/dist/api/endpoints/UserApi.d.ts`: both are in `CreateUserParams`.
+Expected: PASS; tsc clean. If tsc rejects `skipPasswordChecks` or `publicMetadata` on `createUser`, check `node_modules/@clerk/backend/dist/api/endpoints/UserApi.d.ts`: both are in `CreateUserParams`.
 
 - [ ] **Step 5: Commit**
 
@@ -2012,7 +2078,7 @@ Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
 - Modify: `.env.example` (add `ACCESS_LINK_ORIGIN`)
 
 **Interfaces:**
-- `POST /api/access` accepts JSON `{ email: string; company_website?: string }`. Replies: 200 `{ ok: true }` (always the same body whether or not the domain is listed), 400 `{ error }`, 429 `{ error }`, 502 `{ error }` when the link could not be prepared or sent, 503 `{ error, code: "SETUP" }` when Resend or the database is missing.
+- `POST /api/access` accepts JSON `{ email: string; company_website?: string }`. Replies: 200 `{ ok: true }` (always the same body, in the same time, whether or not the domain is listed: the lookup, the Clerk call and the email run after the reply through `after()` from `next/server`), 400 `{ error }`, 429 `{ error }`, 503 `{ error, code: "SETUP" }` when Resend or the database is missing. Failures after the reply are logged with the domain id only.
 - Consumes: `isHoneypotFilled`, `firstHop`, `hashKey` from `src/lib/portal/intake.ts`; `registerAccessAttempt` (Task 8); `findClientDomainForEmail` (Task 3); `issueAccessLink`, `sendAccessLink`, `parseAccessRequest` (Task 9); `requireDatabaseOr503` (auth.ts).
 
 - [ ] **Step 1: Write the failing route test**
@@ -2031,6 +2097,22 @@ vi.mock("@/lib/db/client-domains", () => ({ findClientDomainForEmail: vi.fn() })
 vi.mock("@/lib/db/throttle", () => ({ registerAccessAttempt: vi.fn() }));
 vi.mock("@/lib/access/link", () => ({ issueAccessLink: vi.fn() }));
 vi.mock("@/lib/access/mail", () => ({ sendAccessLink: vi.fn() }));
+
+/** `after()` work is captured so a test can wait for it; in Next it runs once the reply has gone. */
+const deferred = vi.hoisted(() => ({ jobs: [] as Promise<unknown>[] }));
+vi.mock("next/server", async () => {
+  const actual = await vi.importActual<typeof import("next/server")>("next/server");
+  return {
+    ...actual,
+    after: (work: () => Promise<unknown>) => {
+      deferred.jobs.push(Promise.resolve().then(work));
+    },
+  };
+});
+
+async function settle() {
+  await Promise.all(deferred.jobs.splice(0));
+}
 
 const domainRow = {
   id: "cd_1",
@@ -2069,6 +2151,7 @@ describe("POST /api/access", () => {
     const res = await post({ email: "Jane@Example-Firm.co.uk" });
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
+    await settle();
     expect(registerAccessAttempt).toHaveBeenCalledWith({
       email: expect.stringMatching(/^access-email:[0-9a-f]{64}$/),
       ip: expect.stringMatching(/^access-ip:[0-9a-f]{64}$/),
@@ -2082,6 +2165,7 @@ describe("POST /api/access", () => {
     const res = await post({ email: "someone@unlisted.co.uk" });
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true });
+    await settle();
     expect(issueAccessLink).not.toHaveBeenCalled();
     expect(sendAccessLink).not.toHaveBeenCalled();
   });
@@ -2090,6 +2174,7 @@ describe("POST /api/access", () => {
     vi.mocked(issueAccessLink).mockResolvedValue({ ok: false, reason: "director" });
     const res = await post({ email: "jane@example-firm.co.uk" });
     expect(res.status).toBe(200);
+    await settle();
     expect(sendAccessLink).not.toHaveBeenCalled();
   });
 
@@ -2105,6 +2190,7 @@ describe("POST /api/access", () => {
   it("answers 429 when throttled, before any lookup", async () => {
     vi.mocked(registerAccessAttempt).mockResolvedValue(false);
     expect((await post({ email: "jane@example-firm.co.uk" })).status).toBe(429);
+    await settle();
     expect(findClientDomainForEmail).not.toHaveBeenCalled();
   });
 
@@ -2116,12 +2202,18 @@ describe("POST /api/access", () => {
     expect((await post({ email: "jane@example-firm.co.uk" })).status).toBe(503);
   });
 
-  it("answers 502 when the link cannot be prepared or sent", async () => {
+  it("still answers 200 when the link cannot be prepared or sent, and logs only the domain id", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
     vi.mocked(issueAccessLink).mockResolvedValue({ ok: false, reason: "clerk_error" });
-    expect((await post({ email: "jane@example-firm.co.uk" })).status).toBe(502);
+    expect((await post({ email: "jane@example-firm.co.uk" })).status).toBe(200);
+    await settle();
+    expect(warn).toHaveBeenCalledWith("Access: link not prepared", { domainId: "cd_1" });
     vi.mocked(issueAccessLink).mockResolvedValue({ ok: true, url: "u", userId: "user_c" });
     vi.mocked(sendAccessLink).mockResolvedValue({ error: "boom" });
-    expect((await post({ email: "jane@example-firm.co.uk" })).status).toBe(502);
+    expect((await post({ email: "jane@example-firm.co.uk" })).status).toBe(200);
+    await settle();
+    expect(warn).toHaveBeenCalledWith("Access: link not sent", { domainId: "cd_1", error: "boom" });
+    expect(JSON.stringify(warn.mock.calls)).not.toContain("jane@");
   });
 });
 ```
@@ -2135,7 +2227,7 @@ Expected: FAIL, cannot resolve `./route`.
 
 ```ts
 // src/app/api/access/route.ts
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { issueAccessLink } from "@/lib/access/link";
 import { sendAccessLink } from "@/lib/access/mail";
 import { parseAccessRequest } from "@/lib/access/request";
@@ -2178,20 +2270,19 @@ export async function POST(request: Request) {
   }
   if (!isResendConfigured()) return setupResponse("Email delivery is not configured");
 
-  const domain = await findClientDomainForEmail(email);
-  if (!domain) return generic();
-
-  const issued = await issueAccessLink({ email, domain: domain.domain });
-  if (!issued.ok) {
-    if (issued.reason === "director") return generic();
-    return NextResponse.json({ error: "We could not prepare your link. Try again in a minute." }, { status: 502 });
-  }
-
-  const mail = await sendAccessLink({ to: email, url: issued.url });
-  if ("error" in mail) {
-    console.warn("Access: link not sent", { domainId: domain.id, error: mail.error });
-    return NextResponse.json({ error: "We could not send your link. Try again in a minute." }, { status: 502 });
-  }
+  // The reply never waits for the lookup, so a listed and an unlisted domain answer in the same
+  // time with the same body. The work runs after the response has gone.
+  after(async () => {
+    const domain = await findClientDomainForEmail(email);
+    if (!domain) return;
+    const issued = await issueAccessLink({ email, domain: domain.domain });
+    if (!issued.ok) {
+      if (issued.reason === "clerk_error") console.warn("Access: link not prepared", { domainId: domain.id });
+      return;
+    }
+    const mail = await sendAccessLink({ to: email, url: issued.url });
+    if ("error" in mail) console.warn("Access: link not sent", { domainId: domain.id, error: mail.error });
+  });
   return generic();
 }
 ```
@@ -2199,7 +2290,7 @@ export async function POST(request: Request) {
 - [ ] **Step 4: Run the route test**
 
 Run: `npx vitest run src/app/api/access/route.test.ts`
-Expected: PASS, 7 tests.
+Expected: PASS.
 
 - [ ] **Step 5: Write the form component test**
 
@@ -2286,9 +2377,9 @@ export function AccessForm() {
         return;
       }
       const body = (await res.json().catch(() => ({}))) as { error?: string };
-      setState({ status: "error", error: body.error ?? "We could not send your link. Please try again." });
+      setState({ status: "error", error: body.error ?? "We could not take your request. Please try again." });
     } catch {
-      setState({ status: "error", error: "We could not send your link. Please try again." });
+      setState({ status: "error", error: "We could not take your request. Please try again." });
     }
   }
 
@@ -2855,7 +2946,7 @@ export function contentDisposition(fileName: string): string {
 - [ ] **Step 5: Run tests to verify they pass**
 
 Run: `npx vitest run src/lib/portal/s3-transfer.test.ts src/lib/portal/files.test.ts && npx tsc --noEmit`
-Expected: PASS, 8 tests; tsc clean. If the presigner test fails on `partNumber`, print the URL: the SDK writes the query keys `partNumber` and `uploadId` exactly so.
+Expected: PASS; tsc clean. If the presigner test fails on `partNumber`, print the URL: the SDK writes the query keys `partNumber` and `uploadId` exactly so.
 
 - [ ] **Step 6: Commit**
 
@@ -3102,7 +3193,7 @@ describe("formatBytes", () => {
 - [ ] **Step 4: Run the rules and files tests**
 
 Run: `npx vitest run src/lib/client-uploads/rules.test.ts src/lib/portal/files.test.ts`
-Expected: PASS, 9 tests.
+Expected: PASS.
 
 - [ ] **Step 5: Write the failing service test**
 
@@ -3187,6 +3278,8 @@ beforeEach(() => {
   vi.mocked(getClientUpload).mockResolvedValue(upload());
   vi.mocked(presignUploadPart).mockImplementation(async (_k, _u, n) => `https://s3/part/${n}`);
   vi.mocked(listUploadedParts).mockResolvedValue([]);
+  vi.mocked(updateClientUpload).mockResolvedValue(true);
+  vi.mocked(deleteObjects).mockResolvedValue(undefined);
   vi.mocked(headObject).mockResolvedValue({ size: PART_SIZE + 10, contentType: "application/pdf" });
   vi.mocked(insertDocument).mockImplementation(async (values) => ({ extractedText: null, createdAt: NOW, ...values }) as DocumentRow);
 });
@@ -3281,6 +3374,12 @@ describe("completeUpload", () => {
     vi.mocked(getClientUpload).mockResolvedValue(upload({ pursuitId: null }));
     await completeUpload(client, "up_1", parts);
     expect(insertDocument).toHaveBeenCalledWith(expect.objectContaining({ scope: "client", pursuitId: null }));
+  });
+
+  it("refuses a second completion that lost the race for the row", async () => {
+    vi.mocked(updateClientUpload).mockResolvedValue(false);
+    expect(await completeUpload(client, "up_1", parts)).toEqual({ ok: false, status: 409, error: "Upload already finished" });
+    expect(insertDocument).not.toHaveBeenCalled();
   });
 
   it("refuses the wrong number of parts before touching S3", async () => {
@@ -3470,12 +3569,20 @@ export async function completeUpload(
   await completeMultipartUpload(upload.key, upload.uploadId, ordered);
   const head = await headObject(upload.key);
   if (!head || head.size !== upload.size) {
-    await deleteObjects([upload.key]).catch(() => undefined);
+    try {
+      await deleteObjects([upload.key]);
+    } catch (error) {
+      console.warn("Client uploads: could not remove a mismatched object", { uploadId: upload.id, error: error instanceof Error ? error.name : "unknown" });
+    }
     await updateClientUpload(upload.id, { status: "aborted" });
     return fail(409, "The uploaded size does not match the file");
   }
 
+  // Claim the row first: a second complete call for the same upload finds it no longer pending.
   const documentId = crypto.randomUUID();
+  if (!(await updateClientUpload(upload.id, { status: "complete", documentId }))) {
+    return fail(409, "Upload already finished");
+  }
   const row = await insertDocument({
     id: documentId,
     scope: upload.pursuitId ? "pursuit" : "client",
@@ -3491,7 +3598,6 @@ export async function completeUpload(
     uploadedBy: upload.userId,
     uploaderEmail: upload.uploaderEmail,
   });
-  await updateClientUpload(upload.id, { status: "complete", documentId });
   return { ok: true, document: summariseDocument(row) };
 }
 
@@ -3525,7 +3631,7 @@ export async function sweepStaleUploads(now: Date = new Date()): Promise<number>
 - [ ] **Step 8: Run the service test**
 
 Run: `npx vitest run src/lib/client-uploads && npx tsc --noEmit`
-Expected: PASS, 24 tests across the two files; tsc clean.
+Expected: PASS; tsc clean.
 
 - [ ] **Step 9: Commit**
 
@@ -3756,7 +3862,7 @@ The service re-validates part numbers and etags (Task 12), so the handlers only 
 - [ ] **Step 4: Run the test, type check and lint**
 
 Run: `npx vitest run src/app/api/client && npx tsc --noEmit && npm run lint`
-Expected: PASS, 3 tests; clean.
+Expected: PASS; clean.
 
 - [ ] **Step 5: Commit**
 
@@ -4071,7 +4177,7 @@ export const browserTransport: UploadTransport = {
 - [ ] **Step 4: Run the test**
 
 Run: `npx vitest run src/lib/client/upload.test.ts && npx tsc --noEmit`
-Expected: PASS, 5 tests; tsc clean.
+Expected: PASS; tsc clean.
 
 - [ ] **Step 5: Write the desk component and pages**
 
@@ -4554,7 +4660,7 @@ export async function linkClientDomainAction(id: string, pursuitId: string | nul
 - [ ] **Step 4: Run the test**
 
 Run: `npx vitest run src/lib/portal/client-actions.test.ts`
-Expected: PASS, 6 tests.
+Expected: PASS.
 
 - [ ] **Step 5: Write the components, the page and the nav link**
 
@@ -4784,15 +4890,40 @@ and after the Library `NavLink` in the mobile bar (line 82 to 84) add:
             </NavLink>
 ```
 
-- [ ] **Step 6: Type check, lint and run the suite**
+- [ ] **Step 6: Client files survive a pursuit delete**
+
+`deletePursuit` in `src/lib/portal/actions.ts` (around lines 255 to 271) lists the pursuit's documents, deletes their S3 objects best effort, then removes the row, which cascades to every document. Client files must not go with it. Change the action so that, after `const docs = await listDocuments({ scope: "pursuit", pursuitId: id });`, only the director's own files are deleted from S3: `const own = docs.filter((doc) => !doc.clientDomainId);` and pass `own.map((doc) => doc.blobPathname)` to `deleteObjects`. Then, after that try/catch and before `removePursuit(id)`, call `await detachClientDocuments(id);` (import it from `@/lib/db/documents`). In `src/lib/portal/actions.test.ts` add `detachClientDocuments: vi.fn()` to the `@/lib/db/documents` mock factory and import it, and add this test to the `deletePursuit` describe block (adapt the fixture helper names the file already uses):
+
+```ts
+it("keeps a client firm's files when the pursuit is deleted", async () => {
+  vi.mocked(getPursuit).mockResolvedValue(makePursuit());
+  vi.mocked(listDocuments).mockResolvedValue([
+    makeDocument({ id: "own", blobPathname: "meritus/portal/pursuit/p1/own.pdf", clientDomainId: null }),
+    makeDocument({ id: "theirs", blobPathname: "meritus/clients/example-firm.co.uk/theirs.pdf", clientDomainId: "cd_1" }),
+  ]);
+  expect(await actions.deletePursuit("p1")).toEqual({ ok: true });
+  expect(deleteObjects).toHaveBeenCalledWith(["meritus/portal/pursuit/p1/own.pdf"]);
+  expect(detachClientDocuments).toHaveBeenCalledWith("p1");
+  expect(removePursuit).toHaveBeenCalledWith("p1");
+});
+```
+
+Run: `npx vitest run src/lib/portal/actions.test.ts`
+Expected: PASS.
+
+- [ ] **Step 7: Sweep stale uploads when a director opens the page**
+
+In `src/app/(portal)/portal/clients/page.tsx` add `import { after } from "next/server";` and `import { sweepStaleUploads } from "@/lib/client-uploads/service";`, and as the first statement inside `ClientsPage` after the setup guard add `after(() => sweepStaleUploads().catch(() => 0));` so abandoned uploads are aborted whenever a director looks, not only when a client starts another one.
+
+- [ ] **Step 8: Type check, lint and run the suite**
 
 Run: `npx tsc --noEmit && npm run lint && npm test`
 Expected: clean and green.
 
-- [ ] **Step 7: Commit**
+- [ ] **Step 9: Commit**
 
 ```bash
-git add src/lib/portal/client-actions.ts src/lib/portal/client-actions.test.ts src/components/portal/ClientDomainForm.tsx src/components/portal/ClientDomainList.tsx "src/app/(portal)/portal/clients/page.tsx" "src/app/(portal)/portal/layout.tsx"
+git add src/lib/portal/client-actions.ts src/lib/portal/client-actions.test.ts src/components/portal/ClientDomainForm.tsx src/components/portal/ClientDomainList.tsx "src/app/(portal)/portal/clients/page.tsx" "src/app/(portal)/portal/layout.tsx" src/lib/portal/actions.ts src/lib/portal/actions.test.ts src/lib/db/documents.ts
 git commit -m "feat(portal): directors list client domains, link them to pursuits and see what arrived
 
 Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>"
@@ -4919,7 +5050,7 @@ Append to `src/lib/portal/files.ts`:
 export const DIRECT_DOWNLOAD_BYTES = 100 * 1024 * 1024;
 ```
 
-In `src/app/api/portal/documents/[id]/route.ts` replace the imports and the `GET` handler (keep `DELETE` exactly as it is):
+In `src/app/api/portal/documents/[id]/route.ts` replace the imports and the `GET` handler. Keep `DELETE` as it is except its `console.warn` line, which today prints the S3 key (the client's domain and file name); change it to `console.warn("S3 delete failed", { documentId: document.id, error: error instanceof Error ? error.name : "unknown" });`.
 
 ```ts
 import { NextResponse } from "next/server";
@@ -4973,7 +5104,7 @@ export async function GET(
 - [ ] **Step 4: Run the test and the suite**
 
 Run: `npx vitest run "src/app/api/portal/documents/[id]/route.test.ts" && npm test && npx tsc --noEmit`
-Expected: PASS, 4 tests; suite green; tsc clean. `getObject` in `src/lib/portal/s3.ts` is now unused by routes; leave it, `actions.test.ts` still mocks the module by name.
+Expected: PASS; suite green; tsc clean. `getObject` in `src/lib/portal/s3.ts` is now unused by routes; leave it, `actions.test.ts` still mocks the module by name.
 
 - [ ] **Step 5: Commit**
 
