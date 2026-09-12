@@ -1,7 +1,9 @@
+export const metadata = { title: "Client documents" };
 import { after } from "next/server";
 import { ClientDomainForm } from "@/components/portal/ClientDomainForm";
 import { ClientDomainList, type ClientFileSummary, type PursuitOption } from "@/components/portal/ClientDomainList";
 import { Eyebrow } from "@/components/portal/Eyebrow";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { Panel } from "@/components/portal/Panel";
 import { SetupNotice } from "@/components/portal/SetupNotice";
 import { sweepStaleUploads } from "@/lib/client-uploads/service";
@@ -39,19 +41,12 @@ export default async function ClientsPage() {
 
   return (
     <div className="max-w-4xl space-y-8">
-      <div>
-        <Eyebrow rule={false} className="mb-3">Clients</Eyebrow>
-        <h1 className="font-serif text-4xl text-green">Client file drop</h1>
-        <p className="mt-3 max-w-xl text-[14px] text-ink/70">
-          Add a firm&apos;s email domain. Anyone with a mailbox there can request a link at meritusvia.com/access
-          and drop files straight into VeriCase&apos;s store. Link the domain to a pursuit so files land on its dossier.
-        </p>
-      </div>
-      <Panel eyebrow="Add a domain" className="max-w-xl">
+      <PageHeader title="Client documents" description="Manage organisation access and review submissions. Eligible colleagues share visibility of their organisation’s submissions. Link an organisation to a pursuit to keep the documents together." />
+      <Panel title="Organisation access" className="max-w-xl">
         <ClientDomainForm pursuits={pursuits} />
       </Panel>
       <section>
-        <Eyebrow className="mb-4">Listed domains</Eyebrow>
+        <Eyebrow className="mb-4">Organisations and submissions</Eyebrow>
         <ClientDomainList domains={domains} pursuits={pursuits} files={files} />
       </section>
     </div>

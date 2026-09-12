@@ -1,6 +1,7 @@
-import { requireResearchDirector } from "@/lib/research/roles";
+export const metadata = { title: "Prospects" };
+import { requireWorkspacePage } from "@/lib/portal/auth";
 import Link from "next/link";
-import { Eyebrow } from "@/components/portal/Eyebrow";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { ProspectsTable } from "@/components/portal/ProspectsTable";
 import { SetupNotice } from "@/components/portal/SetupNotice";
 import { countProspects, countProspectsByView, listProspects } from "@/lib/db/prospects";
@@ -25,7 +26,7 @@ export default async function ProspectsPage({
   if (missingRequiredSetup() || !isDatabaseConfigured()) {
     return <SetupNotice />;
   }
-  await requireResearchDirector();
+  await requireWorkspacePage("/portal/prospects");
 
   const params = await searchParams;
   const view = params.view && isProspectView(params.view) ? params.view : "approachable";
@@ -46,46 +47,39 @@ export default async function ProspectsPage({
 
   return (
     <div className="max-w-6xl space-y-8">
-      <div>
-        <Eyebrow rule={false}>Target firms</Eyebrow>
-        <h1 className="mt-1 font-serif text-3xl text-green sm:text-4xl">Prospects</h1>
-        <p className="mt-3 max-w-2xl text-[14px] leading-relaxed text-ink/70">
-          Outbound organisations ranked by the value Meritus would bring — not inbound
-          pursuits, and not the public enquiry inbox. Seeded from the BREE prospect ranking
-          of 10 September 2026.
-        </p>
-      </div>
+      <PageHeader title="Prospects" description="Organisations to approach, ranked by the value Meritus can bring. Review the opportunity, record contact and develop a pursuit." actions={<Link className="app-button app-button--secondary" href="/portal/pursuits">View pursuits</Link>} />
 
-      <div className="flex flex-wrap gap-2">
+      <nav aria-label="Prospect views" className="workspace-local-nav">
         {VIEWS.map((item) => {
           const active = item === view;
           return (
             <Link
               key={item}
+              aria-current={active ? "page" : undefined}
               href={item === "approachable" ? "/portal/prospects" : `/portal/prospects?view=${item}`}
-              className={`border px-3 py-1.5 text-[12px] ${
+              className={`border px-3 py-1.5 text-[13px] ${
                 active
-                  ? "border-brass bg-brass text-green"
-                  : "border-green/15 text-green hover:border-brass hover:text-brass"
+                  ? "border-primary bg-primary text-surface"
+                  : "border-line text-primary hover:border-primary hover:text-primary"
               }`}
             >
               {prospectViewLabel(item)}
-              <span className={`ml-2 font-mono ${active ? "text-green/70" : "text-ink/55"}`}>
+              <span className={`ml-2 font-sans ${active ? "text-surface" : "text-muted"}`}>
                 {counts[item]}
               </span>
             </Link>
           );
         })}
-      </div>
+      </nav>
 
-      <p className="max-w-2xl text-[14px] text-ink/70">{prospectViewDescription(view)}</p>
+      <p className="max-w-2xl text-[15px] text-muted">{prospectViewDescription(view)}</p>
 
       <ProspectsTable rows={rows} />
 
-      <p className="max-w-3xl text-[12px] leading-relaxed text-ink/70">
+      <p className="max-w-3xl text-[13px] leading-relaxed text-muted">
         {totalSeeded} organisations in the ranking file. Need, gap, capacity and access are
         judgement scores, not measured quantities. Conflict tiers reflect the BREE tracker
-        only — they are not an independent conflict check.
+        only, they are not an independent conflict check.
       </p>
     </div>
   );

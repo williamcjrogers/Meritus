@@ -1,6 +1,7 @@
-import { requireResearchDirector } from "@/lib/research/roles";
+export const metadata = { title: "Programmes" };
+import { requireWorkspacePage } from "@/lib/portal/auth";
 import Link from "next/link";
-import { Eyebrow } from "@/components/portal/Eyebrow";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { ProgrammeUpload } from "@/components/portal/ProgrammeUpload";
 import { SetupNotice } from "@/components/portal/SetupNotice";
 import { expireStaleProgrammeReports, latestReport, listProgrammes } from "@/lib/db/programmes";
@@ -14,7 +15,7 @@ export default async function ProgrammesPage() {
   if (missingRequiredSetup() || !isDatabaseConfigured()) {
     return <SetupNotice />;
   }
-  await requireResearchDirector();
+  await requireWorkspacePage("/portal/programmes");
 
   let items;
   try {
@@ -31,25 +32,17 @@ export default async function ProgrammesPage() {
 
   return (
     <div className="max-w-4xl">
-      <Eyebrow rule={false} className="mb-3">
-        Programme
-      </Eyebrow>
-      <h1 className="font-serif text-4xl text-green">Programme intelligence</h1>
-      <p className="mt-3 mb-8 max-w-2xl text-[14px] text-ink/70">
-        Adjudication-grade schedule interrogation for the desk. Method choice follows the records (SCL Protocol: no
-        single preferred method). Figures cite the block engine. Native Asta .pp files are inspected; export XML or CSV
-        for activity-level CPM. Instructed evidence still lives in VeriCase.
-      </p>
-      <div className="panel-brackets mb-8 border border-green/10 bg-parchment p-6">
+      <PageHeader title="Programmes" description="Review programme records, assess schedule quality and examine delay. Upload XML or CSV for activity-level analysis; native Asta files can be inspected. Instructed evidence remains in VeriCase." />
+      <div className="app-panel mb-8 border border-line bg-surface p-6">
         <ProgrammeUpload />
       </div>
-      <ul className="divide-y divide-green/10">
+      <ul className="divide-y divide-line">
         {items.map((item) => (
           <li key={item.id} className="py-4">
-            <Link href={`/portal/programmes/${item.id}`} className="text-[15px] text-green hover:text-brass">
+            <Link href={`/portal/programmes/${item.id}`} className="text-[15px] text-primary hover:text-primary">
               {item.fileName}
             </Link>
-            <p className="mt-1 font-mono text-[10px] tracking-[0.12em] text-ink/70">
+            <p className="mt-1 font-sans text-[13px]  text-muted">
               {item.parseStatus} · {item.format}
               {item.report?.method ? ` · ${item.report.method}` : ""}
               {item.report?.healthScore != null ? ` · health ${item.report.healthScore} (${item.report.healthLevel})` : ""}
@@ -58,7 +51,7 @@ export default async function ProgrammesPage() {
             </p>
           </li>
         ))}
-        {items.length === 0 && <li className="py-4 text-[13px] text-ink/70">No programmes yet.</li>}
+        {items.length === 0 && <li className="py-4 text-[13px] text-muted">No programmes yet.</li>}
       </ul>
     </div>
   );

@@ -6,12 +6,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { accountDestination, destinationFor } from "@/lib/portal/destination";
 
-type Failure = { kind: "invalid" | "expired" | "used" | "account" | "unavailable"; message: string };
+type Failure = { kind: "invalid" | "expired" | "used" | "revoked" | "account" | "unavailable"; message: string };
 function ticketFailure(error: unknown): Failure {
   const record = error && typeof error === "object" ? error as { errors?: { code?: string }[]; status?: number } : {};
   const codes = record.errors?.map(item => item.code ?? "").join(" ") ?? "";
   if (/sign_in_token_expired|ticket_expired/.test(codes)) return { kind: "expired", message: "This link has expired. Request a new link to open your documents." };
   if (/sign_in_token_already_used|ticket_already_used/.test(codes)) return { kind: "used", message: "This link has already been used. Request a new link to open your documents." };
+  if (/sign_in_token_revoked_code/.test(codes)) return { kind: "revoked", message: "This link has been withdrawn. Request a new link to open your documents." };
+  if (/sign_in_token_cannot_be_used_code|sign_in_token_not_in_sign_in_code/.test(codes)) return { kind: "invalid", message: "This link can no longer be used. Request a new link to open your documents." };
   if (/session_exists|already_signed_in/.test(codes)) return { kind: "account", message: "Another account is signed in. Sign out and use this link to continue." };
   if (/sign_in_token_invalid|ticket_invalid|form_param_format_invalid|resource_not_found/.test(codes)) return { kind: "invalid", message: "This link is not valid. Request a new link to open your documents." };
   return { kind: "unavailable", message: "We could not verify your link. Check your connection and try again." };

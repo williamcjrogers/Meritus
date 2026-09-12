@@ -37,3 +37,23 @@ Baseline: `efd8849cac66cf8db622260983249482ca9c4f7c`
 - The controller's read-only provider inspection found public sign-up enabled. The source route guard and hidden widget action do not establish restricted registration at the provider. Restricted mode and hosted configuration must be corrected and verified before release. No new roles are assigned by the source sign-up route.
 - Actual hosted invitation acceptance, real emailed ticket exchange, existing-session switching and real provider outages need live-account verification. Component tests mock the provider and do not prove that external configuration works.
 - On a full browser reload after ticket capture, the ticket is deliberately unavailable; the user must reopen the email or request another link. It is never persisted to browser storage.
+
+## Independent review fixes
+
+Completed both P2 findings on 12 September 2026:
+
+- Clerk's documented `sign_in_token_revoked_code` and `sign_in_token_cannot_be_used_code` now produce terminal recovery with Request a new link. `sign_in_token_not_in_sign_in_code` also has terminal recovery. Existing documented used-token codes remain recognised. None offers Retry against an unusable token. Source: [Clerk frontend API errors](https://clerk.com/docs/guides/development/errors/frontend-api#sign-in-tokens).
+- Middleware now overwrites or removes `x-meritus-page-path` using the actual requested pathname and query. It never accepts a caller-supplied destination header. The page guard validates the value through the existing local path boundary and checks that it belongs to the intended experience. The header only carries a return target, never authority.
+- `requireWorkspacePage` performs a fresh role lookup and redirects page failures to the deliberate unavailable, sign-in or denial journey. All 12 existing page/layout guard callers use it, including Home, Actions, Pursuits, Programmes, Library, Prospects and Research. Research APIs and background workers retain their typed 401/403/503 contract. Redundant unguarded session lookups used only to obtain a display/filter user ID were replaced with the already-authorised user ID.
+- Integration tests explicitly pass middleware, then fail the next provider lookup or revoke the role before the page guard. They verify the original path and full query are preserved for temporary failure/session expiry, that current client or null roles are refused appropriately, and that spoofed headers cannot replace the actual route.
+
+Ownership coordination: the workspace owner completed the portal presentation and route-metadata edits, then explicitly excluded every `src/app/(portal)` path from their Task 2 commit. This access review commit includes those agreed presentation changes together with the page guard integration. The access worker changed guard imports/calls and redundant user-ID lookups; the workspace owner authored the presentation and metadata.
+
+Verification after these fixes:
+
+- `corepack pnpm exec vitest run src/lib/portal src/lib/research/roles.test.ts src/lib/access src/components/access src/components/client src/app/access src/app/client src/app/account src/app/api/access src/app/api/client 'src/app/(portal)'`: 33 files, 382 tests passed. Log: `access-review-tests.log`.
+- `corepack pnpm exec tsc --noEmit`: passed. Log: `access-review-typecheck.log`.
+- `corepack pnpm exec eslint src/lib/portal/auth.ts src/lib/portal/request-path.ts src/lib/portal/page-auth.test.ts src/middleware.ts src/components/access/AccessContinue.tsx src/components/access/AccessContinue.test.tsx 'src/app/(portal)'`: passed without warnings. Log: `access-review-lint.log`.
+- `git diff --check`: passed.
+
+The live provider configuration and authenticated journey limitations above remain unchanged.

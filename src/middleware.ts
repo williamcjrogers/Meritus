@@ -3,9 +3,11 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { isClerkConfigured } from "@/lib/env";
 import { decideGate, isClientPath, isPortalPath, type GateDecision } from "@/lib/portal/gate";
+import { pageRequestHeaders } from "@/lib/portal/request-path";
 import { resolveIdentity } from "@/lib/portal/roles";
 
 function respond(decision: GateDecision, request: NextRequest) {
+  if (decision.kind === "next") return NextResponse.next({ request: { headers: pageRequestHeaders(request) } });
   if (decision.kind === "redirect") return NextResponse.redirect(new URL(decision.to, request.url));
   if (decision.kind === "json") return NextResponse.json(
     { error: decision.error, code: decision.status === 503 ? "IDENTITY_UNAVAILABLE" : decision.status === 403 ? "FORBIDDEN" : "UNAUTHENTICATED" },
@@ -14,7 +16,7 @@ function respond(decision: GateDecision, request: NextRequest) {
 }
 const clerkHandler = clerkMiddleware(async (auth, req) => {
   const pathname = req.nextUrl.pathname;
-  if (!isPortalPath(pathname) && !isClientPath(pathname)) return;
+  if (!isPortalPath(pathname) && !isClientPath(pathname)) return respond({ kind: "next" }, req);
   let decision: GateDecision;
   try {
     const { userId, sessionClaims } = await auth();
@@ -26,7 +28,7 @@ const clerkHandler = clerkMiddleware(async (auth, req) => {
   return respond(decision, req);
 });
 export default function middleware(request: NextRequest, event: unknown) {
-  if (!isClerkConfigured()) return respond(decideGate({ pathname: request.nextUrl.pathname, search: request.nextUrl.search, signedIn: false, role: null, unavailable: true }), request) ?? NextResponse.next();
+  if (!isClerkConfigured()) return respond(decideGate({ pathname: request.nextUrl.pathname, search: request.nextUrl.search, signedIn: false, role: null, unavailable: true }), request);
   return clerkHandler(request, event as never);
 }
 export const config = {

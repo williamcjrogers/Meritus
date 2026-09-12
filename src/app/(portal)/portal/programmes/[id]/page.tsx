@@ -1,4 +1,5 @@
-import { requireResearchDirector } from "@/lib/research/roles";
+export const metadata = { title: "Programme details" };
+import { requireWorkspacePage } from "@/lib/portal/auth";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Eyebrow } from "@/components/portal/Eyebrow";
@@ -16,7 +17,7 @@ export default async function ProgrammeReportPage({ params }: { params: Promise<
   if (missingRequiredSetup() || !isDatabaseConfigured()) {
     return <SetupNotice />;
   }
-  await requireResearchDirector();
+  await requireWorkspacePage("/portal/programmes");
 
   const { id } = await params;
   let detail;
@@ -39,17 +40,17 @@ export default async function ProgrammeReportPage({ params }: { params: Promise<
       </div>
       <Eyebrow rule={false}>Programme report</Eyebrow>
       <div className="mt-2 flex flex-wrap items-end justify-between gap-4">
-        <h1 className="font-serif text-3xl text-green sm:text-4xl">{detail.fileName}</h1>
+        <h1 className="font-sans text-3xl text-primary sm:text-4xl">{detail.fileName}</h1>
         <ProgrammeRecompute programmeId={detail.id} />
       </div>
-      <p className="mt-2 mb-8 text-[13px] text-ink/70">
-        Health {detail.report?.healthScore ?? "—"}
+      <p className="mt-2 mb-8 text-[13px] text-muted">
+        Health {detail.report?.healthScore ?? "Not recorded"}
         {detail.report?.method ? ` · ${detail.report.method}` : ""}
         {detail.report?.status === "running" && detail.report.progress
           ? ` · ${detail.report.progress.stage} (${detail.report.progress.percent}%)`
           : ""}
       </p>
-      <div className="panel-brackets border border-green/10 bg-parchment p-6">
+      <div className="app-panel border border-line bg-surface p-6">
         <ProgrammeReportView detail={detail} />
       </div>
       <RelatedActionPanel link={{ kind: "programme", id: detail.id }} />

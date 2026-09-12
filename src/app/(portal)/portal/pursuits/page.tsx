@@ -1,10 +1,10 @@
-import { requireResearchDirector } from "@/lib/research/roles";
+export const metadata = { title: "Pursuits" };
+import { requireWorkspacePage } from "@/lib/portal/auth";
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { auth } from "@clerk/nextjs/server";
 import { readLiveLeads } from "@/lib/portal/live-leads";
 import { Desk } from "@/components/portal/Desk";
-import { Eyebrow } from "@/components/portal/Eyebrow";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { NewPursuitButton } from "@/components/portal/NewPursuitButton";
 import { SetupNotice } from "@/components/portal/SetupNotice";
 import { StageList } from "@/components/portal/StageList";
@@ -13,7 +13,7 @@ import type { DeskExtras, RelatedRef } from "@/components/portal/desk-types";
 import type { Pursuit, PursuitStage } from "@/lib/db/schema";
 import { latestEnquiryActivity, latestStageChanges } from "@/lib/db/activity";
 import { countByStage, getPursuit, listByStage, listDeskPursuits } from "@/lib/db/pursuits";
-import { isClerkConfigured, isDatabaseConfigured, missingRequiredSetup } from "@/lib/env";
+import { isDatabaseConfigured, missingRequiredSetup } from "@/lib/env";
 import { longDayDate, shortDate } from "@/lib/portal/dates";
 import { listDirectors } from "@/lib/portal/directors";
 import { isActiveStage, resolveReopenStage, stageLabel } from "@/lib/portal/stages";
@@ -23,11 +23,6 @@ export const dynamic = "force-dynamic";
 
 const LIST_STAGES: PursuitStage[] = ["dormant", "instructed", "declined"];
 
-async function signedInUserId(): Promise<string> {
-  if (!isClerkConfigured()) return "local";
-  const { userId } = await auth();
-  return userId ?? "anonymous";
-}
 
 async function deskExtras(pursuits: Pursuit[]): Promise<DeskExtras> {
   const inbox = pursuits.filter((p) => !p.ownerId && isActiveStage(p.stage));
@@ -63,13 +58,12 @@ async function deskExtras(pursuits: Pursuit[]): Promise<DeskExtras> {
 
 export default async function LiveLeadsPage({ searchParams }: { searchParams: Promise<{ stage?: string }> }) {
   if (missingRequiredSetup() || !isDatabaseConfigured()) return <SetupNotice />;
-  await requireResearchDirector();
+  const userId = await requireWorkspacePage("/portal/pursuits");
 
   const { stage } = await searchParams;
   const listStage = LIST_STAGES.find((item) => item === stage) ?? null;
   const cookieStore = await cookies();
   const scope: Scope = cookieStore.get(SCOPE_COOKIE)?.value === "mine" ? "mine" : "all";
-  const userId = await signedInUserId();
   const now = new Date();
 
   let pursuits: Pursuit[];
@@ -81,15 +75,7 @@ export default async function LiveLeadsPage({ searchParams }: { searchParams: Pr
   }
   const directors = await listDirectors();
 
-  const header = (
-    <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-      <div>
-        <Eyebrow rule={false}>Live leads</Eyebrow>
-        <h1 className="mt-1 font-serif text-3xl text-green sm:text-4xl">{longDayDate(now)}</h1>
-      </div>
-      <NewPursuitButton />
-    </div>
-  );
+  const header = <PageHeader title="Pursuits" description={`Live leads, ownership and the next step. ${longDayDate(now)}.`} actions={<><Link className="app-button app-button--secondary" href="/portal/prospects">View prospects</Link><NewPursuitButton /></>} />;
 
   if (listStage) {
     const rows = await listByStage(listStage);
@@ -109,19 +95,19 @@ export default async function LiveLeadsPage({ searchParams }: { searchParams: Pr
     <div className="max-w-6xl">
       {header}
       {open === 0 && counts.dormant === 0 ? (
-        <div className="panel-brackets border border-green/10 bg-parchment px-6 py-10 text-center">
-          <p className="font-serif text-2xl text-green">No open live leads.</p>
-          <p className="mt-2 text-[14px] text-ink/70">Enquiries from the site land here.</p>
+        <div className="app-panel border border-line bg-surface px-6 py-10 text-center">
+          <p className="font-sans text-2xl text-primary">No open live leads.</p>
+          <p className="mt-2 text-[15px] text-muted">Enquiries from the site land here.</p>
         </div>
       ) : (
         <Desk pursuits={leads} extras={extras} directors={directors} userId={userId} scope={scope} now={now.toISOString()} />
       )}
-      <p className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-1 font-mono text-[11px] tracking-[0.15em] uppercase text-ink/70">
+      <p className="mt-10 flex flex-wrap items-center gap-x-3 gap-y-1 font-sans text-[13px]   text-muted">
         {LIST_STAGES.map((item, index) => (
           <span key={item} className="flex items-center gap-3">
             {index > 0 && <span aria-hidden="true">·</span>}
-            <Link href={`/portal/pursuits?stage=${item}`} className="hover:text-brass">
-              {stageLabel(item)} <span className="text-green">{counts[item]}</span>
+            <Link href={`/portal/pursuits?stage=${item}`} className="hover:text-primary">
+              {stageLabel(item)} <span className="text-primary">{counts[item]}</span>
             </Link>
           </span>
         ))}

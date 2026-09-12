@@ -4,7 +4,7 @@ import ActionsPage from "./page";
 import { directoryFixture, viewFixture } from "@/lib/actions/view-fixture.test-support";
 import type { ActionView } from "@/lib/actions/types";
 const mocks = vi.hoisted(() => ({ authorise: vi.fn(), list: vi.fn(), direct: vi.fn(), directory: vi.fn() }));
-vi.mock("@/lib/research/roles", () => ({ requireResearchDirector: mocks.authorise }));
+vi.mock("@/lib/portal/auth", () => ({ requireWorkspacePage: mocks.authorise }));
 vi.mock("@/lib/db/desk-actions", () => ({ readActionViews: mocks.list, readActionView: mocks.direct }));
 vi.mock("@/lib/portal/directors", () => ({ readDirectorDirectory: mocks.directory }));
 vi.mock("@/components/portal/actions/ActionRegister", () => ({ ActionRegister: ({ initialAction, initialActionError }: { initialAction: ActionView | null; initialActionError: string | null }) => <div>{initialAction?.title}{initialActionError && <p role="alert">{initialActionError}</p>}</div> }));

@@ -1,13 +1,14 @@
+export const metadata = { title: "Actions" };
 import Link from "next/link";
 import { z } from "zod";
 import { ActionRegister } from "@/components/portal/actions/ActionRegister";
 import { parseActionQuery } from "@/lib/actions/filters";
 import { readActionView, readActionViews } from "@/lib/db/desk-actions";
 import { readDirectorDirectory } from "@/lib/portal/directors";
-import { requireResearchDirector } from "@/lib/research/roles";
+import { requireWorkspacePage } from "@/lib/portal/auth";
 export const dynamic = "force-dynamic";
 export default async function ActionsPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
-  const actorId = await requireResearchDirector();
+  const actorId = await requireWorkspacePage("/portal/actions");
   const params = new URLSearchParams();
   for (const [key, value] of Object.entries(await searchParams)) if (typeof value === "string") params.set(key, value);
   const query = parseActionQuery(params);

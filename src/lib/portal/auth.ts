@@ -1,8 +1,10 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { isClerkConfigured, isDatabaseConfigured } from "@/lib/env";
 import { resolveIdentity, type Identity, type Role } from "./roles";
+import { PAGE_PATH_HEADER, requestedPagePath } from "./request-path";
 import { safeReturnPath, unavailableDestination } from "./destination";
 
 const UNAVAILABLE = "We could not verify your access. Please try again.";
@@ -44,7 +46,8 @@ export async function requireClientUser(): Promise<
 }
 
 /** Page guards call this independently of middleware; callers enforce their experience boundary. */
-export async function requirePageIdentity(requested: string): Promise<Identity> {
+export async function requirePageIdentity(fallback: string): Promise<Identity> {
+  const requested = requestedPagePath(fallback, (await headers()).get(PAGE_PATH_HEADER));
   if (!isClerkConfigured()) redirect(unavailableDestination(requested));
   let identity: Identity | null;
   try { identity = await currentIdentity(); } catch { redirect(unavailableDestination(requested)); }
@@ -54,6 +57,15 @@ export async function requirePageIdentity(requested: string): Promise<Identity> 
     redirect(target ? `${entry}?returnTo=${encodeURIComponent(target)}` : entry);
   }
   return identity;
+}
+
+/** Page recovery is separate from Research's typed API and background-worker error contract. */
+export async function requireWorkspacePage(fallback = "/portal"): Promise<string> {
+  const identity = await requirePageIdentity(fallback);
+  if (identity.role !== "director") {
+    redirect(identity.role === "client" ? "/client" : "/access/denied");
+  }
+  return identity.userId;
 }
 
 export function setupResponse(message = "This service is temporarily unavailable. Please try again."): NextResponse {

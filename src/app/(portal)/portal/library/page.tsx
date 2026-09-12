@@ -1,6 +1,7 @@
-import { requireResearchDirector } from "@/lib/research/roles";
+export const metadata = { title: "Library" };
+import { requireWorkspacePage } from "@/lib/portal/auth";
 import { SetupNotice } from "@/components/portal/SetupNotice";
-import { Eyebrow } from "@/components/portal/Eyebrow";
+import { PageHeader } from "@/components/ui/PageHeader";
 import { FileList } from "@/components/portal/FileList";
 import { isDatabaseConfigured, missingRequiredSetup } from "@/lib/env";
 import { listDocuments } from "@/lib/db/documents";
@@ -12,7 +13,7 @@ export default async function LibraryPage() {
   if (missingRequiredSetup() || !isDatabaseConfigured()) {
     return <SetupNotice />;
   }
-  await requireResearchDirector();
+  await requireWorkspacePage("/portal/library");
 
   let files;
   try {
@@ -23,12 +24,8 @@ export default async function LibraryPage() {
 
   return (
     <div className="max-w-3xl">
-      <Eyebrow rule={false} className="mb-3">Library</Eyebrow>
-      <h1 className="font-serif text-4xl text-green">Firm library</h1>
-      <p className="mt-3 text-[14px] text-ink/70 max-w-xl mb-8">
-        Firm documents that belong to no single pursuit. Files about a pursuit live on the pursuit. Instructed evidence stays in VeriCase.
-      </p>
-      <div className="panel-brackets bg-parchment border border-green/10 p-6">
+      <PageHeader title="Library" description="Shared firm documents. Pursuit records remain with their pursuit; instructed evidence stays in VeriCase." />
+      <div className="app-panel bg-surface border border-line p-6">
         <FileList documents={files.map(summariseDocument)} uploadUrl="/api/portal/library" />
       </div>
     </div>

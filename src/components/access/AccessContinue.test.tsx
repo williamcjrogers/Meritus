@@ -47,10 +47,15 @@ describe("client ticket exchange", () => {
     ["sign_in_token_expired", /link has expired/i],
     ["sign_in_token_already_used", /already been used/i],
     ["sign_in_token_invalid", /link is not valid/i],
+    ["sign_in_token_revoked_code", /link has been withdrawn/i],
+    ["sign_in_token_cannot_be_used_code", /link can no longer be used/i],
+    ["sign_in_token_not_in_sign_in_code", /link can no longer be used/i],
+    ["sign_in_token_already_used_code", /already been used/i],
   ])("provides distinct recovery for %s", async (code, copy) => {
     const { create } = setup(); create.mockRejectedValue({ errors: [{ code }] }); render(<AccessContinue />);
     expect(await screen.findByText(copy)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Request a new link" })).toHaveAttribute("href", "/access");
+    expect(screen.queryByRole("button", { name: "Retry" })).not.toBeInTheDocument();
   });
   it("retries a provider outage without losing the captured ticket", async () => {
     const { create } = setup(); create.mockRejectedValueOnce(new Error("private provider details")); render(<AccessContinue />);

@@ -1,10 +1,10 @@
+export const metadata = { title: "Pursuit details" };
 import { readRelatedActions } from "@/lib/db/desk-actions";
 import { chooseNextAction } from "@/lib/actions/model";
-import { requireResearchDirector } from "@/lib/research/roles";
+import { requireWorkspacePage } from "@/lib/portal/auth";
 import Link from "next/link";
 import { pursuitResearchLink } from "@/lib/db/research-intelligence";
 import { notFound } from "next/navigation";
-import { auth } from "@clerk/nextjs/server";
 import type { AskMessage } from "@/components/portal/AskDrawer";
 import type { BriefState } from "@/components/portal/BriefPanel";
 import { PursuitShell } from "@/components/portal/PursuitShell";
@@ -16,7 +16,7 @@ import { expireStaleProgrammeReports, latestReport, listProgrammes } from "@/lib
 import { listDocuments } from "@/lib/db/documents";
 import { findRelatedPursuits, getPursuit } from "@/lib/db/pursuits";
 import { listQuestions } from "@/lib/db/questions";
-import { isClerkConfigured, isDatabaseConfigured, missingRequiredSetup } from "@/lib/env";
+import { isDatabaseConfigured, missingRequiredSetup } from "@/lib/env";
 import { shortDate } from "@/lib/portal/dates";
 import { readDirectorDirectory } from "@/lib/portal/directors";
 import { summariseDocument } from "@/lib/portal/files";
@@ -25,17 +25,12 @@ import { normaliseFirm } from "@/lib/portal/intake";
 
 export const dynamic = "force-dynamic";
 
-async function signedInUserId(): Promise<string> {
-  if (!isClerkConfigured()) return "local";
-  const { userId } = await auth();
-  return userId ?? "anonymous";
-}
 
 export default async function PursuitPage({ params }: { params: Promise<{ id: string }> }) {
   if (missingRequiredSetup() || !isDatabaseConfigured()) {
     return <SetupNotice />;
   }
-  await requireResearchDirector();
+  const userId = await requireWorkspacePage("/portal/pursuits");
   const { id } = await params;
 
   let pursuit;
@@ -59,7 +54,7 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
     programmeItems = [];
   }
 
-  const [directory, activity, documents, run, brief, questions, changes, relatedRows, userId, researchLink] = await Promise.all([
+  const [directory, activity, documents, run, brief, questions, changes, relatedRows, researchLink] = await Promise.all([
     readDirectorDirectory(),
     listActivity(id),
     listDocuments({ scope: "pursuit", pursuitId: id }),
@@ -68,7 +63,6 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
     listQuestions(id),
     latestStageChanges([id]),
     findRelatedPursuits(pursuit.contactEmail, normaliseFirm(pursuit.firm), id),
-    signedInUserId(),
     pursuitResearchLink(id),
   ]);
 
@@ -91,8 +85,8 @@ export default async function PursuitPage({ params }: { params: Promise<{ id: st
 
   return (
     <>
-    {researchLink && <aside className="mb-5 rounded border border-green/25 bg-green/5 px-5 py-4 text-sm">
-      <Link href={`/portal/research/investigations/${researchLink.investigationId}`} className="font-medium underline">Open supporting QCS research and source passages</Link>
+    {researchLink && <aside className="mb-5 rounded border border-line bg-primary/5 px-5 py-4 text-[15px]">
+      <Link href={`/portal/research/investigations/${researchLink.investigationId}`} className="font-medium underline">Open supporting research and source passages</Link>
       {(researchLink.needsReview || !researchLink.available) && <p className="mt-2">The source evidence or review basis has changed. Review this pursuit against the current research.</p>}
     </aside>}
     <PursuitShell
