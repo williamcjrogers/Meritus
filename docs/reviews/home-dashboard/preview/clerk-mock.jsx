@@ -1,0 +1,1 @@
+import React from 'react';export function UserButton(){return <span aria-label="Synthetic director profile">WR</span>}export function useClerk(){return {signOut(){}}}export function useUser(){return {user:null,isLoaded:true}}
