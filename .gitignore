@@ -35,3 +35,9 @@ Meritus_Website_Spec.md
 
 # TypeScript incremental state
 tsconfig.tsbuildinfo
+
+# stray tool output that used to be tracked
+*.log
+logs/
+log.txt
+diff-files.txt
