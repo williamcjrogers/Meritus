@@ -1,3 +1,5 @@
+import type { ActionView } from "@/lib/actions/types";
+import { isOpenAction } from "@/lib/actions/model";
 import { fencedBlock } from "@/lib/ai/fence";
 import type { Activity, ActivityKind, Brief, Pursuit } from "@/lib/db/schema";
 import { dateTime, fullDate } from "@/lib/portal/dates";
@@ -8,6 +10,9 @@ export type PromptDocument = { id: string; title: string; hasText: boolean };
 
 export type SystemPromptInput = {
   pursuit: Pursuit;
+  actions: ActionView[];
+  nextActionId: string | null;
+  reviewDue: string | null;
   brief: Brief | null;
   activity: Activity[];
   documents: PromptDocument[];
@@ -62,7 +67,7 @@ function isoDate(value: string | null | undefined): string {
   return Number.isNaN(parsed.getTime()) ? value : fullDate(parsed);
 }
 
-function headerLines(pursuit: Pursuit, directors: Director[]): string[] {
+function headerLines(pursuit: Pursuit, directors: Director[], reviewDue: string | null): string[] {
   const firm = pursuit.companyNumber
     ? `${pursuit.firm} (company number ${pursuit.companyNumber})`
     : pursuit.firm;
@@ -75,11 +80,6 @@ function headerLines(pursuit: Pursuit, directors: Director[]): string[] {
     .map((value) => value?.trim())
     .filter(Boolean)
     .join(", ");
-  const nextAction = pursuit.nextAction
-    ? pursuit.nextActionDue
-      ? `${pursuit.nextAction} (due ${isoDate(pursuit.nextActionDue)})`
-      : pursuit.nextAction
-    : "none set";
   const source = SOURCE_LABELS[pursuit.source] ?? pursuit.source;
   return [
     `Firm (the enquirer): ${firm}`,
@@ -93,10 +93,21 @@ function headerLines(pursuit: Pursuit, directors: Director[]): string[] {
     `Source: ${pursuit.sourceDetail ? `${source} (${pursuit.sourceDetail})` : source}`,
     `Stage: ${stageLabel(pursuit.stage)} since ${fullDate(pursuit.stageChangedAt)}`,
     `Owner: ${pursuit.ownerId ? actorName(directors, pursuit.ownerId) : "unassigned (in the inbox)"}`,
-    `Next action: ${nextAction}`,
+    `Commercial review due: ${isoDate(reviewDue)}`,
     `Received: ${fullDate(pursuit.createdAt)}`,
     `Summary: ${pursuit.summary?.trim() ? `"${pursuit.summary.trim()}"` : "not recorded"}`,
   ];
+}
+
+function actionLines(actions: ActionView[], nextActionId: string | null): string[] {
+  const open = actions.filter(isOpenAction);
+  const labels = { todo: "To do", in_progress: "In progress", waiting: "Waiting", completed: "Completed", cancelled: "Cancelled" };
+  if (!open.length) return ["No open actions recorded."];
+  return open.map(action => [
+    `Action ${action.id}${action.id === nextActionId ? " (selected next action)" : ""}: ${action.title.slice(0, 240)}`,
+    `Assignee: ${action.ownerName.slice(0, 160)}; status: ${labels[action.state]}; due: ${isoDate(action.dueDate)}`,
+    action.stateReason ? `Status reason: ${action.stateReason.slice(0, 1000)}` : "",
+  ].filter(Boolean).join("\n"));
 }
 
 function briefLines(brief: Brief | null, directors: Director[]): string[] {
@@ -211,7 +222,9 @@ export function buildSystemPrompt(input: SystemPromptInput): string {
     directorNames ? `The directors are ${directorNames}.` : "",
     "",
     "Pursuit:",
-    ...headerLines(pursuit, directors),
+    ...headerLines(pursuit, directors, input.reviewDue),
+    "",
+    fencedBlock("current_actions", actionLines(input.actions, input.nextActionId).join("\n\n")),
     "",
     fencedBlock("brief", briefLines(brief, directors).join("\n")),
     "",
@@ -226,6 +239,7 @@ export function buildSystemPrompt(input: SystemPromptInput): string {
     "4. You can inspect websites and search the web with search_web, which takes a query and optionally a url. Never say you cannot browse, cannot open a url, or need the director to paste page text; call search_web instead. A url is accepted when it is on the pursuit website, in the brief's sources, or in the director's current message. If the tool refuses a url, tell the director that page is outside the permitted sources and answer from the material you have; never put a refused url into the query.",
     "5. read_brief returns the latest complete brief. read_document returns a file's extracted text by id; a file marked \"no text\" cannot be read, so say so rather than guessing its contents.",
     "6. Do not offer generic frameworks or templates. Answer the question asked.",
+    "7. The current_actions block records outstanding commitments, their assignees, status and dates. Commercial review dates are separate. Historical next-action notes are not the current action register; never infer completion from a stage change or an old note.",
   ]
     .filter((line) => line !== undefined)
     .join("\n")

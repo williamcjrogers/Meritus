@@ -1,9 +1,11 @@
+import { requireResearchDirector } from "@/lib/research/roles";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Eyebrow } from "@/components/portal/Eyebrow";
 import { ProgrammeRecompute } from "@/components/portal/ProgrammeRecompute";
 import { ProgrammeReportView } from "@/components/portal/ProgrammeReportView";
 import { SetupNotice } from "@/components/portal/SetupNotice";
+import { RelatedActionPanel } from "@/components/portal/actions/RelatedActionPanel";
 import { expireStaleProgrammeReports, getProgramme, latestCompleteReport, latestReport } from "@/lib/db/programmes";
 import { isDatabaseConfigured, missingRequiredSetup } from "@/lib/env";
 import { detailProgramme } from "@/lib/programme/view";
@@ -14,6 +16,7 @@ export default async function ProgrammeReportPage({ params }: { params: Promise<
   if (missingRequiredSetup() || !isDatabaseConfigured()) {
     return <SetupNotice />;
   }
+  await requireResearchDirector();
 
   const { id } = await params;
   let detail;
@@ -49,6 +52,7 @@ export default async function ProgrammeReportPage({ params }: { params: Promise<
       <div className="panel-brackets border border-green/10 bg-parchment p-6">
         <ProgrammeReportView detail={detail} />
       </div>
+      <RelatedActionPanel link={{ kind: "programme", id: detail.id }} />
     </div>
   );
 }

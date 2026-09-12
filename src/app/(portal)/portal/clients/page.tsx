@@ -1,0 +1,59 @@
+import { after } from "next/server";
+import { ClientDomainForm } from "@/components/portal/ClientDomainForm";
+import { ClientDomainList, type ClientFileSummary, type PursuitOption } from "@/components/portal/ClientDomainList";
+import { Eyebrow } from "@/components/portal/Eyebrow";
+import { Panel } from "@/components/portal/Panel";
+import { SetupNotice } from "@/components/portal/SetupNotice";
+import { sweepStaleUploads } from "@/lib/client-uploads/service";
+import { listActiveClientDomains } from "@/lib/db/client-domains";
+import { listClientDocuments } from "@/lib/db/documents";
+import { listPursuitsForLinking } from "@/lib/db/pursuits";
+import type { ClientDomain } from "@/lib/db/schema";
+import { isDatabaseConfigured, missingRequiredSetup } from "@/lib/env";
+import { stageLabel } from "@/lib/portal/stages";
+
+export const dynamic = "force-dynamic";
+
+export default async function ClientsPage() {
+  if (missingRequiredSetup() || !isDatabaseConfigured()) return <SetupNotice />;
+
+  after(() => sweepStaleUploads().catch(() => 0));
+
+  let domains: ClientDomain[] = [];
+  let pursuits: PursuitOption[] = [];
+  let files: Record<string, ClientFileSummary[]> = {};
+  try {
+    const [domainRows, pursuitRows] = await Promise.all([listActiveClientDomains(), listPursuitsForLinking()]);
+    domains = domainRows;
+    pursuits = pursuitRows.map((p) => ({ id: p.id, firm: p.firm, stage: stageLabel(p.stage) }));
+    const lists = await Promise.all(domainRows.map((row) => listClientDocuments(row.id)));
+    files = Object.fromEntries(
+      domainRows.map((row, index) => [
+        row.id,
+        lists[index].map((doc) => ({ id: doc.id, title: doc.title, size: doc.size, createdAt: doc.createdAt, uploaderEmail: doc.uploaderEmail })),
+      ])
+    );
+  } catch {
+    return <SetupNotice title="Database is configured but not migrated" />;
+  }
+
+  return (
+    <div className="max-w-4xl space-y-8">
+      <div>
+        <Eyebrow rule={false} className="mb-3">Clients</Eyebrow>
+        <h1 className="font-serif text-4xl text-green">Client file drop</h1>
+        <p className="mt-3 max-w-xl text-[14px] text-ink/70">
+          Add a firm&apos;s email domain. Anyone with a mailbox there can request a link at meritusvia.com/access
+          and drop files straight into VeriCase&apos;s store. Link the domain to a pursuit so files land on its dossier.
+        </p>
+      </div>
+      <Panel eyebrow="Add a domain" className="max-w-xl">
+        <ClientDomainForm pursuits={pursuits} />
+      </Panel>
+      <section>
+        <Eyebrow className="mb-4">Listed domains</Eyebrow>
+        <ClientDomainList domains={domains} pursuits={pursuits} files={files} />
+      </section>
+    </div>
+  );
+}

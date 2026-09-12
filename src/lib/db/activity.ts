@@ -1,15 +1,18 @@
-import { desc, eq, inArray, and } from "drizzle-orm";
+import { desc, eq, inArray, and, sql } from "drizzle-orm";
 import { requireDb } from "./index";
 import { activity, type Activity, type ActivityKind, type ActivityMeta } from "./schema";
+import { isResearchPursuitAvailable } from "./research-workflow";
 
 export async function listActivity(pursuitId: string, limit = 200): Promise<Activity[]> {
   const db = requireDb();
-  return db
+  const rows = await db
     .select()
     .from(activity)
     .where(eq(activity.pursuitId, pursuitId))
     .orderBy(desc(activity.createdAt))
     .limit(limit);
+  if (await isResearchPursuitAvailable(pursuitId)) return rows;
+  return rows.map(row => row.meta?.researchDerived ? { ...row, body: null } : row);
 }
 
 export async function addActivity(values: {
@@ -32,6 +35,12 @@ export async function addActivity(values: {
     })
     .returning();
   return row;
+}
+
+export async function addResearchDerivedNote(values: { pursuitId: string; actorId: string; body: string }): Promise<boolean> {
+  const result = await requireDb().execute(sql`select research_write_derived_note(${values.pursuitId},${values.actorId},${values.body}) as saved`);
+  const rows = Array.isArray(result) ? result : result.rows;
+  return rows[0]?.saved === true;
 }
 
 /** Latest stage change per pursuit, used by the Dormant, Instructed and Declined lists. */

@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "node scripts/migrate.mjs && next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint src",
     "postbuild": "next-sitemap",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "node scripts/migrate.mjs",
@@ -17,13 +17,18 @@
   "dependencies": {
     "@ai-sdk/react": "^4.0.96",
     "@aws-sdk/client-s3": "^3.1131.0",
+    "@aws-sdk/s3-request-presigner": "^3.1131.0",
     "@clerk/nextjs": "^7.9.1",
     "@neondatabase/serverless": "^1.1.0",
     "ai": "^7.0.93",
+    "csv-parse": "7.0.2",
     "drizzle-orm": "^0.45.2",
+    "fast-xml-parser": "5.11.1",
+    "fflate": "0.8.3",
     "framer-motion": "^11.18.0",
     "mammoth": "^1.12.2",
     "next": "^15.1.0",
+    "parse5": "8.0.1",
     "pdf-parse": "^2.4.5",
     "postal-mime": "^3.0.0",
     "react": "^19.0.0",
@@ -50,7 +55,9 @@
     "next-sitemap": "^4.2.0",
     "postcss": "^8.5.0",
     "tailwindcss": "^4.0.0",
+    "tsx": "4.23.13",
     "typescript": "5.9.3",
     "vitest": "^5.0.0"
-  }
+  },
+  "packageManager": "pnpm@11.25.0"
 }

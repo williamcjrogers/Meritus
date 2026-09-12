@@ -1,12 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import type { Pursuit, PursuitStage } from "@/lib/db/schema";
+import type { LiveLead } from "@/lib/portal/live-leads";
+import { stageLabel } from "@/lib/portal/stages";
+import type { PursuitStage } from "@/lib/db/schema";
 import { daysInStage, dueLabel, isOverdue } from "@/lib/portal/dates";
 import { directorInitials, directorName, type Director } from "@/lib/portal/director-helpers";
 import type { ActionResult } from "@/lib/portal/types";
 import { MoveToMenu } from "./MoveToMenu";
 import { OwnerAvatar } from "./OwnerAvatar";
+import { actionStateLabels } from "./actions/ActionRow";
 
 export type CardMoveHandler = (
   id: string,
@@ -16,18 +19,19 @@ export type CardMoveHandler = (
 ) => Promise<ActionResult>;
 
 export function PursuitCard({
-  pursuit,
+  lead,
   directors,
   now,
   onMove,
 }: {
-  pursuit: Pursuit;
+  lead: LiveLead;
   directors: Director[];
   now: Date;
   onMove: CardMoveHandler;
 }) {
+  const { pursuit, nextAction } = lead;
   const days = daysInStage(pursuit.stageChangedAt, now);
-  const overdue = isOverdue(pursuit.nextActionDue, now);
+  const overdue = isOverdue(nextAction?.dueDate, now);
   const detail = [pursuit.disputeNature, pursuit.approximateValue].filter(Boolean).join(" · ");
 
   return (
@@ -49,20 +53,20 @@ export function PursuitCard({
       <div className="mt-3 flex items-center gap-2 text-[12px] text-ink/70">
         <OwnerAvatar initials={directorInitials(directors, pursuit.ownerId)} name={directorName(directors, pursuit.ownerId)} />
         <span className="font-mono text-[11px] tracking-[0.05em]">
-          {days === 0 ? "today" : `${days} ${days === 1 ? "day" : "days"}`}
+          {`In ${stageLabel(pursuit.stage).toLowerCase()} for ${days} ${days === 1 ? "day" : "days"}`}
         </span>
       </div>
-      <p className={`mt-3 flex items-start gap-2 text-[13px] ${overdue ? "text-oxblood" : "text-green/90"}`}>
-        {pursuit.nextAction ? (
+      <p className={`mt-3 flex items-start gap-2 text-[14px] ${overdue ? "text-oxblood" : "text-green/90"}`}>
+        {nextAction?.title ? (
           <>
             <span aria-hidden="true" className="mt-[3px] text-[9px]">
               {overdue ? "●" : "▸"}
             </span>
             <span>
-              {pursuit.nextAction}
-              {pursuit.nextActionDue && (
-                <span className="ml-2 font-mono text-[10px] tracking-[0.05em]">
-                  {overdue ? "overdue" : dueLabel(pursuit.nextActionDue)}
+              {nextAction?.title}
+              {nextAction?.dueDate && (
+                <span className="ml-2 text-[14px]">
+                  {overdue ? "overdue" : dueLabel(nextAction?.dueDate)}
                 </span>
               )}
             </span>
@@ -71,6 +75,7 @@ export function PursuitCard({
           <span className="text-ink/70">No next action</span>
         )}
       </p>
+      {nextAction && <p className="mt-1 text-[14px] text-ink/70">{actionStateLabels[nextAction.state]} · Action assignee: {nextAction.ownerName}</p>}
     </article>
   );
 }

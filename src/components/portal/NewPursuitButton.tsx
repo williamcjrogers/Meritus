@@ -24,9 +24,9 @@ export function NewPursuitButton({ className = "btn-brass text-[12px]" }: { clas
   return (
     <>
       <button type="button" className={className} onClick={() => { setFormKey((key) => key + 1); setOpen(true); }}>
-        New pursuit
+        New live lead
       </button>
-      <SlideOver open={open} onClose={() => setOpen(false)} eyebrow="Pursuit" title="New pursuit">
+      <SlideOver open={open} onClose={() => setOpen(false)} eyebrow="Live lead" title="New live lead">
         <PursuitForm key={formKey} mode="create" onSubmit={submit} onCancel={() => setOpen(false)} />
       </SlideOver>
     </>

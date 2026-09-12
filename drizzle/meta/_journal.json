@@ -22,6 +22,69 @@
       "when": 1789160500000,
       "tag": "0002_programmes",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1789228800000,
+      "tag": "0003_qcs_research",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1789228800001,
+      "tag": "0004_qcs_research_workflow",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1789228800002,
+      "tag": "0005_qcs_research_catalogue",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1789228800003,
+      "tag": "0006_qcs_research_intelligence",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1789228800004,
+      "tag": "0007_qcs_research_entity_treatment",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1789228800005,
+      "tag": "0008_qcs_research_watchlists",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1789228800006,
+      "tag": "0009_portal_dashboard_actions",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1789228800007,
+      "tag": "0010_qcs_research_quick",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1789228800008,
+      "tag": "0011_client_files",
+      "breakpoints": true
     }
   ]
 }

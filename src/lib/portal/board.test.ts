@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import type { LiveLead } from "@/lib/portal/live-leads";
+import type { ActionView } from "@/lib/actions/types";
 import type { Pursuit } from "@/lib/db/schema";
 import { partitionDesk, sortColumn } from "./board";
 
@@ -8,9 +10,9 @@ const OTHER = "user_other";
 
 let counter = 0;
 
-function makePursuit(overrides: Partial<Pursuit> = {}): Pursuit {
+function makePursuit(overrides: Partial<Pursuit> = {}): LiveLead {
   counter += 1;
-  return {
+  const pursuit: Pursuit = {
     id: `p${counter}`,
     firm: `Firm ${counter}`,
     contactName: null,
@@ -32,14 +34,20 @@ function makePursuit(overrides: Partial<Pursuit> = {}): Pursuit {
     stageChangedAt: new Date("2026-09-01T09:00:00Z"),
     nextAction: null,
     nextActionDue: null,
+    reviewDue: null,
     createdBy: "site",
     createdAt: new Date("2026-09-01T09:00:00Z"),
     updatedAt: new Date("2026-09-01T09:00:00Z"),
     ...overrides,
   };
+  const nextAction = (pursuit.nextAction || pursuit.nextActionDue) ? {
+    id: `action-${pursuit.id}`, title: pursuit.nextAction ?? "Action", dueDate: pursuit.nextActionDue,
+    ownerName: "Other director", state: "todo", ownerId: "action-owner"
+  } as ActionView : null;
+  return { pursuit, nextAction, reviewDue: pursuit.reviewDue ?? (pursuit.stage === "dormant" ? pursuit.nextActionDue : null) };
 }
 
-const ids = (rows: Pursuit[]) => rows.map((row) => row.id);
+const ids = (rows: LiveLead[]) => rows.map((row) => row.pursuit.id);
 
 describe("partitionDesk", () => {
   it("puts unowned pursuits in active stages in the inbox, newest first", () => {
@@ -124,6 +132,7 @@ describe("partitionDesk", () => {
       stage: "enquiry",
       ownerId: ME,
       nextActionDue: "2026-09-01",
+      reviewDue: null,
       stageChangedAt: new Date("2026-09-08T09:00:00Z"),
     });
     const result = partitionDesk([waiting, overdue], { scope: "all", userId: ME, now: NOW });
@@ -172,11 +181,13 @@ describe("sortColumn", () => {
     const recent = makePursuit({
       id: "recent",
       nextActionDue: "2026-09-01",
+      reviewDue: null,
       stageChangedAt: new Date("2026-09-05T09:00:00Z"),
     });
     const waiting = makePursuit({
       id: "waiting",
       nextActionDue: "2026-09-01",
+      reviewDue: null,
       stageChangedAt: new Date("2026-08-05T09:00:00Z"),
     });
     expect(ids(sortColumn([recent, waiting], NOW))).toEqual(["waiting", "recent"]);

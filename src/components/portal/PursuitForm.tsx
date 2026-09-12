@@ -125,7 +125,7 @@ export function PursuitForm({
           Cancel
         </button>
         <button type="submit" className="btn-brass text-[12px]" disabled={pending}>
-          {pending ? "Saving…" : mode === "create" ? "Create pursuit" : "Save changes"}
+          {pending ? "Saving…" : mode === "create" ? "Create live lead" : "Save changes"}
         </button>
       </div>
     </form>

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { FadeIn, ProjectPulse } from "@/components/animations";
 import { CTABand } from "@/components/ui";
 import { pageMetadata } from "@/lib/seo";

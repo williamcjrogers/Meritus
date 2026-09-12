@@ -7,21 +7,16 @@ import type { ReactNode } from "react";
 export function NavLink({
   href,
   children,
-  match = "prefix",
+  exact = false,
   variant = "rail",
 }: {
   href: string;
   children: ReactNode;
-  match?: "exact" | "prefix" | "desk";
+  exact?: boolean;
   variant?: "rail" | "bar";
 }) {
   const pathname = usePathname() ?? "";
-  const active =
-    match === "exact"
-      ? pathname === href
-      : match === "desk"
-        ? pathname === "/portal" || pathname.startsWith("/portal/pursuits")
-        : pathname === href || pathname.startsWith(`${href}/`);
+  const active = exact ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 
   if (variant === "bar") {
     return (

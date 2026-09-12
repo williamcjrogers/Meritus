@@ -1,0 +1,17 @@
+{
+  "formatVersion": 1,
+  "capturedResponses": [],
+  "notice": "No live provider response or licensed judgment is committed by this implementation. Every test response is explicitly synthetic and is not evidence of a provider contract passing live.",
+  "syntheticTests": [
+    "../sources/source-contracts.test.ts",
+    "../sources/adapters.test.ts",
+    "../imports/parse.test.ts",
+    "../imports/split-csv.test.ts",
+    "../extract/extraction.test.ts",
+    "../case-law/treatment.test.ts",
+    "../entities/resolve.test.ts",
+    "../../db/research-case-law.test.ts",
+    "../sources/building-safety.test.ts",
+    "../imports/connector.test.ts"
+  ]
+}

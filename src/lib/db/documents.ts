@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, isNotNull } from "drizzle-orm";
 import { requireDb } from "./index";
 import { documents, type DocumentRow, type DocumentScope } from "./schema";
 
@@ -37,4 +37,23 @@ export async function insertDocument(values: typeof documents.$inferInsert): Pro
 export async function deleteDocumentRow(id: string): Promise<void> {
   const db = requireDb();
   await db.delete(documents).where(eq(documents.id, id));
+}
+
+/** Every file a client domain has sent, newest first, whether or not it landed on a pursuit. */
+export async function listClientDocuments(clientDomainId: string): Promise<DocumentRow[]> {
+  const db = requireDb();
+  return db
+    .select()
+    .from(documents)
+    .where(eq(documents.clientDomainId, clientDomainId))
+    .orderBy(desc(documents.createdAt));
+}
+
+/** Before a pursuit is deleted: its client files stay, unlinked, so the hold never loses a firm's documents. */
+export async function detachClientDocuments(pursuitId: string): Promise<void> {
+  const db = requireDb();
+  await db
+    .update(documents)
+    .set({ pursuitId: null, scope: "client" })
+    .where(and(eq(documents.pursuitId, pursuitId), isNotNull(documents.clientDomainId)));
 }

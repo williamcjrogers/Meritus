@@ -1,3 +1,4 @@
+import { requireResearchDirector } from "@/lib/research/roles";
 import Link from "next/link";
 import { Eyebrow } from "@/components/portal/Eyebrow";
 import { ProgrammeUpload } from "@/components/portal/ProgrammeUpload";
@@ -13,6 +14,7 @@ export default async function ProgrammesPage() {
   if (missingRequiredSetup() || !isDatabaseConfigured()) {
     return <SetupNotice />;
   }
+  await requireResearchDirector();
 
   let items;
   try {

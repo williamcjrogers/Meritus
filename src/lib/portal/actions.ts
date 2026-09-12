@@ -3,12 +3,14 @@
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { CONTACT_FORM_OPTIONS } from "@/lib/constants";
-import { addActivity, listActivity } from "@/lib/db/activity";
-import { listDocuments } from "@/lib/db/documents";
+import { addActivity, addResearchDerivedNote, listActivity } from "@/lib/db/activity";
+import { isOpenAction } from "@/lib/actions/model";
+import { detachClientDocuments } from "@/lib/db/documents";
+import { readRelatedActions } from "@/lib/db/desk-actions";
 import {
   createPursuitWithEnquiry,
   declinePursuitGuardedWithActivity,
-  deletePursuit as removePursuit,
+  deletePursuitGuarded,
   getPursuit,
   takePursuitGuarded,
   updatePursuit as patchPursuit,
@@ -36,7 +38,6 @@ export type { ActionResult, CreateResult, PursuitFormInput } from "./types";
 type Failure = { ok: false; error: string };
 
 const NOT_FOUND = "This pursuit no longer exists";
-const NEXT_ACTION_MAX = 140;
 const NOTE_MAX = 4000;
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 const COMPANY_NUMBER = /^[A-Z0-9]{8}$/;
@@ -212,6 +213,17 @@ async function insertNote(pursuitId: string, actorId: string, body: string): Pro
   return { ok: true };
 }
 
+/** After a stage change, tells the caller how many linked actions are still open, when that can be read. */
+async function stageUpdated(id: string): Promise<ActionResult> {
+  try {
+    const remainingActions = (await readRelatedActions({ kind: "pursuit", id })).filter(isOpenAction).length;
+    return remainingActions ? { ok: true, remainingActions } : { ok: true };
+  } catch {
+    // The stage has committed; a failed summary read cannot reverse its success.
+    return { ok: true, remainingActionsUnavailable: true };
+  }
+}
+
 // Actions -----------------------------------------------------------------------------------
 
 export async function createPursuit(input: PursuitFormInput): Promise<CreateResult> {
@@ -251,21 +263,33 @@ export async function updatePursuit(id: string, input: PursuitFormInput): Promis
   });
 }
 
-/** Deletes the pursuit and everything under it. S3 objects go first, best effort; the row cascades. */
+/**
+ * Deletes the pursuit and everything under it, except a client firm's own files. A client
+ * domain's documents are detached (kept, with their scope switched away from "pursuit") before
+ * the guarded delete runs, so its blob keys never appear in what it collects for S3 cleanup and
+ * its own refusal to delete a pursuit with linked actions still stands.
+ */
 export async function deletePursuit(id: string): Promise<ActionResult> {
   return guarded<ActionResult>("deletePursuit", async () => {
     if (!isId(id)) return notFound();
-    const pursuit = await getPursuit(id);
-    if (!pursuit) return notFound();
-    const docs = await listDocuments({ scope: "pursuit", pursuitId: id });
-    if (docs.length > 0) {
+    await detachClientDocuments(id);
+    const result = await deletePursuitGuarded(id);
+    if (!result.ok) {
+      return {
+        ok: false,
+        error:
+          result.code === "linked_actions"
+            ? "Retain linked actions as standalone records before deleting this live lead"
+            : "This live lead no longer exists",
+      };
+    }
+    if (result.blobKeys.length) {
       try {
-        await deleteObjects(docs.map((doc) => doc.blobPathname));
+        await deleteObjects(result.blobKeys);
       } catch (error) {
-        console.warn(`[portal] S3 delete failed for pursuit ${id}`, error);
+        console.error(`[portal] Blob cleanup failed after deleting live lead ${id}`, error);
       }
     }
-    await removePursuit(id);
     return { ok: true };
   });
 }
@@ -300,7 +324,7 @@ export async function declinePursuit(id: string, reason: string): Promise<Action
       stageChangeEntry(userId, pursuit.stage, "declined", reason)
     );
     if (!declined) return { ok: false, error: await whyGuardFailed(id) };
-    return { ok: true };
+    return stageUpdated(id);
   });
 }
 
@@ -320,15 +344,16 @@ export async function movePursuit(
     const check = validateMove(pursuit.stage, to, asText(reason));
     if (!check.ok) return check;
     const patch: PursuitPatch = { stage: to, stageChangedAt: new Date() };
+    if (pursuit.stage === "dormant") patch.reviewDue = null;
     if (to === "dormant" && revisitDue) {
       if (!isIsoDate(asText(revisitDue))) {
         return { ok: false, error: "Give the revisit date as a valid date" };
       }
-      patch.nextActionDue = revisitDue;
+      patch.reviewDue = revisitDue;
     }
     const moved = await updatePursuitWithActivity(id, patch, stageChangeEntry(userId, pursuit.stage, to, reason));
     if (!moved) return notFound();
-    return { ok: true };
+    return stageUpdated(id);
   });
 }
 
@@ -341,9 +366,9 @@ export async function reopenPursuit(id: string): Promise<ActionResult> {
       return { ok: false, error: "Only declined or dormant pursuits can be reopened" };
     }
     const to = resolveReopenStage(await listActivity(id));
-    // A revisit date set when parking the pursuit has done its job; without a next action it would only read as overdue.
+    // Reopening clears the commercial review date independently of linked actions.
     const patch: PursuitPatch = { stage: to, stageChangedAt: new Date() };
-    if (pursuit.stage === "dormant" && !pursuit.nextAction) patch.nextActionDue = null;
+    patch.reviewDue = null;
     const reopened = await updatePursuitWithActivity(id, patch, {
       kind: "reopened",
       actorId: userId,
@@ -351,7 +376,7 @@ export async function reopenPursuit(id: string): Promise<ActionResult> {
       meta: { from: pursuit.stage, to },
     });
     if (!reopened) return notFound();
-    return { ok: true };
+    return stageUpdated(id);
   });
 }
 
@@ -388,32 +413,10 @@ export async function setOwner(id: string, ownerId: string | null): Promise<Acti
   });
 }
 
-/** Empty text clears the next action and its date together. */
+/** Compatibility endpoint for obsolete clients; legacy fields are now read-only storage. */
 export async function setNextAction(id: string, text: string, due: string | null): Promise<ActionResult> {
-  return guarded<ActionResult>("setNextAction", async (userId) => {
-    if (!isId(id)) return notFound();
-    const nextAction = asText(text).trim();
-    if (nextAction.length > NEXT_ACTION_MAX) {
-      return { ok: false, error: `Keep the next action to ${NEXT_ACTION_MAX} characters` };
-    }
-    const dueText = asText(due).trim();
-    if (dueText && !isIsoDate(dueText)) {
-      return { ok: false, error: "Give the due date as a valid date" };
-    }
-    const nextActionDue = nextAction && dueText ? dueText : null;
-    const updated = await updatePursuitWithActivity(
-      id,
-      { nextAction: nextAction || null, nextActionDue },
-      {
-        kind: "next_action_set",
-        actorId: userId,
-        body: nextAction || "Next action cleared",
-        meta: { nextAction: nextAction || null, nextActionDue },
-      }
-    );
-    if (!updated) return notFound();
-    return { ok: true };
-  });
+  void id; void text; void due;
+  return { ok: false, error: "Actions have changed. Refresh this page and use the linked Actions panel." };
 }
 
 export async function addNote(id: string, body: string): Promise<ActionResult> {
@@ -434,7 +437,11 @@ export async function saveAnswerAsNote(id: string, body: string): Promise<Action
     if (!isId(id)) return notFound();
     const text = asText(body).trim();
     if (!text) return { ok: false, error: "There is no answer to save" };
-    return insertNote(id, userId, text.slice(0, NOTE_MAX));
+    if (!(await getPursuit(id))) return notFound();
+    const saved = await addResearchDerivedNote({ pursuitId: id, actorId: userId, body: text.slice(0, NOTE_MAX) });
+    return saved
+      ? { ok: true }
+      : { ok: false, error: "The research source has changed; refresh the answer before saving" };
   });
 }
 

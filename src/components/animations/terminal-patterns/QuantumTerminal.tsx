@@ -7,7 +7,6 @@
  */
 export function QuantumTerminal({ className = "" }: { className?: string }) {
   /* Noise dots,dense cluster representing inflated claim */
-  const noiseDots: [number, number][] = [];
   // Deterministic pseudo-random positions for the noise cloud
   const seed = [
     [470, 110], [510, 95], [545, 125], [490, 140], [530, 108],

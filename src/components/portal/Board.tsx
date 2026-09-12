@@ -36,7 +36,7 @@ export function Board({
                 <p className="border border-dashed border-green/15 px-4 py-6 text-center text-[12px] text-ink/70">Nothing at {stageLabel(stage).toLowerCase()}</p>
               ) : (
                 columns[stage].map((pursuit) => (
-                  <PursuitCard key={pursuit.id} pursuit={pursuit} directors={directors} now={now} onMove={onMove} />
+                  <PursuitCard key={pursuit.pursuit.id} lead={pursuit} directors={directors} now={now} onMove={onMove} />
                 ))
               )}
             </div>
